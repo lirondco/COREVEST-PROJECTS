@@ -8,6 +8,10 @@ public class opportunity_Helper {
     'IC_Metrics_For_Bridge'
   };
 
+  public static final String RTL_WAREHOUSELINE = 'RTL';
+
+  public static final String RESOLUTE_DILIGENCE = 'Resolute Diligence Solutions';
+
   public static final String DEAL_EMAIL_HANDLER_DEVNAME = 'Deal_Email_Handler';
 
   public static List<String> IC_DOC_TYPES = new List<String>{
@@ -1352,6 +1356,8 @@ public class opportunity_Helper {
     };
     Map<Id, Opportunity> oppsServiceDate = new Map<Id, Opportunity>();
 
+    Set<Id> rtlDeals = new Set<Id>();
+
     Map<Id, Decimal> dealMemberSize = new Map<Id, Decimal>();
     for (AggregateResult ar : [
       SELECT count(Id) cnt, OpportunityId parent
@@ -1370,6 +1376,14 @@ public class opportunity_Helper {
       system.debug('oldMap::::' + oldMap);
 
       if (
+        o.StageName == 'Closed Won' &&
+        o.Warehouse_Line__c.contains(RTL_WAREHOUSELINE) &&
+        o.Warehouse_Line__c != oldMap.get(o.Id).Warehouse_Line__c
+      ) {
+        rtlDeals.add(o.Id);
+      }
+
+      if (
         oldMap.get(o.Id).Warehouse_Line__c != o.Warehouse_Line__c &&
         o.Warehouse_Line__c != 'Securitization'
       ) {
@@ -1381,9 +1395,10 @@ public class opportunity_Helper {
         }
       }
 
+
       if (
         o.Securitization__c != null &&
-        oldMap.get(o.Id).Securitization__c == null
+        oldMap.get(o.Id).Securitization__c != o.Securitization__c
       ) {
         dealsWithSec.add(o);
 
@@ -1416,7 +1431,6 @@ public class opportunity_Helper {
       ) {
         approvedIcDeals.put(o.Id, o);
       }
-
 
       // if((o.Record_Type_Name__c == 'LOC_Loan' || o.Record_Type_Name__c.contains('Bridge')) && o.Parent_Deal__c != null){
       //     locParentIds.add(o.Parent_Deal__c);
@@ -1752,18 +1766,36 @@ public class opportunity_Helper {
       }
     }
 
+    List<OpportunityLineItem> updatedLineItems = new List<OpportunityLineItem>();
+
     for (String key : oppsLineItemUnitPriceMap.keySet()) {
       if (oppsLineItemUnitPriceMap.get(key).size() > 0) {
-        updateOppLineItems(oppsLineItemUnitPriceMap.get(key), 'UnitPrice', key);
+        updatedLineItems.addAll(
+          updateOppLineItems(
+            oppsLineItemUnitPriceMap.get(key),
+            'UnitPrice',
+            key
+          )
+        );
       }
     }
 
     if (oppsServiceDate.size() > 0) {
-      updateOppLineItems(oppsServiceDate, 'ServiceDate', 'CloseDate');
+      updatedLineItems.addAll(
+        updateOppLineItems(oppsServiceDate, 'ServiceDate', 'CloseDate')
+      );
+    }
+
+    if (updatedLineItems.size() > 0) {
+      update updatedLineItems;
     }
 
     if (approvedIcDeals.size() > 0) {
       processIcApproval(approvedIcDeals);
+    }
+
+    if (rtlDeals.size() > 0) {
+      createRtlDealContacts(rtlDeals);
     }
 
     Map<String, List<Opportunity>> dealTypeForFundingVehicleMap = new Map<String, List<Opportunity>>{
@@ -2025,7 +2057,7 @@ public class opportunity_Helper {
         LIMIT 1
       ];
 
-      if(accs.size() > 0) {
+      if (accs.size() > 0) {
         Account acc = accs[0];
         for (id dec : idVSDealContactMap.keySet()) {
           Deal_Contact__c dealcon = new Deal_Contact__c();
@@ -2257,7 +2289,7 @@ public class opportunity_Helper {
       c2cMap.get(document.Deal__c).setDocument(document);
     }
 
-    if(!Test.isRunningTest()) {
+    if (!Test.isRunningTest()) {
       for (Document_Information__c docInfo : [
         SELECT
           Id,
@@ -2839,7 +2871,7 @@ public class opportunity_Helper {
     }
   }
 
-  public static void updateOppLineItems(
+  public static List<OpportunityLineItem> updateOppLineItems(
     Map<Id, Opportunity> oppMap,
     String fieldToUpdate,
     String fieldFrom
@@ -2857,7 +2889,7 @@ public class opportunity_Helper {
       oli.put(fieldToUpdate, currOpp.get(fieldFrom));
     }
 
-    update oppLineItems;
+    return oppLineItems;
   }
 
   public static void updateDealFundingVehicleEndDate(Map<Id, String> dealMap) {
@@ -2875,9 +2907,16 @@ public class opportunity_Helper {
     ];
 
     for (Deal_x_Funding_Vehicle__c d : dfvs) {
-      if (d.Deal__r.Securitization__c != null && dealMap.get(d.Deal__c) == d.Funding_Vehicle__r.Name && d.Deal__r.Securitization__r.Close_Date__c != null) {
+      if (
+        d.Deal__r.Securitization__c != null &&
+        dealMap.get(d.Deal__c) == d.Funding_Vehicle__r.Name &&
+        d.Deal__r.Securitization__r.Close_Date__c != null
+      ) {
         d.End_Date__c = d.Deal__r.Securitization__r.Close_Date__c;
-      } else if (d.Deal__r.Securitization__c == null && d.Funding_Vehicle__r.Name == dealMap.get(d.Deal__c)) {
+      } else if (
+        d.Deal__r.Securitization__c == null &&
+        d.Funding_Vehicle__r.Name == dealMap.get(d.Deal__c)
+      ) {
         d.End_Date__c = (Date) System.today();
       }
     }
@@ -2940,6 +2979,7 @@ public class opportunity_Helper {
           secFvMap.get(op.Securitization__c).Id != null
         ) {
           Deal_x_Funding_Vehicle__c newDxfv = new Deal_x_Funding_Vehicle__c();
+          newDxfv.Include_Yes_No__c = true;
           newDxfv.Deal__c = op.Id;
           newDxfv.Funding_Vehicle__c = secFvMap.get(op.Securitization__c).Id;
           newDxfv.Start_Date__c = secFvMap.get(op.Securitization__c)
@@ -2973,6 +3013,36 @@ public class opportunity_Helper {
       return fundingVehicleMap;
     } else {
       return new Map<String, Id>();
+    }
+  }
+
+  public static void createRtlDealContacts(Set<Id> dealIds) {
+    List<Account> rtlAccs = [
+      SELECT Id
+      FROM Account
+      WHERE Name = :RESOLUTE_DILIGENCE AND RecordType.DeveloperName = 'Vendor'
+      LIMIT 1
+    ];
+
+    if (Test.isRunningTest()) {
+      rtlAccs = [SELECT Id FROM Account LIMIT 1];
+    }
+
+    List<Deal_Contact__c> newDealContacts = new List<Deal_Contact__c>();
+
+    if (rtlAccs.size() > 0) {
+      for (Id dealId : dealIds) {
+        Deal_Contact__c newDealContact = new Deal_Contact__c();
+        newDealContact.Deal__c = dealId;
+        newDealContact.Account__c = rtlAccs[0].Id;
+        newDealContact.Deal_Contact_Type__c = 'Vendor';
+        newDealContact.Vendor_Type__c = 'Diligence Review';
+        newDealContacts.add(newDealContact);
+      }
+
+      if (newDealContacts.size() > 0) {
+        insert newDealContacts;
+      }
     }
   }
 }
