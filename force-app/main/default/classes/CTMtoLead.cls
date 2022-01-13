@@ -316,7 +316,7 @@ public class CTMtoLead {
 		Set<Id> convertedContactIdSet = new Set<Id>();
 		Map<Id, Lead> leadMapForSource = new Map<Id, Lead>();
 
-		for (Lead l : [SELECT Id, CreatedDate, ConvertedContactId, Formatted_Phone__c, Updated_By_CTM__c, Updated_UTM_by_CTM__c, Updated_Referrer_by_CTM__c, utm_Campaign_Content__c, utm_Campaign_Medium__c, utm_Campaign_Name__c, utm_Campaign_Source__c, utm_Campaign_Term__c, Referring_URL_Text__c, CTM_Ring_Time__c,
+		for (Lead l : [SELECT Id, CreatedDate, Introduction_Source__c, ConvertedContactId, Formatted_Phone__c, Updated_By_CTM__c, Updated_UTM_by_CTM__c, Updated_Referrer_by_CTM__c, utm_Campaign_Content__c, utm_Campaign_Medium__c, utm_Campaign_Name__c, utm_Campaign_Source__c, utm_Campaign_Term__c, Referring_URL_Text__c, CTM_Ring_Time__c,
 		                      ConvertedContact.Id, ConvertedContact.Updated_By_CTM__c, ConvertedContact.Updated_UTM_by_CTM__c, ConvertedContact.Updated_Referrer_by_CTM__c, ConvertedContact.utm_Campaign_Content__c, ConvertedContact.utm_Campaign_Medium__c, ConvertedContact.utm_Campaign_Name__c,
 													Referring_URL__c, ConvertedContact.utm_Campaign_Source__c, ConvertedContact.utm_Campaign_Term__c, ConvertedContact.Referring_URL_Text__c
 									 FROM Lead
@@ -382,7 +382,9 @@ public class CTMtoLead {
 			}
 			if (l.Updated_By_CTM__c) {
 				leadsToUpdate.add(l);
-				leadMapForSource.put(l.Id, l);
+				if(l.Introduction_Source__c == 'Hotline') {
+					leadMapForSource.put(l.Id, l);
+				}
 				if (c.Id != null && !convertedContactIdSet.contains(c.Id)) {
 					contactsToUpdate.add(c);
 					convertedContactIdSet.add(c.Id);

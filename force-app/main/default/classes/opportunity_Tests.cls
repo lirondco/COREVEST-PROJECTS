@@ -3524,6 +3524,7 @@ public with sharing class opportunity_Tests {
     sab.Co_Originator__c = origU3.Id;
     sab.Term_Sheet_Issued__c = System.today();
     sab.CloseDate = Date.newInstance(2014, 4, 17);
+    sab.Broker_Fees__c = 1;
     insert sab;
 
     Test.stopTest();
@@ -3788,6 +3789,9 @@ public with sharing class opportunity_Tests {
 
     opp.StageName = 'Withdrawn';
     opp.Deal_Lost_Reason__c = 'Background';
+    opp.Broker_Fees__c = 1;
+    opp.Broker_Fee_Paid_When__c = 'Origination';
+    opp.Broker_Fee_Paid_By_Whom__c = 'Escrow';
     update opp;
 
     opp.RecordTypeId = [
@@ -3941,6 +3945,8 @@ public with sharing class opportunity_Tests {
 
     Account acc = [SELECT Id FROM Account ORDER BY CreatedDate DESC LIMIT 1];
     Contact cont = [SELECT Id FROM Contact ORDER BY CreatedDate DESC LIMIT 1];
+    cont.AccountId = acc.Id;
+    update cont;
 
     Opportunity opp = new Opportunity();
     opp.Name = 'test';

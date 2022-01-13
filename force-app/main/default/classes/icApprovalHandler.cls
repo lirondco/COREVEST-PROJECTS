@@ -1,6 +1,7 @@
 global class icApprovalHandler implements Messaging.InboundEmailHandler {
-  // ! change handler address from prod
-  static final String HANDLERADDRESS = 'icapprovalhandler@k-wn74jpiey1q7dxwd9dzqamgam1zz6qekbighhgv7m5rguvzjw.78-4apseaa.cs213.apex.sandbox.salesforce.com';
+  static final String EMAIL_SERVICE_APINAME = 'icApprovalHandler';
+  static final String HANDLERADDRESS = retrieveHandlerEmailAddress();
+  
 
   public static Boolean ISSANDBOX = false;
 
@@ -14,6 +15,7 @@ global class icApprovalHandler implements Messaging.InboundEmailHandler {
   };
 
   static final String SANDBOX_EMAIL = 'ldecastro@mkpartners.com';
+  
 
   public static final Map<String, Map<Id, User>> USERINFOMAP = new Map<String, Map<Id, User>>{
     'Bridge IC Process' => queryUserInfo('Bridge_IC_Approval'),
@@ -40,6 +42,22 @@ global class icApprovalHandler implements Messaging.InboundEmailHandler {
     'Bridge Committee Memo',
     'Committee Memo'
   };
+
+  public static String retrieveHandlerEmailAddress() {
+    String handlerAddress = '';
+
+    List<EmailServicesAddress> esas = [
+      SELECT Id, LocalPart, EmailDomainName, DeveloperName
+      FROM EmailServicesAddress
+      WHERE DeveloperName = :EMAIL_SERVICE_APINAME
+    ];
+
+    if (esas.size() > 0) {
+      handlerAddress = esas[0].LocalPart + '@' + esas[0].EmailDomainName;
+    }
+
+    return handlerAddress;
+  }
 
   public static Set<String> queryEmailAddresses(String name) {
     Set<String> emailAdds = new Set<String>();

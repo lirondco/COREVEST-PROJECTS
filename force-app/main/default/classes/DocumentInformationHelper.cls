@@ -157,12 +157,17 @@ public without sharing class DocumentInformationHelper {
           system.debug('doc info stuff');
           system.debug(recordType);
           system.debug(folderString);
-          system.debug(
-            docStructureMap.get(recordType)
-              .get(folderString)
-              .C2C_Required_Filtering__c
-          );
-          system.debug(docStructureMap.get(recordType).get(folderString));
+          // system.debug(
+          //   docStructureMap.get(recordType)
+          //     .get(folderString)
+          //     .C2C_Required_Filtering__c
+          // );
+          // system.debug(docStructureMap.get(recordType).get(folderString));
+          if(!docStructureMap.containsKey(recordType) ||
+          !docStructureMap.get(recordType)
+            .containsKey(folderString)) {
+              continue;
+            }
 
           if (
             docStructureMap.get(recordType)
@@ -184,11 +189,10 @@ public without sharing class DocumentInformationHelper {
               .get(folderString)
               .C2C_Required_Filtering__c;
             Set<String> filters = new Set<String>(additionalFilters.split(';'));
-            system.debug(dealTypes);
             system.debug(filters);
             dealTypes.retainAll(filters);
-            system.debug(dealTypes);
             if (dealTypes.size() > 0) {
+              system.debug(dealTypes);
               docInfo.Required_for_Clear_to_Close__c = true;
             } else {
               docInfo.Required_for_Clear_to_Close__c = false;
@@ -215,11 +219,10 @@ public without sharing class DocumentInformationHelper {
               .get(folderString)
               .Additional_Borrower_Checklist_Filtering__c;
             Set<String> filters = new Set<String>(additionalFilters.split(';'));
-            system.debug(dealTypes);
             system.debug(filters);
             dealTypes.retainAll(filters);
-            system.debug(dealTypes);
             if (dealTypes.size() > 0) {
+              system.debug(dealTypes);
               docInfo.Exclude_from_Loan_Status__c = docStructureMap.get(
                   recordType
                 )

@@ -182,6 +182,7 @@ public without sharing class ApprovalHistory_lightningController {
         Deal__r.Owner.Name,
         Deal__r.Approval_Status__c,
         Deal__r.Apex_Context__c,
+        Deal__r.Underwriter__c,
         CreatedDate,
         Resolution__c
       FROM Approval_History__c
@@ -207,6 +208,17 @@ public without sharing class ApprovalHistory_lightningController {
     ]) {
       idMap.put(piw.Id, piw.ProcessInstance.ProcessDefinition.DeveloperName);
     }
+
+    Boolean allowUnderwriterRecall = false;
+
+    List<OpportunityTeamMember> otmList = [
+      SELECT
+        Id
+      FROM OpportunityTeamMember
+      WHERE OpportunityId = :recordId
+      AND UserId = :UserInfo.getUserId()
+      AND TeamMemberRole = 'Underwriter'
+    ];
 
     for (Approval_History__c ah : ahList) {
       if (
@@ -338,10 +350,14 @@ public without sharing class ApprovalHistory_lightningController {
         if (IC_APPROVAL_NAMES.contains(processName) && ah.Actor__c == UserInfo.getUserId()) {
           ah.Verified__c = true;
         }
+
+        if(IC_APPROVAL_NAMES.contains(processName) && (otmList.size() > 0 || ah.Deal__r.Underwriter__c == UserInfo.getUserId())){
+          allowUnderwriterRecall = true;
+        }
       }
     }
 
-    Boolean b = submitterId == UserInfo.getUserId();
+    Boolean b = submitterId == UserInfo.getUserId() || allowUnderwriterRecall;
 
     returnWrapper rw = new returnWrapper();
     rw.ahList = ahList;

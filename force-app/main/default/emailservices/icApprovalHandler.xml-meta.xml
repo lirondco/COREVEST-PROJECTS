@@ -8,7 +8,7 @@
         <developerName>icApprovalHandler</developerName>
         <isActive>true</isActive>
         <localPart>icapprovalhandler</localPart>
-        <runAsUser>mkpartners@colonyamericanfinance.com.qa</runAsUser>
+        <runAsUser>mkpartners@colonyamericanfinance.com.full</runAsUser>
     </emailServicesAddresses>
     <functionInactiveAction>Discard</functionInactiveAction>
     <functionName>icApprovalHandler</functionName>

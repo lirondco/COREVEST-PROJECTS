@@ -13,14 +13,14 @@ public class CTMtoLeadTests {
     ld.Status = 'Open';
     ld.Phone = '5165266300';
     ld.Email = '5165266300@gmail.com';
-    ld.Introduction_Source__c = 'Email Blast';
+    ld.Introduction_Source__c = 'Hotline';
     ld.Introduction_Subsource__c = 'Pardot';
     ld.Street = '123 test st';
     ld.City = 'Irvine';
     sampleLeads.add(ld);
 
     Master_Source__c ms = new Master_Source__c();
-    ms.Name = 'Email Blast';
+    ms.Name = 'Hotline';
     ms.Email__c = ld.Email;
     ms.First_Name__c = ld.FirstName;
     ms.Last_Name__c = ld.LastName;
@@ -34,14 +34,14 @@ public class CTMtoLeadTests {
     ld2.Status = 'Open';
     ld2.Phone = '6098618891';
     ld2.Email = '6098618891@gmail.com';
-    ld2.Introduction_Source__c = 'Email Blast';
+    ld2.Introduction_Source__c = 'Hotline';
     ld2.Introduction_Subsource__c = 'Pardot';
     ld2.Street = '123 test st';
     ld2.City = 'Irvine';
     sampleLeads.add(ld2);
 
     Master_Source__c ms2 = new Master_Source__c();
-    ms2.Name = 'Email Blast';
+    ms2.Name = 'Hotline';
     ms2.Email__c = ld2.Email;
     ms2.First_Name__c = ld2.FirstName;
     ms2.Last_Name__c = ld2.LastName;
@@ -55,14 +55,14 @@ public class CTMtoLeadTests {
     ld3.Status = 'Open';
     ld3.Phone = '9042386718';
     ld3.Email = '9042386718@gmail.com';
-    ld3.Introduction_Source__c = 'Email Blast';
+    ld3.Introduction_Source__c = 'Hotline';
     ld3.Introduction_Subsource__c = 'Pardot';
     ld3.Street = '123 test st';
     ld3.City = 'Irvine';
     sampleLeads.add(ld3);
 
     Master_Source__c ms3 = new Master_Source__c();
-    ms3.Name = 'Email Blast';
+    ms3.Name = 'Hotline';
     ms3.Email__c = ld3.Email;
     ms3.First_Name__c = ld3.FirstName;
     ms3.Last_Name__c = ld3.LastName;
@@ -76,14 +76,14 @@ public class CTMtoLeadTests {
     ld4.Status = 'Open';
     ld4.Phone = '7175549417';
     ld4.Email = '7175549417@gmail.com';
-    ld4.Introduction_Source__c = 'Email Blast';
+    ld4.Introduction_Source__c = 'Hotline';
     ld4.Introduction_Subsource__c = 'Pardot';
     ld3.Street = '123 test st';
     ld3.City = 'Irvine';
     sampleLeads.add(ld4);
 
     Master_Source__c ms4 = new Master_Source__c();
-    ms4.Name = 'Email Blast';
+    ms4.Name = 'Hotline';
     ms4.Email__c = ld4.Email;
     ms4.First_Name__c = ld4.FirstName;
     ms4.Last_Name__c = ld4.LastName;
@@ -97,14 +97,14 @@ public class CTMtoLeadTests {
     ld5.Status = 'Open';
     ld5.Phone = '9103548743';
     ld5.Email = '9103548743@gmail.com';
-    ld5.Introduction_Source__c = 'Email Blast';
+    ld5.Introduction_Source__c = 'Hotline';
     ld5.Introduction_Subsource__c = 'Pardot';
     ld5.Street = '123 test st';
     ld5.City = 'Irvine';
     sampleLeads.add(ld5);
 
     Master_Source__c ms5 = new Master_Source__c();
-    ms5.Name = 'Email Blast';
+    ms5.Name = 'Hotline';
     ms5.Email__c = ld5.Email;
     ms5.First_Name__c = ld5.FirstName;
     ms5.Last_Name__c = ld5.LastName;
@@ -118,14 +118,14 @@ public class CTMtoLeadTests {
     ld6.Status = 'Open';
     ld6.Phone = '2817634217';
     ld6.Email = '2817634217@gmail.com';
-    ld6.Introduction_Source__c = 'Email Blast';
+    ld6.Introduction_Source__c = 'Hotline';
     ld6.Introduction_Subsource__c = 'Pardot';
     ld6.Street = '123 test st';
     ld6.City = 'Irvine';
     sampleLeads.add(ld6);
 
     Master_Source__c ms6 = new Master_Source__c();
-    ms6.Name = 'Email Blast';
+    ms6.Name = 'Hotline';
     ms6.Email__c = ld6.Email;
     ms6.First_Name__c = ld6.FirstName;
     ms6.Last_Name__c = ld6.LastName;
@@ -137,12 +137,18 @@ public class CTMtoLeadTests {
       sampleMasterSources, false
     );
 
+    LeadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE IsConverted=true LIMIT 1];
+    List<Database.LeadConvert> convertedLeads = new List<Database.LeadConvert>();
     for (Integer i = 0; i < leadResults.size(); i++) {
       if (leadResults[i].isSuccess() && masterResults[i].isSuccess()) {
         Lead l = sampleLeads[i];
         l.Id = leadResults[i].getId();
         Master_Source__c m = sampleMasterSources[i];
         m.Id = masterResults[i].getId();
+        Database.LeadConvert lc = new Database.LeadConvert();
+        lc.setLeadId(l.Id);
+        lc.setConvertedStatus(convertStatus.MasterLabel);
+        convertedLeads.add(lc);
 
         Source__c sc = new Source__c();
         sc.Lead__c = l.Id;
@@ -150,15 +156,22 @@ public class CTMtoLeadTests {
         sc.Lead_Name__c = l.FirstName + ' ' + l.LastName;
         sampleSources.add(sc);
       } else {
+        String errorMessage = '';
+        if(leadResults[i].getErrors() != null && leadResults[i].getErrors().size() > 0) {
+          errorMessage += leadResults[i].getErrors()[0].getMessage() + '\n';
+        } else if(masterResults[i].getErrors() != null && masterResults[i].getErrors().size() > 0) {
+          errorMessage += masterResults[i].getErrors()[0].getMessage();
+        }
         throw new DmlException(
-          leadResults[i].getErrors()[0].getMessage() +
-          '\n' +
-          masterResults[i].getErrors()[0].getMessage()
+          errorMessage
         );
       }
     }
 
     List<Database.SaveResult> sourceResults = Database.insert(sampleSources);
+    if(convertedLeads.size() > 0) {
+      Database.convertLead(convertedLeads);
+    }
   }
   
   @isTest
@@ -173,9 +186,10 @@ public class CTMtoLeadTests {
    
 
     Lead ld = [
-      SELECT utm_Campaign_Content__c, Id
+      SELECT utm_Campaign_Content__c, Id, ConvertedContactId
       FROM Lead
       WHERE utm_Campaign_Content__c != null
+      AND Introduction_Source__c = 'Hotline'
       LIMIT 1
     ];
 
@@ -185,6 +199,8 @@ public class CTMtoLeadTests {
       WHERE Lead__c = :ld.Id
       LIMIT 1
     ];
+
+    
 
     System.assertEquals(ld.utm_Campaign_Content__c, sc.utm_Campaign_Content__c, 'Campaign content should match');
   }

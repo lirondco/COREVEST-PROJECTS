@@ -1,6 +1,6 @@
 public without sharing class IcApprovalController {
-  // ! change in prod
-  static final String HANDLERADDRESS = 'icapprovalhandler@k-wn74jpiey1q7dxwd9dzqamgam1zz6qekbighhgv7m5rguvzjw.78-4apseaa.cs213.apex.sandbox.salesforce.com';
+  static final String EMAIL_SERVICE_APINAME = 'icApprovalHandler';
+  static final String HANDLERADDRESS = retrieveHandlerEmailAddress();
 
   static final List<String> DEAL_TYPES = new List<String>{
     'Term Loan',
@@ -40,6 +40,22 @@ public without sharing class IcApprovalController {
   };
 
   public static final String APPROVALTYPEPICKLISTVAL = 'IC Memo';
+
+  public static String retrieveHandlerEmailAddress() {
+    String handlerAddress = '';
+
+    List<EmailServicesAddress> esas = [
+      SELECT Id, LocalPart, EmailDomainName, DeveloperName
+      FROM EmailServicesAddress
+      WHERE DeveloperName = :EMAIL_SERVICE_APINAME
+    ];
+
+    if (esas.size() > 0) {
+      handlerAddress = esas[0].LocalPart + '@' + esas[0].EmailDomainName;
+    }
+
+    return handlerAddress;
+  }
 
   public static Boolean verifyPermission() {
     List<PermissionSetAssignment> permSets = [
@@ -449,9 +465,8 @@ public without sharing class IcApprovalController {
         Deal_Stage_At_Time_of_Submission__c = dealStage
       );
 
-      ahc.Spread__c = deal.Final_Spread__c;
-      if (ahc.Spread__c != null) {
-        ahc.Spread__c *= 100;
+      if (deal.Final_Spread__c != null) {
+        ahc.Spread__c = deal.Final_Spread__c;
       }
 
       ahc.Origination_Fee__c = deal.CAF_Upfront_Fee__c;
@@ -481,9 +496,8 @@ public without sharing class IcApprovalController {
           Tracking_Status__c = 'Committee'
         );
 
-        a.Spread__c = deal.Final_Spread__c;
-        if (a.Spread__c != null) {
-          a.Spread__c *= 100;
+        if (deal.Final_Spread__c != null) {
+          a.Spread__c = deal.Final_Spread__c;
         }
 
         ahList.add(a);
