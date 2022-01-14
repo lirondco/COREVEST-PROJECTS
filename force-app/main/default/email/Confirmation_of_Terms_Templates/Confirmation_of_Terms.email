@@ -1,0 +1,21 @@
+<messaging:emailTemplate subject="Confirmation of Terms | {!relatedto.Deal__r.Name} ({!relatedto.Deal__r.Deal_Loan_Number__c})" relatedToType="Approval_History__c">
+<messaging:htmlEmailBody >
+    <head>
+        <style>
+        body {
+          font-family: calibri, Geneva, sans-serif;
+          font-size: 14px, width: 650px;
+        }
+        
+        .spacing{
+            margin-bottom: 5px;
+        }
+      </style>
+    </head>
+
+    <body>
+    
+       <c:ConfirmationOfTermsEmail approvalHistoryId="{!relatedTo.Id}" />
+    </body>
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>

@@ -48,12 +48,12 @@
           <tr>
             <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Final Spread</td>
             <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-              <apex:outputText value="{0,number,0}%" rendered="{!!ISBLANK(panels.submissionDetails.finalSpread)}">
+              <apex:outputText value="{0,number,##0.0000}%" rendered="{!!ISBLANK(panels.submissionDetails.finalSpread)}">
                 <apex:param value="{!panels.submissionDetails.finalSpread*100}" />
               </apex:outputText>
             </td>
             <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-              <apex:outputText value="{0,number,0}%" rendered="{!!ISBLANK(panels.currentDetails.finalSpread)}">
+              <apex:outputText value="{0,number,##0.0000}%" rendered="{!!ISBLANK(panels.currentDetails.finalSpread)}">
                 <apex:param value="{!panels.currentDetails.finalSpread*100}" />
               </apex:outputText>
             </td>
