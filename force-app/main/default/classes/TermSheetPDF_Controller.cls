@@ -70,7 +70,7 @@ public with sharing class TermSheetPDF_Controller {
           .put(
             'Content-Disposition',
             'attachment; filename="' +
-            Opportunity.Name +
+            record.Name +
             '_Termsheetv_' +
             intStr +
             '.doc"'

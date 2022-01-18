@@ -1,9 +1,5 @@
-<apex:page
-  standardController="Opportunity"
-  extensions="TermSheetPDF_Controller"
-  applyBodyTag="false"
-  renderAs="pdf"
->
+<apex:page standardController="Opportunity" extensions="TermSheetPDF_Controller" applyBodyTag="false" renderAs="pdf">
+
   <head>
     <style type="text/css">
       /*@page {
@@ -23,107 +19,101 @@
       }*/
 
       .pagenumber:before {
-          content: counter(page);
+        content: counter(page);
       }
 
       .pagecount:before {
-          content: counter(pages);
+        content: counter(pages);
       }
 
       .pagebreak {
-          page-break-before: always;
+        page-break-before: always;
       }
 
       @page {
-          @top-center {
-              content: element(header);
-          }
-          @bottom-center {
-              content: element(footer);
-          }
-          margin: .9in;
-          margin-top: 1.25in;
+        @top-center {
+          content: element(header);
+        }
+        @bottom-center {
+          content: element(footer);
+        }
+        margin: .9in;
+        margin-top: 1.25in;
       }
 
       div.header {
-          text-align: left;
-          background: url("{! $Resource.corevestLogo }") no-repeat;
-          width: 300px;
-          height: 68px;
-          margin top: 1in;
-          padding: 10px;
-          position: running(header);
+        text-align: left;
+        background: url("{! $Resource.corevestLogo }") no-repeat;
+        width: 300px;
+        height: 68px;
+        margin top: 1in;
+        padding: 10px;
+        position: running(header);
       }
 
       div.footer {
-          display: block;
-          padding: 5px;
-          position: running(footer);
-          text-align: center;
-          font-family: Times;
-          font-size: 10pt;
+        display: block;
+        padding: 5px;
+        position: running(footer);
+        text-align: center;
+        font-family: Times;
+        font-size: 10pt;
       }
 
       div.spinitials {
-          display: block;
-          padding: 5px;
-          position: running(footer);
-          text-align: right;
-          font-family: Times;
+        display: block;
+        padding: 5px;
+        position: running(footer);
+        text-align: right;
+        font-family: Times;
       }
 
       .sigsection {
-          page-break-inside: avoid;
+        page-break-inside: avoid;
       }
     </style>
   </head>
   <div class="footer">
     <table style="width: 100%">
       <tr>
-        <td
-          style="
+        <td style="
             width: 30%;
             vertical-align: top;
             padding-top: 1px;
             font-family: Times;
             font-size: 7pt;
             text-align: left;
-          "
-        >
+          ">
           Single Asset Bridge Loan
           <br /> Loan Number:
           <apex:outputText value=" {!Opportunity.Deal_Loan_Number__c}" />
           <br /> Date Generated:
           <apex:outputText value=" {0,date, MMMM d',' yyyy}">
-            <apex:param value="{! DATE(todayYear, todayMonth, todayDay)}"
-          /></apex:outputText>
+            <apex:param value="{! DATE(todayYear, todayMonth, todayDay)}" /></apex:outputText>
           <br /> Version 1.5
         </td>
-        <td
-          style="
+        <td style="
             width: 40%;
             vertical-align: top;
             padding-top: 1px;
             font-family: Times;
             font-size: 10pt;
             text-align: center;
-          "
-        >
+          ">
           <div>
-            Page <span class="pagenumber" /> of
+            Page
+            <span class="pagenumber" /> of
             <span class="pagecount" />
           </div>
         </td>
-        <td
-          style="
+        <td style="
             width: 30%;
             vertical-align: top;
             padding-top: 1px;
             font-family: Times;
             font-size: 10pt;
             text-align: right;
-          "
-        >
+          ">
           Sponsor Initials ________
         </td>
       </tr>
@@ -134,139 +124,105 @@
   </div>
 
   <div class="content">
-    <p
-      style="
+    <p style="
         font-family: Times;
         font-size: 10pt;
         line-height: 1.3;
         page-break-inside: avoid;
-      "
-    >
+      ">
       <apex:outputText value=" {0,date, MMMM d',' yyyy}">
-        <apex:param value="{! DATE(todayYear, todayMonth, todayDay)}"
-      /></apex:outputText>
+        <apex:param value="{! DATE(todayYear, todayMonth, todayDay)}" /></apex:outputText>
     </p>
-    <p
-      style="
+    <p style="
         font-family: Times;
         font-size: 10pt;
         line-height: 1.3;
         page-break-inside: avoid;
-      "
-    >
+      ">
       <!-- <apex:outputText value="{!Opportunity.Sponsor_Entity__c}" /> -->
       <apex:outputField value="{!Opportunity.Account.BillingStreet}" />
       <br />
       <apex:outputText value="{!Opportunity.Account.BillingCity}, " />
-      <apex:outputText
-        value="{!Opportunity.Account.Billing_State_Code__c} "
-        rendered="{!NOT (ISBLANK(Opportunity.Account.BillingState))}"
+      <apex:outputText value="{!Opportunity.Account.Billing_State_Code__c} " rendered="{!NOT (ISBLANK(Opportunity.Account.BillingState))}"
       />
       <apex:outputText value="{!Opportunity.Account.BillingPostalCode}" />
       <br />
 
-      <span
-        style="{!IF(NOT(Opportunity.Account.BillingCountry == 'United States'), 'page-break-inside:avoid;', 'display:none;')}"
-      >
-        <apex:outputText
-          value="{!Opportunity.Account.BillingCountry}"
-          rendered="{!NOT(Opportunity.Account.BillingCountry == 'United States')}"
+      <span style="{!IF(NOT(Opportunity.Account.BillingCountry == 'United States'), 'page-break-inside:avoid;', 'display:none;')}">
+        <apex:outputText value="{!Opportunity.Account.BillingCountry}" rendered="{!NOT(Opportunity.Account.BillingCountry == 'United States')}"
         />
         <br />
       </span>
-      <apex:outputText
-        value="{!'Attention: ' & Opportunity.Primary_Contact__c}"
-      />
-      (" <strong>Sponsor</strong>")
+      <apex:outputText value="{!'Attention: ' & Opportunity.Primary_Contact__c}" /> ("
+      <strong>Sponsor</strong>")
       <!--<apex:outputText value="{!'Attention: ' & Opportunity.Sponsor_Entity__c}" />  -->
     </p>
-    <p
-      style="{!IF(includeCOBroker = true, 'page-break-inside:avoid;', 'display:none;')}"
-    >
-      <span
-        style="
+    <p style="{!IF(includeCOBroker = true, 'page-break-inside:avoid;', 'display:none;')}">
+      <span style="
           font-family: Times;
           font-size: 10pt;
           line-height: 1.3;
           page-break-inside: avoid;
-        "
-      >
+        ">
         C/O:
-        <apex:outputText
-          value=" {!Opportunity.Referral_Source_Contact__r.Name} "
-        />
-        -
+        <apex:outputText value=" {!Opportunity.Referral_Source_Contact__r.Name} " /> -
         <apex:outputText value=" {!Opportunity.Referral_Source__r.Name}" />
       </span>
     </p>
-    <p
-      style="
+    <p style="
         font-family: Times;
         font-size: 10pt;
         line-height: 1.3;
         page-break-inside: avoid;
-      "
-    >
+      ">
       Re:&nbsp;&nbsp;
       <apex:outputText value=" ${0,number}">
-        <apex:param value="{!Opportunity.Loan_Size__c}"
-      /></apex:outputText>
-      Bridge Loan (" <strong>Loan</strong>") for
-      <apex:outputText
-        value=" {! sabProperty.Name }, {! sabProperty.City__c }, {! sabProperty.State__c } {! sabProperty.ZipCode__c } "
-      >
+        <apex:param value="{!Opportunity.Loan_Size__c}" /></apex:outputText>
+      Bridge Loan ("
+      <strong>Loan</strong>") for
+      <apex:outputText value=" {! sabProperty.Name }, {! sabProperty.City__c }, {! sabProperty.State__c } {! sabProperty.ZipCode__c } ">
       </apex:outputText>
-      (" <strong>Property</strong>")
+      ("
+      <strong>Property</strong>")
     </p>
-    <p
-      style="
+    <p style="
         font-family: Times;
         font-size: 10pt;
         line-height: 1.3;
         page-break-inside: avoid;
-      "
-    >
+      ">
       Dear&nbsp;
       <!-- <apex:outputText value="{!Opportunity.Sponsor_Entity__c}" />: -->
       <apex:outputText value="{!Opportunity.Contact__r.FirstName}" />:
     </p>
-    <p
-      style="
+    <p style="
         font-family: Times;
         font-size: 10pt;
         line-height: 1.3;
         page-break-inside: avoid;
         text-indent: 30px;
         text-align: justify;
-      "
-    >
+      ">
       CoreVest American Finance Lender LLC or an affiliated entity
-      <strong>("Lender")</strong> is pleased to present this summary proposal to
-      provide a secured bridge loan for the purchase and/or financing of the
-      aforementioned property. As further set forth below, this proposal is for
-      discussion purposes only and is neither an expressed nor implied
-      commitment to provide any financing or to provide or purchase any loans or
+      <strong>("Lender")</strong> is pleased to present this summary proposal to provide a secured bridge loan for the purchase and/or
+      financing of the aforementioned property. As further set forth below, this proposal is for discussion purposes only
+      and is neither an expressed nor implied commitment to provide any financing or to provide or purchase any loans or
       securities in connection with the transactions contemplated hereby.
     </p>
     <!--Loan Details Table-->
-    <table
-      style="
+    <table style="
         table-layout: fixed;
         width: 95vw;
         border-collapse: collapse;
         border: 1px solid #bebebe;
-      "
-      border="1"
-      cellspacing="0"
-    >
+      " border="1" cellspacing="0">
       <colgroup>
         <col class="short" />
         <col class="long" />
       </colgroup>
 
       <tr style="page-break-inside: avoid">
-        <td
-          style="
+        <td style="
             font-family: Times;
             font-size: 10pt;
             width: 30%;
@@ -275,12 +231,10 @@
             padding: 2px 6px;
             border-collapse: collapse;
             border: 1px solid #bebebe;
-          "
-        >
+          ">
           <strong> Maximum Loan Amount: </strong>
         </td>
-        <td
-          style="
+        <td style="
             font-family: Times;
             font-size: 10pt;
             width: 70%;
@@ -288,17 +242,14 @@
             vertical-align: top;
             border-collapse: collapse;
             border: 1px solid #bebebe;
-          "
-        >
+          ">
           $
           <apex:outputText value="{0, number, 000,000}">
-            <apex:param value="{! Opportunity.Loan_Size__c }"
-          /></apex:outputText>
+            <apex:param value="{! Opportunity.Loan_Size__c }" /></apex:outputText>
         </td>
       </tr>
       <tr style="page-break-inside: avoid">
-        <td
-          style="
+        <td style="
             font-family: Times;
             font-size: 10pt;
             width: 30%;
@@ -307,12 +258,10 @@
             padding: 2px 6px;
             border-collapse: collapse;
             border: 1px solid #bebebe;
-          "
-        >
+          ">
           <strong> Loan Type: </strong>
         </td>
-        <td
-          style="
+        <td style="
             font-family: Times;
             font-size: 10pt;
             width: 70%;
@@ -320,14 +269,12 @@
             vertical-align: top;
             border-collapse: collapse;
             border: 1px solid #bebebe;
-          "
-        >
+          ">
           Senior Secured First Mortgage Loan
         </td>
       </tr>
       <tr style="page-break-inside: avoid">
-        <td
-          style="
+        <td style="
             font-family: Times;
             font-size: 10pt;
             width: 30%;
@@ -336,12 +283,10 @@
             padding: 2px 6px;
             border-collapse: collapse;
             border: 1px solid #bebebe;
-          "
-        >
+          ">
           <strong> Borrower Entity: </strong>
         </td>
-        <td
-          style="
+        <td style="
             font-family: Times;
             font-size: 10pt;
             width: 70%;
@@ -349,15 +294,14 @@
             vertical-align: top;
             border-collapse: collapse;
             border: 1px solid #bebebe;
-          "
-        >
+          ">
           Loan will be made to a single-purpose limited liability company (LLC)
-          <br />(" <strong>Borrower</strong>")
+          <br />("
+          <strong>Borrower</strong>")
         </td>
       </tr>
       <tr style="page-break-inside: avoid">
-        <td
-          style="
+        <td style="
             font-family: Times;
             font-size: 10pt;
             width: 30%;
@@ -366,12 +310,10 @@
             padding: 2px 6px;
             border-collapse: collapse;
             border: 1px solid #bebebe;
-          "
-        >
+          ">
           <strong> Guarantor: </strong>
         </td>
-        <td
-          style="
+        <td style="
             font-family: Times;
             font-size: 10pt;
             width: 70%;
@@ -379,15 +321,12 @@
             vertical-align: top;
             border-collapse: collapse;
             border: 1px solid #bebebe;
-          "
-        >
-          The undersigned Sponsor and/or such individuals or entities acceptable
-          to Lender following due diligence
+          ">
+          The undersigned Sponsor and/or such individuals or entities acceptable to Lender following due diligence
         </td>
       </tr>
       <tr style="page-break-inside: avoid">
-        <td
-          style="
+        <td style="
             font-family: Times;
             font-size: 10pt;
             width: 30%;
@@ -396,12 +335,10 @@
             padding: 2px 6px;
             border-collapse: collapse;
             border: 1px solid #bebebe;
-          "
-        >
+          ">
           <strong> Loan Purpose: </strong>
         </td>
-        <td
-          style="
+        <td style="
             font-family: Times;
             font-size: 10pt;
             width: 70%;
@@ -409,20 +346,13 @@
             vertical-align: top;
             border-collapse: collapse;
             border: 1px solid #bebebe;
-          "
-        >
-          <apex:outputPanel
-            rendered="{!Opportunity.Product_Sub_Type__c != 'Renovation'}"
-          >
-            Purchase or refinance of an eligible property recently acquired by
-            Borrower
+          ">
+          <apex:outputPanel rendered="{!Opportunity.Product_Sub_Type__c != 'Renovation'}">
+            Purchase or refinance of an eligible property recently acquired by Borrower
           </apex:outputPanel>
-          <apex:outputPanel
-            rendered="{!Opportunity.Product_Sub_Type__c == 'Renovation'}"
-          >
-            Purchase or refinance of an eligible property recently acquired by
-            Borrower and, if applicable, reimbursement of subsequent Lender
-            approved renovation costs related to the Property
+          <apex:outputPanel rendered="{!Opportunity.Product_Sub_Type__c == 'Renovation'}">
+            Purchase or refinance of an eligible property recently acquired by Borrower and, if applicable, reimbursement of subsequent
+            Lender approved renovation costs related to the Property
           </apex:outputPanel>
         </td>
       </tr>
@@ -438,8 +368,7 @@ Equity Pledge:
 </td>
 </tr> -->
       <tr style="page-break-inside: avoid">
-        <td
-          style="
+        <td style="
             font-family: Times;
             font-size: 10pt;
             width: 30%;
@@ -448,12 +377,10 @@ Equity Pledge:
             padding: 2px 6px;
             border-collapse: collapse;
             border: 1px solid #bebebe;
-          "
-        >
+          ">
           <strong> Initial Advance Rate: </strong>
         </td>
-        <td
-          style="
+        <td style="
             font-family: Times;
             font-size: 10pt;
             width: 70%;
@@ -461,29 +388,21 @@ Equity Pledge:
             vertical-align: top;
             border-collapse: collapse;
             border: 1px solid #bebebe;
-          "
-        >
+          ">
           Subject to the lesser of:
           <ul style="list-style-type: none; margin-top: -1px">
             <li>
-              <apex:outputText
-                value="—{! Opportunity.Requested_LTC_Max__c }"
-              />% of Acquisition Cost
+              <apex:outputText value="—{! Opportunity.Requested_LTC_Max__c }" />% of Acquisition Cost
             </li>
             <li style="margin-bottom: -15px">
-              <apex:outputText
-                value="—{! Opportunity.Requested_LTV_Max__c }"
-              />% of Current Market Value
+              <apex:outputText value="—{! Opportunity.Requested_LTV_Max__c }" />% of Current Market Value
             </li>
           </ul>
         </td>
       </tr>
-      <apex:outputText
-        rendered="{! If( Opportunity.Product_Sub_Type__c == 'Renovation', true, false) }"
-      >
+      <apex:outputText rendered="{! If( Opportunity.Product_Sub_Type__c == 'Renovation', true, false) }">
         <tr style="page-break-inside: avoid">
-          <td
-            style="
+          <td style="
               font-family: Times;
               font-size: 10pt;
               width: 30%;
@@ -492,12 +411,10 @@ Equity Pledge:
               padding: 2px 6px;
               border-collapse: collapse;
               border: 1px solid #bebebe;
-            "
-          >
+            ">
             <strong> Renovation Advance Restrictions (if applicable): </strong>
           </td>
-          <td
-            style="
+          <td style="
               font-family: Times;
               font-size: 10pt;
               width: 70%;
@@ -505,43 +422,30 @@ Equity Pledge:
               vertical-align: top;
               border-collapse: collapse;
               border: 1px solid #bebebe;
-            "
-          >
+            ">
             Subject to the lesser of:
-            <ul
-              style="
+            <ul style="
                 list-style-type: none;
                 margin-top: -1px;
                 margin-bottom: -1px;
-              "
-            >
+              ">
               <li>
-                <apex:outputText
-                  rendered="{! If( Opportunity.Requested_Max_Reno_Cost_Reimbursement__c != 0.00 && Opportunity.Requested_Max_Reno_Cost_Reimbursement__c != null, true, false ) }"
-                  value="—{0, number, 0}% of approved renovation cost reimbursement"
-                >
-                  <apex:param
-                    value="{! Opportunity.Requested_Max_Reno_Cost_Reimbursement__c }"
-                /></apex:outputText>
+                <apex:outputText rendered="{! If( Opportunity.Requested_Max_Reno_Cost_Reimbursement__c != 0.00 && Opportunity.Requested_Max_Reno_Cost_Reimbursement__c != null, true, false ) }"
+                  value="—{0, number, 0}% of approved renovation cost reimbursement">
+                  <apex:param value="{! Opportunity.Requested_Max_Reno_Cost_Reimbursement__c }" /></apex:outputText>
               </li>
               <li>
-                <apex:outputText
-                  rendered="{! If( Opportunity.Requested_Reno_Limit__c != 0.00 && Opportunity.Requested_Reno_Limit__c != null, true, false ) }"
-                  value="—{0, number, 0}% of total acquisition cost of the property "
-                >
-                  <apex:param value="{! Opportunity.Requested_Reno_Limit__c }"
-                /></apex:outputText>
+                <apex:outputText rendered="{! If( Opportunity.Requested_Reno_Limit__c != 0.00 && Opportunity.Requested_Reno_Limit__c != null, true, false ) }"
+                  value="—{0, number, 0}% of total acquisition cost of the property ">
+                  <apex:param value="{! Opportunity.Requested_Reno_Limit__c }" /></apex:outputText>
               </li>
             </ul>
           </td>
         </tr>
       </apex:outputText>
-      <apex:outputText
-        rendered="{! If( Opportunity.Product_Sub_Type__c == 'Renovation' || Opportunity.Product_Sub_Type__c == 'Construction', true, false) }"
-      >
+      <apex:outputText rendered="{! If( Opportunity.Product_Sub_Type__c == 'Renovation' || Opportunity.Product_Sub_Type__c == 'Construction', true, false) }">
         <tr style="page-break-inside: avoid">
-          <td
-            style="
+          <td style="
               font-family: Times;
               font-size: 10pt;
               width: 30%;
@@ -550,12 +454,10 @@ Equity Pledge:
               padding: 2px 6px;
               border-collapse: collapse;
               border: 1px solid #bebebe;
-            "
-          >
+            ">
             <strong> Total Loan Advance Restrictions: </strong>
           </td>
-          <td
-            style="
+          <td style="
               font-family: Times;
               font-size: 10pt;
               width: 70%;
@@ -563,40 +465,29 @@ Equity Pledge:
               vertical-align: top;
               border-collapse: collapse;
               border: 1px solid #bebebe;
-            "
-          >
+            ">
             Loan cannot exceed:
-            <ul
-              style="
+            <ul style="
                 list-style-type: none;
                 margin-top: -1px;
                 margin-bottom: -1px;
-              "
-            >
+              ">
               <li>
-                <apex:outputText
-                  rendered="{! If( Opportunity.Requested_Total_Loan_LTC__c != 0.00 && Opportunity.Requested_Total_Loan_LTC__c != null, true, false ) }"
-                  value="—{0, number, 0}% of total Loan to Cost "
-                >
-                  <apex:param
-                    value="{! Opportunity.Requested_Total_Loan_LTC__c }"
-                /></apex:outputText>
+                <apex:outputText rendered="{! If( Opportunity.Requested_Total_Loan_LTC__c != 0.00 && Opportunity.Requested_Total_Loan_LTC__c != null, true, false ) }"
+                  value="—{0, number, 0}% of total Loan to Cost ">
+                  <apex:param value="{! Opportunity.Requested_Total_Loan_LTC__c }" /></apex:outputText>
               </li>
               <li>
-                <apex:outputText
-                  rendered="{! If( Opportunity.Requested_ARV_LTV__c != 0.00 && Opportunity.Requested_ARV_LTV__c != null, true, false ) }"
-                  value="—{0, number, 0}% of the after renovated value (ARV) of the property "
-                >
-                  <apex:param value="{! Opportunity.Requested_ARV_LTV__c }"
-                /></apex:outputText>
+                <apex:outputText rendered="{! If( Opportunity.Requested_ARV_LTV__c != 0.00 && Opportunity.Requested_ARV_LTV__c != null, true, false ) }"
+                  value="—{0, number, 0}% of the after renovated value (ARV) of the property ">
+                  <apex:param value="{! Opportunity.Requested_ARV_LTV__c }" /></apex:outputText>
               </li>
             </ul>
           </td>
         </tr>
       </apex:outputText>
       <tr style="page-break-inside: avoid">
-        <td
-          style="
+        <td style="
             font-family: Times;
             font-size: 10pt;
             width: 30%;
@@ -605,12 +496,10 @@ Equity Pledge:
             padding: 2px 6px;
             border-collapse: collapse;
             border: 1px solid #bebebe;
-          "
-        >
+          ">
           <strong> Interest Rate: </strong>
         </td>
-        <td
-          style="
+        <td style="
             font-family: Times;
             font-size: 10pt;
             width: 70%;
@@ -618,18 +507,11 @@ Equity Pledge:
             vertical-align: top;
             border-collapse: collapse;
             border: 1px solid #bebebe;
-          "
-        >
-          <apex:outputText
-            rendered="{! If( Opportunity.Requested_Interest_Type__c == 'Fixed', true, false ) }"
-            value="Fixed at {0, number, 0.00}%"
-          >
+          ">
+          <apex:outputText rendered="{! If( Opportunity.Requested_Interest_Type__c == 'Fixed', true, false ) }" value="Fixed at {0, number, 0.00}%">
             <apex:param value="{! Opportunity.Requested_Rate_1_9_Months__c }" />
           </apex:outputText>
-          <apex:outputText
-            rendered="{! If( Opportunity.Requested_Interest_Type__c == 'Floating', true, false ) }"
-            value="Floating at {0, number, 0.00}% over {1}"
-          >
+          <apex:outputText rendered="{! If( Opportunity.Requested_Interest_Type__c == 'Floating', true, false ) }" value="Floating at {0, number, 0.00}% over {1}">
             <apex:param value="{! Opportunity.Requested_Index_Margin__c }" />
             <apex:param value="{!Opportunity.Requested_Index__c}" />
           </apex:outputText>
@@ -637,8 +519,7 @@ Equity Pledge:
       </tr>
 
       <tr style="page-break-inside: avoid">
-        <td
-          style="
+        <td style="
             font-family: Times;
             font-size: 10pt;
             width: 30%;
@@ -647,12 +528,10 @@ Equity Pledge:
             padding: 2px 6px;
             border-collapse: collapse;
             border: 1px solid #bebebe;
-          "
-        >
+          ">
           <strong> Expense Deposit: </strong>
         </td>
-        <td
-          style="
+        <td style="
             font-family: Times;
             font-size: 10pt;
             width: 70%;
@@ -660,15 +539,14 @@ Equity Pledge:
             vertical-align: top;
             border-collapse: collapse;
             border: 1px solid #bebebe;
-          "
-        >
-          <!-- TODO: Add Expense Deposit Value Here -->
+          ">
+          <apex:outputText value="{0, Number, Currency}">
+            <apex:param value="{! Opportunity.Deposit_Amount_Requested__c }" /></apex:outputText>
         </td>
       </tr>
 
       <tr style="page-break-inside: avoid">
-        <td
-          style="
+        <td style="
             font-family: Times;
             font-size: 10pt;
             width: 30%;
@@ -677,12 +555,10 @@ Equity Pledge:
             padding: 2px 6px;
             border-collapse: collapse;
             border: 1px solid #bebebe;
-          "
-        >
+          ">
           Origination Fee:
         </td>
-        <td
-          style="
+        <td style="
             font-family: Times;
             font-size: 10pt;
             width: 70%;
@@ -690,17 +566,14 @@ Equity Pledge:
             vertical-align: top;
             border-collapse: collapse;
             border: 1px solid #bebebe;
-          "
-        >
+          ">
           <apex:outputText value="{0, Number, Currency} payable at closing">
-            <apex:param value="{! Opportunity.Calculated_Origination_Fee__c }"
-          /></apex:outputText>
+            <apex:param value="{! Opportunity.Calculated_Origination_Fee__c }" /></apex:outputText>
         </td>
       </tr>
 
       <tr style="page-break-inside: avoid">
-        <td
-          style="
+        <td style="
             font-family: Times;
             font-size: 10pt;
             width: 30%;
@@ -709,12 +582,10 @@ Equity Pledge:
             padding: 2px 6px;
             border-collapse: collapse;
             border: 1px solid #bebebe;
-          "
-        >
+          ">
           Underwriting/Processing Fee:
         </td>
-        <td
-          style="
+        <td style="
             font-family: Times;
             font-size: 10pt;
             width: 70%;
@@ -722,19 +593,16 @@ Equity Pledge:
             vertical-align: top;
             border-collapse: collapse;
             border: 1px solid #bebebe;
-          "
-        >
+          ">
           <apex:outputText value="$2,000.00 payable at closing" />
         </td>
       </tr>
 
-      <!-- BOOKMARK -->
+      <!-- START : REMOVE -->
 
-      <apex:outputText
-        rendered="{! If( Opportunity.Requested_Draw_Fee__c != 0.00 && Opportunity.Requested_Draw_Fee__c != null, true, false ) }"
+      <!-- <apex:outputText rendered="{! If( Opportunity.Requested_Draw_Fee__c != 0.00 && Opportunity.Requested_Draw_Fee__c != null, true, false ) }"
       >
-        <apex:outputText
-          rendered="{! If( Opportunity.Broker_Fee_Paid_When__c == 'Origination', true, false ) }"
+        <apex:outputText rendered="{! If( Opportunity.Broker_Fee_Paid_When__c == 'Origination', true, false ) }"
         >
           <tr style="page-break-inside: avoid">
             <td
@@ -750,8 +618,9 @@ Equity Pledge:
               "
             >
               Advance Fee:
-            </td>
-            <!-- <td class="row-description">
+            </td> -->
+
+      <!-- <td class="row-description">
                             <span style="{!IF(includeBrokerFee = false, 'page-break-inside:avoid;', 'display:none;')}">
                                 <apex:outputText value="{0, number, 0.00}% on each Advance approved by Lender">
                                     <apex:param value="{! Opportunity.Requested_Draw_Fee__c }" /></apex:outputText>
@@ -763,6 +632,7 @@ Equity Pledge:
                                     <apex:param value="{! Opportunity.Broker_Fees__c}" /></apex:outputText> paid to the broker
                             </span>
                         </td> -->
+      <!-- 
             <td
               style="
                 font-family: Times;
@@ -774,16 +644,14 @@ Equity Pledge:
                 border: 1px solid #bebebe;
               "
             >
-              <apex:outputText
-                value="{0, number, 0.00}% on each Advance approved by Lender"
+              <apex:outputText value="{0, number, 0.00}% on each Advance approved by Lender"
               >
                 <apex:param value="{! Opportunity.Requested_Draw_Fee__c }"
               /></apex:outputText>
             </td>
           </tr>
         </apex:outputText>
-        <apex:outputText
-          rendered="{!If( Opportunity.Broker_Fee_Paid_When__c != 'Origination', true, false ) }"
+        <apex:outputText rendered="{!If( Opportunity.Broker_Fee_Paid_When__c != 'Origination', true, false ) }"
         >
           <tr style="page-break-inside: avoid">
             <td
@@ -814,8 +682,7 @@ Equity Pledge:
               <span
                 style="{!IF(Opportunity.Broker_Fee_Paid_By_Whom__c == 'Escrow' || Opportunity.Broker_Fee_Paid_By_Whom__c == 'N/A', 'page-break-inside:avoid;', 'display:none;')}"
               >
-                <apex:outputText
-                  value="{0, number, 0.00}% on each Advance approved by Lender"
+                <apex:outputText value="{0, number, 0.00}% on each Advance approved by Lender"
                 >
                   <apex:param value="{! Opportunity.Requested_Draw_Fee__c }"
                 /></apex:outputText>
@@ -823,18 +690,15 @@ Equity Pledge:
               <span
                 style="{!IF(Opportunity.Broker_Fee_Paid_By_Whom__c == 'CoreVest' && includeBrokerFee = true, 'page-break-inside:avoid;', 'display:none;')}"
               >
-                <apex:outputText
-                  value="{0, number, 0.00}% on each Advance approved by Lender"
+                <apex:outputText value="{0, number, 0.00}% on each Advance approved by Lender"
                 >
-                  <apex:param
-                    value="{! Opportunity.Requested_Draw_Fee__c-Opportunity.Broker_Fees__c }"
+                  <apex:param value="{! Opportunity.Requested_Draw_Fee__c-Opportunity.Broker_Fees__c }"
                 /></apex:outputText>
               </span>
               <span
                 style="{!IF(Opportunity.Broker_Fee_Paid_By_Whom__c == 'CoreVest' && includeBrokerFee != true, 'page-break-inside:avoid;', 'display:none;')}"
               >
-                <apex:outputText
-                  value="{0, number, 0.00}% on each Advance approved by Lender"
+                <apex:outputText value="{0, number, 0.00}% on each Advance approved by Lender"
                 >
                   <apex:param value="{! Opportunity.Requested_Draw_Fee__c }"
                 /></apex:outputText>
@@ -842,8 +706,9 @@ Equity Pledge:
             </td>
           </tr>
         </apex:outputText>
-      </apex:outputText>
-      <tr
+      </apex:outputText> -->
+
+      <!-- <tr
         style="{!IF(includeBrokerFee = true, 'page-break-inside:avoid;', 'display:none;')}"
       >
         <td
@@ -951,10 +816,12 @@ Equity Pledge:
         >
           <apex:outputText value="$2,500.00 payable at closing" />
         </td>
-      </tr>
+      </tr> -->
+
+      <!-- END : REMOVE -->
+
       <tr style="page-break-inside: avoid">
-        <td
-          style="
+        <td style="
             font-family: Times;
             font-size: 10pt;
             width: 30%;
@@ -963,12 +830,10 @@ Equity Pledge:
             padding: 2px 6px;
             border-collapse: collapse;
             border: 1px solid #bebebe;
-          "
-        >
+          ">
           <strong> Third Party Fees Payable at Closing (estimated): </strong>
         </td>
-        <td
-          style="
+        <td style="
             font-family: Times;
             font-size: 10pt;
             width: 70%;
@@ -976,27 +841,22 @@ Equity Pledge:
             vertical-align: top;
             border-collapse: collapse;
             border: 1px solid #bebebe;
-          "
-        >
+          ">
           <!--Credit/Background Report Fee: $60.00-->
           <!--<br/> Appraisal/BPO Fee: $380.00-->
-          <apex:outputText
-            rendered="{!IF( Opportunity.Product_Sub_Type__c == 'Renovation' || Opportunity.Product_Sub_Type__c == 'Construction', true, false)}"
-          >
-            Construction Management Software Fee: $150.00 (for loans with
-            renovation advances)
+          <apex:outputText rendered="{!IF( Opportunity.Product_Sub_Type__c == 'Renovation' || Opportunity.Product_Sub_Type__c == 'Construction', true, false)}">
+            Construction Management Software Fee: $150.00 (for loans with renovation advances)
             <br />
           </apex:outputText>
-          Insurance/Flood Certificate Fee: $23.00
-          <br /> Tax Review Fee: $50.00 <br /> Wire Fee: $30.00
+          Appraisal Valuation Fee: $300 - $800
+          <br /> UCC-1 Filing Fee: $100
+          <br /> Wire Fee: $30.00
         </td>
       </tr>
-      <apex:outputText
-        rendered="{!IF( Opportunity.Product_Sub_Type__c == 'Renovation' || Opportunity.Product_Sub_Type__c == 'Construction', true, false)}"
-      >
+
+      <apex:outputText rendered="{!IF( Opportunity.Product_Sub_Type__c == 'Renovation' || Opportunity.Product_Sub_Type__c == 'Construction', true, false)}">
         <tr style="page-break-inside: avoid">
-          <td
-            style="
+          <td style="
               font-family: Times;
               font-size: 10pt;
               width: 30%;
@@ -1005,12 +865,10 @@ Equity Pledge:
               padding: 2px 6px;
               border-collapse: collapse;
               border: 1px solid #bebebe;
-            "
-          >
+            ">
             <strong> Renovation Advance Fees (estimated): </strong>
           </td>
-          <td
-            style="
+          <td style="
               font-family: Times;
               font-size: 10pt;
               width: 70%;
@@ -1018,17 +876,16 @@ Equity Pledge:
               vertical-align: top;
               border-collapse: collapse;
               border: 1px solid #bebebe;
-            "
-          >
+            ">
             Construction Draw Fee: $50.00-250.00
             <br /> Inspection Fee: $150.00 ($375.00 for commercial properties)
             <br /> FedEx/Wire Fee: $30.00
           </td>
         </tr>
       </apex:outputText>
+
       <tr style="page-break-inside: avoid">
-        <td
-          style="
+        <td style="
             font-family: Times;
             font-size: 10pt;
             width: 30%;
@@ -1037,12 +894,10 @@ Equity Pledge:
             padding: 2px 6px;
             border-collapse: collapse;
             border: 1px solid #bebebe;
-          "
-        >
+          ">
           <strong> Recourse: </strong>
         </td>
-        <td
-          style="
+        <td style="
             font-family: Times;
             font-size: 10pt;
             width: 70%;
@@ -1050,21 +905,16 @@ Equity Pledge:
             vertical-align: top;
             border-collapse: collapse;
             border: 1px solid #bebebe;
-          "
-        >
-          <apex:outputText
-            rendered="{! If(Opportunity.Recourse__c == 'Recourse', true, false) }"
-            value="Full Recourse to a qualified individual Guarantor"
+          ">
+          <apex:outputText rendered="{! If(Opportunity.Recourse__c == 'Recourse', true, false) }" value="Full Recourse to a qualified individual Guarantor"
           />
-          <apex:outputText
-            rendered="{! If(Opportunity.Recourse__c == 'Non-Recourse', true, false) }"
-            value="Non-Recourse subject to standard Lender Carveouts"
+          <apex:outputText rendered="{! If(Opportunity.Recourse__c == 'Non-Recourse', true, false) }" value="Non-Recourse subject to standard Lender Carveouts"
           />
         </td>
       </tr>
+
       <tr style="page-break-inside: avoid">
-        <td
-          style="
+        <td style="
             font-family: Times;
             font-size: 10pt;
             width: 30%;
@@ -1073,12 +923,10 @@ Equity Pledge:
             padding: 2px 6px;
             border-collapse: collapse;
             border: 1px solid #bebebe;
-          "
-        >
+          ">
           <strong> Loan Term: </strong>
         </td>
-        <td
-          style="
+        <td style="
             font-family: Times;
             font-size: 10pt;
             width: 70%;
@@ -1086,16 +934,13 @@ Equity Pledge:
             vertical-align: top;
             border-collapse: collapse;
             border: 1px solid #bebebe;
-          "
-        >
-          <apex:outputText
-            value="{! LOWER(Opportunity.Line_Expiration__c) } from Closing"
-          />
+          ">
+          <apex:outputText value="{!Opportunity.LOC_Term__c}" />
         </td>
       </tr>
+
       <tr style="page-break-inside: avoid">
-        <td
-          style="
+        <td style="
             font-family: Times;
             font-size: 10pt;
             width: 30%;
@@ -1104,12 +949,10 @@ Equity Pledge:
             padding: 2px 6px;
             border-collapse: collapse;
             border: 1px solid #bebebe;
-          "
-        >
+          ">
           <strong> Outside Completion Date: </strong>
         </td>
-        <td
-          style="
+        <td style="
             font-family: Times;
             font-size: 10pt;
             width: 70%;
@@ -1117,14 +960,14 @@ Equity Pledge:
             vertical-align: top;
             border-collapse: collapse;
             border: 1px solid #bebebe;
-          "
-        >
-          <apex:outputText
-            value="{! LOWER(Opportunity.Draw_Period__c) } from Closing"
-          />
+          ">
+          <apex:outputText value="{0, date, MMMM d','  yyyy}">
+            <apex:param value="{!Opportunity.Current_Line_Maturity_Date__c + 90}" />
+          </apex:outputText>
         </td>
       </tr>
-      <tr
+
+      <!-- <tr
         style="{!IF(Opportunity.Product_Sub_Type__c == 'Construction', 'page-break-inside:avoid;', 'display:none;')}"
       >
         <td
@@ -1187,10 +1030,10 @@ Equity Pledge:
           Lender shall be guaranteed a minimum of three-months' (3) interest
           payments
         </td>
-      </tr>
+      </tr> -->
+
       <tr style="page-break-inside: avoid">
-        <td
-          style="
+        <td style="
             font-family: Times;
             font-size: 10pt;
             width: 30%;
@@ -1199,12 +1042,10 @@ Equity Pledge:
             padding: 2px 6px;
             border-collapse: collapse;
             border: 1px solid #bebebe;
-          "
-        >
+          ">
           <strong> Proposal Expiration Date: </strong>
         </td>
-        <td
-          style="
+        <td style="
             font-family: Times;
             font-size: 10pt;
             width: 70%;
@@ -1212,364 +1053,191 @@ Equity Pledge:
             vertical-align: top;
             border-collapse: collapse;
             border: 1px solid #bebebe;
-          "
-        >
-          <apex:outputText value=" {0,date, MMMM d',' yyyy}">
-            <apex:param value="{!dupeRecord.Term_Sheet_Expiration_Date__c}"
-          /></apex:outputText>
+          ">
+          <apex:outputText value="{0, date, MMMM d','  yyyy}">
+            <apex:param value="{!Opportunity.Current_Line_Maturity_Date__c + 97}" /></apex:outputText>
         </td>
       </tr>
     </table>
-    <div class="pagebreak" style="page-break-before: always"></div>
-    <apex:outputText
-      rendered="{! If( Opportunity.Product_Sub_Type__c == 'Renovation' || Opportunity.Product_Sub_Type__c == 'Construction', true, false) }"
-    >
+
+    <div style="page-break-inside: avoid;">
       <h5 style="text-align: center; font-family: Times">
-        RENOVATION ADVANCE SCHEDULE
+        <u>
+          <strong>EXPENSE DEPOSIT</strong>
+        </u>
       </h5>
 
-      <p
-        style="
+      <p style="
+            text-align: justify;
+            font-family: Times;
+            font-size: 10pt;
+            line-height: 1.3;
+            text-indent: 30px;
+          ">
+        Notwithstanding anything to the contrary in this proposal, all expenses actually incurred by Lender in connection with the
+        Loan will be paid by Sponsor and Borrower regardless of whether the Loan closes for any reason whatsoever. These
+        expenses shall include but not be limited to Lender’s due diligence, legal fees, BPOs, or appraisals, value reconciliations,
+        environmental database searches, home inspections, and all other third-party expenses related to the Loan closing.
+        Moreover, if prior to the Loan closing, Lender determines that the Expense Deposit will be insufficient to pay all
+        expenses, at Lender’s request, Sponsor shall promptly deliver to Lender funds in the amount of such shortfall. In
+        the event that the Loan closes, any unused portion of the Expense Deposit will be returned to Borrower.
+      </p>
+    </div>
+
+    <div style="page-break-inside: avoid;">
+      <h5 style="text-align: center; font-family: Times">
+        <u>
+          <strong>PERSONAL GUARANTY</strong>
+        </u>
+      </h5>
+      <p style="
+          text-align: justify;
+          font-family: Times;
+          font-size: 10pt;
+          line-height: 1.3;
+          text-indent: 30px;
+        ">
+        Guarantor will execute and deliver a full repayment Guaranty, guaranteeing the full repayment of the Loan and performance
+        of the Borrower’s obligations under the loan documents, including the Environmental Indemnity.
+      </p>
+    </div>
+
+    <div style="page-break-inside: avoid;">
+      <h5 style="text-align: center; font-family: Times">
+        <u>
+          <strong>NON-BINDING</strong>
+        </u>
+      </h5>
+      <p style="
+          text-align: justify;
+          font-family: Times;
+          font-size: 10pt;
+          line-height: 1.3;
+          text-indent: 30px;
+        ">
+        With the exception of paragraph above in regards to the expense deposit, this proposal does not purport to be and does not
+        constitute a binding agreement among the parties, and the parties hereto shall have no obligations whatsoever, express
+        or implied, written or oral, with regard to this proposal. This proposal is for discussion purposes only and does
+        not in any way whatsoever constitute a commitment to lend or an agreement to issue a commitment, and Lender has made
+        no commitments or agreements whatsoever, express or implied, written or oral, to Sponsor or with regard to any of
+        the matters covered by this proposal. The terms of this proposal are not all-inclusive and should not be construed
+        as to reflect all of the provisions to be included in the loan documents and may be varied as the Lender may determine
+        in its sole and absolute discretion. No oral agreements between or among the parties shall be binding under any circumstances
+        at any time. Sponsor acknowledges that Lender is under no obligation whatsoever to close the Loan.
+      </p>
+    </div>
+    <p style="
+        text-align: justify;
+        font-family: Times;
+        font-size: 10pt;
+        line-height: 1.3;
+        text-indent: 30px;
+        page-break-inside: avoid;
+      ">
+      Full consideration of Sponsor’s loan request will commence upon receipt by Lender of delivery of a copy of this letter to
+      Lender bearing Sponsor’s signature. After receipt of the signed letter, Lender will commence the loan underwriting
+      process. All of the third-party fees and any additional third-party expenses incurred by the Lender will be due at
+      the time of the loan closing. Sponsor authorizes Lender to disclose information contained herein to Lender’s affiliates
+      and authorized third parties for everyday business purposes including loan processing and review, financial account
+      dealings and collection quality control and credit reporting, in accordance with Lender’s privacy policies and as required
+      by law. </p>
+
+    <div style="page-break-inside: avoid;">
+      <h5 style="text-align: center; font-family: Times">
+        <u>
+          <strong>DUE DILIGENCE</strong>
+        </u>
+      </h5>
+      <p style="
+            text-align: justify;
+            font-family: Times;
+            font-size: 10pt;
+            line-height: 1.3;
+            text-indent: 30px;
+          ">
+        Lender will obtain an appraisal or alternate determination of value of the proposed collateral at the Sponsor’s expense to
+        determine if the proposed loan or Advance is within the applicable loan-to-value ratio. All appraisals are subject
+        to a final value-determination review that will be conducted by Lender’s underwriting department. We will promptly
+        provide you with a copy of the appraisal or alternate valuation product, even if your loan does not close. Sponsor
+        understands that Lender’s acceptance of the signed letter, or any fees does not give rise to a commitment, a contract
+        or an offer to enter into a contract to extend credit, does not obligate Lender in any manner whatsoever, and does
+        not create any rights in Sponsor’s favor or any other person or entity. Sponsor expressly acknowledges that Lender
+        is not obligated to make any loan on the subject property on any terms by virtue of issuing this proposal. As such,
+        Sponsor cannot and shall not rely on this proposal in connection with any transaction in which Sponsor is engaged.
+        This proposal shall not constitute an agreement to negotiate and solely constitutes an outline of certain proposed
+        key terms of the proposed loan. </p>
+    </div>
+
+    <p style="
           text-align: justify;
           font-family: Times;
           font-size: 10pt;
           line-height: 1.3;
           text-indent: 30px;
           page-break-inside: avoid;
-        "
-      >
-        Payment requests must be submitted by Borrower each Friday (no
-        exceptions) in order to be paid out the following Friday. Lender's
-        construction analysts will order inspections each Friday after payment
-        requests have been submitted. The inspection(s) will need to be
-        scheduled no later than the following Tuesday afternoon. To approve
-        Borrower's payment request, Lender's construction analysts will need to
-        receive, and review the inspection report and all necessary
-        documentation no later than Wednesday. Lender’s ability to approve
-        payment requests is contingent on receiving a complete payment request.
-        If there are documents missing, it will prolong the process.
-      </p>
+        ">
+      Sponsor further represents that the loan being requested will be incurred by the proposed borrower, a real estate business
+      entity, solely for the purpose of carrying on a business or commercial enterprise, and not for personal, family, or
+      household purposes. </p>
 
-      <!--<p style="text-align: justify; font-family: Times; font-size: 10pt; line-height: 1.3;  page-break-inside:avoid;">
-<strong>Draw Due Date:</strong> For a check to be ordered on Wednesday, Land Gorilla must receive an inspection report
-with all necessary documentation in order to approve your draw request by Tuesday.
-</p>
+    <div style="page-break-inside: avoid;">
+      <h5 style="text-align: center; font-family: Times">
+        <u>
+          <strong>CONFIDENTIALITY</strong>
+        </u>
+      </h5>
+      <p style="
+              text-align: justify;
+              font-family: Times;
+              font-size: 10pt;
+              line-height: 1.3;
+              text-indent: 30px;
+            ">
+        Sponsor understands that Sponsor may use or be exposed to Lender’s proprietary and confidential methodologies, procedures,
+        processes, materials and loan documentation in the evaluation, negotiation and closing of the Loan. Sponsor agrees
+        to keep all such confidential information supplied by Lender (“Confidential Information”) confidential and only use
+        the Confidential Information for the purpose of evaluating, negotiating and closing the Loan. Sponsor agrees (i)
+        the Confidential Information is proprietary and created by Lender for a new asset class, (ii) the Confidential Information
+        provides Lender with a significant competitive advantage in becoming a leader in this asset class and (iii) any dissemination
+        or disclosure of the Confidential Information will cause material harm to Lender. This proposal and any loan documents
+        executed in conjunction with the Loan shall be governed by the laws of the State of New York, except that the attachment,
+        perfection and priority of the mortgage(s)/deed(s) of trust shall be governed by the law of the State in which the
+        respective Properties are located. </p>
+    </div>
 
-<p style="text-align: justify; font-family: Times; font-size: 10pt; line-height: 1.3;  page-break-inside:avoid;">
-<strong>PLEASE NOTE:</strong> To approve your draw request, Land Gorilla will need to order, receive and review an inspection
-report which can take up to seven (7) days. Our ability to order checks is contingent on receiving a complete
-draw request. If there are documents missing, it will prolong the process.
-</p>-->
+    <apex:outputText style="
+            text-align: justify;
+            font-family: Times;
+            font-size: 10pt;
+            line-height: 1.3;
+            text-indent: 30px;
+            page-break-inside: avoid;
+          " value="Thank you for cooperation in this matter. Please acknowledge your acceptance to be bound by this proposal by your authorized signature below. Unless otherwise extended in writing by Lender, in its sole and absolute discretion, this proposal will expire on {0, date, MMMM d','  yyyy} (the “Proposal Expiration Date.”) Please indicate your willingness to proceed with this proposal by signing below and returning it no later than the Proposal Expiration Date. If this proposal is not signed and returned by the Proposal Expiration Date, we will assume that you have elected not to proceed with us regarding the Loan.">
 
-      <p
-        style="
-          text-align: justify;
-          font-family: Times;
-          font-size: 10pt;
-          line-height: 1.3;
-          text-indent: 30px;
-          page-break-inside: avoid;
-        "
-      >
-        There are three (3) types of documents required for each line item that
-        will be requested:
-      </p>
+      <apex:param value="{!Opportunity.Current_Line_Maturity_Date__c + 97}" />
 
-      <p
-        style="
-          font-family: Times;
-          font-size: 10pt;
-          line-height: 1.3;
-          page-break-inside: avoid;
-        "
-      >
-        <ol style="padding-left: 25px">
-          <li style="font-family: Times; font-size: 10pt; padding-left: 20px">
-            <span style="padding-left: 25px" />Invoice or Receipt showing the
-            total amount being requested.
-          </li>
-          <li style="font-family: Times; font-size: 10pt; padding-left: 20px">
-            <span style="padding-left: 25px" />Lien release for each line item
-            relative to work completed on the property.
-          </li>
-          <li style="font-family: Times; font-size: 10pt; padding-left: 20px">
-            <span style="padding-left: 25px"
-              >Proof of payment for all items to be paid directly to Borrower
-              (credit card
-              <br />
-              <span style="padding-left: 25px"></span> receipt or bank copy of
-              cashed check). Items being paid directly to the
-              <br />
-              <span style="padding-left: 25px"></span> contractor or
-              subcontractor do not require proof of payment.</span
-            >
-          </li>
-        </ol>
-      </p>
-
-      <!--     <p style="text-align: justify; font-family: Times; font-size: 10pt; line-height: 1.3; page-break-inside:avoid; margin-bottom:0px">
-            <!-- <ul>
-</ul> -->
-      <!--       <span style="padding-left: 30px;" />
-            <span style="margin-bottom:0px">
-                <span style="padding-left: 30px;" /><span style="font-style: italic; font-weight:bold;">Example:</span> ABC Painting just painted the upstairs for $1,500 and you already paid them. You
-                <br/>
-            </span>
-            <span style="padding-left: 30px;" />
-            <span>
-                <span style="padding-left: 30px;" /> would submit: </span>
-            <ol style="margin-top:0px;padding-left: 25px;">
-                
-                <li style="font-family: Times; font-size: 10pt; padding-left: 20px;">
-                    <span style="padding-left: 25px;font-style: italic;" />The invoice from ABC Painting which includes a description of the work completed. </li>
-                <li style="font-family: Times; font-size: 10pt; padding-left: 20px;">
-                    <span style="padding-left: 25px;" />An unconditional lien release signed by the contractor for $1,500.</li>
-                <li style="font-family: Times; font-size: 10pt; padding-left: 20px;">
-                    <span style="padding-left: 25px;" />A bank copy (front and back) of the check that was paid to ABC Painting.</li>
-        </ol>
-    </p> -->
-
-      <p
-        style="
-          text-align: justify;
-          font-family: Times;
-          font-size: 10pt;
-          line-height: 1.3;
-          text-indent: 30px;
-          page-break-inside: avoid;
-        "
-      >
-        These items, plus the inspection report which shows the requested work
-        is complete, constitute a complete payment request.
-      </p>
-      <!-- <table style="table-layout: fixed; width:95vw; border-collapse: collapse; border: 1px solid #BEBEBE;" border="1" cellspacing="0">
-        <tr style="page-break-inside:avoid;">
-            <td style="font-family: Times; font-size: 10pt; width:30%; font-weight:bold;vertical-align:top;padding:2px 6px; border-collapse: collapse; border: 1px solid #BEBEBE;">
-                <strong>
-                    Third Party Draw Fees (estimate):
-                </strong>
-            </td>
-            <td style="font-family: Times; font-size: 10pt; width:70%;padding:2px 6px;vertical-align:top;border-collapse: collapse; border: 1px solid #BEBEBE;">
-                Inspection Fee: $150.00 ($375.00 for commercial properties)<br/>
-                FedEx/Wire Fee: 30.00
-            </td>
-        </tr>
-    </table>-->
     </apex:outputText>
-    <!--Agreement Page-->
-    <p
-      style="
-        text-align: justify;
-        font-family: Times;
-        font-size: 10pt;
-        line-height: 1.3;
-        text-indent: 30px;
-        page-break-inside: avoid;
-      "
-    >
-      This Proposal does not purport to be and does not constitute a binding
-      agreement among the parties, and the parties hereto shall have no
-      obligations whatsoever, express or implied, written or oral, with regard
-      to this Proposal. This Proposal is for discussion purposes only and does
-      not in any way whatsoever constitute a commitment to lend or an agreement
-      to issue a commitment, and Lender has made no commitments or agreements
-      whatsoever, express or implied, written or oral, to Sponsor or with regard
-      to any of the matters covered by this Proposal. The terms of this Proposal
-      are not all-inclusive and should not be construed as to reflect all of the
-      provisions to be included in the Loan Documents and may be varied as the
-      Lender may determine in its sole and absolute discretion. No oral
-      agreements between or among the parties shall be binding under any
-      circumstances at any time. Sponsor acknowledges that Lender is under no
-      obligation whatsoever to close the Loan.
-    </p>
-    <!-- <p style="text-align: justify; font-family: Times; font-size: 10pt; line-height: 1.3;  page-break-inside:avoid;"> -->
-    <!-- <span style="padding-right: 45px;" />As evidenced by the signature below, Sponsor agrees and acknowledges reviewing the more comprehensive terms set
-forth in Schedule “1” below. Sponsor desires to proceed with negotiating terms as outlined above and in Schedule
-“1”. Unless otherwise extended in writing by Lender, in its sole and absolute discretion, this Proposal will
-expire on
-<apex:outputText value=" {0,date, MMMM d',' yyyy}">
-<apex:param value="{! Opportunity.Term_Sheet_Expiration_Date__c }" /></apex:outputText> (the
-<strong> "Proposal Expiration Date"
-</strong>). Please indicate your willingness to deliver the Expense Deposit and proceed subject in all respects
-and for all purposes to the non-binding nature of this Proposal (except as specifically herein provided) by signing
-below and returning this Proposal with the Expense Deposit no later than the Proposal Expiration Date. If this
-Proposal is not signed and returned by the Proposal Expiration Date together with the applicable Expense Deposit,
-we will assume that you have elected not to proceed with us regarding a
-<apex:outputText style="text-align: left;" value="loan." />
-<br />
-<br /> Please don't hesitate to call&nbsp;
-<apex:outputText value="{!Opportunity.Owner_Name__c}" /> at&nbsp;
-<apex:outputText value="{!Opportunity.Owner_Phone__c}" /> if you have any questions. -->
 
-    <p
-      style="
-        text-align: justify;
-        font-family: Times;
-        font-size: 10pt;
-        line-height: 1.3;
-        text-indent: 30px;
-        page-break-inside: avoid;
-      "
-    >
-      Full consideration of Sponsor's loan request will commence upon receipt by
-      Lender of delivery of a copy of this letter to Lender bearing Sponsor's
-      signature. After receipt of the signed letter, Lender will commence the
-      loan underwriting process. All of the third-party fees and any additional
-      third-party expenses incurred by the Lender will be due at the time of the
-      loan closing. Sponsor authorizes Lender to disclose information contained
-      herein to Lender's affiliates and authorized third parties for everyday
-      business purposes including loan processing and review, financial account
-      dealings and collection quality control and credit reporting, in
-      accordance with Lender's privacy policies and as required by law.
+    <p style="
+            text-align: center;
+            font-family: Times;
+            font-size: 10pt;
+            line-height: 1.3;
+          ">
+      [
+      <em>Signatures on the Following Page</em>]
     </p>
 
-    <p
-      style="
-        text-align: justify;
-        font-family: Times;
-        font-size: 10pt;
-        line-height: 1.3;
-        text-indent: 30px;
-        page-break-inside: avoid;
-      "
-    >
-      Lender will obtain an appraisal or alternate determination of value of the
-      proposed collateral at the Sponsor's expense, to determine if the proposed
-      loan is within the applicable loan-to-value ratio. All appraisals are
-      subject to a final value-determination review that will be conducted by
-      Lender's underwriting department. We will promptly provide you with a copy
-      of the appraisal or alternate valuation product, even if your loan does
-      not close. Sponsor understands that Lender's acceptance of the signed
-      letter, or any fees does not give rise to a commitment, a contract or an
-      offer to enter into a contract to extend credit, does not obligate Lender
-      in any manner whatsoever, and does not create any rights in Sponsor's
-      favor or any other person or entity. Sponsor expressly acknowledges that
-      Lender is not obligated to make any loan on the subject property on any
-      terms by virtue of issuing this Proposal. As such, Sponsor cannot and
-      shall not rely on this Proposal in connection with any transaction in
-      which Sponsor is engaged. This Proposal shall not constitute an agreement
-      to negotiate and solely constitutes an outline of certain proposed key
-      terms of the proposed loan.
-    </p>
-    <p
-      style="
-        text-align: justify;
-        font-family: Times;
-        font-size: 10pt;
-        line-height: 1.3;
-        text-indent: 30px;
-        page-break-inside: avoid;
-      "
-    >
-      Sponsor further represents that the loan being requested will be incurred
-      by the proposed borrower, a real estate business entity, solely for the
-      purpose of carrying on a business or commercial enterprise, and not for
-      personal, family, or household purposes.
-    </p>
-    <!--<p style="text-align: justify; font-family: Times; font-size: 10pt; line-height: 1.3;  page-break-inside:avoid;">
-<strong>
-BE ADVISED: SHOULD APPLICANT’S LOAN BE APPROVED, ONCE LENDER HAS (A) ALL REMAINING DUE DILIGENCE ITEMS, (B) CERTIFICATION
-THAT BORROWER’S FUNDS TO CLOSE HAVE BEEN DEPOSITED INTO ESCROW OR WITH LENDER’S ATTORNEY, AND (C) REVIEWED
-THE EXECUTED LOAN DOCUMENTS, LENDER WILL FUND TWO (2) BUSINESS DAYS LATER AT THE EARLIEST.
-</strong>
-</p>-->
-
-    <h5 style="text-align: center; font-family: Times">
-      <u>
-        <strong>CONFIDENTIALITY</strong>
-      </u>
-    </h5>
-    <p
-      style="
-        text-align: justify;
-        font-family: Times;
-        font-size: 10pt;
-        line-height: 1.3;
-        text-indent: 30px;
-        page-break-inside: avoid;
-      "
-    >
-      Sponsor understands that Sponsor may use or be exposed to Lender’s
-      proprietary and confidential methodologies, procedures, processes,
-      materials and loan documentation in the evaluation, negotiation and
-      closing of the Loan. Sponsor agrees to keep all such confidential
-      information supplied by Lender ("
-      <strong>Confidential Information</strong>"") confidential and only use the
-      Confidential Information for the purpose of evaluating, negotiating and
-      closing the Loan. Sponsor agrees (i) the Confidential Information is
-      proprietary and created by Lender for a new asset class, (ii) the
-      Confidential Information provides Lender with a significant competitive
-      advantage in becoming a leader in this asset class and (iii) any
-      dissemination or disclosure of the Confidential Information will cause
-      material harm to Lender. This proposal and any loan documents executed in
-      conjunction with the Loan shall be governed by the laws of the State of
-      New York, except that the attachment, perfection and priority of the
-      mortgage(s)/deed(s) of trust shall be governed by the law of the State in
-      which the respective Properties are located.
-    </p>
-    <p
-      style="
-        text-align: justify;
-        font-family: Times;
-        font-size: 10pt;
-        line-height: 1.3;
-        text-indent: 30px;
-        page-break-inside: avoid;
-      "
-    >
-      Sponsor understands, acknowledges, and agrees that the Lender and Other
-      Loan Participants may obtain, use and share tax return information for
-      purposes of (i) providing an offer; (ii) originating, maintaining,
-      managing, monitoring, servicing, selling, insuring, and securitizing a
-      loan; (iii) marketing; or (iv) as otherwise permitted by applicable laws,
-      including state and federal privacy and data security laws. The Lender
-      includes the Lender's affiliates, agents, service providers and any of
-      aforementioned parties' successors and assigns. The Other Loan
-      Participants includes any actual or potential owners of a loan resulting
-      from your loan application, or acquirers of any beneficial or other
-      interest in the loan, any mortgage insurer, guarantor, any servicers or
-      service providers for these parties and any of aforementioned parties'
-      successors and assigns.
-    </p>
-    <p
-      style="
-        text-align: justify;
-        font-family: Times;
-        font-size: 10pt;
-        line-height: 1.3;
-        text-indent: 30px;
-        page-break-inside: avoid;
-      "
-    >
-      Thank you for cooperation in this matter. Please acknowledge your
-      acceptance to be bound by this Proposal by your authorized signature
-      below. Unless otherwise extended in writing by Lender, in its sole and
-      absolute discretion, this Proposal will expire on
-      <apex:outputText value=" {0,date, MMMM d',' yyyy}">
-        <apex:param value="{! dupeRecord.Term_Sheet_Expiration_Date__c }"
-      /></apex:outputText>
-      (the <strong> "Proposal Expiration Date"</strong>). Please indicate your
-      willingness to proceed with this proposal by signing below and returning
-      it no later than the Proposal Expiration Date. If this proposal is not
-      signed and returned by the Proposal Expiration Date, we will assume that
-      you have elected not to proceed with us regarding the Loan.
-    </p>
-    <p style="text-align: center; font-family: Times">
-      [ <i>Signatures on the Following Page</i>]
-    </p>
     <div class="sigsection">
-      <p
-        style="
+      <p style="
           font-family: Times;
           font-size: 10pt;
           line-height: 1.3;
           text-indent: 30px;
-        "
-      >
+        ">
         Please don't hesitate to call&nbsp;
         <apex:outputText value="{!Opportunity.Owner_Name__c}" /> at&nbsp;
-        <apex:outputText value="{!Opportunity.Owner_Phone__c}" /> if you have
-        any questions.
+        <apex:outputText value="{!Opportunity.Owner_Phone__c}" /> if you have any questions.
         <br />
         <br />
         <table style="width: 100%">
@@ -1581,8 +1249,8 @@ THE EXECUTED LOAN DOCUMENTS, LENDER WILL FUND TWO (2) BUSINESS DAYS LATER AT THE
           <td style="width: 50%"></td>
           <td style="width: 50%">
             <br />
-            <br />COREVEST AMERICAN FINANCE LENDER LLC, <br />a Delaware limited
-            liability company
+            <br />COREVEST AMERICAN FINANCE LENDER LLC,
+            <br />a Delaware limited liability company
             <br />
             <br />
           </td>
@@ -1594,8 +1262,8 @@ THE EXECUTED LOAN DOCUMENTS, LENDER WILL FUND TWO (2) BUSINESS DAYS LATER AT THE
             <td style="width: 50%">
               By:
               <span style="color: white">\s1\</span>____________________
-              <br /> Its: <span style="color: white">a1\\</span>Authorized
-              Signatory
+              <br /> Its:
+              <span style="color: white">a1\\</span>Authorized Signatory
             </td>
           </tr>
         </table>
@@ -1607,12 +1275,9 @@ THE EXECUTED LOAN DOCUMENTS, LENDER WILL FUND TWO (2) BUSINESS DAYS LATER AT THE
         ACKNOWLEDGED AND AGREED TO
         <br /> THIS ______ DAY OF
         <apex:outputText value=" {0,date, MMMM}">
-          <apex:param
-            value="{! DATE(todayYear, todayMonth, todayDay)}" /></apex:outputText
-        >,
+          <apex:param value="{! DATE(todayYear, todayMonth, todayDay)}" /></apex:outputText>,
         <apex:outputText value=" {0,date, yyyy}">
-          <apex:param value="{! DATE(todayYear, todayMonth, todayDay)}"
-        /></apex:outputText>
+          <apex:param value="{! DATE(todayYear, todayMonth, todayDay)}" /></apex:outputText>
         <br />
         <br /> SPONSOR:
         <table>
@@ -1654,26 +1319,11 @@ ____________________
     </div>-->
     </div>
     <apex:form>
-      <apex:inputField
-        value="{!Opportunity.Requested_Rate_10_Months__c}"
-        rendered="false"
-      />
-      <apex:inputField
-        value="{!Opportunity.Requested_Draw_Fee_Cap__c}"
-        rendered="false"
-      />
-      <apex:inputField
-        value="{!Opportunity.Include_3_Months_Min_Interest__c}"
-        rendered="false"
-      />
-      <apex:inputField
-        value="{!Opportunity.Broker_Fee_Paid_By_Whom__c}"
-        rendered="false"
-      />
-      <apex:inputField
-        value="{!Opportunity.Broker_Fee_Paid_When__c}"
-        rendered="false"
-      />
+      <apex:inputField value="{!Opportunity.Requested_Rate_10_Months__c}" rendered="false" />
+      <apex:inputField value="{!Opportunity.Requested_Draw_Fee_Cap__c}" rendered="false" />
+      <apex:inputField value="{!Opportunity.Include_3_Months_Min_Interest__c}" rendered="false" />
+      <apex:inputField value="{!Opportunity.Broker_Fee_Paid_By_Whom__c}" rendered="false" />
+      <apex:inputField value="{!Opportunity.Broker_Fee_Paid_When__c}" rendered="false" />
     </apex:form>
   </div>
 </apex:page>

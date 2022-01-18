@@ -174,6 +174,7 @@
             .toString() == "true"
         ) {
           let returnVal = response.getReturnValue();
+          console.log(returnVal);
           window.location.href = returnVal;
           component.set("v.generatedDoc", true);
         } else {
