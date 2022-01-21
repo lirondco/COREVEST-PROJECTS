@@ -1,11 +1,24 @@
 public without sharing class DealXFundingVehicleHelper {
 
   public static void beforeInsert(List<Deal_x_Funding_Vehicle__c> newList) {
+
+    Set<Id> fvIdsToCheck = new Set<Id>();
+
     for (Deal_x_Funding_Vehicle__c x : newList) {
       if(!x.Include_Yes_No__c) {
+        fvIdsToCheck.add(x.Funding_Vehicle__c);
+      }
+    }
+  
+    Set<Id> fvSecIds = filterForSecuritizations(fvIdsToCheck);
+
+    for (Deal_x_Funding_Vehicle__c x : newList) {
+      if(!x.Include_Yes_No__c && fvSecIds.contains(x.Funding_Vehicle__c)) {
         x.Include_Yes_No__c = true;
       }
     }
+
+
   }
 
   public static void afterUpdate(
@@ -70,5 +83,16 @@ public without sharing class DealXFundingVehicleHelper {
         update updatedDeals;
       }
     }
+  }
+  
+  public static Set<Id> filterForSecuritizations(Set<Id> fvIds) {
+    Map<Id, Funding_Vehicle__c> fvMap = new Map<Id, Funding_Vehicle__c>([
+      SELECT Id
+      FROM Funding_Vehicle__c
+      WHERE Securitization__c != NULL
+      AND Id IN :fvIds
+    ]);
+
+    return fvMap.keySet();
   }
 }
