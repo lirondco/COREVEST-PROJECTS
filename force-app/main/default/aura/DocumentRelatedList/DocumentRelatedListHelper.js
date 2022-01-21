@@ -129,7 +129,7 @@
       var tableCmp = component.find("dataTable");
   
       //tableCmp.toggleSpinner();
-  
+	  var showAdvancesDocs = component.get("v.showAdvancesDocs");
       var whereClause = component.get("v.whereClause");
       if ($A.util.isEmpty(whereClause)) {
         whereClause = "Is_Deleted__c = false";
@@ -140,7 +140,7 @@
       $A.util.removeClass(component.find("spinner"), "slds-hide");
       this.callAction(
         component,
-        "c.getRecordList",
+        "c.getRecordListPropAdva",
         {
           parentId: component.get("v.recordId"),
           parentFieldName: component.get("v.parentFieldName"),
@@ -149,7 +149,8 @@
           sortCol: tableCmp.get("v.sortColumnName"),
           sortDir: tableCmp.get("v.sortDirection"),
           whereClause: whereClause,
-          orderBy: component.get("v.orderBy")
+          orderBy: component.get("v.orderBy"),
+          showAdvancesDocs:showAdvancesDocs
         },
         function (data) {
           //var records = JSON.parse(data);
@@ -208,7 +209,7 @@
         },
         function (data) {
           tableCmp.toggleSpinner();
-          helper.queryRecords(component);
+          helper.userType(component);
         }
       );
     },

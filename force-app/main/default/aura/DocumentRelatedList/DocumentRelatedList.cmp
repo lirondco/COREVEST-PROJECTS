@@ -19,7 +19,7 @@
   <aura:attribute name="showActions" type="Boolean" default="true" />
   <aura:attribute name="typeName" type="String" default="Standard" />
   <aura:attribute name="permissionsMap" type="Map" />
-
+  <aura:attribute name="showAdvancesDocs" type="Boolean" default="true" />
   <!-- <aura:attribute name="pageSize" type="Integer" default="100" /> -->
 
   <!-- <aura:handler name="pageChangeEvent" event="c:DataTablePageChangeEvent" action="{!c.handlePageChangeEvent}" includeFacets="true"/> -->

@@ -1,5 +1,5 @@
 ({
-  init: function(component, event, helper) {
+  init: function (component, event, helper) {
     //console.log('file download init');
 
     var recordId = component.get("v.recordId");
@@ -14,7 +14,7 @@
       accountType: component.get("v.accountType")
     });
 
-    action.setCallback(this, function(response) {
+    action.setCallback(this, function (response) {
       var state = response.getState();
 
       if (state === "SUCCESS") {
@@ -22,8 +22,20 @@
         component.set("v.documents", data);
         console.log(component.get("v.documents"));
         var folderStructure = {};
-        data.forEach(el => {
+        let localData = [];
+        data.forEach((el) => {
           var folderString = el.Folder_String__c;
+          if (
+            el.hasOwnProperty("Advance__r") &&
+            el.Advance__r.hasOwnProperty("Name") &&
+            el.Advance__r.Name != null
+          ) {
+            folderString = el.Advance__r.Name + ";" + folderString;
+          }
+
+          let elCopy = Object.assign({}, el);
+          elCopy.Folder_String__c = folderString;
+
           var folders = folderString.split(";");
 
           var obj = folderStructure;
@@ -49,7 +61,7 @@
               }
 
               if (i == folders.length - 1) {
-                obj[folders[i]].folderString = el.Folder_String__c;
+                obj[folders[i]].folderString = folderString;
                 if (
                   $A.util.isEmpty(el.Document_Type__c) &&
                   $A.util.isEmpty(el.Property__c)
@@ -57,8 +69,8 @@
                   obj[folders[i]].fileTypes.add(obj[folders[i]].label);
                 } else if (
                   !$A.util.isEmpty(el.Document_Type__c) &&
-                  $A.util.isEmpty(el.Property__c)
-                ) {
+                  $A.util.isEmpty(el.Property__c))
+                 {
                   obj[folders[i]].fileTypes.add(el.Document_Type__c);
                 }
 
@@ -110,14 +122,17 @@
               data[0].Deal__r.Name + " - " + data[0].Deal__r.Deal_Loan_Number__c
             );
           }
+
+          localData.push(elCopy);
         });
+        component.set("v.documents", localData);
 
         console.log(folderStructure);
         component.set("v.folderStructure", folderStructure);
 
         var files = [];
 
-        Object.keys(folderStructure).forEach(key => {
+        Object.keys(folderStructure).forEach((key) => {
           files = files.concat(helper.returnFolderObj(folderStructure[key]));
         });
 
@@ -136,12 +151,12 @@
     $A.enqueueAction(action);
   },
 
-  export: function(component, event, helper) {
+  export: function (component, event, helper) {
     var folderStrings = new Set();
     var folderStructure = component.get("v.folderStructure");
     //console.log(folderStructure);
 
-    Object.keys(folderStructure).forEach(key => {
+    Object.keys(folderStructure).forEach((key) => {
       var obj = folderStructure[key];
       helper.travelFolders(obj, folderStrings);
     });
@@ -149,11 +164,11 @@
     var documents = component.get("v.documents");
     var exportDocs = [];
 
-    documents.forEach(doc => {
+    documents.forEach((doc) => {
       if (
         folderStrings.has(doc.Folder_String__c) &&
         $A.util.isEmpty(doc.Property__c)
-      ) {
+      ) {d
         exportDocs.push(doc);
       }
 
@@ -187,7 +202,7 @@
       if (checks.constructor !== Array) {
         checks = [checks];
       }
-      checks.forEach(el => {
+      checks.forEach((el) => {
         if (el.get("v.checked")) {
           docTypes.add(el.get("v.label"));
         }
@@ -223,11 +238,11 @@
       component.set("v.downloading", true);
       helper
         .loadDocuments(component, helper, exportDocs, jszip)
-        .then(function() {
+        .then(function () {
           //
 
           if (0 !== Object.keys(jszip.files).length) {
-            jszip.generateAsync({ type: "blob" }).then(function(content) {
+            jszip.generateAsync({ type: "blob" }).then(function (content) {
               saveAs(content, component.get("v.dealLabel") + ".zip");
             });
           }
@@ -241,39 +256,39 @@
     }
   },
 
-  treeEvent: function(component, event, helper) {
+  treeEvent: function (component, event, helper) {
     //event.stopPropagation()
     //component.set('v.fileTypes', component.get('v.fileTypes'));
     //helper.compileFileTypes(component);
   },
 
-  checkOn: function(component, event, helper) {
+  checkOn: function (component, event, helper) {
     var checks = component.find("checks");
     if (!$A.util.isEmpty(checks)) {
       if (checks.constructor !== Array) {
         //console.log(item.ge);
         checks = [checks];
       }
-      checks.forEach(el => {
+      checks.forEach((el) => {
         el.set("v.checked", true);
       });
     }
   },
 
-  checkOff: function(component, event, helper) {
+  checkOff: function (component, event, helper) {
     var checks = component.find("checks");
     if (!$A.util.isEmpty(checks)) {
       if (checks.constructor !== Array) {
         //console.log(item.ge);
         checks = [checks];
       }
-      checks.forEach(el => {
+      checks.forEach((el) => {
         el.set("v.checked", false);
       });
     }
   },
 
-  compileFileTypes: function(component, event, helper) {
+  compileFileTypes: function (component, event, helper) {
     console.log("change");
     helper.compileFileTypes(component);
   }

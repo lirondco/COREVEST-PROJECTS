@@ -413,6 +413,99 @@ public without sharing class lightning_Controller {
     return objs;
   }
 
+    //CIP-2111 - Raj Sirivlu - 1/13/2022. Begin. Added new method getrecordList1 as a clone of getrecordList and changed how the ids are processed.
+     @AuraEnabled
+  public static List<sObject> getRecordListPropAdva(
+    String parentId,
+    String parentFieldName,
+    String sobjectType,
+    List<String> fields,
+    String sortCol,
+    String sortDir,
+    String whereClause,
+    String orderBy,
+    Boolean showAdvancesDocs
+  ) {
+   
+    if (sobjectType.equalsIgnoreCase('Property__c')) {
+      fields.add('recordTypeId');
+    }
+    
+    String queryString = 'SELECT ';
+     
+    for (String field : fields) {
+      queryString += field + ', ';
+    }
+      
+    queryString = queryString.substringBeforeLast(',');
+    queryString += ' FROM ' + sobjectType;
+
+    queryString += ' WHERE '; 
+   
+    if (showAdvancesDocs == True)
+    {
+    parentFieldName = 'Advance__c'; //Override parent field name
+
+	//Get documents for all the advances for the property.
+      queryString += parentFieldName + ' IN (select Advance__c FROM Property_Advance__c  WHERE Property__c  = \'' + parentId + '\')';
+      if (String.isNotBlank(whereClause)) {
+        queryString += ' AND ';
+      }
+
+	}
+    else
+    {
+
+    if (String.isNotBlank(parentFieldName) && String.isNotBlank(parentId)) {
+      queryString += parentFieldName + ' = \'' + parentId + '\'';
+      if (String.isNotBlank(whereClause)) {
+        queryString += ' AND ';
+      }
+    }   
+     
+    }
+     
+    if (String.isNotBlank(whereClause)) {
+      queryString += whereClause;
+    }
+
+    if (String.isNotBlank(orderBy)) {
+      queryString += ' Order BY ' + orderBy;
+    } else if (String.isNotBlank(sortCol)) {
+      queryString += ' ORDER BY ' + sortCol + ' ' + sortDir;
+    }
+
+    system.debug('RS queryString :' +queryString);
+    List<sObject> objs = new List<sObject>();
+    objs = database.query(queryString);
+    // System.debug('Possible_Duplicate__c 111----->');
+    if (sobjectType.equalsIgnoreCase('Property__c')) {
+      // System.debug('Possible_Duplicate__c----->');
+      Map<string, String> propIds = new Map<string, String>();
+      for (sObject sobj : objs) {
+        propIds.put((String) sobj.get('id'), (String) sobj.get('recordTypeId'));
+      }
+      system.debug('--prop ids--');
+      system.debug(propIds);
+      Map<String, dupcheck__dc3Duplicate__c> duplicateCheckRecords = checkDuplicateFound(
+        propIds
+      );
+      System.debug('duplicateCheckRecords----->' + duplicateCheckRecords);
+      for (sObject sobj : objs) {
+        if (
+          duplicateCheckRecords.containsKey((String) sobj.get('id')) //&& (String)sobj.get('Status__c')=='Active')
+        ) {
+          sobj.put('Possible_Duplicate__c', true);
+        } else {
+          sobj.put('Possible_Duplicate__c', false);
+        }
+      }
+    }
+
+    return objs;
+  }
+    //CIP-2111 - Raj Sirivlu - 1/13/2022. End. Added new method getrecordList1 as a clone of getrecordList and changed how the ids are processed.
+    
   @AuraEnabled
   public static List<sobject> getRecords(
     String parentId,
@@ -481,7 +574,7 @@ public without sharing class lightning_Controller {
     if (String.isNotBlank(orderClause)) {
       queryString += ' ORDER BY ' + orderClause;
     }
-    system.debug(queryString);
+    system.debug('RS:' +queryString);
     //queryString += ' LIMIT ' + maxRecords;
     //queryString += ' OFFSET ' + skipRecords;
 
@@ -972,6 +1065,7 @@ resultsData.add(new propertyListWrapper(sobj, 'No', null, null));
           FROM Deal_Contacts__r
           WHERE Contact__c != NULL AND Entity_Type__c = 'Portal Access'
         )
+        
       FROM Opportunity
       WHERE Id = :recordId
     ]) {
@@ -1075,7 +1169,7 @@ resultsData.add(new propertyListWrapper(sobj, 'No', null, null));
 
   @AuraEnabled
   public static String getDocuments(
-    String recordId,
+    String recordId,  
     String userType,
     String accountId,
     String accountType
@@ -1083,28 +1177,28 @@ resultsData.add(new propertyListWrapper(sobj, 'No', null, null));
     String queryString = '';
 
     if (userType == 'internal') {
-      queryString = 'SELECT Id, Deal__r.Name, Deal__r.Deal_Loan_Number__c, Folder_String__c, ContentVersion_Id__c, Attachment_Id__c, ';
-      queryString += 'Vendor_Type_Access__c, Property__r.Name, Property__c, Document_Type__c FROM Deal_Document__c ';
+      queryString = 'SELECT Id, Deal__r.Name, Advance__r.Name, Deal__r.Deal_Loan_Number__c, Folder_String__c, ContentVersion_Id__c, Attachment_Id__c, ';
+      queryString += 'Vendor_Type_Access__c, Property__r.Name, Property__r.Advance__r.Name, Property__c, Document_Type__c FROM Deal_Document__c ';
       queryString +=
         'WHERE Deal__c = \'' +
         recordId +
         '\' AND Attachment_Id__c != null AND ContentVersion_Id__c != null AND Is_Deleted__c = false';
     } else if (userType == 'vendor') {
-      queryString = 'SELECT Id, Deal__r.Name, Deal__r.Deal_Loan_Number__c, Folder_String__c, ContentVersion_Id__c, Attachment_Id__c, ';
-      queryString += 'Vendor_Type_Access__c, Property__r.Name, Property__c, Document_Type__c FROM Deal_Document__c ';
+      queryString = 'SELECT Id, Deal__r.Name, Advance__r.Name, Deal__r.Deal_Loan_Number__c, Folder_String__c, ContentVersion_Id__c, Attachment_Id__c, ';
+      queryString += 'Vendor_Type_Access__c, Property__r.Name, Property__r.Advance__r.Name, Property__c, Document_Type__c FROM Deal_Document__c ';
       queryString +=
         'WHERE Deal__c = \'' +
         recordId +
         '\' AND Attachment_Id__c != null AND ContentVersion_Id__c != null AND Vendor_Access__c = true AND Is_Viewable__c = true AND Is_Deleted__C = false ';
     } else if (userType == 'borrower') {
-      queryString = 'SELECT Id, Deal__r.Name, Deal__r.Deal_Loan_Number__c, Folder_String__c, ContentVersion_Id__c, Attachment_Id__c, ';
-      queryString += 'Vendor_Type_Access__c, Property__r.Name, Property__c, Document_Type__c FROM Deal_Document__c ';
+      queryString = 'SELECT Id, Deal__r.Name, Advance__r.Name, Deal__r.Deal_Loan_Number__c, Folder_String__c, ContentVersion_Id__c, Attachment_Id__c, ';
+      queryString += 'Vendor_Type_Access__c, Property__r.Name, Property__r.Advance__r.Name, Property__c, Document_Type__c FROM Deal_Document__c ';
       queryString +=
         'WHERE Deal__c = \'' +
         recordId +
         '\' AND Attachment_Id__c != null AND ContentVersion_Id__c != null AND Borrower_Access__c = true AND Is_Viewable__c = true AND Is_Deleted__c = false ';
     }
-
+		
     List<Deal_Document__c> docs = (List<Deal_Document__c>) database.query(
       queryString
     );
@@ -1143,6 +1237,7 @@ resultsData.add(new propertyListWrapper(sobj, 'No', null, null));
 
     return JSON.serialize(docMap.values());
   }
+    
 
   //@AuraEnabled
   //public static List<sObject> getOpportunities(Id accountId){
