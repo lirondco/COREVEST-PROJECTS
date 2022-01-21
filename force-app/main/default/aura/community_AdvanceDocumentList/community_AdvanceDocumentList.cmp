@@ -1,0 +1,207 @@
+<aura:component
+  controller="community_Controller"
+  implements="forceCommunity:availableForAllPageTypes"
+>
+  <aura:attribute name="recordId" type="String" />
+  <aura:attribute name="sobjectType" type="String" default="Deal_Document__c" />
+  <aura:attribute name="recordTypeName" type="String" />
+
+  <aura:attribute name="parentFieldName" type="String" default="Deal__c" />
+  <aura:attribute name="fieldList" type="String[]" />
+
+  <aura:attribute name="whereClause" type="String" default="Public__c = true" />
+  <aura:attribute name="orderBy" type="String" default="" />
+
+  <aura:attribute name="title" type="String" default="Documents" />
+  <aura:attribute name="footer" type="String" />
+  <aura:attribute name="recordCount" type="Integer" default="0" />
+
+  <aura:handler
+    name="sortChangeEvent"
+    event="c:DataTableSortChangeEvent"
+    action="{!c.handleSortChangeEvent}"
+    phase="capture"
+  />
+  <!-- <aura:handler name -->
+
+  <aura:attribute name="records" type="Object[]" />
+  <aura:attribute name="pageSize" type="Integer" default="50" />
+  <aura:attribute name="currentPage" type="Integer" default="1" />
+  <aura:attribute name="maxPage" type="Integer" default="1" />
+
+  <aura:attribute name="user" type="Object" />
+
+  <aura:attribute name="modalOpen" type="Boolean" />
+
+  <aura:handler Name="init" value="{!this}" action="{!c.init}" />
+
+  <lightning:card>
+    <aura:set attribute="title"> </aura:set>
+
+    <aura:set attribute="actions">
+      <lightning:layout horizontalAlign="end">
+        <!-- <lightning:layoutItem >
+					<lightning:button label="Export" onclick="{!c.modalOpen}" />
+				</lightning:layoutItem> -->
+      </lightning:layout>
+      <lightning:layout horizontalAlign="end">
+        <lightning:layoutItem>
+          <lightning:button variant="base" onclick="{!c.refresh}">
+            <lightning:buttonIcon
+              iconName="utility:refresh"
+              variant="bare"
+              alternativeText="Refresh"
+            />
+          </lightning:button>
+        </lightning:layoutItem>
+      </lightning:layout>
+      <lightning:spinner class="" aura:id="spinner" variant="brand" />
+    </aura:set>
+
+    <c:DataTable aura:id="dataTable" showCheckbox="false">
+      <aura:set attribute="columns">
+        <c:DataTableColumn
+          label="Document #"
+          name="Name"
+          sortable="true"
+          isEditable="false"
+          columnWidth="11"
+        />
+
+        <c:DataTableColumn
+          label="Name"
+          name="File_Name__c"
+          linkToRecord="ContentVersion_Id__c"
+          linkToURL="/portal/sfc/servlet.shepherd/version/download/"
+          sortable="true"
+        />
+
+        <c:DataTableColumn
+          label="Advance"
+          name="Advance__r.Name"
+          isEditable="false"
+          sortable="true"
+        />
+
+        <c:DataTableColumn
+          label="Document Folder"
+          name="Folder_String_Display__c"
+          isEditable="false"
+          sortable="true"
+        />
+
+        <c:DataTableColumn
+          label="ContentVersionID"
+          name="ContentVersion_Id__c"
+          hidden="true"
+          displayType="hidden"
+          sortable="false"
+        />
+
+        <c:DataTableColumn
+          label="Document Type"
+          name="Document_Type__c"
+          sortable="true"
+          columnWidth="20"
+        />
+
+        <c:DataTableColumn
+          label="Link"
+          name="Attachment_Id__c"
+          sortable="false"
+          displayType="file"
+          columnWidth="5"
+        />
+
+        <c:DataTableColumn
+          label="Added On"
+          name="Added_On__c"
+          sortable="true"
+          displayType="datetime"
+        />
+      </aura:set>
+
+      <aura:set attribute="pageNumber" value="1" />
+      <aura:set attribute="pageSize" value="{!v.pageSize}" />
+      <aura:set attribute="sortColumnName" value="Document_Loaded__c" />
+      <aura:set attribute="sortDirection" value="desc" />
+    </c:DataTable>
+
+    <aura:set attribute="footer">
+      <div>
+        <span>
+          <span
+            class="{!v.currentPage != 1 ? 'slds-hide' : 'slds-text-color--weak'}"
+            >First</span
+          >
+          <a
+            disabled="true"
+            href="javascript:void(0);"
+            class="{!v.currentPage != 1 ? 'slds-text-link--reset slds-text-color--default' : 'slds-hide'}"
+            onclick="{!c.firstPage}"
+            >First</a
+          >
+        </span>
+        &nbsp;
+        <span>
+          <span
+            class="{!v.currentPage > 1 ? 'slds-hide' : 'slds-text-color--weak'}"
+            >Previous</span
+          >
+          <a
+            href="javascript:void(0);"
+            class="{!v.currentPage > 1 ? 'slds-text-link--reset slds-text-color--default' : 'slds-hide'}"
+            onclick="{!c.prevPage}"
+            >Previous</a
+          >
+        </span>
+        &nbsp;
+        <span>
+          <span
+            class="{!v.currentPage lt v.maxPage ? 'slds-hide' : 'slds-text-color--weak'}"
+            >Next</span
+          >
+          <a
+            href="javascript:void(0);"
+            class="{!v.currentPage lt v.maxPage ? 'slds-text-link--reset slds-text-color--default' : 'slds-hide'}"
+            onclick="{!c.nextPage}"
+            >Next</a
+          >
+        </span>
+        &nbsp;
+        <span>
+          <span
+            class="{!v.currentPage != v.maxPage ? 'slds-hide' : 'slds-text-color--weak'}"
+            >Last</span
+          >
+          <a
+            href="javascript:void(0);"
+            class="{!v.currentPage != v.maxPage ? 'slds-text-link--reset slds-text-color--default' : 'slds-hide'}"
+            onclick="{!c.lastPage}"
+            >Last</a
+          >
+        </span>
+      </div>
+      <div>
+        {!(v.currentPage - 1)*v.pageSize + 1 + ' - ' +
+        ((v.currentPage)*v.pageSize lt v.records.length ?
+        (v.currentPage)*v.pageSize : v.records.length) + ' of ' +
+        v.records.length}
+      </div>
+    </aura:set>
+  </lightning:card>
+
+  <!-- <aura:if isTrue="{!v.modalOpen}">
+		<div role="dialog" tabindex="-1" aura:id="modal" aria-labelledby="header43" class="slds-modal slds-fade-in-open">
+		  <div class="slds-modal__container">
+		    <div class="slds-modal__header slds-modal__header- -empty">
+		      <lightning:buttonIcon class="slds-modal__close" iconName="utility:close" size="large" variant="bare-inverse" onclick="{!c.modalClose}" alternativeText="Close window." />
+		    </div>
+		    <div class="slds-modal__content slds-p-around- -medium slds-is-relative">
+		      	<c:fileDownloader recordId="{!v.recordId}" userType="{!v.user.userType}" accountId="{!v.user.accountId}" accountType="{!v.user.accountType}" />
+		    </div>
+		  </div>
+		</div>
+		<div aura:id="backdrop" class="slds-backdrop slds-backdrop- -open"></div>
+	</aura:if> -->
+</aura:component>
