@@ -15,7 +15,9 @@ public with sharing class DealXFundingVehicleHelperTest {
         
         update sampleDeal;
         
-        Deal_x_Funding_Vehicle__c testDealFv = [SELECT Id, Deal__c FROM Deal_x_Funding_Vehicle__c ORDER BY CreatedDate DESC LIMIT 1];
+        Deal_x_Funding_Vehicle__c testDealFv = [SELECT Id, Include_Yes_No__c, Deal__c FROM Deal_x_Funding_Vehicle__c ORDER BY CreatedDate DESC LIMIT 1];
+
+        System.assertEquals(true, testDealFv.Include_Yes_No__c, 'Include_Yes_No__c should be true');
 
         testDealFv.Include_Yes_No__c = false;
         update testDealFv;

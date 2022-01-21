@@ -1,4 +1,13 @@
 public without sharing class DealXFundingVehicleHelper {
+
+  public static void beforeInsert(List<Deal_x_Funding_Vehicle__c> newList) {
+    for (Deal_x_Funding_Vehicle__c x : newList) {
+      if(!x.Include_Yes_No__c) {
+        x.Include_Yes_No__c = true;
+      }
+    }
+  }
+
   public static void afterUpdate(
     Map<Id, Deal_x_Funding_Vehicle__c> oldMap,
     List<Deal_x_Funding_Vehicle__c> newList
