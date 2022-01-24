@@ -81,6 +81,14 @@
                     component.set('v.Message', resMap['message']);
                     //component.set('v.Message','SUCCESS');
                     console.log('resMap:;:',resMap);
+
+                    if(resMap['errorMessage']) {
+                        component.set('v.hasError', true);
+                        component.set('v.errorMessage', resMap['errorMessage']);
+                    }
+
+                    let customErrorMessage;
+
                     if(resMap['message'] == 'Get the Person Search Report.'){
                         let riskButton = component.find('riskButtonId');
                         riskButton.set('v.disabled',false);
@@ -92,18 +100,34 @@
                         component.set('v.isPersonNotFound', true);
                         component.set('v.isPersonSearch', false);
                         component.set('v.Message', 'If your first search does not return any results,try removing some of the address fields to widen the search');
+                        customErrorMessage = 'If your first search does not return any results,try removing some of the address fields to widen the search';
+                    }
+
+                    if(customErrorMessage) {
+                        component.set('v.hasError', true);
+                        component.set('v.errorMessage', customErrorMessage);
                     }
                     //helper.hideSpinner(component);
-                    component.set('v.loading', false);
                 } 
                 else {
                     console.log(state);
                     //helper.hideSpinner(component);
-                    component.set('v.loading', false);
+                    component.set('v.hasError', true);
+                    component.set('v.errorMessage', 'An unexpected error has occured.');
                 }
             });
             $A.enqueueAction(action);
     	});
         
 	},
+
+    showToast: function(title, message, type) {
+        var toastEvent = $A.get("e.force:showToast");
+        toastEvent.setParams({
+            "title": title,
+            "message": message,
+            "type": type
+        });
+        toastEvent.fire();
+    }
 })

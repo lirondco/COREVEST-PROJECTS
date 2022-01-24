@@ -11,7 +11,7 @@
     <aura:attribute name="contactID" type="String" />
     <aura:attribute name="loading" type="boolean" default="false"/>
     <aura:attribute name="isNoPersonSelected" type="boolean" default="false"/>
-    
+    <aura:attribute name="performErrorCheck" type="boolean" default="false"/>
     <aura:attribute name="isPersonNotFound" type="boolean" default="false"/>
     <aura:attribute name="SteetAddress" type="boolean" default="false"/>
     <aura:attribute name="City" type="boolean" default="false"/>
@@ -20,7 +20,10 @@
     <aura:attribute name="Zip" type="boolean" default="false"/>
     <aura:attribute name="isConfirmDetails" type="boolean" default="false"/>
     <aura:attribute name="isPersonSearch" type="boolean" default="false"/>
-   
+    <aura:attribute name="hasError" type="boolean" default="false"/>
+    <aura:attribute name="errorMessage" type="String" />
+    <aura:handler event="aura:doneWaiting" action="{!c.evaluateErrors}"/>
+
 	<aura:if isTrue="{!v.showClearAPIModal}">
    
 	<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">

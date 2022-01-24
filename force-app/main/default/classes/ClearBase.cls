@@ -114,6 +114,9 @@ public class ClearBase {
     } catch (exception e) {
       System.debug('The following exception has occurred: ' + e.getMessage());
     }
+    if(test.isRunningTest()) {
+      req.setEndpoint('thomsonreuters.com');
+    }
     return req;
   }
   public static HttpRequest generategetRequest(
@@ -124,6 +127,9 @@ public class ClearBase {
     HttpRequest req = new HttpRequest();
     try {
       //get CLEAR API credentials from custom settings
+      if(test.isRunningTest()) {
+        req.setEndpoint('thomsonreuters.com');
+      }
       ClearConfig clear = new ClearConfig();
       Blob header;
       String endpt = '';
@@ -168,13 +174,14 @@ public class ClearBase {
     return req;
   }
   @auraenabled
-  public static Map<String, String> getContactDetailforRiskSearch(ID id) {
+  public static Map<String, String> getContactDetailforRiskSearch(Id id) {
     Map<String, String> resultlist = new Map<String, String>();
     try {
       system.debug('id:::::' + id);
       list<Deal_Contact__c> dealContactList = new List<Deal_Contact__c>();
       list<Contact> ContactList = new List<Contact>();
       list<string> ContactIDList = new List<string>();
+
       for (Deal_Contact__c dc : [
         SELECT id, name, Contact__c
         FROM Deal_Contact__c
@@ -183,6 +190,7 @@ public class ClearBase {
       ]) {
         ContactIDList.add(dc.Contact__c);
       }
+
       system.debug('ContactIDList:::::' + ContactIDList);
 
       string message = 'Get Response from Risk Search.';
@@ -215,74 +223,88 @@ public class ClearBase {
             null
           );
           HTTPResponse res1 = new HTTPResponse();
-          string finalresponse = '';
-          if (Test.isRunningTest() == false) {
-            res1 = http.send(request);
-            finalresponse = res1.getBody();
-          } else {
-            res1.setBody(
-              '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns2:RiskInformPersonSearchResponse xmlns:ns2="com/thomsonreuters/schemas/riskinformperson-search" xmlns:ns3="com/thomsonreuters/schemas/riskflags" xmlns:ns4="com/thomsonreuters/schemas/news-search" xmlns:ns5="com/thomsonreuters/schemas/webanalytics-search" xmlns:ns6="com/thomsonreuters/schemas/search" xmlns:ns7="com/thomsonreuters/schemas/criminal-data"><Status><StatusCode>200</StatusCode><SubStatusCode>200</SubStatusCode></Status><RiskInformPersonSearchResult><PersonEntity><GroupId>8a56c8a57722ecde017771b6220f4a72</GroupId><TotalScore>5.00</TotalScore><EntityId>P1__MTM3MzQ5NjI3ODY</EntityId><Header><AllFlags sectioncount="1" sectionscore="5.00"/><AddressFlags sectioncount="0" sectionscore="0.00"/><SyntheticIdentity sectioncount="0" sectionscore="0.00"/><SingleRiskIndicators sectioncount="1" sectionscore="5.00"/><Custom sectioncount="0" sectionscore="0.00"/><News sectionscore="Not Applicable"/><WebAnalytics sectionscore="0.00"/><RealTimeIncarcerationRecords sectioncount="0" sectionscore="0.00"/></Header><Sections><Section><SectionName>Address Flags</SectionName><SectionScore>0.00</SectionScore><SectionDetails><AddressFlags><GovernmentalAddress><RiskFlagName>Address is Governmental</RiskFlagName><RiskFlagScore>0.00</RiskFlagScore><RiskFlagHitIndicator>No</RiskFlagHitIndicator></GovernmentalAddress><NewsResult><RecordId>8a56c8a57722ecde017771b6318f4c3e</RecordId><NewsSummary><Headline>Jharkhand High Court Aditya Anand vs The State Of Jharkhand</Headline><PublicationInfo><Publication>Pakistan Law Reporter</Publication><WordCount>Word Count: 823</WordCount></PublicationInfo><CitationInfo><Citation>5/25/16 PAKLREP (No Page)</Citation><WestlawCitation>2016 WLNR 15927962</WestlawCitation></CitationInfo><ArticleSnippet><PublicationDate>May 25, 2016</PublicationDate><WordCount>Word Count: 823</WordCount><LeadParagraph>Jharkhand:</LeadParagraph></ArticleSnippet></NewsSummary></NewsResult></News></SectionDetails></Section><Section><SectionName>RealTimeIncarcerationRecords</SectionName><SectionScore>0.00</SectionScore><SectionDetails></SectionDetails></Section></Sections></PersonEntity></RiskInformPersonSearchResult></ns2:RiskInformPersonSearchResponse>'
-            );
-            res1.setStatusCode(200);
-            finalresponse = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns2:RiskInformPersonSearchResponse xmlns:ns2="com/thomsonreuters/schemas/riskinformperson-search" xmlns:ns3="com/thomsonreuters/schemas/riskflags" xmlns:ns4="com/thomsonreuters/schemas/news-search" xmlns:ns5="com/thomsonreuters/schemas/webanalytics-search" xmlns:ns6="com/thomsonreuters/schemas/search" xmlns:ns7="com/thomsonreuters/schemas/criminal-data"><Status><StatusCode>200</StatusCode><SubStatusCode>200</SubStatusCode></Status><RiskInformPersonSearchResult><PersonEntity><GroupId>8a56c8a57722ecde017771b6220f4a72</GroupId><TotalScore>5.00</TotalScore><EntityId>P1__MTM3MzQ5NjI3ODY</EntityId><Header><AllFlags sectioncount="1" sectionscore="5.00"/><AddressFlags sectioncount="0" sectionscore="0.00"/><SyntheticIdentity sectioncount="0" sectionscore="0.00"/><SingleRiskIndicators sectioncount="1" sectionscore="5.00"/><Custom sectioncount="0" sectionscore="0.00"/><News sectionscore="Not Applicable"/><WebAnalytics sectionscore="0.00"/><RealTimeIncarcerationRecords sectioncount="0" sectionscore="0.00"/></Header><Sections><Section><SectionName>Address Flags</SectionName><SectionScore>0.00</SectionScore><SectionDetails><AddressFlags><GovernmentalAddress><RiskFlagName>Address is Governmental</RiskFlagName><RiskFlagScore>0.00</RiskFlagScore><RiskFlagHitIndicator>No</RiskFlagHitIndicator></GovernmentalAddress><NewsResult><RecordId>8a56c8a57722ecde017771b6318f4c3e</RecordId><NewsSummary><Headline>Jharkhand High Court Aditya Anand vs The State Of Jharkhand</Headline><PublicationInfo><Publication>Pakistan Law Reporter</Publication><WordCount>Word Count: 823</WordCount></PublicationInfo><CitationInfo><Citation>5/25/16 PAKLREP (No Page)</Citation><WestlawCitation>2016 WLNR 15927962</WestlawCitation></CitationInfo><ArticleSnippet><PublicationDate>May 25, 2016</PublicationDate><WordCount>Word Count: 823</WordCount><LeadParagraph>Jharkhand:</LeadParagraph></ArticleSnippet></NewsSummary></NewsResult></News></SectionDetails></Section><Section><SectionName>RealTimeIncarcerationRecords</SectionName><SectionScore>0.00</SectionScore><SectionDetails></SectionDetails></Section></Sections></PersonEntity></RiskInformPersonSearchResult></ns2:RiskInformPersonSearchResponse>';
-          }
-          system.debug(
-            'getContactDetailforRiskSearch: finalresponse==' + finalresponse
-          );
-          DOM.Document document1 = new DOM.Document();
-          document1.load(finalresponse);
-          //Dom.XmlNode sta = document1.getRootElement().getChildElement('Status', null);
-          //string scode = sta.getChildElement('StatusCode', null).getText();
-
-          //system.debug('risk -- scode==='+scode);
-          system.debug(
-            'getContactDetailforRiskSearch:==' + res1.getStatusCode()
-          );
-          if (res1.getStatusCode() == 200) {
-            Dom.XmlNode rootElement = document1.getRootElement()
-              .getChildElement('RiskInformPersonSearchResult', null);
-            Dom.XmlNode PersonEntitynode = rootElement.getChildElement(
-              'PersonEntity',
-              null
-            );
-            String TotalScore = PersonEntitynode.getChildElement(
-                'TotalScore',
-                null
-              )
-              .getText();
-            String GroupId = PersonEntitynode.getChildElement('GroupId', null)
-              .getText();
-            clearResultlist[0].Risk_Number__c = Decimal.valueof(TotalScore);
-            clearResultlist[0].Group_ID_for_Risk_search__c = GroupId;
-            resultlist.put('message', message);
-            resultlist.put('GroupId', GroupId);
+          try {
+            string finalresponse = '';
+            if (Test.isRunningTest() == false) {
+              res1 = http.send(request);
+              finalresponse = res1.getBody();
+            } else {
+              res1.setBody(
+                '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns2:RiskInformPersonSearchResponse xmlns:ns2="com/thomsonreuters/schemas/riskinformperson-search" xmlns:ns3="com/thomsonreuters/schemas/riskflags" xmlns:ns4="com/thomsonreuters/schemas/news-search" xmlns:ns5="com/thomsonreuters/schemas/webanalytics-search" xmlns:ns6="com/thomsonreuters/schemas/search" xmlns:ns7="com/thomsonreuters/schemas/criminal-data"><Status><StatusCode>200</StatusCode><SubStatusCode>200</SubStatusCode></Status><RiskInformPersonSearchResult><PersonEntity><GroupId>8a56c8a57722ecde017771b6220f4a72</GroupId><TotalScore>5.00</TotalScore><EntityId>P1__MTM3MzQ5NjI3ODY</EntityId><Header><AllFlags sectioncount="1" sectionscore="5.00"/><AddressFlags sectioncount="0" sectionscore="0.00"/><SyntheticIdentity sectioncount="0" sectionscore="0.00"/><SingleRiskIndicators sectioncount="1" sectionscore="5.00"/><Custom sectioncount="0" sectionscore="0.00"/><News sectionscore="Not Applicable"/><WebAnalytics sectionscore="0.00"/><RealTimeIncarcerationRecords sectioncount="0" sectionscore="0.00"/></Header><Sections><Section><SectionName>Address Flags</SectionName><SectionScore>0.00</SectionScore><SectionDetails><AddressFlags><GovernmentalAddress><RiskFlagName>Address is Governmental</RiskFlagName><RiskFlagScore>0.00</RiskFlagScore><RiskFlagHitIndicator>No</RiskFlagHitIndicator></GovernmentalAddress><NewsResult><RecordId>8a56c8a57722ecde017771b6318f4c3e</RecordId><NewsSummary><Headline>Jharkhand High Court Aditya Anand vs The State Of Jharkhand</Headline><PublicationInfo><Publication>Pakistan Law Reporter</Publication><WordCount>Word Count: 823</WordCount></PublicationInfo><CitationInfo><Citation>5/25/16 PAKLREP (No Page)</Citation><WestlawCitation>2016 WLNR 15927962</WestlawCitation></CitationInfo><ArticleSnippet><PublicationDate>May 25, 2016</PublicationDate><WordCount>Word Count: 823</WordCount><LeadParagraph>Jharkhand:</LeadParagraph></ArticleSnippet></NewsSummary></NewsResult></News></SectionDetails></Section><Section><SectionName>RealTimeIncarcerationRecords</SectionName><SectionScore>0.00</SectionScore><SectionDetails></SectionDetails></Section></Sections></PersonEntity></RiskInformPersonSearchResult></ns2:RiskInformPersonSearchResponse>'
+              );
+              res1.setStatusCode(200);
+              finalresponse = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns2:RiskInformPersonSearchResponse xmlns:ns2="com/thomsonreuters/schemas/riskinformperson-search" xmlns:ns3="com/thomsonreuters/schemas/riskflags" xmlns:ns4="com/thomsonreuters/schemas/news-search" xmlns:ns5="com/thomsonreuters/schemas/webanalytics-search" xmlns:ns6="com/thomsonreuters/schemas/search" xmlns:ns7="com/thomsonreuters/schemas/criminal-data"><Status><StatusCode>200</StatusCode><SubStatusCode>200</SubStatusCode></Status><RiskInformPersonSearchResult><PersonEntity><GroupId>8a56c8a57722ecde017771b6220f4a72</GroupId><TotalScore>5.00</TotalScore><EntityId>P1__MTM3MzQ5NjI3ODY</EntityId><Header><AllFlags sectioncount="1" sectionscore="5.00"/><AddressFlags sectioncount="0" sectionscore="0.00"/><SyntheticIdentity sectioncount="0" sectionscore="0.00"/><SingleRiskIndicators sectioncount="1" sectionscore="5.00"/><Custom sectioncount="0" sectionscore="0.00"/><News sectionscore="Not Applicable"/><WebAnalytics sectionscore="0.00"/><RealTimeIncarcerationRecords sectioncount="0" sectionscore="0.00"/></Header><Sections><Section><SectionName>Address Flags</SectionName><SectionScore>0.00</SectionScore><SectionDetails><AddressFlags><GovernmentalAddress><RiskFlagName>Address is Governmental</RiskFlagName><RiskFlagScore>0.00</RiskFlagScore><RiskFlagHitIndicator>No</RiskFlagHitIndicator></GovernmentalAddress><NewsResult><RecordId>8a56c8a57722ecde017771b6318f4c3e</RecordId><NewsSummary><Headline>Jharkhand High Court Aditya Anand vs The State Of Jharkhand</Headline><PublicationInfo><Publication>Pakistan Law Reporter</Publication><WordCount>Word Count: 823</WordCount></PublicationInfo><CitationInfo><Citation>5/25/16 PAKLREP (No Page)</Citation><WestlawCitation>2016 WLNR 15927962</WestlawCitation></CitationInfo><ArticleSnippet><PublicationDate>May 25, 2016</PublicationDate><WordCount>Word Count: 823</WordCount><LeadParagraph>Jharkhand:</LeadParagraph></ArticleSnippet></NewsSummary></NewsResult></News></SectionDetails></Section><Section><SectionName>RealTimeIncarcerationRecords</SectionName><SectionScore>0.00</SectionScore><SectionDetails></SectionDetails></Section></Sections></PersonEntity></RiskInformPersonSearchResult></ns2:RiskInformPersonSearchResponse>';
+            }
             system.debug(
-              'getContactDetailforRiskSearch:GroupId===risk' + GroupId
+              'getContactDetailforRiskSearch: finalresponse==' + finalresponse
             );
-            update clearResultlist;
-            String JsonclearResultlist = JSON.serialize(clearResultlist);
+            DOM.Document document1 = new DOM.Document();
+            document1.load(finalresponse);
+            //Dom.XmlNode sta = document1.getRootElement().getChildElement('Status', null);
+            //string scode = sta.getChildElement('StatusCode', null).getText();
 
-            Deal_Contact__c dcObj = new Deal_Contact__c();
-            dcObj.id = id;
-            dcObj.Background_Risk_Number__c = Decimal.valueof(TotalScore);
-            dcObj.Clear_Result__c = clearResultlist[0].id;
-            dealContactList.add(dcObj);
+            //system.debug('risk -- scode==='+scode);
+            system.debug(
+              'getContactDetailforRiskSearch:==' + res1.getStatusCode()
+            );
+            if (res1.getStatusCode() == 200) {
+              Dom.XmlNode rootElement = document1.getRootElement()
+                .getChildElement('RiskInformPersonSearchResult', null);
+              Dom.XmlNode PersonEntitynode = rootElement.getChildElement(
+                'PersonEntity',
+                null
+              );
+              String TotalScore = PersonEntitynode.getChildElement(
+                  'TotalScore',
+                  null
+                )
+                .getText();
+              String GroupId = PersonEntitynode.getChildElement('GroupId', null)
+                .getText();
+              clearResultlist[0].Risk_Number__c = Decimal.valueof(TotalScore);
+              clearResultlist[0].Group_ID_for_Risk_search__c = GroupId;
+              resultlist.put('message', message);
+              resultlist.put('GroupId', GroupId);
+              system.debug(
+                'getContactDetailforRiskSearch:GroupId===risk' + GroupId
+              );
+              update clearResultlist;
 
-            if (dealContactList != null && dealContactList.size() > 0) {
-              update dealContactList;
+              String JsonclearResultlist = JSON.serialize(clearResultlist);
+
+
+              Deal_Contact__c dcObj = new Deal_Contact__c();
+              dcObj.id = id;
+              dcObj.Background_Risk_Number__c = Decimal.valueof(TotalScore);
+              dcObj.Clear_Result__c = clearResultlist[0].id;
+              dealContactList.add(dcObj);
+
+              if (dealContactList != null && dealContactList.size() > 0) {
+                update dealContactList;
+              }
+
+              contact conObj = new contact();
+              conObj.id = ContactIDList[0];
+              conObj.Background_Risk_Number__c = Decimal.valueof(TotalScore);
+              ContactList.add(conObj);
+
+              if (ContactList != null && ContactList.size() > 0) {
+                update ContactList;
+              }
+
+              System.enqueueJob(
+                new APILoggerQueueable(request, res1, id, false)
+              );
+            } else {
+              message = 'Get Error in response';
+              resultlist.put('message', message);
+              System.CalloutException e = new System.CalloutException();
+              e.setMessage(res1.getStatusCode() + ': ' + res1.getStatus());
+              System.enqueueJob(new APILoggerQueueable(request, res1, id, e));
             }
-
-            contact conObj = new contact();
-            conObj.id = ContactIDList[0];
-            conObj.Background_Risk_Number__c = Decimal.valueof(TotalScore);
-            ContactList.add(conObj);
-
-            if (ContactList != null && ContactList.size() > 0) {
-              update ContactList;
-            }
-          } else {
-            message = 'Get Error in response';
-            resultlist.put('message', message);
+          } catch (Exception e) {
+            System.enqueueJob(new APILoggerQueueable(request, res1, id, e));
+            throw e;
           }
         } else {
           message = 'Get Error in response';
@@ -295,9 +317,20 @@ public class ClearBase {
       //return resultlist;
     } catch (exception e) {
       System.debug('The following exception has occurred: ' + e.getMessage());
+      resultlist.put('errorMessage', e.getMessage());
+      return resultlist;
+
     }
     return resultlist;
   }
+
+
+  @future
+  public static void performUpdateDmlInFuture(String sobjectJson) {
+    update (SObject) JSON.deserialize(sobjectJson, SObject.class);
+  }
+
+
   @auraenabled
   public static String riskPersonInfo(list<Clear_Result__c> clearResultlist) {
     DOM.Document doc = new DOM.Document();
@@ -365,32 +398,46 @@ public class ClearBase {
       'POST',
       null
     );
-    system.debug('riskPersonInfo::req==' + req);
-    string response = '';
-    if (Test.isRunningTest() == false) {
-      res = http.send(req);
-      response = res.getBody();
-    } else {
-      res.setBody(
-        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns2:PersonResults xmlns:ns2="http://clear.thomsonreuters.com/api/search/2.0"><Status><StatusCode>200</StatusCode><SubStatusCode>0</SubStatusCode></Status><Uri>https://s2s.beta.thomsonreuters.com/api/v2/person/searchResults/8a57c89268a623ec016909c791112578</Uri><GroupCount>1</GroupCount></ns2:PersonResults>'
-      );
-      res.setStatusCode(200);
-      response = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns2:PersonResults xmlns:ns2="http://clear.thomsonreuters.com/api/search/2.0"><Status><StatusCode>200</StatusCode><SubStatusCode>0</SubStatusCode></Status><Uri>https://s2s.beta.thomsonreuters.com/api/v2/person/searchResults/8a57c89268a623ec016909c791112578</Uri><GroupCount>1</GroupCount></ns2:PersonResults>';
+
+    try {
+      system.debug('riskPersonInfo::req==' + req);
+      string response = '';
+
+      if (Test.isRunningTest() == false) {
+        res = http.send(req);
+        response = res.getBody();
+      } else {
+        res.setBody(
+          '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns2:PersonResults xmlns:ns2="http://clear.thomsonreuters.com/api/search/2.0"><Status><StatusCode>200</StatusCode><SubStatusCode>0</SubStatusCode></Status><Uri>https://s2s.beta.thomsonreuters.com/api/v2/person/searchResults/8a57c89268a623ec016909c791112578</Uri><GroupCount>1</GroupCount></ns2:PersonResults>'
+        );
+        res.setStatusCode(200);
+        response = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns2:PersonResults xmlns:ns2="http://clear.thomsonreuters.com/api/search/2.0"><Status><StatusCode>200</StatusCode><SubStatusCode>0</SubStatusCode></Status><Uri>https://s2s.beta.thomsonreuters.com/api/v2/person/searchResults/8a57c89268a623ec016909c791112578</Uri><GroupCount>1</GroupCount></ns2:PersonResults>';
+      }
+
+      String Link;
+      System.debug('riskPersonInfo::response::' + response);
+      DOM.Document document = new DOM.Document();
+      document.load(response);
+      string groupcount = document.getRootElement()
+        .getChildElement('GroupCount', null)
+        .getText();
+      if (res.getStatusCode() == 200 && Integer.valueOf(groupcount) > 0) {
+        Link = document.getRootElement().getChildElement('Uri', null).getText();
+        system.debug('riskPersonInfo::Link==' + Link);
+      } else {
+        Link = '';
+      }
+
+      // System.enqueueJob(
+      //   new APILoggerQueueable(req, res, clearResultlist[0].id, false)
+      // );
+      return Link;
+    } catch (Exception e) {
+      // System.enqueueJob(
+      //   new APILoggerQueueable(req, res, clearResultlist[0].id, e)
+      // );
+      throw new AuraHandledException(e.getMessage());
     }
-    String Link;
-    System.debug('riskPersonInfo::response::' + response);
-    DOM.Document document = new DOM.Document();
-    document.load(response);
-    string groupcount = document.getRootElement()
-      .getChildElement('GroupCount', null)
-      .getText();
-    if (res.getStatusCode() == 200 && Integer.valueOf(groupcount) > 0) {
-      Link = document.getRootElement().getChildElement('Uri', null).getText();
-      system.debug('riskPersonInfo::Link==' + Link);
-    } else {
-      Link = '';
-    }
-    return Link;
   }
 
   @auraenabled
@@ -452,7 +499,19 @@ public class ClearBase {
     //if(conlist[0].Birthdate != null){
 
     message = 'Get the Person Search Report.';
-    String xmlstring = DomXmlUserInfo(conlist);
+
+    if(conlist == null) {
+      retrunlist.put('errorMessage', 'Your request could not be processed due to incomplete contact details.');
+      return retrunlist;
+    }
+    String xmlstring;
+    
+    try {
+      xmlstring = DomXmlUserInfo(conlist);
+    } catch (Exception e) {
+      retrunlist.put('errorMessage', 'Your request could not be processed due to incomplete contact details.');
+      return retrunlist;
+    }
     system.debug('getContactDetailforPersonSearch:  xmlstring==' + xmlstring);
     Http http = new Http();
     HTTPResponse res = new HTTPResponse();
@@ -463,195 +522,229 @@ public class ClearBase {
       null
     );
     string response = '';
-    if (Test.isRunningTest() == false) {
-      res = http.send(req);
-      response = res.getBody();
-    } else {
-      res.setBody(
-        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns2:PersonResults xmlns:ns2="http://clear.thomsonreuters.com/api/search/2.0"><Status><StatusCode>200</StatusCode><SubStatusCode>0</SubStatusCode></Status><Uri>https://s2s.beta.thomsonreuters.com/api/v2/person/searchResults/8a57c89268a623ec016909c791112578</Uri><GroupCount>1</GroupCount></ns2:PersonResults>'
-      );
-      res.setStatusCode(200);
-      response = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns2:PersonResults xmlns:ns2="http://clear.thomsonreuters.com/api/search/2.0"><Status><StatusCode>200</StatusCode><SubStatusCode>0</SubStatusCode></Status><Uri>https://s2s.beta.thomsonreuters.com/api/v2/person/searchResults/8a57c89268a623ec016909c791112578</Uri><GroupCount>1</GroupCount></ns2:PersonResults>';
-    }
-    system.debug('response::==' + response);
-    system.debug('res.getStatusCode()::::' + res.getStatusCode());
 
-    /* DOM.Document document12 = new DOM.Document();
+    try {
+      if (Test.isRunningTest() == false) {
+        res = http.send(req);
+        response = res.getBody();
+      } else {
+        res.setBody(
+          '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns2:PersonResults xmlns:ns2="http://clear.thomsonreuters.com/api/search/2.0"><Status><StatusCode>200</StatusCode><SubStatusCode>0</SubStatusCode></Status><Uri>https://s2s.beta.thomsonreuters.com/api/v2/person/searchResults/8a57c89268a623ec016909c791112578</Uri><GroupCount>1</GroupCount></ns2:PersonResults>'
+        );
+        res.setStatusCode(200);
+        response = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns2:PersonResults xmlns:ns2="http://clear.thomsonreuters.com/api/search/2.0"><Status><StatusCode>200</StatusCode><SubStatusCode>0</SubStatusCode></Status><Uri>https://s2s.beta.thomsonreuters.com/api/v2/person/searchResults/8a57c89268a623ec016909c791112578</Uri><GroupCount>1</GroupCount></ns2:PersonResults>';
+      }
+      system.debug('response::==' + response);
+      system.debug('res.getStatusCode()::::' + res.getStatusCode());
+
+      /* DOM.Document document12 = new DOM.Document();
             document12.load(response);
             Dom.XmlNode status12 = document12.getRootElement().getChildElement('Status', null);
             string SubStatusCode = status12.getChildElement('SubStatusCode', null).getText();
             system.debug('SubStatusCode=='+SubStatusCode); */
 
-    if (res.getStatusCode() == 200) {
-      //System.debug('response::'+response);
-      DOM.Document document = new DOM.Document();
-      document.load(response);
-      Dom.XmlNode status = document.getRootElement()
-        .getChildElement('Status', null);
-      string statuscode = status.getChildElement('StatusCode', null).getText();
-      string groupcount = document.getRootElement()
-        .getChildElement('GroupCount', null)
-        .getText();
-      if (integer.valueof(groupcount) > 0) {
-        system.debug(
-          'getContactDetailforPersonSearch:statuscode==' + statuscode
-        );
-        system.debug('inside if: getContactDetailforPersonSearch');
-        String Link = document.getRootElement()
-          .getChildElement('Uri', null)
+      if (res.getStatusCode() == 200) {
+        //System.debug('response::'+response);
+        DOM.Document document = new DOM.Document();
+        document.load(response);
+        Dom.XmlNode status = document.getRootElement()
+          .getChildElement('Status', null);
+        string statuscode = status.getChildElement('StatusCode', null)
           .getText();
-        Dom.XmlNode childnodeLink = document.getRootElement()
-          .getChildElement('Uri', null);
-
-        HttpRequest request = ClearBase.generategetRequest(Link, 'GET', null);
-        system.debug('inside if:request=' + request);
-        string finalresponse = '';
-        HTTPResponse res1 = new HTTPResponse();
-        if (Test.isRunningTest() == false) {
-          res1 = http.send(request);
-          finalresponse = res1.getBody();
-        } else {
-          res1.setBody(
-            '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns4:PersonResultsPage xmlns:ns2="com/thomsonreuters/schemas/common-data" xmlns:ns3="com/thomsonreuters/schemas/search" xmlns:ns4="http://clear.thomsonreuters.com/api/search/2.0"><Status><StatusCode>200</StatusCode><SubStatusCode>200</SubStatusCode></Status><StartIndex>0</StartIndex><EndIndex>1</EndIndex><ResultGroup><GroupId>b8cc66b9af4d44ccb9f7dc63aea85a91</GroupId><RecordCount>1</RecordCount><Relevance>97</Relevance><DominantValues><ns3:PersonDominantValues><Name><FirstName>DANIEL</FirstName><MiddleName>J</MiddleName><LastName>GALLI</LastName><FullName>DANIEL J GALLI</FullName></Name><SSN>005-62-XXXX</SSN><AgeInfo><PersonBirthDate>04/XX/1961</PersonBirthDate><PersonAge>60</PersonAge></AgeInfo><Address><Street>1024 WASHINGTON AVE UNIT 8</Street><City>PORTLAND</City><State>ME</State><ZipCode>04103</ZipCode><ReportedDate>01/15/2021</ReportedDate></Address></ns3:PersonDominantValues></DominantValues><RecordDetails><ns3:PersonResponseDetail><Name><FirstName>DANIEL</FirstName><MiddleName>J</MiddleName><LastName>GALLI</LastName><FullName>DANIEL J GALLI</FullName></Name><SSN>005-62-XXXX</SSN><PersonProfile><PersonBirthDate>04/XX/1961</PersonBirthDate><PersonBirthDate>04/1961</PersonBirthDate><PersonSex>MALE</PersonSex><PersonSpouseName>REBECCA</PersonSpouseName></PersonProfile><DriverLicenseInfo><DriverLicenseNumber>6490XXX</DriverLicenseNumber><DriverLicenseState>ME</DriverLicenseState></DriverLicenseInfo><AKANames><FirstName>DANIEL</FirstName><MiddleName>J.</MiddleName><LastName>GALLI</LastName></AKANames><AKANames><FirstName>DANIEL</FirstName><MiddleName>JOSEPH</MiddleName><LastName>GALLI</LastName><SourceInfo><SourceName>TransUnion</SourceName><SourceDocumentGuid>I0EF608EAE12211D59A400E00E20D7175</SourceDocumentGuid></SourceInfo><SourceInfo><SourceName>Historic Credit Bureau</SourceName><SourceDocumentGuid>I89990d72b1f011de9b8c850332338889</SourceDocumentGuid></SourceInfo></AKANames><PersonEntityId>P1__NDExNjYyNTQ4</PersonEntityId></ns3:PersonResponseDetail></RecordDetails></ResultGroup><ResultGroup><GroupId>a74901e4723f43ffa4209ab8e3d33831</GroupId><RecordCount>1</RecordCount><Relevance>90</Relevance><DominantValues><ns3:PersonDominantValues><Name><FirstName>JOSEPH</FirstName><MiddleName>D</MiddleName><LastName>GALLI</LastName></Name><SSN>007-90-XXXX</SSN><AgeInfo><PersonBirthDate>03/XX/1986</PersonBirthDate><PersonAge>35</PersonAge></AgeInfo><Address><Street>700 N RANDOLPH ST APT 1100</Street><City>ARLINGTON</City><State>VA</State><ZipCode>22203</ZipCode><ReportedDate>11/18/2020</ReportedDate></Address></ns3:PersonDominantValues></DominantValues><RecordDetails><ns3:PersonResponseDetail><Name><FirstName>JOSEPH</FirstName><MiddleName>D</MiddleName><LastName>GALLI</LastName></Name><SSN>007-90-XXXX</SSN><PersonProfile><PersonBirthDate>03/XX/1986</PersonBirthDate><PersonBirthDate>1986</PersonBirthDate><PersonBirthDate>06/XX/1988</PersonBirthDate><PersonBirthDate>01/XX/1985</PersonBirthDate><PersonBirthDate>03/1986</PersonBirthDate><PersonSex>MALE</PersonSex></PersonProfile><AKANames><FirstName>THOMAS</FirstName><MiddleName>S</MiddleName><LastName>BERENZ</LastName><SourceInfo><SourceName>Bank Account Header Records</SourceName><SourceDocumentGuid>I11c84450ee1611eabea4f0dc9fb69570</SourceDocumentGuid></SourceInfo></AKANames></ns3:PersonResponseDetail></RecordDetails></ResultGroup></ns4:PersonResultsPage>'
-          );
-          res1.setStatusCode(200);
-          finalresponse = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns4:PersonResultsPage xmlns:ns2="com/thomsonreuters/schemas/common-data" xmlns:ns3="com/thomsonreuters/schemas/search" xmlns:ns4="http://clear.thomsonreuters.com/api/search/2.0"><Status><StatusCode>200</StatusCode><SubStatusCode>200</SubStatusCode></Status><StartIndex>0</StartIndex><EndIndex>1</EndIndex><ResultGroup><GroupId>b8cc66b9af4d44ccb9f7dc63aea85a91</GroupId><RecordCount>1</RecordCount><Relevance>97</Relevance><DominantValues><ns3:PersonDominantValues><Name><FirstName>DANIEL</FirstName><MiddleName>J</MiddleName><LastName>GALLI</LastName><FullName>DANIEL J GALLI</FullName></Name><SSN>005-62-XXXX</SSN><AgeInfo><PersonBirthDate>04/XX/1961</PersonBirthDate><PersonAge>60</PersonAge></AgeInfo><Address><Street>1024 WASHINGTON AVE UNIT 8</Street><City>PORTLAND</City><State>ME</State><ZipCode>04103</ZipCode><ReportedDate>01/15/2021</ReportedDate></Address></ns3:PersonDominantValues></DominantValues><RecordDetails><ns3:PersonResponseDetail><Name><FirstName>DANIEL</FirstName><MiddleName>J</MiddleName><LastName>GALLI</LastName><FullName>DANIEL J GALLI</FullName></Name><SSN>005-62-XXXX</SSN><PersonProfile><PersonBirthDate>04/XX/1961</PersonBirthDate><PersonBirthDate>04/1961</PersonBirthDate><PersonSex>MALE</PersonSex><PersonSpouseName>REBECCA</PersonSpouseName></PersonProfile><DriverLicenseInfo><DriverLicenseNumber>6490XXX</DriverLicenseNumber><DriverLicenseState>ME</DriverLicenseState></DriverLicenseInfo><AKANames><FirstName>DANIEL</FirstName><MiddleName>J.</MiddleName><LastName>GALLI</LastName></AKANames><AKANames><FirstName>DANIEL</FirstName><MiddleName>JOSEPH</MiddleName><LastName>GALLI</LastName><SourceInfo><SourceName>TransUnion</SourceName><SourceDocumentGuid>I0EF608EAE12211D59A400E00E20D7175</SourceDocumentGuid></SourceInfo><SourceInfo><SourceName>Historic Credit Bureau</SourceName><SourceDocumentGuid>I89990d72b1f011de9b8c850332338889</SourceDocumentGuid></SourceInfo></AKANames><PersonEntityId>P1__NDExNjYyNTQ4</PersonEntityId></ns3:PersonResponseDetail></RecordDetails></ResultGroup><ResultGroup><GroupId>a74901e4723f43ffa4209ab8e3d33831</GroupId><RecordCount>1</RecordCount><Relevance>90</Relevance><DominantValues><ns3:PersonDominantValues><Name><FirstName>JOSEPH</FirstName><MiddleName>D</MiddleName><LastName>GALLI</LastName></Name><SSN>007-90-XXXX</SSN><AgeInfo><PersonBirthDate>03/XX/1986</PersonBirthDate><PersonAge>35</PersonAge></AgeInfo><Address><Street>700 N RANDOLPH ST APT 1100</Street><City>ARLINGTON</City><State>VA</State><ZipCode>22203</ZipCode><ReportedDate>11/18/2020</ReportedDate></Address></ns3:PersonDominantValues></DominantValues><RecordDetails><ns3:PersonResponseDetail><Name><FirstName>JOSEPH</FirstName><MiddleName>D</MiddleName><LastName>GALLI</LastName></Name><SSN>007-90-XXXX</SSN><PersonProfile><PersonBirthDate>03/XX/1986</PersonBirthDate><PersonBirthDate>1986</PersonBirthDate><PersonBirthDate>06/XX/1988</PersonBirthDate><PersonBirthDate>01/XX/1985</PersonBirthDate><PersonBirthDate>03/1986</PersonBirthDate><PersonSex>MALE</PersonSex></PersonProfile><AKANames><FirstName>THOMAS</FirstName><MiddleName>S</MiddleName><LastName>BERENZ</LastName><SourceInfo><SourceName>Bank Account Header Records</SourceName><SourceDocumentGuid>I11c84450ee1611eabea4f0dc9fb69570</SourceDocumentGuid></SourceInfo></AKANames></ns3:PersonResponseDetail></RecordDetails></ResultGroup></ns4:PersonResultsPage>';
-        }
-        system.debug(
-          'getContactDetailforPersonSearch::finalresponse==' + finalresponse
-        );
-        DOM.Document document1 = new DOM.Document();
-        document1.load(finalresponse);
-
-        //Dom.XmlNode sta = document1.getRootElement().getChildElement('Status', null);
-        //string scode = sta.getChildElement('StatusCode', null).getText();
-        //system.debug('scode==='+scode);
-        if (res1.getStatusCode() == 200) {
-          Dom.XmlNode rootElement = document1.getRootElement()
-            .getChildElement('ResultGroup', null);
-          String groupid = rootElement.getChildElement('GroupId', null)
-            .getText();
-          system.debug('getContactDetailforPersonSearch::groupid==' + groupid);
-          String ns2 = 'com/thomsonreuters/schemas/search';
-          String ns3 = 'http://clear.thomsonreuters.com/api/search/2.0';
-          Dom.XmlNode root = document1.getRootElement()
-            .getChildElement('ResultGroup', null);
-          Dom.XmlNode DominantValues = root.getChildElement(
-            'DominantValues',
-            null
-          );
-          system.debug('DominantValues==' + DominantValues);
-          Dom.XmlNode ns = DominantValues.getChildElement(
-            'PersonDominantValues',
-            ns2
-          );
-          system.debug('ns==' + ns);
-          Dom.XmlNode Name = ns.getChildElement('Name', null);
-          FirstName = Name.getChildElement('FirstName', null).getText();
-          LastName = Name.getChildElement('LastName', null).getText();
-          system.debug('FirstName==' + FirstName);
-          system.debug('LastName==' + LastName);
-          system.debug('ns==' + ns);
-          //Dom.XmlNode AgeInfo= ns.getChildElement('AgeInfo', null);
-          //Birthdate = AgeInfo.getChildElement('PersonBirthDate', null).getText();
-          //system.debug('Birthdate:::::'+Birthdate);
-          Dom.XmlNode Address = ns.getChildElement('Address', null);
-          system.debug('Address==' + Address);
-          Street = Address.getChildElement('Street', null).getText();
-          City = Address.getChildElement('City', null).getText();
-          State = Address.getChildElement('State', null).getText();
-          ZipCode = Address.getChildElement('ZipCode', null).getText();
-          system.debug('Street==' + Street);
-          system.debug('City==' + City);
-          system.debug('State==' + State);
-          system.debug('ZipCode==' + ZipCode);
-          Dom.XmlNode RecordDetails = root.getChildElement(
-            'RecordDetails',
-            null
-          );
-          Dom.XmlNode PersonResponseDetail = RecordDetails.getChildElement(
-            'PersonResponseDetail',
-            ns2
-          );
-          string PersonEntityId = PersonResponseDetail.getChildElement(
-              'PersonEntityId',
-              null
-            )
-            .getText();
+        string groupcount = document.getRootElement()
+          .getChildElement('GroupCount', null)
+          .getText();
+        if (integer.valueof(groupcount) > 0) {
           system.debug(
-            'getContactDetailforPersonSearch::PersonEntityId==' + PersonEntityId
+            'getContactDetailforPersonSearch:statuscode==' + statuscode
           );
-          Dom.XmlNode AKANamesnode = PersonResponseDetail.getChildElement(
-            'AKANames',
-            null
-          );
-          String akaFistname;
-          String akaLastName;
-          if (AKANamesnode != null) {
-            akaFistname = AKANamesnode.getChildElement('FirstName', null)
-              .getText();
-            akalastname = AKANamesnode.getChildElement('LastName', null)
-              .getText();
-          }
-          system.debug(akaFistname + ':::' + akalastname);
-          //retrunlist.put('PersonEntityId',PersonEntityId);
+          system.debug('inside if: getContactDetailforPersonSearch');
+          String Link = document.getRootElement()
+            .getChildElement('Uri', null)
+            .getText();
+          Dom.XmlNode childnodeLink = document.getRootElement()
+            .getChildElement('Uri', null);
 
-          List<Clear_Result__c> clearResult = new List<Clear_Result__c>();
-          clearResult = [
-            SELECT
-              First_Name__c,
-              Last_Name__c,
-              Birth_date__c,
-              Contact__c,
-              Group_ID_for_Person_Search__c,
-              City__c,
-              State__c,
-              Street__c,
-              Zip_Code__c
-            FROM Clear_Result__c
-            WHERE Contact__c = :id
-            LIMIT 1
-          ];
-          if (clearResult != null && clearResult.size() > 0) {
-            clearResult[0].First_Name__c = FirstName;
-            clearResult[0].Last_Name__c = LastName;
-            clearResult[0].Street__c = Street;
-            clearResult[0].City__c = City;
-            clearResult[0].State__c = State;
-            clearResult[0].Zip_Code__c = ZipCode;
-            clearResult[0].EntityId__c = PersonEntityId;
-            clearResult[0].akaFirstName__c = akaFistname;
-            clearResult[0].akaLastName__c = akalastname;
-            clearResult[0].Group_ID_for_Person_Search__c = groupid;
-            //clearResult[0].Birth_date__c=date.valueof(Birthdate);
-          } else {
-            Clear_Result__c cr = new Clear_Result__c();
-            cr.Name = FirstName + ' ' + LastName + '-Clear Result';
-            cr.First_Name__c = FirstName;
-            cr.Last_Name__c = LastName;
-            cr.Street__c = Street;
-            cr.City__c = City;
-            cr.State__c = State;
-            cr.EntityId__c = PersonEntityId;
-            cr.akaFirstName__c = akaFistname;
-            cr.akaLastName__c = akalastname;
-            cr.Group_ID_for_Person_Search__c = groupid;
-            //cr.Birth_date__c=date.valueof(Birthdate);
-            cr.Contact__c = id;
-            clearResult.add(cr);
+          HttpRequest request = ClearBase.generategetRequest(Link, 'GET', null);
+          system.debug('inside if:request=' + request);
+          string finalresponse = '';
+          HTTPResponse res1 = new HTTPResponse();
+          try {
+            if (Test.isRunningTest() == false) {
+              res1 = http.send(request);
+              finalresponse = res1.getBody();
+            } else {
+              res1.setBody(
+                '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns4:PersonResultsPage xmlns:ns2="com/thomsonreuters/schemas/common-data" xmlns:ns3="com/thomsonreuters/schemas/search" xmlns:ns4="http://clear.thomsonreuters.com/api/search/2.0"><Status><StatusCode>200</StatusCode><SubStatusCode>200</SubStatusCode></Status><StartIndex>0</StartIndex><EndIndex>1</EndIndex><ResultGroup><GroupId>b8cc66b9af4d44ccb9f7dc63aea85a91</GroupId><RecordCount>1</RecordCount><Relevance>97</Relevance><DominantValues><ns3:PersonDominantValues><Name><FirstName>DANIEL</FirstName><MiddleName>J</MiddleName><LastName>GALLI</LastName><FullName>DANIEL J GALLI</FullName></Name><SSN>005-62-XXXX</SSN><AgeInfo><PersonBirthDate>04/XX/1961</PersonBirthDate><PersonAge>60</PersonAge></AgeInfo><Address><Street>1024 WASHINGTON AVE UNIT 8</Street><City>PORTLAND</City><State>ME</State><ZipCode>04103</ZipCode><ReportedDate>01/15/2021</ReportedDate></Address></ns3:PersonDominantValues></DominantValues><RecordDetails><ns3:PersonResponseDetail><Name><FirstName>DANIEL</FirstName><MiddleName>J</MiddleName><LastName>GALLI</LastName><FullName>DANIEL J GALLI</FullName></Name><SSN>005-62-XXXX</SSN><PersonProfile><PersonBirthDate>04/XX/1961</PersonBirthDate><PersonBirthDate>04/1961</PersonBirthDate><PersonSex>MALE</PersonSex><PersonSpouseName>REBECCA</PersonSpouseName></PersonProfile><DriverLicenseInfo><DriverLicenseNumber>6490XXX</DriverLicenseNumber><DriverLicenseState>ME</DriverLicenseState></DriverLicenseInfo><AKANames><FirstName>DANIEL</FirstName><MiddleName>J.</MiddleName><LastName>GALLI</LastName></AKANames><AKANames><FirstName>DANIEL</FirstName><MiddleName>JOSEPH</MiddleName><LastName>GALLI</LastName><SourceInfo><SourceName>TransUnion</SourceName><SourceDocumentGuid>I0EF608EAE12211D59A400E00E20D7175</SourceDocumentGuid></SourceInfo><SourceInfo><SourceName>Historic Credit Bureau</SourceName><SourceDocumentGuid>I89990d72b1f011de9b8c850332338889</SourceDocumentGuid></SourceInfo></AKANames><PersonEntityId>P1__NDExNjYyNTQ4</PersonEntityId></ns3:PersonResponseDetail></RecordDetails></ResultGroup><ResultGroup><GroupId>a74901e4723f43ffa4209ab8e3d33831</GroupId><RecordCount>1</RecordCount><Relevance>90</Relevance><DominantValues><ns3:PersonDominantValues><Name><FirstName>JOSEPH</FirstName><MiddleName>D</MiddleName><LastName>GALLI</LastName></Name><SSN>007-90-XXXX</SSN><AgeInfo><PersonBirthDate>03/XX/1986</PersonBirthDate><PersonAge>35</PersonAge></AgeInfo><Address><Street>700 N RANDOLPH ST APT 1100</Street><City>ARLINGTON</City><State>VA</State><ZipCode>22203</ZipCode><ReportedDate>11/18/2020</ReportedDate></Address></ns3:PersonDominantValues></DominantValues><RecordDetails><ns3:PersonResponseDetail><Name><FirstName>JOSEPH</FirstName><MiddleName>D</MiddleName><LastName>GALLI</LastName></Name><SSN>007-90-XXXX</SSN><PersonProfile><PersonBirthDate>03/XX/1986</PersonBirthDate><PersonBirthDate>1986</PersonBirthDate><PersonBirthDate>06/XX/1988</PersonBirthDate><PersonBirthDate>01/XX/1985</PersonBirthDate><PersonBirthDate>03/1986</PersonBirthDate><PersonSex>MALE</PersonSex></PersonProfile><AKANames><FirstName>THOMAS</FirstName><MiddleName>S</MiddleName><LastName>BERENZ</LastName><SourceInfo><SourceName>Bank Account Header Records</SourceName><SourceDocumentGuid>I11c84450ee1611eabea4f0dc9fb69570</SourceDocumentGuid></SourceInfo></AKANames></ns3:PersonResponseDetail></RecordDetails></ResultGroup></ns4:PersonResultsPage>'
+              );
+              res1.setStatusCode(200);
+              finalresponse = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns4:PersonResultsPage xmlns:ns2="com/thomsonreuters/schemas/common-data" xmlns:ns3="com/thomsonreuters/schemas/search" xmlns:ns4="http://clear.thomsonreuters.com/api/search/2.0"><Status><StatusCode>200</StatusCode><SubStatusCode>200</SubStatusCode></Status><StartIndex>0</StartIndex><EndIndex>1</EndIndex><ResultGroup><GroupId>b8cc66b9af4d44ccb9f7dc63aea85a91</GroupId><RecordCount>1</RecordCount><Relevance>97</Relevance><DominantValues><ns3:PersonDominantValues><Name><FirstName>DANIEL</FirstName><MiddleName>J</MiddleName><LastName>GALLI</LastName><FullName>DANIEL J GALLI</FullName></Name><SSN>005-62-XXXX</SSN><AgeInfo><PersonBirthDate>04/XX/1961</PersonBirthDate><PersonAge>60</PersonAge></AgeInfo><Address><Street>1024 WASHINGTON AVE UNIT 8</Street><City>PORTLAND</City><State>ME</State><ZipCode>04103</ZipCode><ReportedDate>01/15/2021</ReportedDate></Address></ns3:PersonDominantValues></DominantValues><RecordDetails><ns3:PersonResponseDetail><Name><FirstName>DANIEL</FirstName><MiddleName>J</MiddleName><LastName>GALLI</LastName><FullName>DANIEL J GALLI</FullName></Name><SSN>005-62-XXXX</SSN><PersonProfile><PersonBirthDate>04/XX/1961</PersonBirthDate><PersonBirthDate>04/1961</PersonBirthDate><PersonSex>MALE</PersonSex><PersonSpouseName>REBECCA</PersonSpouseName></PersonProfile><DriverLicenseInfo><DriverLicenseNumber>6490XXX</DriverLicenseNumber><DriverLicenseState>ME</DriverLicenseState></DriverLicenseInfo><AKANames><FirstName>DANIEL</FirstName><MiddleName>J.</MiddleName><LastName>GALLI</LastName></AKANames><AKANames><FirstName>DANIEL</FirstName><MiddleName>JOSEPH</MiddleName><LastName>GALLI</LastName><SourceInfo><SourceName>TransUnion</SourceName><SourceDocumentGuid>I0EF608EAE12211D59A400E00E20D7175</SourceDocumentGuid></SourceInfo><SourceInfo><SourceName>Historic Credit Bureau</SourceName><SourceDocumentGuid>I89990d72b1f011de9b8c850332338889</SourceDocumentGuid></SourceInfo></AKANames><PersonEntityId>P1__NDExNjYyNTQ4</PersonEntityId></ns3:PersonResponseDetail></RecordDetails></ResultGroup><ResultGroup><GroupId>a74901e4723f43ffa4209ab8e3d33831</GroupId><RecordCount>1</RecordCount><Relevance>90</Relevance><DominantValues><ns3:PersonDominantValues><Name><FirstName>JOSEPH</FirstName><MiddleName>D</MiddleName><LastName>GALLI</LastName></Name><SSN>007-90-XXXX</SSN><AgeInfo><PersonBirthDate>03/XX/1986</PersonBirthDate><PersonAge>35</PersonAge></AgeInfo><Address><Street>700 N RANDOLPH ST APT 1100</Street><City>ARLINGTON</City><State>VA</State><ZipCode>22203</ZipCode><ReportedDate>11/18/2020</ReportedDate></Address></ns3:PersonDominantValues></DominantValues><RecordDetails><ns3:PersonResponseDetail><Name><FirstName>JOSEPH</FirstName><MiddleName>D</MiddleName><LastName>GALLI</LastName></Name><SSN>007-90-XXXX</SSN><PersonProfile><PersonBirthDate>03/XX/1986</PersonBirthDate><PersonBirthDate>1986</PersonBirthDate><PersonBirthDate>06/XX/1988</PersonBirthDate><PersonBirthDate>01/XX/1985</PersonBirthDate><PersonBirthDate>03/1986</PersonBirthDate><PersonSex>MALE</PersonSex></PersonProfile><AKANames><FirstName>THOMAS</FirstName><MiddleName>S</MiddleName><LastName>BERENZ</LastName><SourceInfo><SourceName>Bank Account Header Records</SourceName><SourceDocumentGuid>I11c84450ee1611eabea4f0dc9fb69570</SourceDocumentGuid></SourceInfo></AKANames></ns3:PersonResponseDetail></RecordDetails></ResultGroup></ns4:PersonResultsPage>';
+            }
+            system.debug(
+              'getContactDetailforPersonSearch::finalresponse==' + finalresponse
+            );
+            DOM.Document document1 = new DOM.Document();
+            document1.load(finalresponse);
+
+            //Dom.XmlNode sta = document1.getRootElement().getChildElement('Status', null);
+            //string scode = sta.getChildElement('StatusCode', null).getText();
+            //system.debug('scode==='+scode);
+            if (res1.getStatusCode() == 200) {
+              Dom.XmlNode rootElement = document1.getRootElement()
+                .getChildElement('ResultGroup', null);
+              String groupid = rootElement.getChildElement('GroupId', null)
+                .getText();
+              system.debug(
+                'getContactDetailforPersonSearch::groupid==' + groupid
+              );
+              String ns2 = 'com/thomsonreuters/schemas/search';
+              String ns3 = 'http://clear.thomsonreuters.com/api/search/2.0';
+              Dom.XmlNode root = document1.getRootElement()
+                .getChildElement('ResultGroup', null);
+              Dom.XmlNode DominantValues = root.getChildElement(
+                'DominantValues',
+                null
+              );
+              system.debug('DominantValues==' + DominantValues);
+              Dom.XmlNode ns = DominantValues.getChildElement(
+                'PersonDominantValues',
+                ns2
+              );
+              system.debug('ns==' + ns);
+              Dom.XmlNode Name = ns.getChildElement('Name', null);
+              FirstName = Name.getChildElement('FirstName', null).getText();
+              LastName = Name.getChildElement('LastName', null).getText();
+              system.debug('FirstName==' + FirstName);
+              system.debug('LastName==' + LastName);
+              system.debug('ns==' + ns);
+              //Dom.XmlNode AgeInfo= ns.getChildElement('AgeInfo', null);
+              //Birthdate = AgeInfo.getChildElement('PersonBirthDate', null).getText();
+              //system.debug('Birthdate:::::'+Birthdate);
+              Dom.XmlNode Address = ns.getChildElement('Address', null);
+              system.debug('Address==' + Address);
+              Street = Address.getChildElement('Street', null).getText();
+              City = Address.getChildElement('City', null).getText();
+              State = Address.getChildElement('State', null).getText();
+              ZipCode = Address.getChildElement('ZipCode', null).getText();
+              system.debug('Street==' + Street);
+              system.debug('City==' + City);
+              system.debug('State==' + State);
+              system.debug('ZipCode==' + ZipCode);
+              Dom.XmlNode RecordDetails = root.getChildElement(
+                'RecordDetails',
+                null
+              );
+              Dom.XmlNode PersonResponseDetail = RecordDetails.getChildElement(
+                'PersonResponseDetail',
+                ns2
+              );
+              string PersonEntityId = PersonResponseDetail.getChildElement(
+                  'PersonEntityId',
+                  null
+                )
+                .getText();
+              system.debug(
+                'getContactDetailforPersonSearch::PersonEntityId==' +
+                PersonEntityId
+              );
+              Dom.XmlNode AKANamesnode = PersonResponseDetail.getChildElement(
+                'AKANames',
+                null
+              );
+              String akaFistname;
+              String akaLastName;
+              if (AKANamesnode != null) {
+                akaFistname = AKANamesnode.getChildElement('FirstName', null)
+                  .getText();
+                akalastname = AKANamesnode.getChildElement('LastName', null)
+                  .getText();
+              }
+              system.debug(akaFistname + ':::' + akalastname);
+              //retrunlist.put('PersonEntityId',PersonEntityId);
+
+              List<Clear_Result__c> clearResult = new List<Clear_Result__c>();
+              clearResult = [
+                SELECT
+                  First_Name__c,
+                  Last_Name__c,
+                  Birth_date__c,
+                  Contact__c,
+                  Group_ID_for_Person_Search__c,
+                  City__c,
+                  State__c,
+                  Street__c,
+                  Zip_Code__c
+                FROM Clear_Result__c
+                WHERE Contact__c = :id
+                LIMIT 1
+              ];
+              if (clearResult != null && clearResult.size() > 0) {
+                clearResult[0].First_Name__c = FirstName;
+                clearResult[0].Last_Name__c = LastName;
+                clearResult[0].Street__c = Street;
+                clearResult[0].City__c = City;
+                clearResult[0].State__c = State;
+                clearResult[0].Zip_Code__c = ZipCode;
+                clearResult[0].EntityId__c = PersonEntityId;
+                clearResult[0].akaFirstName__c = akaFistname;
+                clearResult[0].akaLastName__c = akalastname;
+                clearResult[0].Group_ID_for_Person_Search__c = groupid;
+                //clearResult[0].Birth_date__c=date.valueof(Birthdate);
+              } else {
+                Clear_Result__c cr = new Clear_Result__c();
+                cr.Name = FirstName + ' ' + LastName + '-Clear Result';
+                cr.First_Name__c = FirstName;
+                cr.Last_Name__c = LastName;
+                cr.Street__c = Street;
+                cr.City__c = City;
+                cr.State__c = State;
+                cr.EntityId__c = PersonEntityId;
+                cr.akaFirstName__c = akaFistname;
+                cr.akaLastName__c = akalastname;
+                cr.Group_ID_for_Person_Search__c = groupid;
+                //cr.Birth_date__c=date.valueof(Birthdate);
+                cr.Contact__c = id;
+                clearResult.add(cr);
+              }
+              system.debug(
+                'getContactDetailforPersonSearch::clearResult==' + clearResult
+              );
+              upsert clearResult;
+              APILoggerQueueable nextQueue = new APILoggerQueueable(
+                request,
+                res1,
+                id,
+                false
+              );
+              System.enqueueJob(
+                new APILoggerQueueable(req, res, id, nextQueue)
+              );
+            } else {
+              message = 'Failed to get a response from Person Search.';
+              System.CalloutException e = new System.CalloutException();
+              e.setMessage(message);
+              throw e;
+            }
+          } catch (Exception e) {
+            throw e;
           }
-          system.debug(
-            'getContactDetailforPersonSearch::clearResult==' + clearResult
-          );
-          upsert clearResult;
         } else {
-          message = 'Not get Response for Person Search.';
+          message = 'Person not found.';
+          System.CalloutException e = new System.CalloutException();
+          e.setMessage(message);
+          throw e;
         }
       } else {
-        message = 'Person not found.';
+        message = 'Error occurred. Please try again.';
+        System.CalloutException ce = new System.CalloutException();
+        ce.setMessage(res.getStatusCode() + ': ' + res.getStatus());
+        throw ce;
       }
-    } else {
-      message = 'Error occurred.Please try again.';
+    } catch (Exception er) {
+      System.enqueueJob(new APILoggerQueueable(req, res, id, er));
+
+      retrunlist.put('errorMessage', er.getMessage());
+      return retrunlist;
     }
     /*  }else{
                 message='Please Enter Date of Birth first.'; 
@@ -1374,8 +1467,10 @@ public class ClearBase {
     String typeofReport,
     String dealRecordId
   ) {
+
     Map<String, String> resultMap = new Map<String, String>();
     string errorMsg;
+
     try {
       list<string> ContactIDList = new List<string>();
       for (Deal_Contact__c dc : [
@@ -1449,71 +1544,100 @@ public class ClearBase {
           );
           system.debug('GetReport:req===' + req);
           string response = '';
-          if (Test.isRunningTest() == false) {
-            res = http.send(req);
-            response = res.getBody();
-          } else {
-            res.setBody(
-              '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns2:PersonResults xmlns:ns2="http://clear.thomsonreuters.com/api/search/2.0"><Status><StatusCode>200</StatusCode><SubStatusCode>0</SubStatusCode></Status><Uri>https://s2s.beta.thomsonreuters.com/api/v2/person/searchResults/8a57c89268a623ec016909c791112578</Uri><GroupCount>1</GroupCount></ns2:PersonResults>'
-            );
-            res.setStatusCode(200);
-            response = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns2:PersonResults xmlns:ns2="http://clear.thomsonreuters.com/api/search/2.0"><Status><StatusCode>200</StatusCode><SubStatusCode>0</SubStatusCode></Status><Uri>https://s2s.beta.thomsonreuters.com/api/v2/person/searchResults/8a57c89268a623ec016909c791112578</Uri><GroupCount>1</GroupCount></ns2:PersonResults>';
-          }
 
-          System.debug('GetReport: response::' + response);
-          DOM.Document document = new DOM.Document();
-          document.load(response);
-          Dom.XmlNode status = document.getRootElement()
-            .getChildElement('Status', null);
-          string SubStatusCode = status.getChildElement('SubStatusCode', null)
-            .getText();
-          system.debug('SubStatusCode==' + SubStatusCode);
-
-          if (res.getStatusCode() == 200) {
-            ClearBase.sleepDelay(10000);
-
-            String Link = document.getRootElement()
-              .getChildElement('Uri', null)
-              .getText();
-            if (typeofReport == 'PersonSearchReport') {
-              //ClearBase.sleepDelay(10000);
-              ClearBase.getReportXml(ContactIDList[0], link);
-            }
-            Link = Link + '?reportType=pdf';
-            system.debug('GetReport:Link==' + Link);
-            system.debug('GetReport:dealRecordId==' + dealRecordId);
-
-            ClearBase.processlink(
-              link,
-              id,
-              clearResultlist[0].id,
-              typeofReport,
-              dealRecordId
-            );
-            resultMap.put('message', 'Report is being prepared.');
-          } else {
-            if (SubStatusCode == '40002') {
-              resultMap.put(
-                'message',
-                'Please click on ' +
-                errorMsg +
-                ' button to get latest group ID.'
-              );
+          try {
+            if (Test.isRunningTest() == false) {
+              res = http.send(req);
+              response = res.getBody();
             } else {
-              resultMap.put('message', 'Error occurred pelase try again.');
+              res.setBody(
+                '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns2:PersonResults xmlns:ns2="http://clear.thomsonreuters.com/api/search/2.0"><Status><StatusCode>200</StatusCode><SubStatusCode>0</SubStatusCode></Status><Uri>https://s2s.beta.thomsonreuters.com/api/v2/person/searchResults/8a57c89268a623ec016909c791112578</Uri><GroupCount>1</GroupCount></ns2:PersonResults>'
+              );
+              res.setStatusCode(200);
+              response = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns2:PersonResults xmlns:ns2="http://clear.thomsonreuters.com/api/search/2.0"><Status><StatusCode>200</StatusCode><SubStatusCode>0</SubStatusCode></Status><Uri>https://s2s.beta.thomsonreuters.com/api/v2/person/searchResults/8a57c89268a623ec016909c791112578</Uri><GroupCount>1</GroupCount></ns2:PersonResults>';
             }
+
+            System.debug('GetReport: response::' + response);
+            DOM.Document document = new DOM.Document();
+            document.load(response);
+            Dom.XmlNode status = document.getRootElement()
+              .getChildElement('Status', null);
+            string SubStatusCode = status.getChildElement('SubStatusCode', null)
+              .getText();
+            system.debug('SubStatusCode==' + SubStatusCode);
+
+            if (res.getStatusCode() == 200) {
+              ClearBase.sleepDelay(10000);
+
+              String Link = document.getRootElement()
+                .getChildElement('Uri', null)
+                .getText();
+              if (typeofReport == 'PersonSearchReport') {
+                //ClearBase.sleepDelay(10000);
+                ClearBase.getReportXml(ContactIDList[0], link);
+              }
+              Link = Link + '?reportType=pdf';
+              system.debug('GetReport:Link==' + Link);
+              system.debug('GetReport:dealRecordId==' + dealRecordId);
+
+              ClearBase.processlink(
+                link,
+                id,
+                clearResultlist[0].id,
+                typeofReport,
+                dealRecordId
+              );
+              resultMap.put('message', 'Report is being prepared.');
+            } else {
+              if (SubStatusCode == '40002') {
+                resultMap.put(
+                  'message',
+                  'Please click on ' +
+                  errorMsg +
+                  ' button to get latest group ID.'
+                );
+                resultMap.put(
+                  'errorMessage',
+                  'Please click on ' +
+                  errorMsg +
+                  ' button to get latest group ID.'
+                );
+              } else {
+                resultMap.put('message', 'Error occurred please try again.');
+                resultMap.put(
+                  'errorMessage',
+                  'Error occurred please try again.'
+                );
+              }
+            }
+
+            System.enqueueJob(new APILoggerQueueable(req, res, id, false));
+          } catch (Exception e) {
+            System.enqueueJob(new APILoggerQueueable(req, res, id, e));
+            throw e;
           }
         } else {
-          resultMap.put('message', 'please click ' + errorMsg + ' first.');
+          resultMap.put('message', 'Please click ' + errorMsg + ' first.');
+          resultMap.put(
+            'errorMessage',
+            'Please click ' + errorMsg + ' first.'
+          );
         }
       } else {
-        resultMap.put('message', 'please click ' + errorMsg + ' first.');
+        resultMap.put('message', 'Please click ' + errorMsg + ' first.');
+        resultMap.put(
+          'errorMessage',
+          'Please click ' + errorMsg + ' first.'
+        );
       }
     } catch (exception e) {
       System.debug('The following exception has occurred: ' + e.getMessage());
+      resultMap.put('errorMessage', e.getMessage());
+      return resultMap;
     }
     return resultMap;
   }
+
   @auraenabled
   public static Map<String, String> riskReport(ID id) {
     Map<String, String> resultMap = new Map<String, String>();
@@ -1537,6 +1661,9 @@ public class ClearBase {
             'POST',
             null
           );
+
+
+          try {
           system.debug('riskReport:req===' + req);
           string response = '';
           if (Test.isRunningTest() == false) {
@@ -1577,6 +1704,11 @@ public class ClearBase {
               resultMap.put('message', 'Error occurred pelase try again.');
             }
           }
+          System.enqueueJob(new APILoggerQueueable(req, res, id, false));
+        } catch(Exception e) {
+          System.enqueueJob(new APILoggerQueueable(req, res, id, e));
+
+        }
         } else {
           resultMap.put('message', 'please click Risk search first.');
         }
@@ -1630,6 +1762,7 @@ public class ClearBase {
       //res1 = http1.send(request);
       string finalresponse;
 
+      try {
       if (Test.isRunningTest() == false) {
         res1 = http1.send(request);
         finalresponse = res1.getBody();
@@ -2039,6 +2172,11 @@ public class ClearBase {
         system.debug('clearResultForUpdate::::' + clearResultForUpdate);
         update clearResultForUpdate;
       }
+      System.enqueueJob(new APILoggerQueueable(request, res1, id, false));
+
+    } catch (exception er) { 
+      System.enqueueJob(new APILoggerQueueable(request, res1, id, er));
+    }
     } catch (exception e) {
       System.debug('The following exception has occurred: ' + e.getMessage());
     }
@@ -2082,6 +2220,9 @@ public class ClearBase {
                 system.debug('processlink::finalresponse=='+finalresponse); */
 
       string response = '';
+
+      try {
+
       if (Test.isRunningTest() == false) {
         res1 = http1.send(request);
         finalresponse = res1.getBodyasBlob();
@@ -2501,6 +2642,10 @@ public class ClearBase {
         );
       }
       update crobj;
+      System.enqueueJob(new APILoggerQueueable(request, res1, id, false));
+    } catch (exception er) {
+      System.enqueueJob(new APILoggerQueueable(request, res1, id, er));
+    }
     } catch (exception e) {
       System.debug('The following exception has occurred: ' + e.getMessage());
     }
