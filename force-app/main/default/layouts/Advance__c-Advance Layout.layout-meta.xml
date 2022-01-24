@@ -41,6 +41,10 @@
                 <behavior>Readonly</behavior>
                 <field>Max_Initial_LTV_LTC__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Underwriter__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

@@ -34,10 +34,6 @@
                 <field>Deal_Lost_Reason__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Hold_Reason__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Account_Introduction_Source__c</field>
             </layoutItems>
@@ -1088,11 +1084,6 @@
     <platformActionList>
         <actionListContext>Record</actionListContext>
         <platformActionListItems>
-            <actionName>Opportunity.Send_to_Yardi</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>0</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
             <actionName>Opportunity.Generate_Yardi_CSV</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>1</sortOrder>
@@ -1101,6 +1092,11 @@
             <actionName>Opportunity.Generate_Yardi_XML</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>2</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Opportunity.Send_to_Yardi</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>0</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
             <actionName>Edit</actionName>
@@ -1156,6 +1152,61 @@
             <actionName>Opportunity.Term_Sheet_Approval</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>13</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Open_Originations_Model_Dev</actionName>
+            <actionType>CustomButton</actionType>
+            <sortOrder>26</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Opportunity.Task</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>27</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Opportunity.Term_Email</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>30</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Opportunity.New_Term_Loan_Assigned_Email</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>31</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>pi__Send_Single_Pardot_Email</actionName>
+            <actionType>CustomButton</actionType>
+            <sortOrder>32</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Opportunity.Term_Kick_Off_Email</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>33</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Opportunity.Rate_Lock_Email</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>34</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Opportunity.Loan_Sizing</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>28</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Opportunity.Log_a_Call</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>29</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Opportunity.Send_Email</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>35</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Opportunity.Event</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>36</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
             <actionName>Opportunity.Submit_to_IC_Approval</actionName>
@@ -1216,61 +1267,6 @@
             <actionName>Open_Originations_Model</actionName>
             <actionType>CustomButton</actionType>
             <sortOrder>25</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
-            <actionName>Open_Originations_Model_Dev</actionName>
-            <actionType>CustomButton</actionType>
-            <sortOrder>26</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
-            <actionName>Opportunity.Task</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>27</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
-            <actionName>Opportunity.Loan_Sizing</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>28</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
-            <actionName>Opportunity.Log_a_Call</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>29</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
-            <actionName>Opportunity.Term_Email</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>30</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
-            <actionName>Opportunity.New_Term_Loan_Assigned_Email</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>31</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
-            <actionName>pi__Send_Single_Pardot_Email</actionName>
-            <actionType>CustomButton</actionType>
-            <sortOrder>32</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
-            <actionName>Opportunity.Term_Kick_Off_Email</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>33</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
-            <actionName>Opportunity.Rate_Lock_Email</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>34</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
-            <actionName>Opportunity.Send_Email</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>35</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
-            <actionName>Opportunity.Event</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>36</sortOrder>
         </platformActionListItems>
     </platformActionList>
     <relatedContent>

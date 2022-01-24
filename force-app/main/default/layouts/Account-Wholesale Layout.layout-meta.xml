@@ -483,14 +483,6 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
-        <fields>Type__c</fields>
-        <fields>Expiration_Date__c</fields>
-        <fields>Amount_of_Bond__c</fields>
-        <fields>Phone__c</fields>
-        <relatedList>Insurance_and_Bond__c.Account__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
         <fields>State__c</fields>
         <fields>Expiration_Date__c</fields>
         <relatedList>NMLS__c.Account__c</relatedList>

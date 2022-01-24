@@ -282,6 +282,14 @@
                     <value>Property__c</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
+                    <name>showActions</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>showAdvancesDocs</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
                     <name>sobjectType</name>
                     <value>Deal_Document__c</value>
                 </componentInstanceProperties>
@@ -290,11 +298,15 @@
                     <value>Documents</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
+                    <name>typeName</name>
+                    <value>Property</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
                     <name>whereClause</name>
                     <value>Is_Deleted__c = false</value>
                 </componentInstanceProperties>
-                <componentName>TermPropertyDocumentList</componentName>
-                <identifier>TermPropertyDocumentList</identifier>
+                <componentName>DocumentRelatedList</componentName>
+                <identifier>c_DocumentRelatedList1</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-c553592f-be56-4a33-94ca-89f9ebaebf03</name>
@@ -977,6 +989,14 @@
                     <value>Property__c</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
+                    <name>showActions</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>showAdvancesDocs</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
                     <name>sobjectType</name>
                     <value>Deal_Document__c</value>
                 </componentInstanceProperties>
@@ -985,11 +1005,15 @@
                     <value>Documents</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
+                    <name>typeName</name>
+                    <value>Property</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
                     <name>whereClause</name>
                     <value>Is_Deleted__c = false</value>
                 </componentInstanceProperties>
-                <componentName>TermPropertyDocumentList</componentName>
-                <identifier>TermPropertyDocumentList2</identifier>
+                <componentName>DocumentRelatedList</componentName>
+                <identifier>c_DocumentRelatedList2</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-qvzdaee6tmd</name>

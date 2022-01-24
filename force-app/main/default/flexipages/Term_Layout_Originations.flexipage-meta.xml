@@ -12,7 +12,6 @@
                     <value>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt; &lt;b style=&quot;color: rgb(255, 0, 0); font-size: 18px;&quot;&gt;&lt;i&gt;ACCOUNT IN LITIGATION&lt;/i&gt;&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&amp;nbsp;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;This deal has been identified in association to an investigation.&amp;nbsp;It requires that we preserve all relevant information in connection with the Account, Contact, and/or Deal information.&amp;nbsp;Please do not delete or modify information related to this Account, Contact(s), and/or Deal(s)&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt; In addition, please do not discuss the investigation with contacts from this deal should he/she contacts you in connection to details associated to this account.&lt;/span&gt;&lt;/p&gt;</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:richText</componentName>
-                <identifier>flexipage_richText</identifier>
                 <visibilityRule>
                     <criteria>
                         <leftValue>{!Record.Account.In_Litigation__c}</leftValue>
@@ -33,7 +32,6 @@
                     <value>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(255, 0, 0); font-size: 20px;&quot;&gt;&lt;i&gt;Account In Foreclosure -- REFER TO ASSET MANAGEMENT&lt;/i&gt;&lt;/b&gt;&lt;/p&gt;</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:richText</componentName>
-                <identifier>flexipage_richText2</identifier>
                 <visibilityRule>
                     <criteria>
                         <leftValue>{!Record.Account.In_Foreclosure__c}</leftValue>
@@ -54,7 +52,6 @@
                     <value>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(255, 0, 0); font-size: 20px;&quot;&gt;&lt;i&gt;Do Not Lend&lt;/i&gt;&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: rgb(255, 0, 0); font-size: 16px;&quot;&gt;This Account has been tagged as &quot;Do Not Lend&quot;.&amp;nbsp;For further details, please refer to Legal Team or Executive Team Member. Check the Notes Tab on the Account as it may also contain details regarding the reason.&lt;/span&gt;&lt;/p&gt;</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:richText</componentName>
-                <identifier>flexipage_richText3</identifier>
                 <visibilityRule>
                     <criteria>
                         <leftValue>{!Record.Account.Do_Not_Lend__c}</leftValue>
@@ -83,7 +80,6 @@
                     <value>7</value>
                 </componentInstanceProperties>
                 <componentName>force:highlightsPanel</componentName>
-                <identifier>force_highlightsPanel</identifier>
             </componentInstance>
         </itemInstances>
         <name>header</name>
@@ -101,7 +97,6 @@
                     <value>linear</value>
                 </componentInstanceProperties>
                 <componentName>runtime_sales_pathassistant:pathAssistant</componentName>
-                <identifier>runtime_sales_pathassistant_pathAssistant</identifier>
                 <visibilityRule>
                     <booleanFilter>1 OR 2 OR 3 OR 4 OR 5 OR 6 OR 7</booleanFilter>
                     <criteria>
@@ -153,7 +148,6 @@
                     <value>linear</value>
                 </componentInstanceProperties>
                 <componentName>runtime_sales_pathassistant:pathAssistant</componentName>
-                <identifier>runtime_sales_pathassistant_pathAssistant2</identifier>
                 <visibilityRule>
                     <booleanFilter>1 OR 2 OR 3 OR 4 OR 5</booleanFilter>
                     <criteria>
@@ -187,7 +181,6 @@
         <itemInstances>
             <componentInstance>
                 <componentName>dupeList</componentName>
-                <identifier>dupeList</identifier>
                 <visibilityRule>
                     <booleanFilter>1 AND 2 AND 3 AND 4</booleanFilter>
                     <criteria>
@@ -216,7 +209,6 @@
         <itemInstances>
             <componentInstance>
                 <componentName>CustomToast</componentName>
-                <identifier>CustomToast</identifier>
             </componentInstance>
         </itemInstances>
         <name>subheader</name>
@@ -238,7 +230,6 @@
                     <value>Opportunity.Servicer_Information</value>
                 </componentInstanceProperties>
                 <componentName>console:relatedRecord</componentName>
-                <identifier>console_relatedRecord</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -256,7 +247,6 @@
                     <value>Opportunity.Servicer_Onboarding_Information</value>
                 </componentInstanceProperties>
                 <componentName>console:relatedRecord</componentName>
-                <identifier>console_relatedRecord2</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -282,7 +272,6 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
-                <identifier>force_relatedListSingleContainer</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-f5210ee3-3f48-46d8-b5a3-b25a2c7585bb</name>
@@ -292,10 +281,38 @@
         <itemInstances>
             <componentInstance>
                 <componentName>force:detailPanel</componentName>
-                <identifier>force_detailPanel</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-20f4193f-1d2a-419e-b965-ab7c778e5d27</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>parentFieldApiName</name>
+                    <value>Opportunity.Id</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>relatedListApiName</name>
+                    <value>Deal_to_Funding_Vehicle_Connections__r</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>relatedListComponentOverride</name>
+                    <value>ADVGRID</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>rowsToDisplay</name>
+                    <value>10</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>showActionBar</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentName>force:relatedListSingleContainer</componentName>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-32e0928d-3395-4e7c-9571-5e1ea7d98268</name>
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
@@ -314,7 +331,6 @@
                     <value>Servicer Details</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -332,7 +348,19 @@
                     <value>Loan Details</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab2</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-32e0928d-3395-4e7c-9571-5e1ea7d98268</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>title</name>
+                    <value>Funding Vehicles</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:tab</componentName>
             </componentInstance>
         </itemInstances>
         <name>Facet-78c585ce-3261-4017-be80-936f0098309b</name>
@@ -354,7 +382,6 @@
                     <value>NONE</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
-                <identifier>force_relatedListSingleContainer2</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-f56f335d-9b58-4ed4-9ffc-653aaf59cbba</name>
@@ -384,7 +411,6 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
-                <identifier>force_relatedListSingleContainer3</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-7692d2fa-05e0-4bf4-ba09-205c432ff25f</name>
@@ -406,7 +432,6 @@
                     <value>Deal Field History</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab3</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -420,7 +445,6 @@
                     <value>Model Save Log</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab4</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-9ef5a8f2-6830-4a57-a2a2-5e2923ccabe2</name>
@@ -434,7 +458,6 @@
                     <value>Facet-78c585ce-3261-4017-be80-936f0098309b</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tabset</componentName>
-                <identifier>flexipage_tabset</identifier>
                 <visibilityRule>
                     <booleanFilter>1 OR 2 OR 3</booleanFilter>
                     <criteria>
@@ -458,7 +481,6 @@
         <itemInstances>
             <componentInstance>
                 <componentName>force:detailPanel</componentName>
-                <identifier>force_detailPanel2</identifier>
                 <visibilityRule>
                     <booleanFilter>1 AND 2 AND 3</booleanFilter>
                     <criteria>
@@ -502,7 +524,6 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
-                <identifier>force_relatedListSingleContainer4</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -528,7 +549,6 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
-                <identifier>force_relatedListSingleContainer5</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -538,7 +558,6 @@
                     <value>Facet-9ef5a8f2-6830-4a57-a2a2-5e2923ccabe2</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tabset</componentName>
-                <identifier>flexipage_tabset2</identifier>
             </componentInstance>
         </itemInstances>
         <name>facet-715f9cb2-02a6-4eb4-a8ea-b38a843d13d0</name>
@@ -560,7 +579,6 @@
                     <value>Opportunity.Soft_Quote</value>
                 </componentInstanceProperties>
                 <componentName>console:relatedRecord</componentName>
-                <identifier>console_relatedRecord3</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -586,7 +604,6 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
-                <identifier>force_relatedListSingleContainer6</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-5f44770f-a57c-4894-9e89-74ed01ebd302</name>
@@ -608,7 +625,6 @@
                     <value>Opportunity.Pricing_Approval_Details</value>
                 </componentInstanceProperties>
                 <componentName>console:relatedRecord</componentName>
-                <identifier>console_relatedRecord4</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -626,13 +642,11 @@
                     <value>Opportunity.Term_Sheet_Approval_Details</value>
                 </componentInstanceProperties>
                 <componentName>console:relatedRecord</componentName>
-                <identifier>console_relatedRecord5</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
             <componentInstance>
                 <componentName>ApprovalHistoryDeal</componentName>
-                <identifier>ApprovalHistoryDeal</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -650,7 +664,6 @@
                     <value>NONE</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
-                <identifier>force_relatedListSingleContainer7</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -668,13 +681,11 @@
                     <value>NONE</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
-                <identifier>force_relatedListSingleContainer8</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
             <componentInstance>
                 <componentName>dsfs:DocuSignLightningSendingLocked</componentName>
-                <identifier>dsfs_DocuSignLightningSendingLocked</identifier>
                 <visibilityRule>
                     <criteria>
                         <leftValue>{!Record.Approved_Term_Sheet_Name__c}</leftValue>
@@ -706,7 +717,6 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
-                <identifier>force_relatedListSingleContainer9</identifier>
                 <visibilityRule>
                     <criteria>
                         <leftValue>{!$User.FirstName}</leftValue>
@@ -731,7 +741,6 @@
                     <value>NONE</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
-                <identifier>force_relatedListSingleContainer10</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-6573b0a4-c245-45da-908c-58ed83b88ee3</name>
@@ -745,7 +754,6 @@
                     <value>0067h00000C2tqrAAB</value>
                 </componentInstanceProperties>
                 <componentName>confirmationTerms</componentName>
-                <identifier>c_confirmationTerms1</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-1ef4068b-8bba-4123-a099-1e75de0d421d</name>
@@ -767,7 +775,6 @@
                     <value>Approvals</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>flexipage_tab1</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -781,7 +788,6 @@
                     <value>Confirmation of Terms</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>flexipage_tab2</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-9140eca5-f97b-4008-a220-b1d208924bc0</name>
@@ -795,7 +801,6 @@
                     <value>Facet-9140eca5-f97b-4008-a220-b1d208924bc0</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tabset</componentName>
-                <identifier>flexipage_tabset1</identifier>
             </componentInstance>
         </itemInstances>
         <name>facet-f1fa3420-6bc4-4aba-96ff-8cdf9cb06c12</name>
@@ -821,7 +826,6 @@
                     <value>Deal_Contact_Type__c = &apos;Entity&apos;</value>
                 </componentInstanceProperties>
                 <componentName>BusinessEntityRelatedList</componentName>
-                <identifier>BusinessEntityRelatedList</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -851,19 +855,16 @@
                     <value>Deal_Contact_Type__c = &apos;Individual&apos;</value>
                 </componentInstanceProperties>
                 <componentName>TermEntityRelatedList</componentName>
-                <identifier>TermEntityRelatedList</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
             <componentInstance>
                 <componentName>VendorEntityListContainer</componentName>
-                <identifier>VendorEntityListContainer</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
             <componentInstance>
                 <componentName>runtime_sales_activities:activityPanel</componentName>
-                <identifier>runtime_sales_activities_activityPanel</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -889,7 +890,6 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
-                <identifier>force_relatedListSingleContainer11</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -915,7 +915,6 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
-                <identifier>force_relatedListSingleContainer12</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-9aac60d2-35a7-4948-b061-a7164f3cffea</name>
@@ -933,7 +932,6 @@
                     <value>&lt;ul&gt;&lt;li&gt;&lt;b style=&quot;color: black; font-family: sans-serif; font-size: 18px;&quot;&gt;&lt;u&gt;Borrower (Entity)&lt;/u&gt;&lt;/b&gt;&lt;ul&gt;&lt;li&gt;&lt;span style=&quot;color: black; font-family: sans-serif; font-size: 16px;&quot;&gt;This entity is a Delaware limited liability that is set up as the owner of the properties that are being financed and debtor in our financing.&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;span style=&quot;color: black; font-family: sans-serif; font-size: 16px;&quot;&gt;﻿&lt;/span&gt;&lt;b style=&quot;color: black; font-family: sans-serif; font-size: 18px;&quot;&gt;&lt;u&gt;Sponsor (Individual)&lt;/u&gt;&lt;/b&gt;&lt;ul&gt;&lt;li&gt;&lt;span style=&quot;color: black; font-family: sans-serif; font-size: 16px;&quot;&gt;This individual is often times the Applicant.&amp;nbsp;They are also often time the primary point of contact during our financing.&amp;nbsp;Another good way to think of the Sponsor is as a principal in the transaction, especially when the Guarantor is an entity.&amp;nbsp;They are always involved in the equity of the organizational structure.&amp;nbsp;The Sponsor may also be our Guarantor. We will pull credit on any Sponsor that has 20% or more of an equity interest in the borrower entity or has an control over the borrower entity, ie directors of the borrower entity.&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b style=&quot;color: black; font-family: sans-serif; font-size: 18px;&quot;&gt;&lt;u&gt;Guarantor (Individual or Entity)&lt;/u&gt;&lt;/b&gt;&lt;ul&gt;&lt;li&gt;&lt;span style=&quot;color: black; font-family: sans-serif; font-size: 16px;&quot;&gt;This individual or entity is who provides the the recourse or non-recourse guaranty in our financing.&amp;nbsp;They will always have some equity in the borrower entity. It is often time used synonymously with Guarantor.&amp;nbsp;&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b style=&quot;color: black; font-family: sans-serif; font-size: 18px;&quot;&gt;&lt;u&gt;Pledgor (Individual or Entity)&lt;/u&gt;&lt;/b&gt;&lt;ul&gt;&lt;li&gt;&lt;span style=&quot;color: black; font-family: sans-serif; font-size: 16px;&quot;&gt;This individual or entity is the sole member of the borrower entity.&amp;nbsp;Often times they are also the Sponsor of the transaction and may also be the Guarantor, when they are an individual.&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b style=&quot;color: black; font-family: sans-serif; font-size: 18px;&quot;&gt;&lt;u&gt;Vendor (Entity)&lt;/u&gt;&lt;/b&gt;&lt;ul&gt;&lt;li&gt;&lt;span style=&quot;color: black; font-family: sans-serif; font-size: 16px;&quot;&gt;The entities that provide the diligence services for our financings.&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b style=&quot;color: black; font-family: sans-serif; font-size: 18px;&quot;&gt;&lt;u&gt;Portal Access (Individual)&lt;/u&gt;&lt;/b&gt;&lt;ul&gt;&lt;li&gt;&lt;span style=&quot;color: black; font-family: sans-serif; font-size: 16px;&quot;&gt;The individual for which we provide SF access that will be assisting in the uploading of diligence documents.&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(253, 131, 1); font-family: sans-serif; font-size: 18px;&quot;&gt;&lt;u&gt;Example Org Chart&lt;/u&gt;&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(253, 131, 1); font-family: sans-serif; font-size: 16px;&quot;&gt;&lt;u&gt;﻿&lt;/u&gt;&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: black; font-family: sans-serif; font-size: 16px;&quot;&gt;&lt;u&gt;&lt;img src=&quot;https://cvest--c.na54.content.force.com/sfc/servlet.shepherd/version/renditionDownload?rendition=ORIGINAL_Png&amp;amp;versionId=0680a000005lP1B&amp;amp;operationContext=CHATTER&amp;amp;contentId=05T0a00000Gle3c&quot; alt=&quot;ExampleOrgChart&quot;&gt;&lt;/u&gt;&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:richText</componentName>
-                <identifier>flexipage_richText4</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-43a89488-9520-410f-8204-00fc8492a741</name>
@@ -963,7 +961,6 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
-                <identifier>force_relatedListSingleContainer13</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-cd765b00-9b80-4cc7-81d5-71ed76ca3789</name>
@@ -985,7 +982,6 @@
                     <value>Details</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab5</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -999,7 +995,6 @@
                     <value>Definitions</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab6</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -1013,7 +1008,6 @@
                     <value>Applications</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab7</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-7101b01b-737d-40e0-bcc6-f480c03adc1a</name>
@@ -1027,7 +1021,6 @@
                     <value>Facet-7101b01b-737d-40e0-bcc6-f480c03adc1a</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tabset</componentName>
-                <identifier>flexipage_tabset3</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-7c24f9ac-c8db-4ca6-8176-279027571d9d</name>
@@ -1077,7 +1070,6 @@
                     <value>Active__c = true</value>
                 </componentInstanceProperties>
                 <componentName>PropertyRelatedList</componentName>
-                <identifier>PropertyRelatedList</identifier>
             </componentInstance>
         </itemInstances>
         <name>facet-0027641f-9ed0-48b5-8fd6-76585f71f936</name>
@@ -1127,7 +1119,6 @@
                     <value>Active__c = false</value>
                 </componentInstanceProperties>
                 <componentName>PropertyRelatedList</componentName>
-                <identifier>PropertyRelatedList2</identifier>
             </componentInstance>
         </itemInstances>
         <name>facet-490a5b4e-6d3e-4c42-ac64-8575719be0d6</name>
@@ -1137,7 +1128,6 @@
         <itemInstances>
             <componentInstance>
                 <componentName>ValidatedAddressMerge</componentName>
-                <identifier>ValidatedAddressMerge</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-9ef4eda7-d33f-4830-a5ea-7c4b22348d4a</name>
@@ -1155,13 +1145,11 @@
                     <value>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 20px;&quot;&gt;Please note: Only SFRs, Condos and Townhomes will show up to pull RedBell data. Multi Units will not show up.&lt;/b&gt;&lt;/p&gt;</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:richText</componentName>
-                <identifier>flexipage_richText5</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
             <componentInstance>
                 <componentName>RedBellPropertiesTable</componentName>
-                <identifier>RedBellPropertiesTable</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-dd99fbe9-b2ee-4c85-8d67-dfb5ca99cb54</name>
@@ -1171,7 +1159,6 @@
         <itemInstances>
             <componentInstance>
                 <componentName>appraisalOrder</componentName>
-                <identifier>appraisalOrder</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-19b466e7-c2d0-470f-96be-0d379dd90787</name>
@@ -1181,7 +1168,6 @@
         <itemInstances>
             <componentInstance>
                 <componentName>AppraisalMerge</componentName>
-                <identifier>AppraisalMerge</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -1199,7 +1185,6 @@
                     <value>NONE</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
-                <identifier>force_relatedListSingleContainer14</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-081364f9-b3ac-45e8-8d98-bf3a98ca5443</name>
@@ -1221,7 +1206,6 @@
                     <value>Active</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab8</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -1235,7 +1219,6 @@
                     <value>Inactive</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab9</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -1249,7 +1232,6 @@
                     <value>Validated Addresses</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab10</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -1263,7 +1245,6 @@
                     <value>RedBell Data</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab11</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -1277,7 +1258,6 @@
                     <value>Appraisal Orders</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab12</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -1291,7 +1271,6 @@
                     <value>Appraisal Data</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab13</identifier>
             </componentInstance>
         </itemInstances>
         <name>facet-8d5083dd-5c76-4b1b-9bf1-6bdff9b7c3b8</name>
@@ -1305,7 +1284,6 @@
                     <value>facet-8d5083dd-5c76-4b1b-9bf1-6bdff9b7c3b8</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tabset</componentName>
-                <identifier>flexipage_tabset4</identifier>
             </componentInstance>
         </itemInstances>
         <name>facet-f549ad39-b7f4-4c16-99ae-3e88454b1eef</name>
@@ -1331,7 +1309,6 @@
                     <value>Section__c = &apos;Property Level Documents&apos; AND Is_Deleted__c = false</value>
                 </componentInstanceProperties>
                 <componentName>TermPropertyDocumentList</componentName>
-                <identifier>TermPropertyDocumentList</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-61f4590c-f22b-4c47-a749-0272d6b9c3d9</name>
@@ -1357,7 +1334,6 @@
                     <value>Document_Type__c = &apos;Valuations&apos; AND Is_Deleted__c = false</value>
                 </componentInstanceProperties>
                 <componentName>TermPropertyDocumentList</componentName>
-                <identifier>TermPropertyDocumentList2</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-1721dd20-17a2-4f4d-8a7e-979a3fd097bd</name>
@@ -1379,7 +1355,6 @@
                     <value>All</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab14</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -1393,7 +1368,6 @@
                     <value>Valuations</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab15</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-bc0de2b5-e6ea-45bf-8800-025be0e82977</name>
@@ -1407,7 +1381,6 @@
                     <value>Facet-bc0de2b5-e6ea-45bf-8800-025be0e82977</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tabset</componentName>
-                <identifier>flexipage_tabset5</identifier>
             </componentInstance>
         </itemInstances>
         <name>facet-7a76b804-dd78-4a14-a6ee-f3a2f08d631d</name>
@@ -1437,7 +1410,6 @@
                     <value>Document_Type__c LIKE &apos;%IC Memo%&apos; AND Is_Deleted__c = false</value>
                 </componentInstanceProperties>
                 <componentName>TermDocumentList</componentName>
-                <identifier>TermDocumentList</identifier>
             </componentInstance>
         </itemInstances>
         <name>facet-9e435ebb-c61a-450c-81fe-e9dd7bbda38e</name>
@@ -1467,7 +1439,6 @@
                     <value>Type__c = &apos;Model&apos; AND Is_Deleted__c = false</value>
                 </componentInstanceProperties>
                 <componentName>TermDocumentList</componentName>
-                <identifier>TermDocumentList2</identifier>
             </componentInstance>
         </itemInstances>
         <name>facet-291e9370-cd24-4cce-89ae-34e497fd0ee3</name>
@@ -1497,7 +1468,6 @@
                     <value>Section__c = &apos;Submission Documents&apos; AND Is_Deleted__c = false</value>
                 </componentInstanceProperties>
                 <componentName>TermDocumentList</componentName>
-                <identifier>TermDocumentList3</identifier>
             </componentInstance>
         </itemInstances>
         <name>facet-b90bff54-070c-4135-8fe9-59f076836ac1</name>
@@ -1527,7 +1497,6 @@
                     <value>Section__c = &apos;Background and Credit Search&apos; AND Is_Deleted__c = false</value>
                 </componentInstanceProperties>
                 <componentName>TermDocumentList</componentName>
-                <identifier>TermDocumentList4</identifier>
             </componentInstance>
         </itemInstances>
         <name>facet-e814eead-f6a6-4525-bacc-c4285f849119</name>
@@ -1557,7 +1526,6 @@
                     <value>Section__c = &apos;Property Management&apos; AND Is_Deleted__c = false</value>
                 </componentInstanceProperties>
                 <componentName>TermDocumentList</componentName>
-                <identifier>TermDocumentList5</identifier>
             </componentInstance>
         </itemInstances>
         <name>facet-44fbd9f4-f12c-461a-98ff-1c247d40ad2c</name>
@@ -1587,7 +1555,6 @@
                     <value>Section__c = &apos;Portfolio Level Documents&apos; AND Is_Deleted__c = false</value>
                 </componentInstanceProperties>
                 <componentName>TermDocumentList</componentName>
-                <identifier>TermDocumentList6</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-7cp1pkxklj</name>
@@ -1617,7 +1584,6 @@
                     <value>Section__c = &apos;Insurance&apos; AND Is_Deleted__c = false</value>
                 </componentInstanceProperties>
                 <componentName>TermDocumentList</componentName>
-                <identifier>TermDocumentList7</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-pk6orxhmu8</name>
@@ -1647,7 +1613,6 @@
                     <value>Section__c = &apos;Taxes&apos; AND Is_Deleted__c = false</value>
                 </componentInstanceProperties>
                 <componentName>TermDocumentList</componentName>
-                <identifier>TermDocumentList8</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-fq8i6n7s7wv</name>
@@ -1677,7 +1642,6 @@
                     <value>Section__c = &apos;Title&apos; AND Is_Deleted__c = false</value>
                 </componentInstanceProperties>
                 <componentName>TermDocumentList</componentName>
-                <identifier>TermDocumentList9</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-vbjvxt9rkv</name>
@@ -1707,7 +1671,6 @@
                     <value>Section__c = &apos;Cash Management&apos; AND Is_Deleted__c = false</value>
                 </componentInstanceProperties>
                 <componentName>TermDocumentList</componentName>
-                <identifier>TermDocumentList10</identifier>
             </componentInstance>
         </itemInstances>
         <name>facet-2626023c-0db2-49a4-ad24-e8af9387fa03</name>
@@ -1729,7 +1692,6 @@
                     <value>Submission Documents</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab16</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -1743,7 +1705,6 @@
                     <value>Background and Credit Check</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab17</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -1757,7 +1718,6 @@
                     <value>Property Management</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab18</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -1771,7 +1731,6 @@
                     <value>Portfolio Level Documents</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab19</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -1785,7 +1744,6 @@
                     <value>Insurance</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab20</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -1799,7 +1757,6 @@
                     <value>Taxes</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab21</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -1813,7 +1770,6 @@
                     <value>Title</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab22</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -1827,7 +1783,6 @@
                     <value>Cash Management</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab23</identifier>
             </componentInstance>
         </itemInstances>
         <name>facet-967809f1-d872-4d5a-bb53-fc5fd684d218</name>
@@ -1841,7 +1796,6 @@
                     <value>facet-967809f1-d872-4d5a-bb53-fc5fd684d218</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tabset</componentName>
-                <identifier>flexipage_tabset6</identifier>
             </componentInstance>
         </itemInstances>
         <name>facet-cabcbcc2-d216-4840-8876-cd37fa3f41ee</name>
@@ -1871,7 +1825,6 @@
                     <value>Section__c = &apos;Principle Loan Documents&apos; AND Is_Deleted__c = false</value>
                 </componentInstanceProperties>
                 <componentName>TermDocumentList</componentName>
-                <identifier>TermDocumentList11</identifier>
             </componentInstance>
         </itemInstances>
         <name>facet-bfee8b6e-1da2-4d6e-bee9-ab1fc16ba063</name>
@@ -1901,7 +1854,6 @@
                     <value>Section__c = &apos;Recorded Loan Documents&apos; AND Is_Deleted__c = false</value>
                 </componentInstanceProperties>
                 <componentName>TermDocumentList</componentName>
-                <identifier>TermDocumentList12</identifier>
             </componentInstance>
         </itemInstances>
         <name>facet-6ca1a9a3-852e-4d32-9f0d-acd544b151d2</name>
@@ -1931,7 +1883,6 @@
                     <value>Section__c = &apos;Title Policies&apos; AND Is_Deleted__c = false</value>
                 </componentInstanceProperties>
                 <componentName>TermDocumentList</componentName>
-                <identifier>TermDocumentList13</identifier>
             </componentInstance>
         </itemInstances>
         <name>facet-3df3d584-3f53-4acb-8945-eaf182da4696</name>
@@ -1961,7 +1912,6 @@
                     <value>Section__c = &apos;Assignments&apos; AND Is_Deleted__c = false</value>
                 </componentInstanceProperties>
                 <componentName>TermDocumentList</componentName>
-                <identifier>TermDocumentList14</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-cehyy2wo6k7</name>
@@ -1991,7 +1941,6 @@
                     <value>Section__c = &apos;LDR&apos; AND Is_Deleted__c = false</value>
                 </componentInstanceProperties>
                 <componentName>TermDocumentList</componentName>
-                <identifier>TermDocumentList15</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-3d014ff0-6dcc-41b4-a37c-2169b4f9e82d</name>
@@ -2013,7 +1962,6 @@
                     <value>Principle Loan Documents</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab24</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -2027,7 +1975,6 @@
                     <value>Recorded Documents</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab25</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -2041,7 +1988,6 @@
                     <value>Title Policies</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab26</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -2055,7 +2001,6 @@
                     <value>Assignments</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab27</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -2069,7 +2014,6 @@
                     <value>LDRs</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab28</identifier>
             </componentInstance>
         </itemInstances>
         <name>facet-158bb2eb-3fb0-4633-b6f5-fc1483dee500</name>
@@ -2083,7 +2027,6 @@
                     <value>facet-158bb2eb-3fb0-4633-b6f5-fc1483dee500</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tabset</componentName>
-                <identifier>flexipage_tabset7</identifier>
             </componentInstance>
         </itemInstances>
         <name>facet-bf4cfbd2-832b-46ec-830f-3f0babc2d6fe</name>
@@ -2113,7 +2056,6 @@
                     <value>Section__c = &apos;Borrower&apos; AND Is_Deleted__c = false</value>
                 </componentInstanceProperties>
                 <componentName>TermDocumentList</componentName>
-                <identifier>TermDocumentList16</identifier>
             </componentInstance>
         </itemInstances>
         <name>facet-a3a75e03-059a-4fe0-b66e-6be937e6eb49</name>
@@ -2143,7 +2085,6 @@
                     <value>Section__c = &apos;Guarantor / Sponsor&apos; AND Is_Deleted__c = false</value>
                 </componentInstanceProperties>
                 <componentName>TermDocumentList</componentName>
-                <identifier>TermDocumentList17</identifier>
             </componentInstance>
         </itemInstances>
         <name>facet-1037e29f-3ba9-46cf-8b4f-a8c05503dfce</name>
@@ -2173,7 +2114,6 @@
                     <value>Section__c = &apos;Pledgor&apos; AND Is_Deleted__c = false</value>
                 </componentInstanceProperties>
                 <componentName>TermDocumentList</componentName>
-                <identifier>TermDocumentList18</identifier>
             </componentInstance>
         </itemInstances>
         <name>facet-baebc0ae-8e9a-4e14-bc9e-308bd1748838</name>
@@ -2203,7 +2143,6 @@
                     <value>Section__c = &apos;Current Vested Owner&apos; AND Is_Deleted__c = false</value>
                 </componentInstanceProperties>
                 <componentName>TermDocumentList</componentName>
-                <identifier>TermDocumentList19</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-2bb31a6a-c2af-4b24-be02-9ceb453b0b12</name>
@@ -2225,7 +2164,6 @@
                     <value>Borrower</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab29</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -2239,7 +2177,6 @@
                     <value>Guarantor / Sponsor</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab30</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -2253,7 +2190,6 @@
                     <value>Pledgor</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab31</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -2267,7 +2203,6 @@
                     <value>Current Vested Owner</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab32</identifier>
             </componentInstance>
         </itemInstances>
         <name>facet-4e44bdfb-dc2f-455f-bf9d-dfb7054cff66</name>
@@ -2281,7 +2216,6 @@
                     <value>facet-4e44bdfb-dc2f-455f-bf9d-dfb7054cff66</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tabset</componentName>
-                <identifier>flexipage_tabset8</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-y2s9uwg8y2</name>
@@ -2311,7 +2245,6 @@
                     <value>Type__c = &apos;Invoices&apos; AND Is_Deleted__c = false</value>
                 </componentInstanceProperties>
                 <componentName>TermDocumentList</componentName>
-                <identifier>TermDocumentList20</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-b5cnbcdvxo</name>
@@ -2341,7 +2274,6 @@
                     <value>Section__c = &apos;DS Funding Package&apos; AND Is_Deleted__c = false</value>
                 </componentInstanceProperties>
                 <componentName>TermDocumentList</componentName>
-                <identifier>TermDocumentList21</identifier>
             </componentInstance>
         </itemInstances>
         <name>facet-55cdd80e-d38d-4836-9e5f-d56fc9c756e4</name>
@@ -2371,7 +2303,6 @@
                     <value>Section__c = &apos;Closing&apos; AND Is_Deleted__c = false</value>
                 </componentInstanceProperties>
                 <componentName>TermDocumentList</componentName>
-                <identifier>TermDocumentList22</identifier>
             </componentInstance>
         </itemInstances>
         <name>facet-2ee5f304-ae2a-439b-a057-20fead847ab2</name>
@@ -2401,7 +2332,6 @@
                     <value>Section__c = &apos;Tax Template&apos; AND Is_Deleted__c = false</value>
                 </componentInstanceProperties>
                 <componentName>TermDocumentList</componentName>
-                <identifier>TermDocumentList23</identifier>
             </componentInstance>
         </itemInstances>
         <name>facet-6d493b3a-f885-4047-90cd-35d5388d847b</name>
@@ -2431,7 +2361,6 @@
                     <value>Section__c = &apos;Hedge Sheet&apos; AND Is_Deleted__c = false</value>
                 </componentInstanceProperties>
                 <componentName>TermDocumentList</componentName>
-                <identifier>TermDocumentList24</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-mb62p3h8m8h</name>
@@ -2453,7 +2382,6 @@
                     <value>DS Funding Package</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab33</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -2467,7 +2395,6 @@
                     <value>Closing</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab34</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -2481,7 +2408,6 @@
                     <value>Tax Template</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab35</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -2495,7 +2421,6 @@
                     <value>Hedge Sheet</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab36</identifier>
             </componentInstance>
         </itemInstances>
         <name>facet-ab5c13e4-4254-4b9f-90b8-566ba97b722f</name>
@@ -2509,7 +2434,6 @@
                     <value>facet-ab5c13e4-4254-4b9f-90b8-566ba97b722f</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tabset</componentName>
-                <identifier>flexipage_tabset9</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-if0ec5bv0pe</name>
@@ -2539,7 +2463,6 @@
                     <value>Type__c = &apos;Approval Uploads&apos; AND Is_Deleted__c = false</value>
                 </componentInstanceProperties>
                 <componentName>TermDocumentList</componentName>
-                <identifier>TermDocumentList25</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-7iw9ba4480e</name>
@@ -2569,7 +2492,6 @@
                     <value>Document_Type__c LIKE &apos;%Term Sheet%&apos; AND Is_Deleted__c = false</value>
                 </componentInstanceProperties>
                 <componentName>TermDocumentList</componentName>
-                <identifier>TermDocumentList26</identifier>
             </componentInstance>
         </itemInstances>
         <name>facet-112b93cd-b566-4b7d-9e59-530e8e301a40</name>
@@ -2583,7 +2505,6 @@
                     <value>false</value>
                 </componentInstanceProperties>
                 <componentName>DocumentSearch</componentName>
-                <identifier>DocumentSearch</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-5888115f-0d56-426e-ae5b-905bd972da38</name>
@@ -2605,7 +2526,6 @@
                     <value>NONE</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
-                <identifier>force_relatedListSingleContainer15</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-khf0dtq147b</name>
@@ -2627,7 +2547,6 @@
                     <value>Property Documents</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab37</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -2641,7 +2560,6 @@
                     <value>IC Memo</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab38</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -2655,7 +2573,6 @@
                     <value>Model</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab39</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -2669,7 +2586,6 @@
                     <value>Diligence Documents</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab40</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -2683,7 +2599,6 @@
                     <value>Loan Documents</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab41</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -2697,7 +2612,6 @@
                     <value>Corporate Entity Documents</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab42</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -2711,7 +2625,6 @@
                     <value>Invoices</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab43</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -2725,7 +2638,6 @@
                     <value>DS Funding Package</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab44</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -2739,7 +2651,6 @@
                     <value>Approval Uploads</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab45</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -2753,7 +2664,6 @@
                     <value>Term Sheets</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab46</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -2767,7 +2677,6 @@
                     <value>Document Search</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab47</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -2781,7 +2690,6 @@
                     <value>All</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab48</identifier>
             </componentInstance>
         </itemInstances>
         <name>facet-ec15d3e3-26c2-4c72-9209-f063f0aba3e3</name>
@@ -2795,7 +2703,6 @@
                     <value>facet-ec15d3e3-26c2-4c72-9209-f063f0aba3e3</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tabset</componentName>
-                <identifier>flexipage_tabset10</identifier>
             </componentInstance>
         </itemInstances>
         <name>facet-922cf296-2462-4e74-abad-2b93bf95775e</name>
@@ -2809,7 +2716,6 @@
                     <value>false</value>
                 </componentInstanceProperties>
                 <componentName>BorrowerChecklist</componentName>
-                <identifier>BorrowerChecklist</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -2827,7 +2733,6 @@
                     <value>NONE</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
-                <identifier>force_relatedListSingleContainer16</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-041be24a-9b88-4900-a0a5-3870b009725c</name>
@@ -2837,7 +2742,6 @@
         <itemInstances>
             <componentInstance>
                 <componentName>ClearToClose</componentName>
-                <identifier>ClearToClose</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-f4ae0367-a421-487c-a7e8-b3bfd14545ee</name>
@@ -2847,7 +2751,6 @@
         <itemInstances>
             <componentInstance>
                 <componentName>messageCenter</componentName>
-                <identifier>messageCenter</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-480fb066-89f0-42d6-a6fd-cd12ff489cc7</name>
@@ -2869,7 +2772,6 @@
                     <value>Diligence Checklist</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab49</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -2883,7 +2785,6 @@
                     <value>CTC</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab50</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -2897,7 +2798,6 @@
                     <value>Message Center</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab51</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-31cf633e-1e96-494c-85c9-c2830d9b6896</name>
@@ -2911,7 +2811,6 @@
                     <value>Facet-31cf633e-1e96-494c-85c9-c2830d9b6896</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tabset</componentName>
-                <identifier>flexipage_tabset11</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-dc48efb2-1dc1-4e40-bc84-615ec99ba940</name>
@@ -2921,7 +2820,6 @@
         <itemInstances>
             <componentInstance>
                 <componentName>ScheduleOfLenderCostsContainer</componentName>
-                <identifier>ScheduleOfLenderCostsContainer</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-0359770d-7a35-4d7d-bfcd-6bf4c2eb902b</name>
@@ -2931,7 +2829,6 @@
         <itemInstances>
             <componentInstance>
                 <componentName>LoanAgreementContainer</componentName>
-                <identifier>LoanAgreementContainer</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-233be333-5375-428d-9ae9-ac6fada5d4dd</name>
@@ -2953,7 +2850,6 @@
                     <value>Schedule of Lender Costs</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab52</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -2967,7 +2863,6 @@
                     <value>Loan Agreement</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab53</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-7eb259e8-f2c5-44c2-bc09-79d977e0846f</name>
@@ -2981,7 +2876,6 @@
                     <value>Facet-7eb259e8-f2c5-44c2-bc09-79d977e0846f</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tabset</componentName>
-                <identifier>flexipage_tabset12</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-f395c4ed-269a-426e-9d79-94a0635c1144</name>
@@ -2999,7 +2893,6 @@
                     <value>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 20px; color: rgb(238, 5, 5);&quot;&gt;Broker needs to be included in all email correspondences with the Sponsor(s)&lt;/span&gt;&lt;/p&gt;</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:richText</componentName>
-                <identifier>flexipage_richText6</identifier>
                 <visibilityRule>
                     <criteria>
                         <leftValue>{!Record.Broker_Involvement__c}</leftValue>
@@ -3012,7 +2905,6 @@
         <itemInstances>
             <componentInstance>
                 <componentName>runtime_sales_activities:activityPanel</componentName>
-                <identifier>runtime_sales_activities_activityPanel2</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-bba8d952-6d6a-40d7-882e-509b49f094de</name>
@@ -3022,7 +2914,6 @@
         <itemInstances>
             <componentInstance>
                 <componentName>LoanStatusUpdates</componentName>
-                <identifier>LoanStatusUpdates</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-nn5o8bazdke</name>
@@ -3036,7 +2927,6 @@
                     <value>RECORD</value>
                 </componentInstanceProperties>
                 <componentName>forceChatter:exposedFeed</componentName>
-                <identifier>forceChatter_exposedFeed</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-11ab21b5-750c-41e8-8657-f5c7a3b0b266</name>
@@ -3058,7 +2948,6 @@
                     <value>Standard.Tab.activity</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>activityTab</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -3072,7 +2961,6 @@
                     <value>Notes</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab54</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -3086,7 +2974,6 @@
                     <value>Standard.Tab.collaborate</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>collaborateTab</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-27184f29-6b89-4ba9-97c8-ba4e9dda0599</name>
@@ -3100,7 +2987,6 @@
                     <value>Facet-27184f29-6b89-4ba9-97c8-ba4e9dda0599</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tabset</componentName>
-                <identifier>flexipage_tabset13</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-5111d5ac-c58d-4182-9a86-ffefe288681f</name>
@@ -3122,7 +3008,6 @@
                     <value>Standard.Tab.detail</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>detailTab</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -3136,7 +3021,6 @@
                     <value>Soft Quotes</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab55</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -3154,7 +3038,6 @@
                     <value>Approvals</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab56</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -3168,7 +3051,6 @@
                     <value>Entities &amp; Vendors</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab57</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -3182,7 +3064,6 @@
                     <value>Properties</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab58</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -3196,7 +3077,6 @@
                     <value>Documents</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab59</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -3210,7 +3090,6 @@
                     <value>Loan Status</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab60</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -3224,7 +3103,6 @@
                     <value>Closing</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab61</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -3238,7 +3116,6 @@
                     <value>Activity &amp; Notes</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab62</identifier>
             </componentInstance>
         </itemInstances>
         <name>facet-5f8e3e82-bd94-4ea3-a01b-3529ce1b8af3</name>
@@ -3252,7 +3129,6 @@
                     <value>facet-5f8e3e82-bd94-4ea3-a01b-3529ce1b8af3</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tabset</componentName>
-                <identifier>flexipage_tabset14</identifier>
             </componentInstance>
         </itemInstances>
         <name>main</name>
@@ -3270,7 +3146,6 @@
                     <value>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 20px; color: rgb(238, 5, 5);&quot;&gt;Broker needs to be included in all email correspondences with the Sponsor(s)&lt;/span&gt;&lt;/p&gt;</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:richText</componentName>
-                <identifier>flexipage_richText7</identifier>
                 <visibilityRule>
                     <criteria>
                         <leftValue>{!Record.Broker_Involvement__c}</leftValue>
@@ -3283,7 +3158,6 @@
         <itemInstances>
             <componentInstance>
                 <componentName>runtime_sales_activities:activityPanel</componentName>
-                <identifier>runtime_sales_activities_activityPanel3</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-2e5567a0-4ec5-45f0-a7be-59b9bc4b1549</name>
@@ -3313,7 +3187,6 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
-                <identifier>force_relatedListSingleContainer17</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-85663e8f-e652-4d9c-bd5a-e5530194a99f</name>
@@ -3323,7 +3196,6 @@
         <itemInstances>
             <componentInstance>
                 <componentName>forceChatter:recordFeedContainer</componentName>
-                <identifier>forceChatter_recordFeedContainer</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-cc0870bc-c0f3-494d-969c-2c709a12f12a</name>
@@ -3345,7 +3217,6 @@
                     <value>Standard.Tab.activity</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>activityTab2</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -3359,7 +3230,6 @@
                     <value>Notes</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab63</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -3373,7 +3243,6 @@
                     <value>Standard.Tab.collaborate</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>collaborateTab2</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-27d4b0b0-4ffe-40e5-adb6-bd9f9e0cbb15</name>
@@ -3387,7 +3256,6 @@
                     <value>Facet-27d4b0b0-4ffe-40e5-adb6-bd9f9e0cbb15</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tabset</componentName>
-                <identifier>flexipage_tabset15</identifier>
             </componentInstance>
         </itemInstances>
         <name>sidebar</name>

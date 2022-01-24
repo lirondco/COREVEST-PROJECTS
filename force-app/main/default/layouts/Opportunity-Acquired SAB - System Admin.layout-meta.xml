@@ -64,6 +64,10 @@
                 <behavior>Edit</behavior>
                 <field>Approved_Third_Party_Originators__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Origination_Date__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
