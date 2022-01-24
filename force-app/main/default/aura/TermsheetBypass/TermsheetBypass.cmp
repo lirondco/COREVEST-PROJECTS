@@ -6,7 +6,7 @@
     <aura:attribute name="bypass" type="Boolean" default="false" />
     <aura:attribute name="submitting" type="Boolean" default="false" />
     <aura:attribute name="submitted" type="String" />
-    <aura:attribute name="validationErrorMessage" type="String" />
+    <aura:attribute name="validationErrorMessages" type="String[]" />
 
 
     <aura:html tag="style">
@@ -53,7 +53,7 @@
                 <lightning:input aura:id="bypassCheck" checked="{!v.bypass}" type="checkbox" label="Mark this checkbox if you want to bypass the approval process if your deal meets the following criteria:"  />
 
                 <ul class="slds-list_dotted slds-m-top_small slds-m-left_medium">
-                    <li>You are a Relationship Manager or higher</li>
+                    <li>You are submitting on behalf of or are a Relationship Manager or higher</li>
                     <li>The deal is &lt; $3 million</li>
                     <li>The deal conforms to standard pricing from the grid</li>
                     <li>The deal is for an existing borrower in good standing</li>
@@ -77,15 +77,13 @@
                         </div>
                     </div>
             </div>
-
-            <div aura:id="notAllowed" class="slds-hide">
-                You can only submit a term sheet for approval after a pricing review has been approved and a term sheet has been generated.
-            </div>
             <div aura:id="validationError" class="slds-hide">
-                {!v.validationErrorMessage}
-            </div>
-            <div aura:id="noTermSheet" class="slds-hide">
-                You can only bypass termsheet approval after a term sheet has been generated.
+                <p><strong>Unable to proceed due to the following reason(s): </strong></p>
+                <ul class="slds-list_dotted slds-m-top_small slds-m-left_medium">
+                    <aura:iteration items="{!v.validationErrorMessages}" var="errorMessage">
+                        <li>{!errorMessage}</li>
+                    </aura:iteration>
+                </ul>
             </div>
 
           </div>

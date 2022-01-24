@@ -1,6 +1,13 @@
 public without sharing class TermSheetBypassController {
   public static final String PERMISSIONSET_NAME = 'Allow_Termsheet_Bypass';
-
+  public static final Map<String, String> validationMessages = new Map<String, String>{
+    'noPermission' => 'You do not currently have permission to bypass Term Sheet Approval, please request permission through your Manager.',
+    'notRepeatBorrower' => 'This Account is not a repeat Borrower, Term Sheet approval cannot be bypassed.',
+    'loanSize' => 'Requested Loan Amount is equal or greater than $3M, Term Sheet approval cannot be bypassed.',
+    'hasException' => 'This Deal has an Exception, Term Sheet approval cannot be bypassed.',
+    'hasGLCApproval' => 'This Deal went through GLC Approval, Term Sheet approval cannot be bypassed.',
+    'salesAnalyst' => 'If the CAF Originator on the deal is a Sales Analyst, Term Sheet approval cannot be bypassed.'
+  };
   // Opportunity.OwnerId, CAF Originator (Lookup on User)
   // Opportunity.Closer__c, Closer (Lookup on User)
   // Opportunity.Guarantor__c, Guarantor (Lookup on Contact)
@@ -49,7 +56,8 @@ public without sharing class TermSheetBypassController {
     'Account.Repeat_Borrower__c',
     'Loan_Size__c',
     'Exception__c',
-    'GLC_Approved__c'
+    'GLC_Approved__c',
+    'OwnerId'
   };
 
   // public static Map<String,String> loansToTemplate = new Map<String,String>{
@@ -61,12 +69,22 @@ public without sharing class TermSheetBypassController {
   @AuraEnabled
   public static String returnDeal(Id recordId) {
     Map<String, Object> m = new Map<String, List<Object>>();
+    List<String> validationErrors = new List<String>();
     String qs = 'SELECT ';
     qs += String.join(fields, ', ');
     qs += ' FROM Opportunity WHERE Id = :recordId';
 
     List<Opportunity> oList = Database.query(qs);
     Opportunity o = oList[0];
+
+    List<User> ownerUser = [SELECT id, Profile.Name, Profile.Id FROM User WHERE Id=:o.OwnerId];
+
+    if(ownerUser.size() > 0) {
+      String profileName = ownerUser[0].Profile.Name;
+      if(profileName == 'Sales Analyst') {
+        validationErrors.add(validationMessages.get('salesAnalyst'));
+      }
+    }
 
     List<PermissionSetAssignment> psaList = [
       SELECT
@@ -84,14 +102,7 @@ public without sharing class TermSheetBypassController {
     ];
 
     if (psaList.size() == 0) {
-      m.put(
-        'ValidationError',
-        new List<String>{
-          'You do not currently have permission to bypass Term Sheet Approval, please request permission through your Manager.'
-        }
-      );
-
-      return JSON.serialize(m, true);
+      validationErrors.add(validationMessages.get('noPermission'));
     }
 
     Integer versionNumber = 0;
@@ -135,41 +146,23 @@ public without sharing class TermSheetBypassController {
     if (versionNumber == 0) {
       // m.put('Error', new List<String>{'true'});
       m.put('TermSheetError', new List<String>{ 'true' });
-      return JSON.serialize(m, true);
     }
 
     if (o.Account.Repeat_Borrower__c != true) {
-      m.put(
-        'ValidationError',
-        new List<String>{
-          'This Account is not a repeat Borrower, Term Sheet approval cannot be bypassed.'
-        }
-      );
-    } else if (o.Loan_Size__c >= 3000000) {
-      m.put(
-        'ValidationError',
-        new List<String>{
-          'Requested Loan Amount is equal or greater than $3M, Term Sheet approval cannot be bypassed.'
-        }
-      );
-    } else if (o.Exception__c == true) {
-      m.put(
-        'ValidationError',
-        new List<String>{
-          'This Deal has an Exception, Term Sheet approval cannot be bypassed.'
-        }
-      );
-    } else if (o.GLC_Approved__c == true) {
-      m.put(
-        'ValidationError',
-        new List<String>{
-          'This Deal went through GLC Approval, Term Sheet approval cannot be bypassed.'
-        }
-      );
+      validationErrors.add(validationMessages.get('notRepeatBorrower'));
+    } 
+    if (o.Loan_Size__c >= 3000000) {
+      validationErrors.add(validationMessages.get('loanSize'));
+    } 
+    if (o.Exception__c == true) {
+      validationErrors.add(validationMessages.get('hasException'));
+    } 
+    if (o.GLC_Approved__c == true) {
+      validationErrors.add(validationMessages.get('hasGLCApproval'));
     }
 
-    if (m.containsKey('ValidationError')) {
-      return JSON.serialize(m, true);
+    if (validationErrors.size() > 0) {
+      m.put('ValidationError', validationErrors);
     }
 
     // }

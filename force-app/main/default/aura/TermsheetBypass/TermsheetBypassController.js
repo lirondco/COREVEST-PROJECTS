@@ -8,15 +8,23 @@
 			var state = response.getState();
 			if (state === 'SUCCESS'){
 				var returnVal = JSON.parse(response.getReturnValue());
-				if (returnVal.Error && returnVal.Error.length > 0){
-					helper.toggleHide(component, 'notAllowed');
-				} else if (returnVal.TermSheetError && returnVal.TermSheetError.length > 0){
-					helper.toggleHide(component, 'noTermSheet');
+                let errorMessages = [];
 
-				} else if (returnVal.ValidationError && returnVal.ValidationError.length > 0){
-                    component.set("v.validationErrorMessage", returnVal.ValidationError[0]);
-					helper.toggleHide(component, 'validationError');
-				} else {
+				if (returnVal.Error && returnVal.Error.length > 0){
+					errorMessages.push('You can only submit a term sheet for approval after a pricing review has been approved and a term sheet has been generated.');
+				}
+                if (returnVal.TermSheetError && returnVal.TermSheetError.length > 0){
+					errorMessages.push('You can only bypass termsheet approval after a term sheet has been generated.');
+				}
+                
+                if (returnVal.ValidationError && returnVal.ValidationError.length > 0){
+					errorMessages = errorMessages.concat(returnVal.ValidationError);
+				}
+
+                if(errorMessages.length > 0) {
+                    helper.toggleHide(component, 'validationError');
+                    component.set("v.validationErrorMessages", errorMessages);
+                } else {
                     helper.toggleHide(component, 'allowed');
 				}
 			} else {
