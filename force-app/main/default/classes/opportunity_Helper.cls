@@ -1341,6 +1341,7 @@ public class opportunity_Helper {
 
       if (
         o.StageName == 'Closed Won' &&
+        o.Warehouse_Line__c != null &&
         o.Warehouse_Line__c.contains(RTL_WAREHOUSELINE) &&
         o.Warehouse_Line__c != oldMap.get(o.Id).Warehouse_Line__c
       ) {
