@@ -208,6 +208,19 @@
       </tr>
 
       <tr>
+          <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Is this Loan <br /> Amortized <br /> or Interest Only?</td>
+          <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+
+          </td>
+          <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+            <apex:outputText value="{!panels.currentDetails.amortizationStatus}" rendered="{!!ISBLANK(panels.currentDetails.amortizationStatus)}">
+            </apex:outputText>
+          </td>
+
+          <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.currentLoanAmount}"></apex:outputText></td>
+      </tr>
+
+      <tr>
         <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Property <br/>Management</td>
         <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;"><apex:outputText value="{!panels.submissionDetails.propertyManagement}"></apex:outputText></td>
         <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;"><apex:outputText value="{!panels.currentDetails.propertyManagement}"></apex:outputText></td>
