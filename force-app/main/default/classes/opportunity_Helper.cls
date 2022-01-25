@@ -8,24 +8,23 @@ public class opportunity_Helper {
     'IC_Metrics_For_Bridge'
   };
 
+  public static final String RTL_WAREHOUSELINE = 'RTL';
+
+  public static final String RESOLUTE_DILIGENCE = 'Resolute Diligence Solutions';
+
   public static final String DEAL_EMAIL_HANDLER_DEVNAME = 'Deal_Email_Handler';
 
   public static List<String> IC_DOC_TYPES = new List<String>{
     'Draft IC Memo',
     'Committee Memo'
   };
+  // static final Id TERM_LOAN_RECORDTYPEID = Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get('Term Loan').getRecordTypeId();
 
+  // Mapping from Salesforce Record Type to PRES Loan ID Prefix
   public static Map<String, String> TYPE_MAP = new Map<String, String>{
     'Term_Loan' => 'TermLoan',
     'LOC_Loan' => 'LOC'
   };
-  // static final Id TERM_LOAN_RECORDTYPEID = Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get('Term Loan').getRecordTypeId();
-
-  // Mapping from Salesforce Record Type to PRES Loan ID Prefix
-  // public static Map<String, String> TYPE_MAP = new Map<String, String>{
-  //   'Term_Loan' => 'TermLoan',
-  //   'LOC_Loan' => 'LOC'
-  // };
 
   public static Map<String, RecordType> RECORDTYPE_MAP = util.compileRecordTypeMap(
     'Opportunity'
@@ -180,7 +179,18 @@ public class opportunity_Helper {
     List<OpportunityContactRole> contactRoleMembers = new List<OpportunityContactRole>();
     // VENDOR_MAP = compileVendorMap();
 
+    List<Opportunity> nonSecWarehouseLines = new List<Opportunity>();
+    List<Opportunity> dealsWithSec = new List<Opportunity>();
+
     for (Opportunity o : newMap.values()) {
+      if (String.isNotEmpty(o.Warehouse_Line__c)) {
+        nonSecWarehouseLines.add(o);
+      }
+
+      if (o.Securitization__c != null) {
+        dealsWithSec.add(o);
+      }
+
       system.debug(o.Record_Type_Name__c);
 
       // query the record acc type from Opp
@@ -483,6 +493,15 @@ public class opportunity_Helper {
 
     if (closedWonIds.size() > 0) {
       attachVendors(closedWonIds);
+    }
+
+    Map<String, List<Opportunity>> dealTypeForFundingVehicleMap = new Map<String, List<Opportunity>>{
+      'Non_Securitisation' => nonSecWarehouseLines,
+      'Securitisation' => dealsWithSec
+    };
+
+    if (nonSecWarehouseLines.size() > 0 || dealsWithSec.size() > 0) {
+      upsertFundingVehicleConnections(dealTypeForFundingVehicleMap);
     }
 
     //if(termRecordIds.size() > 0){
@@ -1290,6 +1309,19 @@ public class opportunity_Helper {
     List<OpportunityContactRole> updateContactRoleMembers = new List<OpportunityContactRole>();
     List<Opportunity> oppsWithRolestoUpdate = new List<Opportunity>();
     List<Deal_Contact__c> applicantToCreate = new List<Deal_Contact__c>();
+    List<Opportunity> nonSecWarehouseLines = new List<Opportunity>();
+    List<Opportunity> dealsWithSec = new List<Opportunity>();
+    Map<Id, String> updatedWarehouseLines = new Map<Id, String>();
+
+    Map<String, Map<Id, Opportunity>> oppsLineItemUnitPriceMap = new Map<String, Map<Id, Opportunity>>{
+      'Loan_Size__c' => new Map<Id, Opportunity>(),
+      'Current_Loan_Amount__c' => new Map<Id, Opportunity>(),
+      'Final_Loan_Amount__c' => new Map<Id, Opportunity>()
+    };
+    Map<Id, Opportunity> oppsServiceDate = new Map<Id, Opportunity>();
+
+    Set<Id> rtlDeals = new Set<Id>();
+    Map<Id, Opportunity> dealsToCheckforNotes= new Map<Id, Opportunity>();
 
     Map<Id, Decimal> dealMemberSize = new Map<Id, Decimal>();
     for (AggregateResult ar : [
@@ -1307,6 +1339,48 @@ public class opportunity_Helper {
     for (Opportunity o : newMap.values()) {
       system.debug('o.StageName::::' + o);
       system.debug('oldMap::::' + oldMap);
+
+      if (
+        o.StageName == 'Closed Won' &&
+        o.Warehouse_Line__c != null &&
+        o.Warehouse_Line__c.contains(RTL_WAREHOUSELINE) &&
+        o.Warehouse_Line__c != oldMap.get(o.Id).Warehouse_Line__c
+      ) {
+        rtlDeals.add(o.Id);
+      }
+
+      if (
+        String.isNotEmpty(o.Deal_Lost_Reason__c) &&
+        o.Deal_Lost_Reason__c == 'Other – See Deal Notes' && 
+        o.Deal_Lost_Reason__c != oldMap.get(o.Id).Deal_Lost_Reason__c
+      ) {
+        dealsToCheckforNotes.put(o.Id, o);
+      }
+
+      if (
+        oldMap.get(o.Id).Warehouse_Line__c != o.Warehouse_Line__c &&
+        o.Warehouse_Line__c != 'Securitization'
+      ) {
+        if (String.isNotEmpty(o.Warehouse_Line__c)) {
+          nonSecWarehouseLines.add(o);
+        }
+        if (String.isNotEmpty(oldMap.get(o.Id).Warehouse_Line__c)) {
+          updatedWarehouseLines.put(o.Id, oldMap.get(o.Id).Warehouse_Line__c);
+        }
+      }
+
+
+      if (
+        o.Securitization__c != null &&
+        oldMap.get(o.Id).Securitization__c != o.Securitization__c
+      ) {
+        dealsWithSec.add(o);
+
+        if (String.isNotEmpty(oldMap.get(o.Id).Warehouse_Line__c)) {
+          updatedWarehouseLines.put(o.Id, oldMap.get(o.Id).Warehouse_Line__c);
+        }
+      }
+
       if (
         o.StageName != oldMap.get(o.Id).StageName &&
         o.StageName == 'Closed Won'
@@ -1326,6 +1400,40 @@ public class opportunity_Helper {
       // if((o.Record_Type_Name__c == 'LOC_Loan' || o.Record_Type_Name__c.contains('Bridge')) && o.Parent_Deal__c != null){
       //     locParentIds.add(o.Parent_Deal__c);
       // }
+
+      if (o.RecordType__c == 'Term' || o.RecordType__c == 'Investor DSCR') {
+        Map<Id, Opportunity> lineItemOppMap = new Map<Id, Opportunity>();
+        if (
+          o.Loan_Size__c != oldMap.get(o.Id).Loan_Size__c &&
+          o.Current_Loan_Amount__c == null &&
+          o.Final_Loan_Amount__c == null
+        ) {
+          lineItemOppMap = oppsLineItemUnitPriceMap.get('Loan_Size__c');
+          lineItemOppMap.put(o.Id, o);
+          oppsLineItemUnitPriceMap.put('Loan_Size__c', lineItemOppMap);
+        } else if (
+          o.Current_Loan_Amount__c != oldMap.get(o.Id).Current_Loan_Amount__c
+        ) {
+          lineItemOppMap = oppsLineItemUnitPriceMap.get(
+            'Current_Loan_Amount__c'
+          );
+          lineItemOppMap.put(o.Id, o);
+          oppsLineItemUnitPriceMap.put(
+            'Current_Loan_Amount__c',
+            lineItemOppMap
+          );
+        } else if (
+          o.Final_Loan_Amount__c != oldMap.get(o.Id).Final_Loan_Amount__c
+        ) {
+          lineItemOppMap = oppsLineItemUnitPriceMap.get('Final_Loan_Amount__c');
+          lineItemOppMap.put(o.Id, o);
+          oppsLineItemUnitPriceMap.put('Final_Loan_Amount__c', lineItemOppMap);
+        }
+
+        if (o.CloseDate != oldMap.get(o.Id).CloseDate) {
+          oppsServiceDate.put(o.Id, o);
+        }
+      }
 
       if (
         o.Underwriter__c != oldMap.get(o.Id).Underwriter__c ||
@@ -1623,9 +1731,55 @@ public class opportunity_Helper {
       }
     }
 
+    List<OpportunityLineItem> updatedLineItems = new List<OpportunityLineItem>();
+
+    for (String key : oppsLineItemUnitPriceMap.keySet()) {
+      if (oppsLineItemUnitPriceMap.get(key).size() > 0) {
+        updatedLineItems.addAll(
+          updateOppLineItems(
+            oppsLineItemUnitPriceMap.get(key),
+            'UnitPrice',
+            key
+          )
+        );
+      }
+    }
+
+    if (dealsToCheckforNotes.size() > 0) {
+      checkIfDealHasNotes(dealsToCheckforNotes);
+    }
+
+    if (oppsServiceDate.size() > 0) {
+      updatedLineItems.addAll(
+        updateOppLineItems(oppsServiceDate, 'ServiceDate', 'CloseDate')
+      );
+    }
+
+    if (updatedLineItems.size() > 0) {
+      update updatedLineItems;
+    }
 
     if (approvedIcDeals.size() > 0) {
       processIcApproval(approvedIcDeals);
+    }
+
+    if (rtlDeals.size() > 0) {
+      createRtlDealContacts(rtlDeals);
+    }
+
+    Map<String, List<Opportunity>> dealTypeForFundingVehicleMap = new Map<String, List<Opportunity>>{
+      'Non_Securitisation' => nonSecWarehouseLines,
+      'Securitisation' => dealsWithSec
+    };
+
+    System.debug(JSON.serializePretty(dealTypeForFundingVehicleMap));
+
+    if (nonSecWarehouseLines.size() > 0 || dealsWithSec.size() > 0) {
+      upsertFundingVehicleConnections(dealTypeForFundingVehicleMap);
+    }
+
+    if (updatedWarehouseLines.size() > 0) {
+      updateDealFundingVehicleEndDate(updatedWarehouseLines);
     }
 
     // if(locParentIds.size() > 0){
@@ -2257,15 +2411,12 @@ public class opportunity_Helper {
       this.clearToClose = true;
       this.docMap = new Map<String, C2CDocWrapper>();
 
-      String recordType = opp.RecordType__c;
+      String recordType = opp.RecordType.DeveloperName;
       if (
-        recordType == 'Bridge'
+        recordType.contains('Bridge') &&
+        recordType != 'Single_Asset_Bridge_Loan'
       ) {
         recordType = 'LOC_Loan';
-      } else if (recordType == 'Term') {
-        recordType = 'Term_Loan';
-      } else if (recordType == 'Single Asset Bridge') {
-        recordType = 'Single_Asset_Bridge_Loan';
       }
 
       Map<String, Document_Structure__mdt> docStringMap = docStringRTMap.get(
@@ -2538,7 +2689,6 @@ public class opportunity_Helper {
         newDC.Entity_Type__c = 'Vendor';
         newDealContacts.add(newDC);
       }
-
       for (Opportunity o : acquiredDSCROppsToUpdate) {
         Deal_Contact__c newDC = new Deal_Contact__c();
         newDC.Vendor_Type__c = 'Servicer';
@@ -2750,4 +2900,195 @@ public class opportunity_Helper {
     }
   }
 
+  public static List<OpportunityLineItem> updateOppLineItems(
+    Map<Id, Opportunity> oppMap,
+    String fieldToUpdate,
+    String fieldFrom
+  ) {
+    String soql =
+      'SELECT Id, OpportunityId, ' +
+      fieldToUpdate +
+      ' FROM OpportunityLineItem WHERE OpportunityId IN (\'' +
+      String.join(new List<Id>(oppMap.keySet()), '\',') +
+      '\')';
+    List<OpportunityLineItem> oppLineItems = Database.query(soql);
+
+    for (OpportunityLineItem oli : oppLineItems) {
+      Opportunity currOpp = oppMap.get(oli.OpportunityId);
+      oli.put(fieldToUpdate, currOpp.get(fieldFrom));
+    }
+
+    return oppLineItems;
+  }
+
+  public static void updateDealFundingVehicleEndDate(Map<Id, String> dealMap) {
+    List<Deal_x_Funding_Vehicle__c> dfvs = [
+      SELECT
+        Id,
+        Deal__c,
+        Funding_Vehicle__c,
+        Funding_Vehicle__r.Name,
+        End_Date__c,
+        Deal__r.Securitization__r.Close_Date__c,
+        Deal__r.Securitization__c
+      FROM Deal_x_Funding_Vehicle__c
+      WHERE Deal__c IN :dealMap.keySet() AND End_Date__c = NULL
+    ];
+
+    for (Deal_x_Funding_Vehicle__c d : dfvs) {
+      if (
+        d.Deal__r.Securitization__c != null &&
+        dealMap.get(d.Deal__c) == d.Funding_Vehicle__r.Name &&
+        d.Deal__r.Securitization__r.Close_Date__c != null
+      ) {
+        d.End_Date__c = d.Deal__r.Securitization__r.Close_Date__c;
+      } else if (
+        d.Deal__r.Securitization__c == null &&
+        d.Funding_Vehicle__r.Name == dealMap.get(d.Deal__c)
+      ) {
+        d.End_Date__c = (Date) System.today();
+      }
+    }
+
+    update dfvs;
+  }
+
+  public static void upsertFundingVehicleConnections(
+    Map<String, List<Opportunity>> dealTypeMap
+  ) {
+    List<Deal_x_Funding_Vehicle__c> newFundingVehicleConnections = new List<Deal_x_Funding_Vehicle__c>();
+    System.debug(JSON.serializePretty(dealTypeMap));
+    List<Opportunity> nonSecOpps = dealTypeMap.get('Non_Securitisation');
+    List<Opportunity> secOpps = dealTypeMap.get('Securitisation');
+
+    if (nonSecOpps.size() > 0) {
+      Map<Id, String> dealWarehouseMap = new Map<Id, String>();
+      for (Opportunity nso : nonSecOpps) {
+        dealWarehouseMap.put(nso.Id, nso.Warehouse_Line__c);
+      }
+
+      Map<String, Id> fundingVehicleMap = generateFundingVehicleMap(
+        dealWarehouseMap
+      );
+
+      if (fundingVehicleMap.size() > 0) {
+        for (Opportunity nso : nonSecOpps) {
+          if (fundingVehicleMap.containsKey(nso.Warehouse_Line__c)) {
+            Deal_x_Funding_Vehicle__c newDxfv = new Deal_x_Funding_Vehicle__c();
+            newDxfv.Deal__c = nso.Id;
+            newDxfv.Funding_Vehicle__c = fundingVehicleMap.get(
+              nso.Warehouse_Line__c
+            );
+            newDxfv.Start_Date__c = (Date) System.today();
+            newFundingVehicleConnections.add(newDxfv);
+          }
+        }
+      }
+    }
+
+    if (secOpps.size() > 0) {
+      System.debug('SECURITISATION');
+      System.debug(secOpps);
+      Map<Id, Funding_Vehicle__c> secFvMap = new Map<Id, Funding_Vehicle__c>();
+      for (Opportunity op : secOpps) {
+        secFvMap.put(op.Securitization__c, new Funding_Vehicle__c());
+      }
+
+      for (Funding_Vehicle__c fv : [
+        SELECT Id, Securitization__c, Securitization__r.Close_Date__c
+        FROM Funding_Vehicle__c
+        WHERE Securitization__c IN :secFvMap.keySet()
+      ]) {
+        secFvMap.put(fv.Securitization__c, fv);
+      }
+
+      for (Opportunity op : secOpps) {
+        if (
+          secFvMap.containsKey(op.Securitization__c) &&
+          secFvMap.get(op.Securitization__c).Id != null
+        ) {
+          Deal_x_Funding_Vehicle__c newDxfv = new Deal_x_Funding_Vehicle__c();
+          newDxfv.Include_Yes_No__c = true;
+          newDxfv.Deal__c = op.Id;
+          newDxfv.Funding_Vehicle__c = secFvMap.get(op.Securitization__c).Id;
+          newDxfv.Start_Date__c = secFvMap.get(op.Securitization__c)
+            .Securitization__r.Close_Date__c;
+          newFundingVehicleConnections.add(newDxfv);
+        }
+      }
+    }
+
+    if (newFundingVehicleConnections.size() > 0) {
+      upsert newFundingVehicleConnections;
+    }
+  }
+
+  public static Map<String, Id> generateFundingVehicleMap(
+    Map<Id, String> dealWarehouseMap
+  ) {
+    List<Funding_Vehicle__c> fundingVehicles = [
+      SELECT Id, Name
+      FROM Funding_Vehicle__c
+      WHERE Name IN :dealWarehouseMap.values()
+    ];
+
+    if (fundingVehicles.size() > 0) {
+      Map<String, Id> fundingVehicleMap = new Map<String, Id>();
+
+      for (Funding_Vehicle__c fv : fundingVehicles) {
+        fundingVehicleMap.put(fv.Name, fv.Id);
+      }
+
+      return fundingVehicleMap;
+    } else {
+      return new Map<String, Id>();
+    }
+  }
+
+  public static void createRtlDealContacts(Set<Id> dealIds) {
+    List<Account> rtlAccs = [
+      SELECT Id
+      FROM Account
+      WHERE Name = :RESOLUTE_DILIGENCE AND RecordType.DeveloperName = 'Vendor'
+      LIMIT 1
+    ];
+
+    if (Test.isRunningTest()) {
+      rtlAccs = [SELECT Id FROM Account LIMIT 1];
+    }
+
+    List<Deal_Contact__c> newDealContacts = new List<Deal_Contact__c>();
+
+    if (rtlAccs.size() > 0) {
+      for (Id dealId : dealIds) {
+        Deal_Contact__c newDealContact = new Deal_Contact__c();
+        newDealContact.Deal__c = dealId;
+        newDealContact.Account__c = rtlAccs[0].Id;
+        newDealContact.Deal_Contact_Type__c = 'Vendor';
+        newDealContact.Vendor_Type__c = 'Diligence Review';
+        newDealContacts.add(newDealContact);
+      }
+
+      if (newDealContacts.size() > 0) {
+        insert newDealContacts;
+      }
+    }
+  }
+
+  public static void checkIfDealHasNotes(Map<Id, Opportunity> dealMap) {
+    List<Opportunity> dealsWithNoNotes = [
+      SELECT Id
+      FROM Opportunity
+      WHERE Id IN :dealMap.keySet()
+      AND Id NOT IN (
+        SELECT Deal__c
+        FROM Loan_Status__c
+        WHERE Deal__c IN :dealMap.keySet()
+      )
+    ];
+
+    for(Opportunity o : dealsWithNoNotes) {
+      dealMap.get(o.Id).addError('Please add a Loan Note to this deal first before changing the lost reason to "Other - See Deal Notes".');
+    }
+  }
 }
