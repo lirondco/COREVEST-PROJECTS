@@ -1322,6 +1322,8 @@ public class opportunity_Helper {
 
     Set<Id> rtlDeals = new Set<Id>();
     Map<Id, Opportunity> dealsToCheckforNotes= new Map<Id, Opportunity>();
+    Set<Id> securitizationsToExclude = new Set<Id>();
+    List<Id> dealsWithSecsToExclude = new List<Id>();
 
     Map<Id, Decimal> dealMemberSize = new Map<Id, Decimal>();
     for (AggregateResult ar : [
@@ -1375,6 +1377,11 @@ public class opportunity_Helper {
         oldMap.get(o.Id).Securitization__c != o.Securitization__c
       ) {
         dealsWithSec.add(o);
+
+        if(oldMap.get(o.Id).Securitization__c != null){
+          securitizationsToExclude.add(oldMap.get(o.Id).Securitization__c);
+          dealsWithSecsToExclude.add(o.Id);
+        }
 
         if (String.isNotEmpty(oldMap.get(o.Id).Warehouse_Line__c)) {
           updatedWarehouseLines.put(o.Id, oldMap.get(o.Id).Warehouse_Line__c);
@@ -1743,6 +1750,10 @@ public class opportunity_Helper {
           )
         );
       }
+    }
+
+    if (securitizationsToExclude.size() > 0) {
+      excludeSecuritizations(securitizationsToExclude,dealsWithSecsToExclude);
     }
 
     if (dealsToCheckforNotes.size() > 0) {
@@ -3084,11 +3095,31 @@ public class opportunity_Helper {
         SELECT Deal__c
         FROM Loan_Status__c
         WHERE Deal__c IN :dealMap.keySet()
+        AND CreatedById = :UserInfo.getUserId()
+        AND CreatedDate > :Datetime.now().addMinutes(-30)
       )
     ];
 
     for(Opportunity o : dealsWithNoNotes) {
       dealMap.get(o.Id).addError('Please add a Loan Note to this deal first before changing the lost reason to "Other - See Deal Notes".');
+    }
+  }
+
+  public static void excludeSecuritizations(Set<Id> secids, List<Id> dealIds) {
+    List<Deal_x_Funding_Vehicle__c> dxfvs = [
+      SELECT Id, Include_Yes_No__c
+      FROM Deal_x_Funding_Vehicle__c
+      WHERE Funding_Vehicle__r.Securitization__c IN :secids
+      AND Deal__c in :dealIds
+      AND Include_Yes_No__c = true
+    ];
+
+    if (dxfvs.size() > 0) {
+      for(Deal_x_Funding_Vehicle__c d : dxfvs) {
+        d.Include_Yes_No__c = false;
+      }
+
+      update dxfvs;
     }
   }
 }
