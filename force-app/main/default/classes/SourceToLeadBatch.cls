@@ -47,8 +47,9 @@ public class SourceToLeadBatch implements Database.Batchable<sObject> {
     fieldsList.addAll(fieldMapping.keySet());
     String fields = String.join(fieldsList, ',');
 
-    String q = 'SELECT ' + fields + ' FROM Lead WHERE Id NOT IN (SELECT Lead__c FROM Source__c)';
+    // String q = 'SELECT ' + fields + ' FROM Lead WHERE Id NOT IN (SELECT Lead__c FROM Source__c)';
     // String q = 'SELECT ' + fields + ' FROM Lead WHERE Id = \'00Q0a00000lqxn5EAA\' ';
+    String q = 'SELECT ' + fields + ' FROM Lead WHERE Id NOT IN (SELECT Lead__c FROM Source__c) AND CALENDAR_MONTH(CreatedDate) IN (3) AND CALENDAR_YEAR(CreatedDate) IN (2015)';
 
     return Database.getQueryLocator(q);
   }
