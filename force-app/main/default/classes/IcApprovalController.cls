@@ -134,12 +134,13 @@ public without sharing class IcApprovalController {
     'Record_Type_Name__c',
     'LOC_Program_Type__c',
     'Product_Sub_Type__c',
-    'Amount',
+    'Current_Loan_Amount__c',
     'Underwriter__r.Email',
     'Loan_Coordinator__r.Email',
     'Closer__r.Email',
     'IC_Approval__c',
-    'StageName'
+    'StageName',
+    'LOC_Commitment__c'
   };
 
   @AuraEnabled
@@ -256,13 +257,19 @@ public without sharing class IcApprovalController {
     oRecordType = deal[0].Record_Type_Name__c;
     if (null != deal && deal.size() > 0) {
       if (oRecordType == 'LOC_Loan') {
-        if ((Decimal) deal[0].Amount > 3000000) {
+        if(deal[0].LOC_Commitment__c == null) {
+          m.put('Error', new List<String>{ 'Please enter an amount for "LOC Commitment" first before proceding.' });
+          return JSON.serialize(m, true);
+        } else if ((Decimal) deal[0].LOC_Commitment__c > 3000000) {
           approvalType = 'Bridge IC';
         } else {
           approvalType = 'Bridge Sub-IC';
         }
       } else {
-        if ((Decimal) deal[0].Amount > 2000000) {
+        if(deal[0].Current_Loan_Amount__c == null) {
+          m.put('Error', new List<String>{ 'Please enter an amount for "Current Loan Amount" first before proceding.' });
+          return JSON.serialize(m, true);
+        } else if ((Decimal) deal[0].Current_Loan_Amount__c > 2000000) {
           approvalType = 'Term IC';
         } else {
           approvalType = 'Term Sub-IC';
