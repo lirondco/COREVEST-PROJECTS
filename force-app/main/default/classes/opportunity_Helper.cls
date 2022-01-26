@@ -1371,6 +1371,10 @@ public class opportunity_Helper {
         }
       }
 
+      if(oldMap.get(o.Id).Securitization__c != null && oldMap.get(o.Id).Securitization__c != o.Securitization__c){
+        securitizationsToExclude.add(oldMap.get(o.Id).Securitization__c);
+        dealsWithSecsToExclude.add(o.Id);
+      }
 
       if (
         o.Securitization__c != null &&
@@ -1378,10 +1382,7 @@ public class opportunity_Helper {
       ) {
         dealsWithSec.add(o);
 
-        if(oldMap.get(o.Id).Securitization__c != null){
-          securitizationsToExclude.add(oldMap.get(o.Id).Securitization__c);
-          dealsWithSecsToExclude.add(o.Id);
-        }
+        
 
         if (String.isNotEmpty(oldMap.get(o.Id).Warehouse_Line__c)) {
           updatedWarehouseLines.put(o.Id, oldMap.get(o.Id).Warehouse_Line__c);
