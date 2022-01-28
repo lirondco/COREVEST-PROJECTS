@@ -567,8 +567,8 @@ Equity Pledge:
             border-collapse: collapse;
             border: 1px solid #bebebe;
           ">
-          <apex:outputText value="{0, Number, Currency} payable at closing">
-            <apex:param value="{! Opportunity.Calculated_Origination_Fee__c }" /></apex:outputText>
+          <apex:outputText value="{0, number, 0.00}% payable at closing">
+            <apex:param value="{! Opportunity.CAF_Upfront_Fee__c }" /></apex:outputText>
         </td>
       </tr>
 
@@ -848,7 +848,7 @@ Equity Pledge:
             Construction Management Software Fee: $150.00 (for loans with renovation advances)
             <br />
           </apex:outputText>
-          Appraisal Valuation Fee: $300 - $800
+          Appraisal Valuation Fee: Estimated $300+
           <br /> UCC-1 Filing Fee: $100
           <br /> Wire Fee: $30.00
         </td>
@@ -906,7 +906,7 @@ Equity Pledge:
             border-collapse: collapse;
             border: 1px solid #bebebe;
           ">
-          <apex:outputText rendered="{! If(Opportunity.Recourse__c == 'Recourse', true, false) }" value="Full Recourse to a qualified individual Guarantor"
+          <apex:outputText rendered="{! If(Opportunity.Recourse__c == 'Recourse', true, false) }" value="Full Recourse to Guarantor"
           />
           <apex:outputText rendered="{! If(Opportunity.Recourse__c == 'Non-Recourse', true, false) }" value="Non-Recourse subject to standard Lender Carveouts"
           />
