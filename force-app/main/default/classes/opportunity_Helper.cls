@@ -1297,7 +1297,6 @@ public class opportunity_Helper {
     Map<Id, Contact> contacts = new Map<Id, Contact>();
     Map<Id, Opportunity> approvedIcDeals = new Map<Id, Opportunity>();
 
-
     //Set<Id> populateUnique = new Set<Id>();
     //Set<Id> removeUnique = new Set<Id>();
 
@@ -1321,7 +1320,7 @@ public class opportunity_Helper {
     Map<Id, Opportunity> oppsServiceDate = new Map<Id, Opportunity>();
 
     Set<Id> rtlDeals = new Set<Id>();
-    Map<Id, Opportunity> dealsToCheckforNotes= new Map<Id, Opportunity>();
+    Map<Id, Opportunity> dealsToCheckforNotes = new Map<Id, Opportunity>();
     Set<Id> securitizationsToExclude = new Set<Id>();
     List<Id> dealsWithSecsToExclude = new List<Id>();
 
@@ -1353,7 +1352,7 @@ public class opportunity_Helper {
 
       if (
         String.isNotEmpty(o.Deal_Lost_Reason__c) &&
-        o.Deal_Lost_Reason__c == 'Other – See Deal Notes' && 
+        o.Deal_Lost_Reason__c == 'Other – See Deal Notes' &&
         o.Deal_Lost_Reason__c != oldMap.get(o.Id).Deal_Lost_Reason__c
       ) {
         dealsToCheckforNotes.put(o.Id, o);
@@ -1371,17 +1370,19 @@ public class opportunity_Helper {
         }
       }
 
+      if (
+        oldMap.get(o.Id).Securitization__c != null &&
+        oldMap.get(o.Id).Securitization__c != o.Securitization__c
+      ) {
+        securitizationsToExclude.add(oldMap.get(o.Id).Securitization__c);
+        dealsWithSecsToExclude.add(o.Id);
+      }
 
       if (
         o.Securitization__c != null &&
         oldMap.get(o.Id).Securitization__c != o.Securitization__c
       ) {
         dealsWithSec.add(o);
-
-        if(oldMap.get(o.Id).Securitization__c != null){
-          securitizationsToExclude.add(oldMap.get(o.Id).Securitization__c);
-          dealsWithSecsToExclude.add(o.Id);
-        }
 
         if (String.isNotEmpty(oldMap.get(o.Id).Warehouse_Line__c)) {
           updatedWarehouseLines.put(o.Id, oldMap.get(o.Id).Warehouse_Line__c);
@@ -1402,7 +1403,6 @@ public class opportunity_Helper {
       ) {
         approvedIcDeals.put(o.Id, o);
       }
-
 
       // if((o.Record_Type_Name__c == 'LOC_Loan' || o.Record_Type_Name__c.contains('Bridge')) && o.Parent_Deal__c != null){
       //     locParentIds.add(o.Parent_Deal__c);
@@ -1753,7 +1753,7 @@ public class opportunity_Helper {
     }
 
     if (securitizationsToExclude.size() > 0) {
-      excludeSecuritizations(securitizationsToExclude,dealsWithSecsToExclude);
+      excludeSecuritizations(securitizationsToExclude, dealsWithSecsToExclude);
     }
 
     if (dealsToCheckforNotes.size() > 0) {
@@ -2596,7 +2596,11 @@ public class opportunity_Helper {
       LIMIT 1
     ];
 
-    if (berkadiaAccs.size() > 0 && statebridgeAccs.size() > 0 && fciAccs.size() > 0) {
+    if (
+      berkadiaAccs.size() > 0 &&
+      statebridgeAccs.size() > 0 &&
+      fciAccs.size() > 0
+    ) {
       Id berkadiaAccId = berkadiaAccs[0].Id;
       Id statebridgeAccId = statebridgeAccs[0].Id;
       Id fciAccId = fciAccs[0].Id;
@@ -2718,7 +2722,6 @@ public class opportunity_Helper {
         newDC.Account__c = fciAccId;
         newDC.Entity_Type__c = 'Vendor';
         newDealContacts.add(newDC);
-
       }
 
       System.debug(newDealContacts);
@@ -3090,18 +3093,23 @@ public class opportunity_Helper {
     List<Opportunity> dealsWithNoNotes = [
       SELECT Id
       FROM Opportunity
-      WHERE Id IN :dealMap.keySet()
-      AND Id NOT IN (
-        SELECT Deal__c
-        FROM Loan_Status__c
-        WHERE Deal__c IN :dealMap.keySet()
-        AND CreatedById = :UserInfo.getUserId()
-        AND CreatedDate > :Datetime.now().addMinutes(-30)
-      )
+      WHERE
+        Id IN :dealMap.keySet()
+        AND Id NOT IN (
+          SELECT Deal__c
+          FROM Loan_Status__c
+          WHERE
+            Deal__c IN :dealMap.keySet()
+            AND CreatedById = :UserInfo.getUserId()
+            AND CreatedDate > :Datetime.now().addMinutes(-30)
+        )
     ];
 
-    for(Opportunity o : dealsWithNoNotes) {
-      dealMap.get(o.Id).addError('Please add a Loan Note to this deal first before changing the lost reason to "Other - See Deal Notes".');
+    for (Opportunity o : dealsWithNoNotes) {
+      dealMap.get(o.Id)
+        .addError(
+          'Please add a Loan Note to this deal first before changing the lost reason to "Other - See Deal Notes".'
+        );
     }
   }
 
@@ -3109,13 +3117,14 @@ public class opportunity_Helper {
     List<Deal_x_Funding_Vehicle__c> dxfvs = [
       SELECT Id, Include_Yes_No__c
       FROM Deal_x_Funding_Vehicle__c
-      WHERE Funding_Vehicle__r.Securitization__c IN :secids
-      AND Deal__c in :dealIds
-      AND Include_Yes_No__c = true
+      WHERE
+        Funding_Vehicle__r.Securitization__c IN :secids
+        AND Deal__c IN :dealIds
+        AND Include_Yes_No__c = TRUE
     ];
 
     if (dxfvs.size() > 0) {
-      for(Deal_x_Funding_Vehicle__c d : dxfvs) {
+      for (Deal_x_Funding_Vehicle__c d : dxfvs) {
         d.Include_Yes_No__c = false;
       }
 
