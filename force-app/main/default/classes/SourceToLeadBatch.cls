@@ -141,7 +141,7 @@ public class SourceToLeadBatch implements Database.Batchable<sObject> {
   ) {
     Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
 
-    email.setToAddresses(new List<String>{ 'ldecastro@mkpartners.com','liron.dco@gmail.com' });
+    email.setToAddresses(new List<String>{ 'ldecastro@mkpartners.com','integrations@cvest.com', 'jonathan.lay@cvest.com' });
     OrgWideEmailAddress owea = new OrgWideEmailAddress();
     owea = [
       SELECT Id, Address, DisplayName
@@ -168,7 +168,7 @@ public class SourceToLeadBatch implements Database.Batchable<sObject> {
   public static void sendCompletedEmail(AsyncApexJob job) {
     Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
 
-    email.setToAddresses(new List<String>{ 'ldecastro@mkpartners.com','liron.dco@gmail.com' });
+    email.setToAddresses(new List<String>{ 'ldecastro@mkpartners.com','integrations@cvest.com', 'jonathan.lay@cvest.com' });
     OrgWideEmailAddress owea = new OrgWideEmailAddress();
     owea = [
       SELECT Id, Address, DisplayName
