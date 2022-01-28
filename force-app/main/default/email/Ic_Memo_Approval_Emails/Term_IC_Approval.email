@@ -5,7 +5,7 @@
 
         <br />
         <p>
-            Please review the deal below that has a loan amount that's greater than $2,000,000.
+            Please review the following Term Deal that has a Loan Amount of over $2,000,000.
         </p>
         <br />
 
@@ -39,7 +39,7 @@
         <br />
 
         <p>
-            <table style="table-layout:fixed;border:1px solid black;border-collapse:collapse;width:350px;">
+            <table style="table-layout:fixed;border:1px solid black;border-collapse:collapse;width:450px;">
                 <colgroup>
                     <col class="one" style="width:50%;border:1px solid black;padding:6px;" />
                     <col class="two" style="width:50%;border:1px solid black;padding:6px;text-align:right;" />
@@ -306,7 +306,7 @@
         <br />
 
         <p>
-            <table style="table-layout:fixed;border:1px solid black;border-collapse:collapse;width:350px;">
+            <table style="table-layout:fixed;border:1px solid black;border-collapse:collapse;width:450px;">
                 <colgroup>
                     <col class="one" style="width:50%;border:1px solid black;padding:6px;" />
                     <col class="two" style="width:50%;border:1px solid black;padding:6px;text-align:right;" />
@@ -326,6 +326,22 @@
                         <apex:outputText value="{0, number, currency}">
                             <apex:param value="{!relatedTo.Loan_Size__c}" />
                         </apex:outputText>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border:1px solid black">
+                        Closer:
+                    </td>
+                    <td style="border:1px solid black;text-align:right;">
+                        <apex:outputText value="{!relatedTo.Closer__r.Name}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border:1px solid black">
+                        Underwriter:
+                    </td>
+                    <td style="border:1px solid black;text-align:right;">
+                        <apex:outputText value="{!relatedTo.Underwriter__r.Name}" />
                     </td>
                 </tr>
                 <tr>

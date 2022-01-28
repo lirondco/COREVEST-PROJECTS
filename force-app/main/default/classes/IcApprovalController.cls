@@ -129,15 +129,23 @@ public without sharing class IcApprovalController {
   }
 
   public static List<String> fields = new List<String>{
-    'Opportunity.Owner.Email',
+    // 'Opportunity.Owner.Email',
     'Name',
     'Record_Type_Name__c',
     'LOC_Program_Type__c',
     'Product_Sub_Type__c',
     'Current_Loan_Amount__c',
+    'Underwriter__c',
     'Underwriter__r.Email',
     'Loan_Coordinator__r.Email',
+    'Closer__c',
     'Closer__r.Email',
+    'OwnerId',
+    'Owner.Email',
+    'CAF_Analyst__c',
+    'CAF_Analyst__r.Email',
+    'Second_Production_Analyst__c',
+    'Second_Production_Analyst__r.Email',
     'IC_Approval__c',
     'StageName',
     'LOC_Commitment__c'
@@ -297,12 +305,35 @@ public without sharing class IcApprovalController {
       m.put('Subject', new List<Object>{ mail.getSubject() });
     }
     m.put('Recipients', new List<Object>{ EMAILSMAP.get(approvalType) });
-    if (null != oRecordType && oRecordType == 'Term_Loan') {
-      m.put('CC', CCMAP.get(approvalType));
+    List<String> ccList = new List<String>{};
+    if (null != oRecordType && (oRecordType == 'Term_Loan' || oRecordType == 'LOC_Loan')) {
+      ccList.addAll(CCMAP.get(approvalType));
     }
-    if (null != oRecordType && oRecordType == 'LOC_Loan') {
-      m.put('CC', CCMAP.get(approvalType));
+
+    if(deal[0].OwnerId != null && String.isNotEmpty(deal[0].Owner.Email)) {
+      ccList.add(deal[0].Owner.Email);
     }
+
+    if(deal[0].Underwriter__c != null && String.isNotEmpty(deal[0].Underwriter__r.Email)) {
+      ccList.add(deal[0].Underwriter__r.Email);
+    }
+
+    if(deal[0].Closer__c != null && String.isNotEmpty(deal[0].Closer__r.Email)) {
+      ccList.add(deal[0].Closer__r.Email);
+    }
+
+    if(deal[0].CAF_Analyst__c != null && String.isNotEmpty(deal[0].CAF_Analyst__r.Email)) {
+      ccList.add(deal[0].CAF_Analyst__r.Email);
+    }
+
+    if(deal[0].Second_Production_Analyst__c != null && String.isNotEmpty(deal[0].Second_Production_Analyst__r.Email)) {
+      ccList.add(deal[0].Second_Production_Analyst__r.Email);
+    }
+
+    m.put('CC',(List<Object>) ccList);
+
+
+
     m.put('ContentVersions', cvList);
     m.put('CurrentUser', p);
     return JSON.serialize(m, true);
@@ -441,7 +472,6 @@ public without sharing class IcApprovalController {
       WHERE Id = :recordId
     ];
   }
-
   public static void submitApproval(Id recordId, String approvalType) {
     Savepoint sp = Database.setSavepoint();
     try {

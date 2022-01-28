@@ -45,7 +45,7 @@ export default class IcApprovalInterface extends LightningElement {
   };
 
   handleChange = (evt) => {
-    const name = evt.target.getAttribute("data-name");
+    const name = evt.target.dataset.name;
     const data = { ...this.data };
     if (name === "user") {
       data.user.Email = evt.target.value;
@@ -85,7 +85,9 @@ export default class IcApprovalInterface extends LightningElement {
           break;
         }
       }
-    } else if (this.data.cc) {
+    }
+    
+    if (this.data.cc) {
       const recEmails = this.data.cc.split(";");
       for(let i = 0; i < recEmails.length; i++) {
         if(!recEmails[i].trim().match(mailformat)) {
