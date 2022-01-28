@@ -176,21 +176,21 @@ public class SourceToLeadBatch implements Database.Batchable<sObject> {
       WHERE DisplayName = 'Integrations User'
     ];
 
-    String body = 'Batch Completed.';
+    String body = 'Batch ' + job.Status + '.\n';
     body += '\nTotal Job Items: ' + job.TotalJobItems;
     body += '\nJob Items Processed: ' + job.JobItemsProcessed;
     body += '\nNumber of Errors: ' + job.NumberOfErrors;
     body += '\nStatus: ' + job.Status;
 
     if (job.NumberOfErrors > 0) {
-      body += '\nPlease refer to separate email with details about the error.';
+      body += '\n\nPlease refer to separate email with details about the error.';
     }
     if ( owea != null) {
       email.setOrgWideEmailAddressId(owea.Id);
     }
 
     email.setPlainTextbody(body);
-    email.setSubject('Lead to Source Batch Completed');
+    email.setSubject('Lead to Source Batch ' + job.Status);
 
     Messaging.sendEmail(new List<Messaging.SIngleEmailMessage>{ email });
   }
