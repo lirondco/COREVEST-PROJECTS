@@ -308,14 +308,14 @@ public without sharing class DuplicateCheckJobHelper {
     Map<String, List<dupcheck__dc3Duplicate__c>> dupMap = new Map<String, List<dupcheck__dc3Duplicate__c>>();
     Set<String> propIds = new Set<String>(newList.keySet());
     for (dupcheck__dc3Duplicate__c dup : [
-      SELECT
-        Id,
-        dupcheck__Score__c,
-        dupcheck__MatchObject__c,
-        dupcheck__SourceObject__c,
-        dupcheck__SourceRecordType__c,
-        dupcheck__MatchRecordType__c
-      FROM dupcheck__dc3Duplicate__c
+        SELECT
+          Id,
+          dupcheck__Score__c,
+          dupcheck__MatchObject__c,
+          dupcheck__SourceObject__c,
+          dupcheck__SourceRecordType__c,
+          dupcheck__MatchRecordType__c
+        FROM dupcheck__dc3Duplicate__c
       WHERE
         dupcheck__Score__c >= :score
         AND dupcheck__SourceObject__c IN :newList.keyset()

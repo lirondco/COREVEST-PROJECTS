@@ -1,0 +1,475 @@
+<messaging:emailTemplate subject="{!relatedTo.Name} - Term Sheet Request"
+    recipientType="User"
+    relatedToType="Opportunity">
+<messaging:htmlEmailBody >
+    <p>Dear Beth or Executive Committee Member,</p>
+    <br />
+
+    <p>Please review the deal below.</p>
+    <br />
+
+    <p>
+    This deal was within the limits of the Bridge Pricing Model, therefore Pricing Request Approvals were NOT needed from Capital Market and Bridge Underwriting.
+    </p>
+    <br />
+
+    <p>Attached is a completed Term Sheet.</p>
+    <br />
+
+    <p>Thanks,</p>
+    <p>{!relatedTo.Owner.Name}</p>
+    <br />
+    <c:duplicateDealsInEmail recordId="{!relatedTo.Id}" deal="{!relatedTo}" />
+    <p>
+    <table style="table-layout:fixed;border:1px solid black;border-collapse:collapse;width:350px;">
+    <colgroup>
+    <col class="one" style="width:50%;border:1px solid black;padding:6px;" />
+    <col class="two" style="width:50%;border:1px solid black;padding:6px;text-align:right;" />
+    </colgroup>
+    <tr>
+    <th colspan="2" style="border:1px solid black;text-align:center;">
+    <strong>
+    Deal Summary
+    </strong>
+    </th>
+    </tr>
+    <tr>
+    <td style="border:1px solid black">
+    Sponsor Details
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{!relatedTo.Sponsor_Details__c}" />
+    </td>
+    </tr>
+    <tr>
+    <td style="border:1px solid black">
+    Sponsor Strategy
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{!relatedTo.Sponsor_Strategy__c}" />
+    </td>
+    </tr>
+    <tr>
+    <td style="border:1px solid black">
+    Deal Name:
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{!relatedTo.Name}" />
+    </td>
+    </tr>
+    <tr>
+    <td style="border:1px solid black">
+    Deal Loan Number:
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{!relatedTo.Deal_Loan_Number__c}" />
+    </td>
+    </tr>
+    <tr>
+    <td style="border:1px solid black">
+    Requested Loan Size:
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{0, number, currency}">
+            <apex:param value="{!relatedTo.Loan_Size__c}" />
+        </apex:outputText>
+    </td>
+    </tr>
+    <!-- <tr>
+    <td style="border:1px solid black">
+    LOC Commitment:
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{0, number, currency}">
+            <apex:param value="{!relatedTo.LOC_Commitment__c}" />
+        </apex:outputText>
+    </td>
+    </tr> -->
+    <tr>
+    <td style="border:1px solid black">
+    Property Location(s):
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{!relatedTo.Active_States__c}" />
+    </td>
+    </tr>
+
+    <tr>
+    <td style="border:1px solid black">
+    Borrower Account Introduction Source:
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{!relatedTo.Account_Introduction_Source__c}" />
+    </td>
+    </tr>
+
+    <tr>
+    <td style="border:1px solid black">
+    Deal Intro Source:
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{!relatedTo.Deal_Intro_Source__c}" />
+    </td>
+    </tr>
+
+    <tr>
+    <td style="border:1px solid black">
+    Deal Intro Sub-Source:
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{!relatedTo.Deal_Intro_Sub_Source__c}" />
+    </td>
+    </tr>
+
+    </table>
+    </p>
+    <br />
+
+    <p style="margin-top:20px 0;">
+    <table style="table-layout:fixed;border:1px solid black;border-collapse:collapse;width:350px;">
+    <colgroup>
+    <col class="one" style="width:50%;border:1px solid black;padding:6px;" />
+    <col class="two" style="width:50%;border:1px solid black;padding:6px;text-align:right;" />
+    </colgroup>
+    <tr>
+    <th colspan="2" style="border:1px solid black;text-align:center;">
+    <strong>
+    Proposed Pricing
+    </strong>
+    </th>
+    </tr>
+
+    <tr>
+    <td style="border:1px solid black">
+    LOC Program Type
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{!relatedTo.LOC_Program_Type__c}" />
+    </td>
+    </tr>
+
+    <tr>
+    <td style="border:1px solid black">
+    LOC Programs
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{!relatedTo.LOC_Programs__c}" />
+    </td>
+    </tr>
+    
+    <tr>
+    <td style="border:1px solid black">
+    Estimated Sponsor Tier
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{!relatedTo.Estimated_Sponsor_Tier__c}" />
+    </td>
+    </tr>
+    <tr>
+    <td style="border:1px solid black">
+    Product Type
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{!relatedTo.LOC_Loan_Type__c}" />
+    </td>
+    </tr>
+
+    <tr>
+    <td style="border:1px solid black">
+    Product Sub-Type
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{!relatedTo.Product_Sub_Type__c}" />
+    </td>
+    </tr>
+    
+    <tr>
+    <td style="border:1px solid black">
+    Project Strategy
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{!relatedTo.Project_Strategy__c}" />
+    </td>
+    </tr>
+    
+    <tr>
+    <td style="border:1px solid black">
+    Requested Revolving
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{!relatedTo.Requested_Revolving__c}" />
+    </td>
+    </tr>
+
+    <tr>
+    <td style="border:1px solid black">
+        Requested Advance Period
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{!relatedTo.Draw_Period__c}" />
+    </td>
+    </tr>
+
+    <tr>
+    <td style="border:1px solid black">
+        Requested Repayment Period
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{!relatedTo.Repayment_Period__c}" />
+    </td>
+    </tr>
+
+    <tr>
+    <td style="border:1px solid black">
+        Requested Line Term
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{!relatedTo.Line_Expiration__c}" />
+    </td>
+    </tr>
+
+    <tr>
+    <td style="border:1px solid black">
+        Requested LTC Max
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{0, number, #.##}%" rendered="{!NOT( ISBLANK(relatedTo.Requested_LTC_Max__c) )}">
+            <apex:param value="{!relatedTo.Requested_LTC_Max__c}" />
+        </apex:outputText>
+        <apex:outputText value="00.00%" rendered="{!ISBLANK(relatedTo.Requested_LTC_Max__c)}" />
+    </td>
+    </tr>
+
+    <tr>
+    <td style="border:1px solid black">
+        Requested LTV Max
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{0, number, #.##}%" rendered="{!NOT( ISBLANK(relatedTo.Requested_LTV_Max__c) )}">
+            <apex:param value="{!relatedTo.Requested_LTV_Max__c}" />
+        </apex:outputText>
+        <apex:outputText value="00.00%" rendered="{!ISBLANK(relatedTo.Requested_LTV_Max__c)}" />
+    </td>
+    </tr>
+<!--
+    <tr>
+    <td style="border:1px solid black">
+        Requested Max Initial LTV/LTC
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{0, number, #.##}%" rendered="{!NOT( ISBLANK(relatedTo.Requested_Max_Initial_LTV_LTC__c) )}">
+            <apex:param value="{!relatedTo.Requested_Max_Initial_LTV_LTC__c}" />
+        </apex:outputText>
+        <apex:outputText value="00.00%" rendered="{!ISBLANK(relatedTo.Requested_Max_Initial_LTV_LTC__c)}" />
+    </td>
+    </tr>
+-->
+    <tr>
+    <td style="border:1px solid black">
+        Requested Total Loan LTC
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{0, number, #.##}%" rendered="{!NOT( ISBLANK(relatedTo.Requested_Total_Loan_LTC__c) )}">
+            <apex:param value="{!relatedTo.Requested_Total_Loan_LTC__c}" />
+        </apex:outputText>
+        <apex:outputText value="00.00%" rendered="{!ISBLANK(relatedTo.Requested_Total_Loan_LTC__c)}" />
+    </td>
+    </tr>
+
+    <tr>
+    <td style="border:1px solid black">
+        Requested Total ARV LTV
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{0, number, #.##}%" rendered="{!NOT( ISBLANK(relatedTo.Requested_ARV_LTV__c) )}">
+            <apex:param value="{!relatedTo.Requested_ARV_LTV__c}" />
+        </apex:outputText>
+        <apex:outputText value="00.00%" rendered="{!ISBLANK(relatedTo.Requested_ARV_LTV__c)}" />
+    </td>
+    </tr>
+
+    <tr>
+    <td style="border:1px solid black">
+        Requested Max Reno Cost Reimbursement
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{0, number, #.##}%" rendered="{!NOT( ISBLANK(relatedTo.Requested_Max_Reno_Cost_Reimbursement__c) )}">
+            <apex:param value="{!relatedTo.Requested_Max_Reno_Cost_Reimbursement__c}" />
+        </apex:outputText>
+        <apex:outputText value="00.00%" rendered="{!ISBLANK(relatedTo.Requested_Max_Reno_Cost_Reimbursement__c)}" />
+    </td>
+    </tr>
+    
+    <tr>
+    <td style="border:1px solid black">
+        Requested Renovation Limit
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{0, number, #.##}%" rendered="{!NOT( ISBLANK(relatedTo.Requested_Reno_Limit__c) )}">
+            <apex:param value="{!relatedTo.Requested_Reno_Limit__c}" />
+        </apex:outputText>
+        <apex:outputText value="00.00%" rendered="{!ISBLANK(relatedTo.Requested_Reno_Limit__c)}" />
+    </td>
+    </tr>
+
+    <tr>
+    <td style="border:1px solid black">
+    Requested Interest Type
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{!relatedTo.Requested_Interest_Type__c}" />
+    </td>
+    </tr>
+
+    <tr>
+    <td style="border:1px solid black">
+    Requested Rate
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{0, number, #.##}%" rendered="{!NOT( ISBLANK(relatedTo.Requested_Rate_1_9_Months__c) )}">
+            <apex:param value="{!relatedTo.Requested_Rate_1_9_Months__c}" />
+        </apex:outputText>
+        <apex:outputText value="00.00%" rendered="{!ISBLANK(relatedTo.Requested_Rate_1_9_Months__c)}" />
+    </td>
+    </tr>
+
+    <tr>
+    <td style="border:1px solid black">
+    Requested Index
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{!relatedTo.Requested_Index__c}" />
+    </td>
+    </tr>
+
+    <tr>
+    <td style="border:1px solid black">
+    Requested Index Margin
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{0, number, #.##}%" rendered="{!NOT( ISBLANK(relatedTo.Requested_Index_Margin__c) )}">
+            <apex:param value="{!relatedTo.Requested_Index_Margin__c}" />
+        </apex:outputText>
+        <apex:outputText value="00.00%" rendered="{!ISBLANK(relatedTo.Requested_Index_Margin__c)}" />
+    </td>
+    </tr>
+
+    <tr>
+    <td style="border:1px solid black">
+    Requested Index Floor
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{!relatedTo.Requested_Index_Floor__c}" />
+    </td>
+    </tr>
+
+    <tr>
+    <td style="border:1px solid black">
+    Requested Origination Fee
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{0, number,#.##}%" rendered="{!NOT( ISBLANK(relatedTo.Requested_Origination_Fee__c) )}">
+            <apex:param value="{!relatedTo.Requested_Origination_Fee__c}" />
+        </apex:outputText>
+    </td>
+    </tr>
+
+    <tr>
+    <td style="border:1px solid black">
+    Requested Exit Fee
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{0, number, #.##}%" rendered="{!NOT( ISBLANK(relatedTo.Requested_Exit_Fee__c) )}">
+            <apex:param value="{!relatedTo.Requested_Exit_Fee__c}" />
+        </apex:outputText>
+        <apex:outputText value="00.00%" rendered="{!ISBLANK(relatedTo.Requested_Exit_Fee__c)}" />
+    </td>
+    </tr>
+
+    <tr>
+    <td style="border:1px solid black">
+    Requested Advance Fee
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{0, number, #.##}%" rendered="{!NOT( ISBLANK(relatedTo.Requested_Draw_Fee__c) )}">
+            <apex:param value="{!relatedTo.Requested_Draw_Fee__c}" />
+        </apex:outputText>
+        <apex:outputText value="00.00%" rendered="{!ISBLANK(relatedTo.Requested_Draw_Fee__c)}" />
+    </td>
+    </tr>
+
+    <tr>
+    <td style="border:1px solid black">
+        Requested Advance Fee Cap
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{!relatedTo.Requested_Draw_Fee_Cap__c}" />
+    </td>
+    </tr>
+    
+    <tr style="{!IF(ISBLANK(relatedTo.Broker_Fees__c), 'display:none;', '')}">
+    <td style="border:1px solid black">
+        Broker Fee
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{!relatedTo.Broker_Fees__c}" />
+    </td>
+    </tr>
+    
+    <tr style="{!IF(ISBLANK(relatedTo.Broker_Fees__c), 'display:none;', '')}">
+    <td style="border:1px solid black">
+        Broker Fee Paid To
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+        <apex:outputText value="{!relatedTo.Referral_Source_Contact__r.Name}" /> @ <apex:outputText value="{!relatedTo.Referral_Source__r.Name}" />
+    </td>
+    </tr>
+    
+    </table>
+    </p>
+    <br />
+    <apex:repeat var="prop" value="{!relatedTo.Properties__r}">
+        <!-- <div style="{! ISBLANK(prop.Picture__c) ? 'display:hide;' : 'display:block;' }"> -->
+        <p>
+            <strong>
+                <apex:outputField value="{!prop.Name}" rendered="{!
+                    AND(
+                        NOT (
+                            ISBLANK (prop.Picture__c)
+                        ),
+                        prop.Include_Picture__c == true
+                    )
+                    }"/>
+            </strong>
+                <br />
+            <apex:image value="{!prop.Picture__c}" rendered="{!
+                AND(
+                    NOT (
+                        ISBLANK (prop.Picture__c)
+                    ),
+                    prop.Include_Picture__c == true
+                )
+                }"/>
+            <apex:image value="{!prop.Google_Street_View_URL__c}" rendered="{!
+                AND(
+                    NOT (
+                        ISBLANK (prop.Google_Street_View_URL__c)
+                    ),
+                    prop.Include_Street_View__c == true
+                )
+                }"/>
+
+            <apex:outputLink value="{!prop.Zillow_Listing__c}" rendered="{!
+                AND(
+                    NOT (
+                        ISBLANK (prop.Zillow_Listing__c)
+                    ),
+                    prop.Include_Listing__c == true
+                )
+                }" />
+
+        </p>
+        <!-- </div> -->
+    </apex:repeat>
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>
