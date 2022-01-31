@@ -661,7 +661,10 @@ public without sharing class AppraisalParser implements Queueable {
                   );
                 }
 
-                if (
+                if (unitNode.getAttribute(
+                  'GrossLivingAreaSquareFeetCount',
+                  null
+                ) != null &&
                   unitNode.getAttribute(
                     'GrossLivingAreaSquareFeetCount',
                     null
