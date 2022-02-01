@@ -73,7 +73,6 @@
           <br />
         </div>
         <div style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;">
-          <br />
           <c:duplicateDealsInEmail recordId="{!Opportunity.Id}" deal="{!Opportunity}" />
           <span style="font-family: arial;">Thanks,</span>
         </div>

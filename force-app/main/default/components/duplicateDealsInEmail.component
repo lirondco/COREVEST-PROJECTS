@@ -2,6 +2,7 @@
   <apex:attribute name="deal" description="" type="Opportunity" />
   <apex:attribute type="Id" name="recordId" description="Record ID" assignTo="{!recId}" />
   <apex:outputPanel rendered="{!hasDuplicates}" >
+    <br />
     <p style="font-weight: bold;">Potential Duplicate Properties are in the following deal: <a href="{!baseUrl + deal.Id}">{!deal.Name}</a></p>
     <p>Number of Potential Duplicate Properties: {!numDuplicates}</p>
     <ul>

@@ -19,7 +19,6 @@
 
     <p>
     Attached are the Term Pricing Model and a completed Term Sheet.</p>
-    <br />
     <c:duplicateDealsInEmail recordId="{!relatedTo.Id}" deal="{!relatedTo}" />
     <p>
     Thanks,</p>

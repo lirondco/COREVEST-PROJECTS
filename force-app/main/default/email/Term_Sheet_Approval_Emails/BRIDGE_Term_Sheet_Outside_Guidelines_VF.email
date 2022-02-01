@@ -20,7 +20,6 @@
     <br />
 
     <p>Attached is a completed Term Sheet.</p>
-    <br />
     <c:duplicateDealsInEmail recordId="{!relatedTo.Id}" deal="{!relatedTo}" />
     <p>Thanks,</p>
     <p>{!relatedTo.Owner.Name}</p>

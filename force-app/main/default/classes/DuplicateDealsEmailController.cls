@@ -1,6 +1,7 @@
 public class DuplicateDealsEmailController {
   public String recId { get; set; }
 
+
   public static final List<String> PROP_FIELDS = new List<String>{
     'Id',
     'Name',
@@ -16,6 +17,7 @@ public class DuplicateDealsEmailController {
   public List<Property__c> properties {
     get {
       if (recId != null) {
+        System.debug('Getting properites for ' + recId);
         List<Map<String, String>> dupeList = DuplicateCheckJobHelper.getDupeListFromDeal(
           recId
         );
