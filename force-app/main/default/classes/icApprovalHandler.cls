@@ -19,7 +19,7 @@ global class icApprovalHandler implements Messaging.InboundEmailHandler {
 
   public static final Map<String, Map<Id, User>> USERINFOMAP = new Map<String, Map<Id, User>>{
     'Bridge IC Process' => queryUserInfo('Bridge_IC_Approval'),
-    'Term Sub-IC' => queryUserInfo('Term_Sub_IC'),
+    'Term Sub-IC Process' => queryUserInfo('Term_Sub_IC'),
     'Term IC Process' => queryUserInfo('Term_IC_Approval'),
     'Bridge Sub-IC Process' => queryUserInfo('Term_Sub_IC')
   };
@@ -996,6 +996,16 @@ global class icApprovalHandler implements Messaging.InboundEmailHandler {
     body += '\nMessage:  ' + ex.getMessage();
     email.setPlainTextbody(body);
     email.setSubject('Deal Approval Handler Error');
+
+    List<OrgWideEmailAddress> owea = [
+      SELECT Id
+      FROM OrgWideEmailAddress
+      WHERE Address = 'caf-apps@cvest.com'
+    ];
+    
+    if (owea.size() > 0) {
+      email.setOrgWideEmailAddressId(owea.get(0).Id);
+    }
 
     Messaging.sendEmail(new List<Messaging.SIngleEmailMessage>{ email });
   }

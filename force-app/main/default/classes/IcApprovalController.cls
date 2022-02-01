@@ -611,6 +611,18 @@ public without sharing class IcApprovalController {
     if (whatId != null) {
       mail.setWhatId(whatId);
     }
+
+    List<OrgWideEmailAddress> owea = [
+      SELECT Id
+      FROM OrgWideEmailAddress
+      WHERE Address = 'caf-apps@cvest.com'
+    ];
+    
+    if (owea.size() > 0) {
+      mail.setOrgWideEmailAddressId(owea.get(0).Id);
+    }
+
+
     System.debug('this is the mail being sent');
     System.debug(mail);
       try {

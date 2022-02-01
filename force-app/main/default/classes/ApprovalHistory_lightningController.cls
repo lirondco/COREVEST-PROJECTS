@@ -351,7 +351,7 @@ public without sharing class ApprovalHistory_lightningController {
           ah.Verified__c = true;
         }
 
-        if(IC_APPROVAL_NAMES.contains(processName) && (otmList.size() > 0 || ah.Deal__r.Underwriter__c == UserInfo.getUserId())){
+        if(IC_APPROVAL_NAMES.contains(processName) && (otmList.size() > 0 || ah.Deal__r.Underwriter__c == UserInfo.getUserId()) || IcApprovalController.verifyPermission()){
           allowUnderwriterRecall = true;
         }
       }
