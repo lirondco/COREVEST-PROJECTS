@@ -21,11 +21,10 @@
 
     <p>Attached is a completed Term Sheet.</p>
     <br />
-
+    <c:duplicateDealsInEmail recordId="{!relatedTo.Id}" deal="{!relatedTo}" />
     <p>Thanks,</p>
     <p>{!relatedTo.Owner.Name}</p>
     <br />
-    <c:duplicateDealsInEmail recordId="{!relatedTo.Id}" deal="{!relatedTo}" />
     <p>
     <table style="table-layout:fixed;border:1px solid black;border-collapse:collapse;width:350px;">
     <colgroup>
