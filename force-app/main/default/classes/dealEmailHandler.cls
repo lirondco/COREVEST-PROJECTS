@@ -14,6 +14,12 @@ global class dealEmailHandler implements Messaging.InboundEmailHandler {
       ? parsedSubject.substringBefore(' ')
       : parsedSubject;
 
+    if(dealLoanNumber.endsWith('-')) {
+      dealLoanNumber = dealLoanNumber.substringBeforeLast('-');
+    } else if (dealLoanNumber.endsWith('_')) {
+      dealLoanNumber = dealLoanNumber.substringBeforeLast('_');
+    }
+
     System.debug(
       subject +
       ' is the subject and loan number is ' +
@@ -309,9 +315,9 @@ global class dealEmailHandler implements Messaging.InboundEmailHandler {
 
     email.setToAddresses(
       new List<String>{
-        'ldecastro@mkpartners.com',
         'logins+cvest@mkpartners.com',
-        'bryon.harland@cvest.com'
+        'bryon.harland@cvest.com',
+        'jonathan.lay@cvest.com'
       }
     );
 
