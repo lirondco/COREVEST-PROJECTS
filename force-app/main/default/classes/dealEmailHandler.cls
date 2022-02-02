@@ -5,6 +5,7 @@ global class dealEmailHandler implements Messaging.InboundEmailHandler {
   ) {
     String subject = email.Subject;
     String parsedSubject = subject.substringAfter('#');
+    parsedSubject = parsedSubject.replaceAll('_', ' ');
 
     while (parsedSubject.startsWith(' ')) {
       parsedSubject = parsedSubject.substringAfter(' ');
@@ -16,8 +17,6 @@ global class dealEmailHandler implements Messaging.InboundEmailHandler {
 
     if(dealLoanNumber.endsWith('-')) {
       dealLoanNumber = dealLoanNumber.substringBeforeLast('-');
-    } else if (dealLoanNumber.endsWith('_')) {
-      dealLoanNumber = dealLoanNumber.substringBeforeLast('_');
     }
 
     System.debug(

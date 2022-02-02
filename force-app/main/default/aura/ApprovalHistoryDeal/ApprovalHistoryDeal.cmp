@@ -80,12 +80,14 @@
             </td>
             <td colspan="3">
               <aura:if isTrue="{!step.Verified__c}">
-                <lightning:button
+                <aura:if isTrue="{!step.Approval_Type__c != 'IC Memo'}">
+                  <lightning:button
                   name="{!step.Process_Id__c}"
                   title="{!index}"
                   label="Require GLC Approval"
                   onclick="{!c.toggleGLC}"
-                />
+                  />
+                </aura:if>
                 <lightning:button
                   variant="brand"
                   title="{!index}"

@@ -127,10 +127,17 @@
       } else {
         console.log(response.getError());
         // display error message
+        let errorMessage = '';
+        var errors = response.getError();
+        if(errors) {
+          if(errors[0] && errors[0].message) {
+            errorMessage = errors[0].message;
+          }
+        }
         component.set(
           "v.respMessage",
           "There has been an error. " +
-            response.getError()[0].message +
+            errorMessage +
             " Please contact your administrator with this error message."
         );
       }
@@ -160,10 +167,18 @@
       } else {
         console.log(response.getError());
         // display error message
+        let errorMessage = '';
+        var errors = response.getError();
+        if(errors) {
+          if(errors[0] && errors[0].message) {
+            errorMessage = errors[0].message;
+          }
+        }
+
         component.set(
           "v.respMessage",
           "There has been an error. " +
-            response.getError() +
+            errorMessage +
             " Please contact your administrator with this error message."
         );
       }
@@ -217,11 +232,18 @@
         helper.init(component, event, helper);
       } else {
         console.log(response.getError());
+        let errorMessage = '';
+        var errors = response.getError();
+        if(errors) {
+          if(errors[0] && errors[0].message) {
+            errorMessage = errors[0].message;
+          }
+        }
         // display error message
         component.set(
           "v.response",
           "There has been an error. " +
-            response.getError() +
+            errorMessage +
             " Please contact your administrator with this error message."
         );
 
