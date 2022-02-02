@@ -113,6 +113,12 @@ public without sharing class IcRejectionLinkController {
       handlerAddress = esas[0].LocalPart + '@' + esas[0].EmailDomainName;
     }
 
+    OrgWideEmailAddress[] owea = [
+      SELECT Id
+      FROM OrgWideEmailAddress
+      WHERE Address = 'caf-apps@cvest.com'
+    ];
+
     List<Messaging.SingleEmailMessage> messages = new List<Messaging.SingleEmailMessage>();
 
     if (termDealIdsByRecipients.size() > 0) {
@@ -125,7 +131,9 @@ public without sharing class IcRejectionLinkController {
         termEmail.setTreatTargetObjectAsRecipient(false);
         termEmail.setToAddresses(recpIds);
         termEmail.setWhatId(tOpptId);
-        termEmail.setReplyTo('caf-apps@cvest.com');
+        if(owea.size() > 0) {
+          termEmail.setOrgWideEmailAddressId(owea[0].Id);
+        }
         if (handlerAddress != '') {
           termEmail.setCcAddresses(new List<String>{ handlerAddress });
         }
@@ -144,7 +152,9 @@ public without sharing class IcRejectionLinkController {
         bridgeEmail.setTreatTargetObjectAsRecipient(false);
         bridgeEmail.setToAddresses(recpIds);
         bridgeEmail.setWhatId(bOpptId);
-        bridgeEmail.setReplyTo('caf-apps@cvest.com');
+        if(owea.size() > 0) {
+          bridgeEmail.setOrgWideEmailAddressId(owea[0].Id);
+        }
         if (handlerAddress != '') {
           bridgeEmail.setCcAddresses(new List<String>{ handlerAddress });
         }
@@ -221,7 +231,7 @@ public without sharing class IcRejectionLinkController {
         } catch (Exception e) {
           Database.rollback(sp);
           toastTitle = 'Deal Rejection Failed';
-          toastMessage = 'Unexpected error occurred while rejecting the deal.';
+          toastMessage = 'Error on Line ' + e.getLineNumber() + ': ' + e.getMessage();
           toastVariant = 'error';
         }
       } else {
@@ -237,10 +247,7 @@ public without sharing class IcRejectionLinkController {
   }
 
   public static void createApprovalHistory(String approvalType) {
-    String ahProcessName = (approvalType != 'Term Sub-IC' ||
-      approvalType != 'Bridge Sub-IC')
-      ? approvalType + ' Process'
-      : approvalType;
+    String ahProcessName = approvalType + ' Process';
     Approval_History__c ahc = new Approval_History__c(
       Parent_Status__c = 'Rejected',
       Deal__c = deal.Id,
@@ -259,7 +266,6 @@ public without sharing class IcRejectionLinkController {
 
     if (deal.Final_Spread__c != null) {
       ahc.Spread__c = deal.Final_Spread__c;
-      ahc.Spread__c *= 100;
     }
 
     if (deal.CAF_Upfront_Fee__c != null) {
