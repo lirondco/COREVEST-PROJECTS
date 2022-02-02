@@ -667,7 +667,7 @@ Sponsor Initials ________
                 <p style="font-family: Times; font-size: 10pt; line-height: 1.3; text-indent:30px; text-align: justify;">
                     Sponsor understands that Sponsor may use or be exposed to Lender&#39;s proprietary and confidential methodologies, procedures,
                     processes, materials and loan documentation in the evaluation, negotiation and closing of the Loan. Sponsor
-                    agrees to keep all such confidential information supplied by Lender (“Confidential Information”) confidential
+                    agrees to keep all such confidential information supplied by Lender (&#34;Confidential Information&#34;) confidential
                     and only use the Confidential Information for the purpose of evaluating, negotiating and closing the
                     Loan. Sponsor agrees (i) the Confidential Information is proprietary and created by Lender for a new
                     asset class, (ii) the Confidential Information provides Lender with a significant competitive advantage
@@ -684,7 +684,7 @@ Sponsor Initials ________
             line-height: 1.3;
             text-indent: 30px;
             page-break-inside: avoid;
-          " value="Thank you for cooperation in this matter. Please acknowledge your acceptance to be bound by this proposal by your authorized signature below. Unless otherwise extended in writing by Lender, in its sole and absolute discretion, this proposal will expire on {0, date, MMMM d','  yyyy} (the “Proposal Expiration Date.”) Please indicate your willingness to proceed with this proposal by signing below and returning it no later than the Proposal Expiration Date. If this proposal is not signed and returned by the Proposal Expiration Date, we will assume that you have elected not to proceed with us regarding the Loan.">
+          " value="Thank you for cooperation in this matter. Please acknowledge your acceptance to be bound by this proposal by your authorized signature below. Unless otherwise extended in writing by Lender, in its sole and absolute discretion, this proposal will expire on {0, date, MMMM d','  yyyy} (the &#34;Proposal Expiration Date.&#34;) Please indicate your willingness to proceed with this proposal by signing below and returning it no later than the Proposal Expiration Date. If this proposal is not signed and returned by the Proposal Expiration Date, we will assume that you have elected not to proceed with us regarding the Loan.">
 
                 <apex:param value="{!Opportunity.Current_Line_Maturity_Date__c + 97}" />
 
