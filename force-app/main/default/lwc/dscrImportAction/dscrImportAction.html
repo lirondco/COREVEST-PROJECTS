@@ -3,23 +3,41 @@
   <lightning-quick-action-panel header="Upload Lender Tape">
     <template if:true={recordId}>
       <template if:true={showComponent}>
-        <template if:false={showPill}>
-          <lightning-file-upload
-            label="Upload Excel File"
-            name="fileUploader"
-            accept={acceptedFormats}
-            record-id={recordId}
-            onuploadfinished={handleUploadFinished}
-          >
-          </lightning-file-upload>
+        <template if:true={showErrorMessage}>
+          <div class="slds-text-align_center">
+            <div class="slds-box slds-theme_error">
+              <p>
+                <span
+                  ><lightning-icon
+                    alternative-text="Error"
+                    icon-name="utility:warning"
+                    variant="inverse"
+                    size="small"
+                  ></lightning-icon></span
+                >&nbsp;{errorMessage}
+              </p>
+            </div>
+          </div>
         </template>
-        <template if:true={showPill}>
-          <label>Click 'x' to replace this file</label>
-          <lightning-pill-container
-            label="Click 'x' to replace this file"
-            items={pill}
-            onitemremove={handleFileRemove}
-          ></lightning-pill-container>
+        <template if:false={showErrorMessage}>
+          <template if:false={showPill}>
+            <lightning-file-upload
+              label="Upload Excel File"
+              name="fileUploader"
+              accept={acceptedFormats}
+              record-id={recordId}
+              onuploadfinished={handleUploadFinished}
+            >
+            </lightning-file-upload>
+          </template>
+          <template if:true={showPill}>
+            <label>Click 'x' to replace this file</label>
+            <lightning-pill-container
+              label="Click 'x' to replace this file"
+              items={pill}
+              onitemremove={handleFileRemove}
+            ></lightning-pill-container>
+          </template>
         </template>
       </template>
       <template if:false={showComponent}>

@@ -1,26 +1,54 @@
-import { api, LightningElement } from "lwc";
+import { api, LightningElement, wire } from "lwc";
 import SheetJS2 from "@salesforce/resourceUrl/SheetJS2";
 import { loadScript } from "lightning/platformResourceLoader";
 import { CloseActionScreenEvent } from "lightning/actions";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
-import { deleteRecord } from "lightning/uiRecordApi";
+import { deleteRecord, getRecord} from "lightning/uiRecordApi";
 import getFileBody from "@salesforce/apex/DscrImportHelper.getFileBody";
 import getLastAttachment from "@salesforce/apex/DscrImportHelper.getLastAttachment";
 import parseFileValues from "@salesforce/apex/DscrImportHelper.parseFileValues";
+import NUMBER_LOANS_FIELD from '@salesforce/schema/Lender_Deal__c.of_Loans__c';
+
 
 export default class DscrImportAction extends LightningElement {
   @api recordId;
   uploadedFile;
   showComponent = false;
+  hasRendered = false;
+  errorMessage = '';
+
+  @wire(getRecord, { recordId: '$recordId', fields: [NUMBER_LOANS_FIELD] })
+  wiredRecord({ error, data }) {
+    if (data) {
+      const numberOfLoans = data.fields.of_Loans__c.value;
+      if(numberOfLoans > 0) {
+        this.errorMessage = 'An import has already been performed for this record.';
+      }
+      
+    } else if (error) {
+      let message = 'Unknown error';
+      if (Array.isArray(error.body)) {
+          message = error.body.map(e => e.message).join(', ');
+      } else if (typeof error.body.message === 'string') {
+          message = error.body.message;
+      }
+      this.errorMessage = message;
+    }
+  }
 
   async renderedCallback() {
-    if (this.recordId && !this.showComponent) {
+    if (this.recordId && !this.showComponent && !this.hasRendered) {
       const existingFile = await getLastAttachment({ recordId: this.recordId });
       if (!existingFile.noResult) {
         this.uploadedFile = existingFile;
       }
       this.showComponent = true;
+      this.hasRendered = true;
     }
+  }
+
+  get showErrorMessage() {
+    return this.errorMessage.length > 0;
   }
 
   get acceptedFormats() {
@@ -49,7 +77,7 @@ export default class DscrImportAction extends LightningElement {
   }
 
   get disallowImport() {
-    return this.uploadedFile == null;
+    return this.uploadedFile == null || !this.showComponent || this.showErrorMessage;
   }
 
   async handleClick(evt) {
@@ -94,10 +122,11 @@ export default class DscrImportAction extends LightningElement {
 
           console.log(arr);
 
-          let workbook = XLSX.read(arr, { type: "base64" });
+          let workbook = XLSX.read(arr, { type: "base64", cellDates: true });
           let workBookAsJson = {};
 
           workbook.SheetNames.forEach((sheetName) => {
+            console.log(XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]));
             workBookAsJson[sheetName] = JSON.stringify(
               XLSX.utils.sheet_to_json(workbook.Sheets[sheetName])
             );
@@ -113,8 +142,29 @@ export default class DscrImportAction extends LightningElement {
   }
 
   async doParseFile(file) {
-    const res = await parseFileValues({ fileJson : file, recordId: this.recordId });
-    console.log(res);
+    try {
+      this.showComponent = false;
+      const res = await parseFileValues({ fileJson : file, recordId: this.recordId });
+      this.handleCloseModal();
+      this.dispatchEvent(
+        new ShowToastEvent({
+          title: "Import Successful",
+          message: 'Successfully imported ' + res.length + ' records',
+          variant: "success"
+        })
+      );
+      console.log(res);  
+    } catch(e) {
+      console.error(e);
+      this.showComponent = true;
+      this.dispatchEvent(
+        new ShowToastEvent({
+          title: "Import Failed",
+          message: e.body.message,
+          variant: "error"
+        })
+      );
+    }
   }
 
   handleFileRemove() {

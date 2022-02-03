@@ -2,54 +2,23 @@ public without sharing class DscrImportHelper {
   public class ImportException extends Exception {
   }
 
-  /* A SINGLE DATA COMES IN FROM JAVASCRIPT LIKE THIS:
-  {
-    "Loan ID": "12345",
-    "Lender Name": "Lender ABC",
-    "Address": "123 Test St",
-    "City": "Costa Mesa",
-    "State": "CA",
-    "Zip": "92627",
-    "Property Type": "Single Family",
-    "Units": "1",
-    "Sqft": "1200",
-    "Loan Purpose (Refi, Purchase, Cash out Ref)": "Refi",
-    "Program Type (Fix and Flip, Aggregation, GUC, BTR)": "Fix and Flip",
-    "Origination Date": "44562",
-    "Maturity Date": "45658",
-    "Note Rate (%)": "0.02",
-    " Total Loan Amount ": "1000000",
-    " Current UPB ": "1000000",
-    " Initial Draw ": "500000",
-    " Rehab Holdback ": "500000",
-    " Current Holdback Balance ": "400000",
-    " Interest Holdback ": "90000",
-    "Dutch/Non-Dutch \r\n(True/ False)": "false",
-    " Construction Budget ": "70000",
-    " Property Purchase Price ": "100000",
-    " AIV ": "150000",
-    " ARV ": "200000",
-    "LTC": "0.75",
-    "Total LTC": "0.9",
-    "AILTV": "0.9",
-    "ARLTV": "0.9",
-    "Borrower Name": "The Borrower LLC",
-    "Experience": "7",
-    "FICO": "800",
-    "Guarantor Name": "Bill Guarantor",
-    "Guarantor Email": "bigg@guarantor.com",
-    "Date of 1st Payment": "44593",
-    "3rd Party Valuation Date": "44542",
-    "3rd Party Valuation Type": "Interior",
-    " 3rd Party AIV ": "150000",
-    " 3rd Party ARV ": "200000",
-    "3rd Party Valuation Provider": "Appraisal Nation"
-}
-  */
-
   // TODO: complete deal generation. Loan_Purpose__c is the next field to be added.
 
-  public static final Map<String,Map<String, Data_Transformation__mdt>> DATA_TRANSFORMATION_MAP = getDataTransformationMetaMap();
+  // field reference from the JS file is commented at the bottom of this file.
+
+  public static final Map<String, Map<String, Data_Transformation__mdt>> DATA_TRANSFORMATION_MAP = getDataTransformationMetaMap();
+  public static final Id DEAL_RECID = Schema.SObjectType.Opportunity.getRecordTypeInfosByName()
+    .get('Acquired Bridge Loan')
+    .getRecordTypeId();
+
+  public static final Map<String, Id> PROP_RECIDMAP = new Map<String, Id>{
+    'Bridge Renovation' => Schema.SObjectType.Property__c.getRecordTypeInfosByName()
+      .get('Bridge Renovation')
+      .getRecordTypeId(),
+    'Bridge No Renovation' => Schema.SObjectType.Property__c.getRecordTypeInfosByName()
+      .get('Bridge No Renovation')
+      .getRecordTypeId()
+  };
 
   @AuraEnabled
   public static String getFileBody(String fileId) {
@@ -109,10 +78,12 @@ public without sharing class DscrImportHelper {
   }
 
   @AuraEnabled
-  public static List<Map<String, String>> parseFileValues(
+  public static List<Lender_Deal_to_Deal__c> parseFileValues(
     String fileJson,
     Id recordId
   ) {
+    Savepoint sp = Database.setSavepoint();
+
     try {
       Lender_Deal__c ldRecord = [
         SELECT Lender__r.Name, Lender__c
@@ -160,11 +131,11 @@ public without sharing class DscrImportHelper {
             newKey = key.substringBefore('\n');
           }
 
-          if(key.contains('Loan Purpose')) {
+          if (key.contains('Loan Purpose')) {
             newKey = 'Loan Purpose';
           }
 
-          if(key.contains('Program Type')) {
+          if (key.contains('Program Type')) {
             newKey = 'Program Type';
           }
 
@@ -183,14 +154,17 @@ public without sharing class DscrImportHelper {
 
         if (String.isEmpty(email)) {
           throw new ImportException(
-            'No Guarantor Email found for Line ' + cleanMap.get('Loan ID')
+            'Unable to finish import due to: No Guarantor Email found for Line ' +
+            cleanMap.get('Loan ID')
           );
         }
         if (String.isEmpty(accountName)) {
           throw new ImportException(
-            'No Borrower Name found for Line ' + cleanMap.get('Loan ID')
+            'Unable to finish import due to: No Borrower Name found for Line ' +
+            cleanMap.get('Loan ID')
           );
         }
+        cleanMap.put('uniqueId', generateUniqueId());
         emailToAccount.put(email, accountName);
         cleanMapList.add(cleanMap);
       }
@@ -201,10 +175,108 @@ public without sharing class DscrImportHelper {
         ldRecord
       );
 
-      return mapToParse;
+      Map<String, Opportunity> newDeals = createDeals(
+        cleanMapList,
+        contactMap,
+        ldRecord
+      );
+
+      List<Property__c> newProps = createNewPropertiesFromDeals(
+        newDeals,
+        cleanMapList
+      );
+
+      List<Deal_Contact__c> dealContacts = createDealContacts(
+        newDeals,
+        contactMap,
+        cleanMapList
+      );
+
+      List<Lender_Deal_to_Deal__c> newLdds = new List<Lender_Deal_to_Deal__c>();
+
+      for(Map<String, String> m : cleanMapList) {
+        String uniqueId = m.get('uniqueId');
+        Opportunity deal = newDeals.get(uniqueId);
+        Lender_Deal_to_Deal__c ldd = new Lender_Deal_to_Deal__c();
+        ldd.Deal__c = deal.Id;
+        ldd.Lender_Deal__c = recordId;
+        ldd.Status__c = 'Decision Pending';
+        newLdds.add(ldd);
+      }
+
+      insert newLdds;
+
+      return newLdds;
     } catch (Exception e) {
+      Database.rollback(sp);
       throw new AuraHandledException(e.getLineNumber() + ': ' + e.getMessage());
     }
+  }
+
+  public static Map<String, Opportunity> createDeals(
+    List<Map<String, String>> cleanMapList,
+    Map<String, Contact> contactMap,
+    Lender_Deal__c ldRecord
+  ) {
+    Map<String, Opportunity> newDeals = new Map<String, Opportunity>();
+
+    for (Map<String, String> cm : cleanMapList) {
+      Opportunity newDeal = generateDeal(cm);
+      String uniqueId = cm.get('uniqueId');
+      newDeal.Deal_Intro_Sub_Source__c = ldRecord.Lender__c != null
+        ? ldRecord.Lender__r.Name
+        : null;
+      newDeal.Approved_Third_Party_Originators__c = ldRecord.Lender__c;
+      newDeal.AccountId = contactMap.get(cm.get('Guarantor Email')).AccountId;
+
+      newDeals.put(uniqueId, newDeal);
+    }
+
+    insert newDeals.values();
+
+    return newDeals;
+  }
+
+  public static List<Property__c> createNewPropertiesFromDeals(
+    Map<String, Opportunity> newDeals,
+    List<Map<String, String>> cleanMapList
+  ) {
+    List<Property__c> newProps = new List<Property__c>();
+
+    for (Map<String, String> cm : cleanMapList) {
+      String uniqueId = cm.get('uniqueId');
+      Opportunity newDeal = newDeals.get(uniqueId);
+      Property__c newProp = generateProperty(cm, newDeal);
+      newProps.add(newProp);
+    }
+
+    insert newProps;
+
+    return newProps;
+  }
+
+  public static List<Deal_Contact__c> createDealContacts(
+    Map<String, Opportunity> newDeals,
+    Map<String, Contact> contactMap,
+    List<Map<String, String>> cleanMapList
+  ) {
+    List<Deal_Contact__c> dealContacts = new List<Deal_Contact__c>();
+
+    for (Map<String, String> cm : cleanMapList) {
+      String uniqueId = cm.get('uniqueId');
+      Opportunity newDeal = newDeals.get(uniqueId);
+      Contact newContact = contactMap.get(cm.get('Guarantor Email'));
+      List<Deal_Contact__c> newDealContacts = generateDealContacts(
+        newDeal,
+        newContact,
+        cm
+      );
+      dealContacts.addAll(newDealContacts);
+    }
+
+    insert dealContacts;
+
+    return dealContacts;
   }
 
   public static Map<String, Contact> generateContactsMap(
@@ -245,7 +317,8 @@ public without sharing class DscrImportHelper {
         String.isEmpty(m.get('Guarantor Name'))
       ) {
         throw new ImportException(
-          'No guarantor name found for Loan ID ' + m.get('Loan ID')
+          'Unable to finish import due to: No guarantor name found for Loan ID ' +
+          m.get('Loan ID')
         );
       }
 
@@ -328,11 +401,7 @@ public without sharing class DscrImportHelper {
   public static Opportunity generateDeal(Map<String, String> m) {
     Opportunity deal = new Opportunity();
 
-    Id dealRecId = Schema.SObjectType.Opportunity.getRecordTypeInfosByName()
-      .get('Acquired Bridge Loan')
-      .getRecordTypeId();
-
-    deal.RecordTypeId = dealRecId;
+    deal.RecordTypeId = DEAL_RECID;
     deal.Name = m.get('Borrower Name');
     deal.Deal_Intro_Source__c = 'Imported List';
     deal.StageName = 'Initial Review';
@@ -373,37 +442,124 @@ public without sharing class DscrImportHelper {
       deal.Renovation_Funding__c = 'No';
     }
 
-    if(String.isNotEmpty(m.get('Interest Holdback')) && m.get('Interest Holdback').isNumeric()) {
+    if (
+      String.isNotEmpty(m.get('Interest Holdback')) &&
+      m.get('Interest Holdback').isNumeric()
+    ) {
       deal.Interest_Reserves__c = Decimal.valueOf(m.get('Interest Holdback'));
     }
 
-    if(String.isNotEmpty(m.get('Total Loan Amount')) && m.get('Total Loan Amount').isNumeric()) {
-      deal.LOC_Commitment__c = Decimal.valueOf(m.get('Total Loan Amount'));
+    if (
+      String.isNotEmpty(m.get('Total Loan Amount')) &&
+      m.get('Total Loan Amount').isNumeric()
+    ) {
+      Decimal totalLoanAmount = Decimal.valueOf(m.get('Total Loan Amount'));
+      deal.Original_UPB_Svc__c = totalLoanAmount;
+      deal.LOC_Commitment__c = totalLoanAmount;
     } else {
-      throw new ImportException('No total loan amount found for ' + m.get('Loan Id'));
+      throw new ImportException(
+        'Unable to finish import due to: No total loan amount found for ' +
+        m.get('Loan ID')
+      );
     }
 
     deal.Deal_Code__c = m.get('Loan ID');
-    deal.Yardi_ID__c = m.get('Loan Id');
-    
-    if(String.isNotEmpty(m.get('Lender Name'))) {
+    deal.Yardi_ID__c = m.get('Loan ID');
+
+    if (String.isNotEmpty(m.get('Lender Name'))) {
       deal.Lender__c = m.get('Lender Name');
     }
 
+    // DATA_TRANSFORMATION_MAP
+    if (
+      String.isNotEmpty(m.get('Loan Purpose')) &&
+      DATA_TRANSFORMATION_MAP.containsKey('Loan_Purpose__c')
+    ) {
+      Map<String, Data_Transformation__mdt> dtMap = DATA_TRANSFORMATION_MAP.get(
+        'Loan_Purpose__c'
+      );
+      if (dtMap.containsKey(m.get('Loan Purpose').trim())) {
+        deal.Loan_Purpose__c = dtMap.get(m.get('Loan Purpose')).Updated_Data__c;
+      }
+    }
 
+    if (
+      String.isNotEmpty(m.get('Program Type')) &&
+      DATA_TRANSFORMATION_MAP.containsKey('Project_Strategy__c')
+    ) {
+      Map<String, Data_Transformation__mdt> dtMap = DATA_TRANSFORMATION_MAP.get(
+        'Project_Strategy__c'
+      );
+      if (dtMap.containsKey(m.get('Program Type').trim())) {
+        deal.Project_Strategy__c = dtMap.get(m.get('Program Type'))
+          .Updated_Data__c;
+      }
+    }
+    String test = 'sdf';
 
+    if (String.isNotEmpty(m.get('Origination Date'))) {
+      Date originationDate = Date.valueOf(m.get('Origination Date'));
+      deal.Origination_Date__c = originationDate;
+    }
+
+    deal.CloseDate = (System.today()).addDays(3);
+
+    if (String.isNotEmpty(m.get('Maturity Date'))) {
+      Date maturityDate = Date.valueOf(m.get('Maturity Date'));
+      deal.Stated_Maturity_Date__c = maturityDate;
+      deal.Updated_Loan_Maturity_Date__c = maturityDate;
+    }
+
+    if (
+      String.isNotEmpty(m.get('Note Rate (%)')) &&
+      m.get('Note Rate (%)').isNumeric()
+    ) {
+      Decimal noteRate = Decimal.valueOf(m.get('Note Rate (%)'));
+      deal.Rate__c = noteRate;
+    }
+
+    if (
+      String.isNotEmpty(m.get('Current UPB')) &&
+      m.get('Current UPB').isNumeric()
+    ) {
+      Decimal currentUPB = Decimal.valueOf(m.get('Current UPB'));
+      deal.Current_UPB__c = currentUPB;
+    }
+
+    if (String.isNotEmpty(m.get('LTC')) && m.get('LTC').isNumeric()) {
+      Decimal ltc = Decimal.valueOf(m.get('LTC'));
+      deal.LTC__c = ltc;
+    }
+
+    if (
+      String.isNotEmpty(m.get('Total LTC')) && m.get('Total LTC').isNumeric()
+    ) {
+      Decimal totalLTC = Decimal.valueOf(m.get('Total LTC'));
+      deal.Total_Loan_LTC__c = totalLTC;
+    }
+
+    if (String.isNotEmpty(m.get('ARLTV')) && m.get('ARLTV').isNumeric()) {
+      Decimal arltv = Decimal.valueOf(m.get('ARLTV'));
+      deal.Total_ARV_LTV__c = arltv;
+    }
+
+    if (String.isNotEmpty(m.get('Date of 1st Payment'))) {
+      Date dateOfFirstPayment = Date.valueOf(m.get('Date of 1st Payment'));
+      deal.First_Payment_Date__c = dateOfFirstPayment;
+    }
 
     return deal;
   }
 
-  public static Map<String,Map<String, Data_Transformation__mdt>> getDataTransformationMetaMap() {
-    Map<String,Map<String, Data_Transformation__mdt>> retMap = new Map<String,Map<String, Data_Transformation__mdt>>();
+  public static Map<String, Map<String, Data_Transformation__mdt>> getDataTransformationMetaMap() {
+    Map<String, Map<String, Data_Transformation__mdt>> retMap = new Map<String, Map<String, Data_Transformation__mdt>>();
 
-    List<Data_Transformation__mdt> dtms = Data_Transformation__mdt.getAll().values();
+    List<Data_Transformation__mdt> dtms = Data_Transformation__mdt.getAll()
+      .values();
 
-    for(Data_Transformation__mdt dtm : dtms) {
+    for (Data_Transformation__mdt dtm : dtms) {
       Map<String, Data_Transformation__mdt> dtmMap = new Map<String, Data_Transformation__mdt>();
-      if(retMap.containsKey(dtm.Field_API_Name__c)) {
+      if (retMap.containsKey(dtm.Field_API_Name__c)) {
         dtmMap = retMap.get(dtm.Field_API_Name__c);
       }
 
@@ -413,4 +569,229 @@ public without sharing class DscrImportHelper {
 
     return retMap;
   }
+
+  // under the assumption that Loan ID is NOT unique
+  public static String generateUniqueId() {
+    Blob b = Crypto.GenerateAESKey(128);
+    String h = EncodingUtil.ConvertTohex(b);
+    String guid =
+      h.SubString(0, 8) +
+      '-' +
+      h.SubString(8, 12) +
+      '-' +
+      h.SubString(12, 16) +
+      '-' +
+      h.SubString(16, 20) +
+      '-' +
+      h.substring(20);
+
+    return guid;
+  }
+
+  public static Property__c generateProperty(
+    Map<String, String> m,
+    Opportunity deal
+  ) {
+    Property__c p = new Property__c();
+
+    p.Deal__c = deal.Id;
+    p.Status__c = 'Closing';
+    Decimal rehabHoldback = null;
+
+    if(String.isNotEmpty(m.get('Rehab Holdback')) && m.get('Rehab Holdback').isNumeric()) {
+      rehabHoldback = Decimal.valueOf(m.get('Rehab Holdback'));
+      p.Override_Reno_Advance_Amount__c = rehabHoldback;
+    }
+
+    if(rehabHoldback > 0 || rehabHoldback != null) {
+      p.RecordTypeId = PROP_RECIDMAP.get('Bridge Renovation');
+    } else {
+      p.RecordTypeId = PROP_RECIDMAP.get('Bridge No Renovation');
+    }
+
+    if(String.isNotEmpty(m.get('Property Type')) && 
+    DATA_TRANSFORMATION_MAP.containsKey('Property_Type__c')) {
+      Map<String, Data_Transformation__mdt> dtMap = DATA_TRANSFORMATION_MAP.get(
+        'Property_Type__c'
+      );
+      if (dtMap.containsKey(m.get('Property Type').trim())) {
+        p.Property_Type__c = dtMap.get(m.get('Property Type')).Updated_Data__c;
+      }
+    }
+
+    if(String.isNotEmpty(m.get('Address'))) {
+      p.Name = m.get('Address');
+      p.Property_Name__c = m.get('Address');
+    } else {
+      throw new ImportException('Unable to finish import due to: Address is missing for Loan ID: ' + m.get('Loan ID'));
+    }
+
+    if(String.isNotEmpty(m.get('City'))) {
+      p.City__c = m.get('City');
+    } else {
+      throw new ImportException('Unable to finish import due to: City is missing for Loan ID: ' + m.get('Loan ID'));
+    }
+
+    if(String.isNotEmpty(m.get('State'))) {
+      String state = m.get('State').trim();
+      if(state.length() != 2) {
+        throw new ImportException('Unable to finish import due to: State value (' + state + ') is invalid for Loan ID: ' + m.get('Loan ID') + '.\n State must be a 2 character abbreviation.');
+      }
+      p.State__c = state;
+    } else {
+      throw new ImportException('Unable to finish import due to: State is missing for Loan ID: ' + m.get('Loan ID'));
+    }
+
+    if(String.isNotEmpty(m.get('Zip'))) {
+      p.ZipCode__c = m.get('Zip');
+    }
+
+    if(String.isNotEmpty(m.get('Units')) && m.get('Units').isNumeric()) {
+      p.Number_of_Units__c = Decimal.valueOf(m.get('Units'));
+    }
+
+    if(String.isNotEmpty(m.get('Sqft'))) {
+      String sqft = m.get('Sqft').replaceAll('[^0-9.]', '');
+      p.Square_Feet__c = sqft;
+    }
+
+    if(String.isNotEmpty(m.get('Initial Draw')) && m.get('Initial Draw').isNumeric()) {
+      p.Override_Initial_Disbursement__c = Decimal.valueOf(m.get('Initial Draw'));
+    }
+
+    if(rehabHoldback != null) {
+      Decimal currHoldbackBalance = 0;
+
+      if(String.isNotEmpty(m.get('Current Holdback Balance')) && m.get('Current Holdback Balance').isNumeric()) {
+        currHoldbackBalance = Decimal.valueOf(m.get('Current Holdback Balance'));
+      }
+
+      p.Reno_Advance_Amount__c = rehabHoldback - currHoldbackBalance;
+    }
+
+    if(String.isNotEmpty(m.get('Construction Budget')) && m.get('Construction Budget').isNumeric()) {
+      p.Rehab_Budget__c = Decimal.valueOf(m.get('Construction Budget'));
+    }
+
+    if(String.isNotEmpty(m.get('Property Purchase Price')) && m.get('Property Purchase Price').isNumeric()) {
+      p.Acquisition_Price__c = Decimal.valueOf(m.get('Property Purchase Price'));
+    }
+
+    if(deal.First_Payment_Date__c != null) {
+      p.First_Payment_Date__c = deal.First_Payment_Date__c;
+    }
+
+    if(String.isNotEmpty(m.get('3rd Party Valuation Date'))) {
+      Date thirdPvd = Date.valueOf(m.get('3rd Party Valuation Date'));
+      if(thirdPvd != null) {
+        p.BPO_Appraisal_Date__c = thirdPvd;
+      }
+    }
+
+    if(String.isNotEmpty(m.get('3rd Party Valuation Type'))) {
+      p.Valuation_Type__c = m.get('3rd Party Valuation Type');
+    }
+
+    if(String.isNotEmpty(m.get('3rd Party AIV')) && m.get('3rd Party AIV').isNumeric()) {
+      p.Appraised_Value_Amount__c = Decimal.valueOf(m.get('3rd Party AIV'));
+    }
+
+    if(String.isNotEmpty(m.get('3rd Party ARV')) && m.get('3rd Party ARV').isNumeric()) {
+      p.After_Repair_Value__c = Decimal.valueOf(m.get('3rd Party ARV'));
+    }
+
+    if(String.isNotEmpty(m.get('3rd Party Valuation Provider'))) {
+      p.BPO_Appraisal_Firm__c = m.get('3rd Party Valuation Provider');
+    }
+
+    return p;
+  }
+
+  public static List<Deal_Contact__c> generateDealContacts(Opportunity deal, Contact contact, Map<String,String> m) {
+    List<Deal_Contact__c> generatedDealContacts = new List<Deal_Contact__c>();
+
+    Deal_Contact__c entityDc = new Deal_Contact__c();
+    Deal_Contact__c guarantorDc = new Deal_Contact__c();
+
+    entityDc.Deal__c = deal.Id;
+    entityDc.Deal_Contact_Type__c = 'Entity';
+    entityDc.Entity_Type__c = 'Borrower';
+
+    if(String.isNotEmpty(m.get('Borrower Name'))) {
+      String borrowerName = m.get('Borrower Name');
+      entityDc.Company_Name__c = borrowerName;
+
+      if(borrowerName.containsIgnoreCase('llc')) {
+        entityDc.Company_Type__c = 'Limited Liability Company';
+      }
+    }
+
+    generatedDealContacts.add(entityDc);
+
+    guarantorDc.Deal__c = deal.Id;
+    guarantorDc.Deal_Contact_Type__c = 'Individual';
+    guarantorDc.Entity_Type__c = 'Guarantor';
+    guarantorDc.Contact__c = contact.Id;
+
+    if(String.isNotEmpty(m.get('Experience')) && m.get('Experience').isNumeric()) {
+      guarantorDc.Years_of_Experience1__c = Decimal.valueOf(m.get('Experience'));
+    }
+
+    if(String.isNotEmpty(m.get('FICO')) && m.get('FICO').isNumeric()) {
+      Decimal fico = Decimal.valueOf(m.get('FICO'));
+      guarantorDc.Experian__c = fico;
+      guarantorDc.TransUnion__c = fico;
+      guarantorDc.Equifax__c = fico;
+    }
+
+    generatedDealContacts.add(guarantorDc);
+
+    return generatedDealContacts;
+  }
 }
+
+/* A SINGLE DATA COMES IN FROM JAVASCRIPT LIKE THIS:
+  {
+    "Loan ID": "12345",
+    "Lender Name": "Lender ABC",
+    "Address": "123 Test St",
+    "City": "Costa Mesa",
+    "State": "CA",
+    "Zip": "92627",
+    "Property Type": "Single Family",
+    "Units": "1",
+    "Sqft": "1200",
+    "Loan Purpose (Refi, Purchase, Cash out Ref)": "Refi",
+    "Program Type (Fix and Flip, Aggregation, GUC, BTR)": "Fix and Flip",
+    "Origination Date": "44562",
+    "Maturity Date": "45658",
+    "Note Rate (%)": "0.02",
+    " Total Loan Amount ": "1000000",
+    " Current UPB ": "1000000",
+    " Initial Draw ": "500000",
+    " Rehab Holdback ": "500000",
+    " Current Holdback Balance ": "400000",
+    " Interest Holdback ": "90000",
+    "Dutch/Non-Dutch \r\n(True/ False)": "false",
+    " Construction Budget ": "70000",
+    " Property Purchase Price ": "100000",
+    " AIV ": "150000",
+    " ARV ": "200000",
+    "LTC": "0.75",
+    "Total LTC": "0.9",
+    "AILTV": "0.9",
+    "ARLTV": "0.9",
+    "Borrower Name": "The Borrower LLC",
+    "Experience": "7",
+    "FICO": "800",
+    "Guarantor Name": "Bill Guarantor",
+    "Guarantor Email": "bigg@guarantor.com",
+    "Date of 1st Payment": "44593",
+    "3rd Party Valuation Date": "44542",
+    "3rd Party Valuation Type": "Interior",
+    " 3rd Party AIV ": "150000",
+    " 3rd Party ARV ": "200000",
+    "3rd Party Valuation Provider": "Appraisal Nation"
+}
+  */
+
