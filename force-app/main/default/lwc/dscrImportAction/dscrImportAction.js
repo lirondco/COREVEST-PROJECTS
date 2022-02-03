@@ -120,13 +120,13 @@ export default class DscrImportAction extends LightningElement {
           const data = event.target.result;
           let arr = this.fixData(data);
 
-          console.log(arr);
+          // console.log(arr);
 
           let workbook = XLSX.read(arr, { type: "base64", cellDates: true });
           let workBookAsJson = {};
 
           workbook.SheetNames.forEach((sheetName) => {
-            console.log(XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]));
+            // console.log(XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]));
             workBookAsJson[sheetName] = JSON.stringify(
               XLSX.utils.sheet_to_json(workbook.Sheets[sheetName])
             );
@@ -138,6 +138,14 @@ export default class DscrImportAction extends LightningElement {
       })
       .catch((error) => {
         console.error(error);
+        this.showComponent = true;
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Error",
+            message: error.body.message,
+            variant: "error"
+          })
+        );
       });
   }
 
@@ -153,7 +161,6 @@ export default class DscrImportAction extends LightningElement {
           variant: "success"
         })
       );
-      console.log(res);  
     } catch(e) {
       console.error(e);
       this.showComponent = true;

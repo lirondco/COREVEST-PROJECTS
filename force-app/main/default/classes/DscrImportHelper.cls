@@ -2,7 +2,6 @@ public without sharing class DscrImportHelper {
   public class ImportException extends Exception {
   }
 
-  // TODO: complete deal generation. Loan_Purpose__c is the next field to be added.
 
   // field reference from the JS file is commented at the bottom of this file.
 
