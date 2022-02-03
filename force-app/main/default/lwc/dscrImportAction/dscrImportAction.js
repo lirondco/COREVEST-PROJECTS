@@ -2,10 +2,11 @@ import { api, LightningElement } from "lwc";
 import SheetJS2 from "@salesforce/resourceUrl/SheetJS2";
 import { loadScript } from "lightning/platformResourceLoader";
 import { CloseActionScreenEvent } from "lightning/actions";
-import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { deleteRecord } from "lightning/uiRecordApi";
 import getFileBody from "@salesforce/apex/DscrImportHelper.getFileBody";
 import getLastAttachment from "@salesforce/apex/DscrImportHelper.getLastAttachment";
+import parseFileValues from "@salesforce/apex/DscrImportHelper.parseFileValues";
 
 export default class DscrImportAction extends LightningElement {
   @api recordId;
@@ -92,36 +93,28 @@ export default class DscrImportAction extends LightningElement {
           let arr = this.fixData(data);
 
           console.log(arr);
-          
+
           let workbook = XLSX.read(arr, { type: "base64" });
           let workBookAsJson = {};
 
           workbook.SheetNames.forEach((sheetName) => {
-            workBookAsJson[sheetName] = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+            workBookAsJson[sheetName] = JSON.stringify(
+              XLSX.utils.sheet_to_json(workbook.Sheets[sheetName])
+            );
           });
 
-          return workBookAsJson;
+          this.doParseFile(JSON.stringify(workBookAsJson));
         };
         reader.readAsArrayBuffer(new Blob([fileBody]));
-      })
-      .then(res => {
-        console.log(res);
-
-        return;
-      })
-      .then(() => {
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: "Success",
-            message: "File imported successfully",
-            variant: "success"
-          })
-        );
-        this.handleCloseModal();
       })
       .catch((error) => {
         console.error(error);
       });
+  }
+
+  async doParseFile(file) {
+    const res = await parseFileValues({ fileJson : file, recordId: this.recordId });
+    console.log(res);
   }
 
   handleFileRemove() {
