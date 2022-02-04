@@ -91,7 +91,6 @@ export default class DscrImportAction extends LightningElement {
   handleUploadFinished(evt) {
     evt.preventDefault();
     this.uploadedFile = evt.detail.files[0];
-    console.log(this.uploadedFile);
   }
 
   fixData(data) {

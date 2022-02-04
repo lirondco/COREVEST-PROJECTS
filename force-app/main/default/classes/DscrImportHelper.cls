@@ -405,7 +405,7 @@ public without sharing class DscrImportHelper {
     deal.Deal_Intro_Source__c = 'Imported List';
     deal.StageName = 'Initial Review';
 
-    if (String.isNotEmpty(m.get('Units')) && m.get('Units').isNumeric()) {
+    if (String.isNotEmpty(m.get('Units')) && (m.get('Units').replaceAll('\\.', '')).isNumeric()) {
       Decimal units = Decimal.valueOf(m.get('Units'));
 
       if (units >= 1 && units <= 4) {
@@ -419,7 +419,7 @@ public without sharing class DscrImportHelper {
 
     if (
       String.isNotEmpty(m.get('Rehab Holdback')) &&
-      m.get('Rehab Holdback').isNumeric()
+      (m.get('Rehab Holdback').replaceAll('\\.', '')).isNumeric()
     ) {
       Boolean isDutch = false;
 
@@ -443,14 +443,14 @@ public without sharing class DscrImportHelper {
 
     if (
       String.isNotEmpty(m.get('Interest Holdback')) &&
-      m.get('Interest Holdback').isNumeric()
+      (m.get('Interest Holdback').replaceAll('\\.', '')).isNumeric()
     ) {
       deal.Interest_Reserves__c = Decimal.valueOf(m.get('Interest Holdback'));
     }
 
     if (
       String.isNotEmpty(m.get('Total Loan Amount')) &&
-      m.get('Total Loan Amount').isNumeric()
+      (m.get('Total Loan Amount').replaceAll('\\.', '')).isNumeric()
     ) {
       Decimal totalLoanAmount = Decimal.valueOf(m.get('Total Loan Amount'));
       deal.Original_UPB_Svc__c = totalLoanAmount;
@@ -511,34 +511,34 @@ public without sharing class DscrImportHelper {
 
     if (
       String.isNotEmpty(m.get('Note Rate (%)')) &&
-      m.get('Note Rate (%)').isNumeric()
+      (m.get('Note Rate (%)').replaceAll('\\.', '')).isNumeric()
     ) {
-      Decimal noteRate = Decimal.valueOf(m.get('Note Rate (%)'));
+      Decimal noteRate = Decimal.valueOf(m.get('Note Rate (%)')) * 100;
       deal.Rate__c = noteRate;
     }
 
     if (
       String.isNotEmpty(m.get('Current UPB')) &&
-      m.get('Current UPB').isNumeric()
+      (m.get('Current UPB').replaceAll('\\.', '')).isNumeric()
     ) {
       Decimal currentUPB = Decimal.valueOf(m.get('Current UPB'));
       deal.Current_UPB__c = currentUPB;
     }
 
-    if (String.isNotEmpty(m.get('LTC')) && m.get('LTC').isNumeric()) {
-      Decimal ltc = Decimal.valueOf(m.get('LTC'));
+    if (String.isNotEmpty(m.get('LTC')) && (m.get('LTC').replaceAll('\\.', '')).isNumeric()) {
+      Decimal ltc = Decimal.valueOf(m.get('LTC')) * 100;
       deal.LTC__c = ltc;
     }
 
     if (
-      String.isNotEmpty(m.get('Total LTC')) && m.get('Total LTC').isNumeric()
+      String.isNotEmpty(m.get('Total LTC')) && (m.get('Total LTC').replaceAll('\\.', '')).isNumeric()
     ) {
-      Decimal totalLTC = Decimal.valueOf(m.get('Total LTC'));
+      Decimal totalLTC = Decimal.valueOf(m.get('Total LTC')) * 100;
       deal.Total_Loan_LTC__c = totalLTC;
     }
 
-    if (String.isNotEmpty(m.get('ARLTV')) && m.get('ARLTV').isNumeric()) {
-      Decimal arltv = Decimal.valueOf(m.get('ARLTV'));
+    if (String.isNotEmpty(m.get('ARLTV')) && (m.get('ARLTV').replaceAll('\\.', '')).isNumeric()) {
+      Decimal arltv = Decimal.valueOf(m.get('ARLTV')) * 100;
       deal.Total_ARV_LTV__c = arltv;
     }
 
@@ -597,7 +597,7 @@ public without sharing class DscrImportHelper {
     p.Status__c = 'Closing';
     Decimal rehabHoldback = null;
 
-    if(String.isNotEmpty(m.get('Rehab Holdback')) && m.get('Rehab Holdback').isNumeric()) {
+    if(String.isNotEmpty(m.get('Rehab Holdback')) && (m.get('Rehab Holdback').replaceAll('\\.', '')).isNumeric()) {
       rehabHoldback = Decimal.valueOf(m.get('Rehab Holdback'));
       p.Override_Reno_Advance_Amount__c = rehabHoldback;
     }
@@ -645,7 +645,7 @@ public without sharing class DscrImportHelper {
       p.ZipCode__c = m.get('Zip');
     }
 
-    if(String.isNotEmpty(m.get('Units')) && m.get('Units').isNumeric()) {
+    if(String.isNotEmpty(m.get('Units')) && (m.get('Units').replaceAll('\\.', '')).isNumeric()) {
       p.Number_of_Units__c = Decimal.valueOf(m.get('Units'));
     }
 
@@ -654,25 +654,25 @@ public without sharing class DscrImportHelper {
       p.Square_Feet__c = sqft;
     }
 
-    if(String.isNotEmpty(m.get('Initial Draw')) && m.get('Initial Draw').isNumeric()) {
+    if(String.isNotEmpty(m.get('Initial Draw')) && (m.get('Initial Draw').replaceAll('\\.', '')).isNumeric()) {
       p.Override_Initial_Disbursement__c = Decimal.valueOf(m.get('Initial Draw'));
     }
 
     if(rehabHoldback != null) {
       Decimal currHoldbackBalance = 0;
 
-      if(String.isNotEmpty(m.get('Current Holdback Balance')) && m.get('Current Holdback Balance').isNumeric()) {
+      if(String.isNotEmpty(m.get('Current Holdback Balance')) && m.get('Current Holdback Balance').replaceAll('\\.', '').isNumeric()) {
         currHoldbackBalance = Decimal.valueOf(m.get('Current Holdback Balance'));
       }
 
       p.Reno_Advance_Amount__c = rehabHoldback - currHoldbackBalance;
     }
 
-    if(String.isNotEmpty(m.get('Construction Budget')) && m.get('Construction Budget').isNumeric()) {
+    if(String.isNotEmpty(m.get('Construction Budget')) && (m.get('Construction Budget').replaceAll('\\.', '')).isNumeric()) {
       p.Rehab_Budget__c = Decimal.valueOf(m.get('Construction Budget'));
     }
 
-    if(String.isNotEmpty(m.get('Property Purchase Price')) && m.get('Property Purchase Price').isNumeric()) {
+    if(String.isNotEmpty(m.get('Property Purchase Price')) && (m.get('Property Purchase Price').replaceAll('\\.', '')).isNumeric()) {
       p.Acquisition_Price__c = Decimal.valueOf(m.get('Property Purchase Price'));
     }
 
@@ -691,11 +691,11 @@ public without sharing class DscrImportHelper {
       p.Valuation_Type__c = m.get('3rd Party Valuation Type');
     }
 
-    if(String.isNotEmpty(m.get('3rd Party AIV')) && m.get('3rd Party AIV').isNumeric()) {
+    if(String.isNotEmpty(m.get('3rd Party AIV')) && (m.get('3rd Party AIV').replaceAll('\\.', '')).isNumeric()) {
       p.Appraised_Value_Amount__c = Decimal.valueOf(m.get('3rd Party AIV'));
     }
 
-    if(String.isNotEmpty(m.get('3rd Party ARV')) && m.get('3rd Party ARV').isNumeric()) {
+    if(String.isNotEmpty(m.get('3rd Party ARV')) && (m.get('3rd Party ARV').replaceAll('\\.', '')).isNumeric()) {
       p.After_Repair_Value__c = Decimal.valueOf(m.get('3rd Party ARV'));
     }
 
@@ -732,11 +732,11 @@ public without sharing class DscrImportHelper {
     guarantorDc.Entity_Type__c = 'Guarantor';
     guarantorDc.Contact__c = contact.Id;
 
-    if(String.isNotEmpty(m.get('Experience')) && m.get('Experience').isNumeric()) {
+    if(String.isNotEmpty(m.get('Experience')) && (m.get('Experience').replaceAll('\\.', '')).isNumeric()) {
       guarantorDc.Years_of_Experience1__c = Decimal.valueOf(m.get('Experience'));
     }
 
-    if(String.isNotEmpty(m.get('FICO')) && m.get('FICO').isNumeric()) {
+    if(String.isNotEmpty(m.get('FICO')) && (m.get('FICO').replaceAll('\\.', '')).isNumeric()) {
       Decimal fico = Decimal.valueOf(m.get('FICO'));
       guarantorDc.Experian__c = fico;
       guarantorDc.TransUnion__c = fico;
