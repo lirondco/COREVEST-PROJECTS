@@ -5,6 +5,7 @@ public without sharing class DscrImportHelper {
 
   // field reference from the JS file is commented at the bottom of this file.
 
+  public static final Id HOUSE_ACCOUNT_USER = retrieveHouseAccountUserId();
   public static final Map<String, Map<String, Data_Transformation__mdt>> DATA_TRANSFORMATION_MAP = getDataTransformationMetaMap();
   public static final Id DEAL_RECID = Schema.SObjectType.Opportunity.getRecordTypeInfosByName()
     .get('Acquired Bridge Loan')
@@ -18,6 +19,12 @@ public without sharing class DscrImportHelper {
       .get('Bridge No Renovation')
       .getRecordTypeId()
   };
+
+  public static Id retrieveHouseAccountUserId() {
+    List<User> contacts = [SELECT Id FROM USer WHERE Name = 'House Account'];
+
+    return contacts.size() > 0 ? contacts[0].Id : UserInfo.getUserId();
+  }
 
   @AuraEnabled
   public static String getFileBody(String fileId) {
@@ -112,11 +119,15 @@ public without sharing class DscrImportHelper {
 
       Map<String, String> emailToAccount = new Map<String, String>();
 
-      List<Map<String, String>> cleanMapList = new List<Map<String, String>>();
+      Map<String, Map<String,String>> cleanMapMain = new Map<String, Map<String,String>>();
 
       for (Map<String, String> m : mapToParse) {
         if (!m.containsKey('Loan ID')) {
           break;
+        }
+
+        if (cleanMapMain.containsKey(m.get('Loan ID'))) {
+          continue;
         }
 
         Map<String, String> cleanMap = new Map<String, String>();
@@ -163,38 +174,37 @@ public without sharing class DscrImportHelper {
             cleanMap.get('Loan ID')
           );
         }
-        cleanMap.put('uniqueId', generateUniqueId());
         emailToAccount.put(email, accountName);
-        cleanMapList.add(cleanMap);
+        cleanMapMain.put(cleanMap.get('Loan ID'), cleanMap);
       }
 
       Map<String, Contact> contactMap = generateContactsMap(
         emailToAccount,
-        cleanMapList,
+        cleanMapMain,
         ldRecord
       );
 
       Map<String, Opportunity> newDeals = createDeals(
-        cleanMapList,
+        cleanMapMain,
         contactMap,
         ldRecord
       );
 
       List<Property__c> newProps = createNewPropertiesFromDeals(
         newDeals,
-        cleanMapList
+        cleanMapMain
       );
 
       List<Deal_Contact__c> dealContacts = createDealContacts(
         newDeals,
         contactMap,
-        cleanMapList
+        cleanMapMain
       );
 
       List<Lender_Deal_to_Deal__c> newLdds = new List<Lender_Deal_to_Deal__c>();
 
-      for(Map<String, String> m : cleanMapList) {
-        String uniqueId = m.get('uniqueId');
+      for(Map<String, String> m : cleanMapMain.values()) {
+        String uniqueId = m.get('Loan ID');
         Opportunity deal = newDeals.get(uniqueId);
         Lender_Deal_to_Deal__c ldd = new Lender_Deal_to_Deal__c();
         ldd.Deal__c = deal.Id;
@@ -208,20 +218,27 @@ public without sharing class DscrImportHelper {
       return newLdds;
     } catch (Exception e) {
       Database.rollback(sp);
+      System.debug(e.getMessage());
       throw new AuraHandledException(e.getLineNumber() + ': ' + e.getMessage());
     }
   }
 
   public static Map<String, Opportunity> createDeals(
-    List<Map<String, String>> cleanMapList,
+    Map<String, Map<String, String>> cleanMapMain,
     Map<String, Contact> contactMap,
     Lender_Deal__c ldRecord
   ) {
     Map<String, Opportunity> newDeals = new Map<String, Opportunity>();
+    Map<String, Id> existingDeals = generateExistingDealsMap(cleanMapMain.keySet());
 
-    for (Map<String, String> cm : cleanMapList) {
-      Opportunity newDeal = generateDeal(cm);
-      String uniqueId = cm.get('uniqueId');
+    for (Map<String, String> cm : cleanMapMain.values()) {
+      String uniqueId = cm.get('Loan ID');
+      Opportunity existingDeal = new Opportunity();
+      if(existingDeals.containsKey(uniqueId)) {
+        existingDeal.Id = existingDeals.get(uniqueId);
+      }
+
+      Opportunity newDeal = generateDeal(cm, existingDeal);
       newDeal.Deal_Intro_Sub_Source__c = ldRecord.Lender__c != null
         ? ldRecord.Lender__r.Name
         : null;
@@ -231,19 +248,34 @@ public without sharing class DscrImportHelper {
       newDeals.put(uniqueId, newDeal);
     }
 
-    insert newDeals.values();
+    upsert newDeals.values();
 
     return newDeals;
   }
 
+  public static Map<String, Id> generateExistingDealsMap(Set<String> loanIds) {
+    Map<String, Id> retMap = new Map<String, Id>();
+    List<Opportunity> existingDeals = [
+      SELECT Id, Deal_Code__c
+      FROM Opportunity
+      WHERE Deal_Code__c IN :loanIds
+    ];
+
+    for (Opportunity deal : existingDeals) {
+      retMap.put(deal.Deal_Code__c, deal.Id);
+    }
+
+    return retMap;
+  }
+
   public static List<Property__c> createNewPropertiesFromDeals(
     Map<String, Opportunity> newDeals,
-    List<Map<String, String>> cleanMapList
+    Map<String, Map<String, String>> cleanMapMain
   ) {
     List<Property__c> newProps = new List<Property__c>();
 
-    for (Map<String, String> cm : cleanMapList) {
-      String uniqueId = cm.get('uniqueId');
+    for (Map<String, String> cm : cleanMapMain.values()) {
+      String uniqueId = cm.get('Loan ID');
       Opportunity newDeal = newDeals.get(uniqueId);
       Property__c newProp = generateProperty(cm, newDeal);
       newProps.add(newProp);
@@ -257,12 +289,12 @@ public without sharing class DscrImportHelper {
   public static List<Deal_Contact__c> createDealContacts(
     Map<String, Opportunity> newDeals,
     Map<String, Contact> contactMap,
-    List<Map<String, String>> cleanMapList
+    Map<String, Map<String, String>> cleanMapMain
   ) {
     List<Deal_Contact__c> dealContacts = new List<Deal_Contact__c>();
 
-    for (Map<String, String> cm : cleanMapList) {
-      String uniqueId = cm.get('uniqueId');
+    for (Map<String, String> cm : cleanMapMain.values()) {
+      String uniqueId = cm.get('Loan ID');
       Opportunity newDeal = newDeals.get(uniqueId);
       Contact newContact = contactMap.get(cm.get('Guarantor Email'));
       List<Deal_Contact__c> newDealContacts = generateDealContacts(
@@ -280,7 +312,7 @@ public without sharing class DscrImportHelper {
 
   public static Map<String, Contact> generateContactsMap(
     Map<String, String> emailToAccount,
-    List<Map<String, String>> cleanMapList,
+    Map<String, Map<String, String>> cleanMapMain,
     Lender_Deal__c ld
   ) {
     Map<String, Contact> retMap = new Map<String, Contact>();
@@ -306,7 +338,7 @@ public without sharing class DscrImportHelper {
       .get('Borrower')
       .getRecordTypeId();
 
-    for (Map<String, String> m : cleanMapList) {
+    for (Map<String, String> m : cleanMapMain.values()) {
       if (retMap.containsKey(m.get('Guarantor Email'))) {
         continue;
       }
@@ -322,6 +354,7 @@ public without sharing class DscrImportHelper {
       }
 
       Contact newContact = new Contact();
+      newContact.OwnerId = HOUSE_ACCOUNT_USER;
       newContact.FirstName = m.get('Guarantor Name').substringBefore(' ');
       newContact.LastName = m.get('Guarantor Name').substringAfter(' ');
       newContact.Email = m.get('Guarantor Email');
@@ -372,6 +405,7 @@ public without sharing class DscrImportHelper {
 
       for (String n : accountNamesSet) {
         Account newAccount = new Account();
+        newAccount.OwnerId = HOUSE_ACCOUNT_USER;
         newAccount.Name = n;
         newAccount.Introductions_Source__c = 'Imported List';
         if (ld.Lender__r != null) {
@@ -397,8 +431,8 @@ public without sharing class DscrImportHelper {
     return accountMap;
   }
 
-  public static Opportunity generateDeal(Map<String, String> m) {
-    Opportunity deal = new Opportunity();
+  public static Opportunity generateDeal(Map<String, String> m, Opportunity opp) {
+    Opportunity deal = opp;
 
     deal.RecordTypeId = DEAL_RECID;
     deal.Name = m.get('Borrower Name');
@@ -455,7 +489,7 @@ public without sharing class DscrImportHelper {
       Decimal totalLoanAmount = Decimal.valueOf(m.get('Total Loan Amount'));
       deal.Original_UPB_Svc__c = totalLoanAmount;
       deal.LOC_Commitment__c = totalLoanAmount;
-    } else {
+    } else if (deal.Id == null) {
       throw new ImportException(
         'Unable to finish import due to: No total loan amount found for ' +
         m.get('Loan ID')
@@ -567,24 +601,6 @@ public without sharing class DscrImportHelper {
     }
 
     return retMap;
-  }
-
-  // under the assumption that Loan ID is NOT unique
-  public static String generateUniqueId() {
-    Blob b = Crypto.GenerateAESKey(128);
-    String h = EncodingUtil.ConvertTohex(b);
-    String guid =
-      h.SubString(0, 8) +
-      '-' +
-      h.SubString(8, 12) +
-      '-' +
-      h.SubString(12, 16) +
-      '-' +
-      h.SubString(16, 20) +
-      '-' +
-      h.substring(20);
-
-    return guid;
   }
 
   public static Property__c generateProperty(
@@ -793,4 +809,3 @@ public without sharing class DscrImportHelper {
     "3rd Party Valuation Provider": "Appraisal Nation"
 }
   */
-
