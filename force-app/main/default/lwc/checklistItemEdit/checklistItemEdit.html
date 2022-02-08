@@ -1,0 +1,41 @@
+<template>
+  <c-modal title="Edit Item">
+    <div slot="body">
+      <template if:true={itemId}>
+        <lightning-record-edit-form
+          object-api-name="Checklist_Item__c"
+          record-id={itemId}
+          density="comfy"
+        >
+          <lightning-layout multiple-rows>
+            <lightning-layout-item size="12"
+              ><lightning-input-field field-name="Name"></lightning-input-field>
+            </lightning-layout-item>
+            <lightning-layout-item size="12"
+              ><lightning-input-field
+                field-name="Status__c"
+              ></lightning-input-field>
+            </lightning-layout-item>
+            <lightning-input-field
+              field-name="Responsible_Party__c"
+            ></lightning-input-field>
+            <lightning-layout-item size="12"
+              ><lightning-input-field
+                field-name="Comments__c"
+              ></lightning-input-field>
+            </lightning-layout-item>
+            <lightning-layout-item size="12">
+              <lightning-input-field
+                field-name="External_Comments__c"
+              ></lightning-input-field
+            ></lightning-layout-item>
+          </lightning-layout>
+        </lightning-record-edit-form>
+      </template>
+    </div>
+    <div slot="footer">
+      <lightning-button label="Close" onclick={close}></lightning-button>
+      <lightning-button label="Save" onclick={save}></lightning-button>
+    </div>
+  </c-modal>
+</template>

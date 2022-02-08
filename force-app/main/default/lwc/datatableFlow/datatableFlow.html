@@ -1,0 +1,10 @@
+<template>
+
+    <lightning-datatable
+            data={mydata}
+            columns={columns}
+            key-field="Id"
+            onrowselection={getSelectedName}
+            onrowaction={handleRowAction}>
+    </lightning-datatable>
+</template>

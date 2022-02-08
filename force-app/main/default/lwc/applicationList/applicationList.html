@@ -1,0 +1,50 @@
+<template>
+  <lightning-card title="Applications" icon-name="standard:contact">
+    <lightning-button
+      slot="actions"
+      label="Set Active"
+      onclick={setActive}
+    ></lightning-button>
+    <template if:true={showList}>
+      <lightning-datatable
+        key-field="Id"
+        data={applicationList}
+        columns={columns}
+        max-row-selection="1"
+      ></lightning-datatable>
+    </template>
+
+    <template if:true={displayNavButtons}>
+      <lightning-layout multiple-rows="true" horizontal-align="center">
+        <lightning-layout-item padding="around-small" flexibility="auto">
+          <lightning-button
+            label="First"
+            icon-name="utility:left"
+            icon-position="left"
+            onclick={firstPage}
+            disabled={firstButtonDisabled}
+          ></lightning-button>
+          <lightning-button
+            icon-name="utility:chevronleft"
+            icon-position="left"
+            onclick={previousPage}
+            disabled={previousButtonDisabled}
+          ></lightning-button>
+          <lightning-button
+            icon-name="utility:chevronright"
+            icon-position="right"
+            disabled={nextButtonDisabled}
+            onclick={nextPage}
+          ></lightning-button>
+          <lightning-button
+            label="Last"
+            icon-name="utility:right"
+            icon-position="right"
+            disabled={lastButtonDisabled}
+            onclick={lastPage}
+          ></lightning-button>
+        </lightning-layout-item>
+      </lightning-layout>
+    </template>
+  </lightning-card>
+</template>

@@ -17,7 +17,7 @@ export default class ConvertApplication extends NavigationMixin(
   validated = false;
 
   isSaving = false;
-
+  value = [];
   connectedCallback() {
     console.log("connected callback");
     console.log(this.recordId);
@@ -39,7 +39,7 @@ export default class ConvertApplication extends NavigationMixin(
       // Execute some function or backend controller call that needs the recordId
       // console.log("connected callback");
       // console.log(this.recordId);
-      const queryString = `SELECT Id, Status__c, Lead__c, Contact__c, Lead__r.ConvertedContactId FROM Application__c WHERE Id = '${this.recordId}'`;
+      const queryString = `SELECT Id, Status__c, Lead__c, Contact__c, Lead__r.ConvertedContactId, Loan_Type__c FROM Application__c WHERE Id = '${this.recordId}'`;
       // console.log(queryString);
       query({ queryString }).then((results) => {
         console.log(results);
@@ -48,6 +48,17 @@ export default class ConvertApplication extends NavigationMixin(
         this.checkValidations();
       });
     }
+  }
+
+  get showRecordTypeSelection() {
+    return this.record.Loan_Type__c == "Build for Rent";
+  }
+
+  get options() {
+    return [
+      { label: "Term", value: "term" },
+      { label: "Bridge", value: "bridge" }
+    ];
   }
 
   checkValidations() {
@@ -81,7 +92,7 @@ export default class ConvertApplication extends NavigationMixin(
     this.isSaving = true;
 
     const fields = this.template.querySelectorAll("lightning-input");
-    console.log(fields);
+    //console.log(fields);
     const params = {};
 
     let validated = true;
@@ -95,9 +106,28 @@ export default class ConvertApplication extends NavigationMixin(
       }
     });
 
-    console.log(validated);
+    //console.log(validated);
     params.recordId = this.recordId;
-    console.log(params);
+    // params.loanType ==
+    //console.log(params);
+
+    let recordTypes = [];
+    if (this.record.Loan_Type__c == "Build for Rent") {
+      const checkboxGroup = this.template.querySelector(
+        "lightning-checkbox-group"
+      );
+
+      console.log(checkboxGroup.value.length);
+
+      if (checkboxGroup.value.length === 0) {
+        validated = false;
+      } else {
+        recordTypes = checkboxGroup.value;
+        //params.recordTypes = checkboxGroup.values;
+      }
+    }
+
+    //console.log(this.template.querySelector("lightning-checkbox-group").value);
 
     if (validated) {
       // this[NavigationMixin.Navigate]({
@@ -109,7 +139,7 @@ export default class ConvertApplication extends NavigationMixin(
       //   }
       // });
 
-      convertApplication({ params })
+      convertApplication({ params, recordTypes })
         .then((response) => {
           const oppId = response.oppId;
           this[NavigationMixin.Navigate]({
@@ -125,7 +155,9 @@ export default class ConvertApplication extends NavigationMixin(
           console.log(error);
           const event = new ShowToastEvent({
             title: "Unable to Convert Application",
-            message: "Apex Error"
+            message: error.body.message,
+            mode: "sticky",
+            variant: "error"
           });
           this.dispatchEvent(event);
           this.isSaving = false;

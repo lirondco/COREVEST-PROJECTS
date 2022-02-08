@@ -16,7 +16,7 @@
       </template>
     </lightning-progress-indicator>
 
-    <lightning-tabset variant="scoped">
+    <lightning-tabset variant="scoped" class="slds-m-top_medium">
       <template for:each={sectionTypes} for:item="type">
         <lightning-tab label={type.name} value={type.name} key={type.name}>
           <lightning-tabset variant="scoped">
@@ -26,18 +26,40 @@
                 key={section.id}
                 value={section.id}
               >
-                <lightning-accordion
-                  allow-multiple-sections-open
-                  active-section-name={activeSection}
-                >
-                  <template if:true={section.showUploads}>
+                <template if:true={section.showUploads}>
+                  <lightning-accordion>
                     <lightning-accordion-section label="Uploads" name="uploads">
+                      <div slot="actions">
+                        <lightning-button
+                          data-id={section.id}
+                          data-type="upload"
+                          label="Approve All"
+                          onclick={approveAll}
+                        >
+                        </lightning-button>
+                        <lightning-button
+                          data-id={section.id}
+                          data-type="upload"
+                          label="Add Item"
+                          onclick={newItem}
+                        ></lightning-button>
+                      </div>
                       <table
                         class="slds-table slds-table_cell-buffer slds-table_bordered"
                         aria-label="Example default base table of Opportunities"
                       >
                         <thead>
                           <tr class="slds-line-height_reset">
+                            <th>
+                              <lightning-input
+                                type="checkbox"
+                                label="checkbox"
+                                variant="label-hidden"
+                                data-id={section.id}
+                                data-type="upload"
+                                onchange={selectAll}
+                              ></lightning-input>
+                            </th>
                             <th class="" scope="col">
                               <div
                                 class="slds-truncate"
@@ -64,30 +86,47 @@
                                 Responsible Party
                               </div>
                             </th>
-                            <!-- <th class="" scope="col">
+                            <th class="" scope="col">
                               <div class="slds-truncate" title="Close Date">
-                                Comments
+                                Internal Comments
                               </div>
-                            </th> -->
+                            </th>
+                            <th class="" scope="col">
+                              <div class="slds-truncate" title="Close Date">
+                                External Comments
+                              </div>
+                            </th>
                             <th class="" scope="col">
                               <div class="slds-truncate" title="Stage"></div>
                             </th>
-                            <!-- <th scope="col" style="width: 3.25rem">
+                            <th scope="col" style="width: 3.25rem">
                               <div
                                 class="slds-truncate slds-assistive-text"
                                 title="Actions"
                               >
                                 Actions
                               </div>
-                            </th> -->
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
                           <template
                             for:each={section.uploadItems}
                             for:item="item"
+                            for:index="itemIndex"
                           >
                             <tr class="slds-hint-parent" key={section.id}>
+                              <th>
+                                <lightning-input
+                                  type="checkbox"
+                                  label="checkbox"
+                                  variant="label-hidden"
+                                  data-item="item"
+                                  data-id={section.id}
+                                  data-type="upload"
+                                  data-itemid={item.id}
+                                ></lightning-input>
+                              </th>
                               <th scope="row">
                                 <lightning-formatted-text
                                   value={item.name}
@@ -114,13 +153,40 @@
                                 ></lightning-formatted-text>
                               </td>
                               <td role="gridcell">
+                                <lightning-formatted-text
+                                  value={item.comments}
+                                ></lightning-formatted-text>
+                              </td>
+                              <td role="gridcell">
+                                <lightning-formatted-text
+                                  value={item.externalComments}
+                                ></lightning-formatted-text>
+                              </td>
+                              <td role="gridcell">
                                 <lightning-file-upload
                                   label="Upload"
                                   record-id={item.id}
                                   data-id={item.id}
                                   onuploadfinished={handleUploadFinished}
                                   name="upload"
+                                  multiple
                                 ></lightning-file-upload>
+                              </td>
+                              <td>
+                                <lightning-button-menu
+                                  alternative-text="Show menu"
+                                  data-id={item.id}
+                                  onselect={menuItemSelect}
+                                >
+                                  <lightning-menu-item
+                                    value="edit"
+                                    label="Edit"
+                                  ></lightning-menu-item>
+                                  <lightning-menu-item
+                                    value="delete"
+                                    label="Delete"
+                                  ></lightning-menu-item>
+                                </lightning-button-menu>
                               </td>
 
                               <!-- <td role="gridcell"> -->
@@ -139,14 +205,163 @@
                         </tbody>
                       </table>
                     </lightning-accordion-section>
-                  </template>
-                  <template if:true={section.showTasks}>
-                    <lightning-accordion-section
-                      label="Tasks"
-                      name="tasks"
-                    ></lightning-accordion-section>
-                  </template>
-                </lightning-accordion>
+                  </lightning-accordion>
+                </template>
+                <template if:true={section.showTasks}>
+                  <lightning-accordion>
+                    <lightning-accordion-section label="Tasks" name="tasks">
+                      <div slot="actions">
+                        <lightning-button
+                          data-id={section.id}
+                          data-type="task"
+                          label="Approve All"
+                          onclick={approveAll}
+                        >
+                        </lightning-button>
+                        <lightning-button
+                          data-id={section.id}
+                          data-type="task"
+                          label="Add Item"
+                          onclick={newItem}
+                        ></lightning-button>
+                      </div>
+                      <table
+                        class="slds-table slds-table_cell-buffer slds-table_bordered"
+                        aria-label="Example default base table of Opportunities"
+                      >
+                        <thead>
+                          <tr class="slds-line-height_reset">
+                            <th>
+                              <lightning-input
+                                type="checkbox"
+                                label="checkbox"
+                                variant="label-hidden"
+                                data-id={section.id}
+                                data-type="task"
+                                onchange={selectAll}
+                              ></lightning-input>
+                            </th>
+                            <th class="" scope="col">
+                              <div
+                                class="slds-truncate"
+                                title="Opportunity Name"
+                              >
+                                Name
+                              </div>
+                            </th>
+                            <th class="" scope="col">
+                              <div class="slds-truncate" title="Account Name">
+                                Status
+                              </div>
+                            </th>
+                            <th class="" scope="">
+                              <div
+                                class="slds-truncate"
+                                title="Responsible Party"
+                              >
+                                Responsible Party
+                              </div>
+                            </th>
+                            <th class="" scope="">
+                              <div
+                                class="slds-truncate"
+                                title="Responsible Party"
+                              >
+                                Action
+                              </div>
+                            </th>
+                            <th class="" scope="col">
+                              <div class="slds-truncate" title="Close Date">
+                                Internal Comments
+                              </div>
+                            </th>
+                            <th class="" scope="col">
+                              <div class="slds-truncate" title="Close Date">
+                                External Comments
+                              </div>
+                            </th>
+                            <th scope="col" style="width: 3.25rem">
+                              <div
+                                class="slds-truncate slds-assistive-text"
+                                title="Actions"
+                              >
+                                Actions
+                              </div>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <template
+                            for:each={section.taskItems}
+                            for:item="item"
+                            for:index="itemIndex"
+                          >
+                            <tr class="slds-hint-parent" key={item.id}>
+                              <th>
+                                <lightning-input
+                                  type="checkbox"
+                                  label="checkbox"
+                                  variant="label-hidden"
+                                  data-item="item"
+                                  data-id={section.id}
+                                  data-type="task"
+                                  data-itemid={item.id}
+                                ></lightning-input>
+                              </th>
+                              <th scope="row">
+                                <lightning-formatted-text
+                                  value={item.name}
+                                ></lightning-formatted-text>
+                              </th>
+                              <td role="gridcell">
+                                <lightning-formatted-text
+                                  value={item.status}
+                                ></lightning-formatted-text>
+                              </td>
+                              <td role="gridcell">
+                                <lightning-formatted-text
+                                  value={item.responsibleParty}
+                                ></lightning-formatted-text>
+                              </td>
+                              <td role="gridcell">
+                                <lightning-formatted-text
+                                  value={item.uploader}
+                                ></lightning-formatted-text>
+                              </td>
+                              <td role="gridcell">
+                                <lightning-formatted-text
+                                  value={item.comments}
+                                ></lightning-formatted-text>
+                              </td>
+                              <td role="gridcell">
+                                <lightning-formatted-text
+                                  value={item.externalComments}
+                                ></lightning-formatted-text>
+                              </td>
+
+                              <td>
+                                <lightning-button-menu
+                                  alternative-text="Show menu"
+                                  data-id={item.id}
+                                  onselect={menuItemSelect}
+                                >
+                                  <lightning-menu-item
+                                    value="edit"
+                                    label="Edit"
+                                  ></lightning-menu-item>
+                                  <lightning-menu-item
+                                    value="delete"
+                                    label="Delete"
+                                  ></lightning-menu-item>
+                                </lightning-button-menu>
+                              </td>
+                            </tr>
+                          </template>
+                        </tbody>
+                      </table>
+                    </lightning-accordion-section>
+                  </lightning-accordion>
+                </template>
               </lightning-tab>
             </template>
           </lightning-tabset>
@@ -159,6 +374,13 @@
         
       </div>
     </c-modal> -->
+
+    <c-checklist-item-new
+      onsave={init}
+      milestone={currentMilestone}
+    ></c-checklist-item-new>
+
     <c-checklist-documents></c-checklist-documents>
+    <c-checklist-item-edit onsave={init}></c-checklist-item-edit>
   </template>
 </template>

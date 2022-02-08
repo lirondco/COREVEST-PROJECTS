@@ -28,6 +28,12 @@ const fields = [
   UNDERWRITER_EMAIL,
   CLOSER_EMAIL
 ];
+const forTotalFields = [
+  "Holdback_Reserve__c",
+  "Monthly_Tax__c",
+  "Monthly_Cap_Ex__c",
+  "Monthly_Insurance__c"
+]
 export default class TermPostClosingModal extends NavigationMixin(
   LightningElement
 ) {
@@ -76,6 +82,7 @@ export default class TermPostClosingModal extends NavigationMixin(
     "blockquote",
     "direction"
   ];
+  
 
   @wire(getRecord, {
     recordId: USER_ID,
@@ -108,14 +115,22 @@ export default class TermPostClosingModal extends NavigationMixin(
       console.error(error);
     } else if (data) {
       this.loanVersion = data;
+      let local = {};
+      let numLocal = {};
+      Object.entries(data).forEach(([key, value]) => {
+        if(Number(value)) {
+          local[key] = value ? Number(Number(value).toFixed(2)) : 0;
+          if(forTotalFields.includes(key)) {
+            numLocal[key] = value ? Number(Number(value).toFixed(2)) : 0;
+          }
+        } else {
+          local[key] = value;
+        }
+      })
+      this.loanVersionLocal = local;
+      this.loanVersionNumeric = numLocal;
       if (data.hasOwnProperty("Monthly_Payment__c")) {
         this.monthlyTotal = data.Monthly_Payment__c;
-      }
-      if (
-        data.hasOwnProperty("RecordType") &&
-        data.RecordType.DeveloperName == "LoanOnboarding"
-      ) {
-        this.loanVersionLocal = { ...data };
       }
     }
   }
@@ -266,7 +281,7 @@ export default class TermPostClosingModal extends NavigationMixin(
   async handleSubmit(evt) {
     const name = evt.target.dataset.name;
     const isInputsCorrect = [
-      ...this.template.querySelectorAll("lightning-input")
+      ...this.template.querySelectorAll("lightning-input,lightning-combobox")
     ].reduce((validSoFar, inputField) => {
       inputField.reportValidity();
       return validSoFar && inputField.checkValidity();

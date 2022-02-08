@@ -1,0 +1,59 @@
+<template>
+
+    <template if:true={errorApex}>
+        <div class="slds-m-around_medium slds-text-color_error">
+            {errorApex} <br>
+        </div>
+    </template>
+    <template if:true={errorJavascript}>
+        <div class="slds-m-around_medium slds-text-color_error">
+            {errorJavascript} <br>
+        </div>
+    </template>
+    <lightning-button
+            class="slds-m-left_large slds-m-bottom--small"
+            label="Manage"
+            title="Non-primary action"
+            disabled={isManageDisabled}
+            onclick={handleButtonClick}
+    ></lightning-button>
+
+    <c-datatable-flow
+
+            columns={columns}
+            mydata={rowData}
+            onrowactiontaken={handleRowAction}
+            onrowselected={updateSelectedRows}>
+    </c-datatable-flow>
+    <div class="toast-message">
+        <c-toast-message></c-toast-message>
+    </div>
+    <c-uc-modal class="modal-window" show-footer available-reactions={modalReactions} name="modalName"
+                onreaction={handleModalReactionButtonClick}>
+        <span slot="modalHeader">
+            Manage Approval Processes
+        </span>
+        <span slot="modalBody">
+            Manage your processes
+            Selected Approval Processes: {apCount}
+            <lightning-radio-group name="modalType"
+                                   label="Action"
+                                   options={allowedActions}
+                                   value={currentAction}
+                                   onchange={handleActionChange}
+                                   required
+                                   type="button"></lightning-radio-group>
+            <template if:true={actionReassign}>
+                <div class="slds-p-bottom--x-small">
+                   <c-lookup-container
+                           onselectionchange={handleSelectionChange}
+                   ></c-lookup-container>
+                 </div>
+            </template>
+                <div>
+                    <lightning-textarea name="comment" label="Comments" value={commentVal}
+                                        onchange={handleComment}></lightning-textarea>
+                 </div>
+            </span>
+    </c-uc-modal>
+</template>

@@ -24,11 +24,20 @@ export default class SwapRateUpdate extends LightningElement {
             const event = new ShowToastEvent({
                 title: 'Success!',
                 message: 'Swap Rate Sucessfully Updated!',
-                Varient: 'Success',
-                mode:'dismissable'
+                Varient: 'Success'
             });
             this.dispatchEvent(event);
             }
+            else
+            if (result == 'No Updates')
+            {
+            const event = new ShowToastEvent({
+                title: 'Warning!',
+                message: 'Failed to update the Swap Rate. The deal must be Term, not rate locked, not in Withdrawn or Rejected Stage, and Term Loan Type not blank.',
+                Varient: 'warning'
+            });
+            this.dispatchEvent(event);
+            } 
         })
         .catch((error) => {
           console.log("Swap Rate Update error");

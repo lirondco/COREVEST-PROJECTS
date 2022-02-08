@@ -1,7 +1,7 @@
 <!-- sldsValidatorIgnore -->
 <template>
   <template if:true={recordId}>
-    <lightning-quick-action-panel header={headerText}>
+    <lightning-quick-action-panel header={headerText} >
       <template if:false={isEmailStage}>
         <div class="slds-box slds-box_small slds-theme_shade">
           <p><strong>Monthly Payments</strong></p>
@@ -14,7 +14,7 @@
           data-section="MonthlyPayments"
           label="Monthly Payment"
           variant="label-inline"
-          value={loanVersion.Holdback_Reserve__c}
+          value={loanVersionLocal.Holdback_Reserve__c}
           formatter="currency"
           step="0.01"
           onchange={handleChange}
@@ -28,7 +28,7 @@
           data-section="MonthlyPayments"
           label="Monthly Tax Constants"
           variant="label-inline"
-          value={loanVersion.Monthly_Tax__c}
+          value={loanVersionLocal.Monthly_Tax__c}
           formatter="currency"
           step="0.01"
           onchange={handleChange}
@@ -42,7 +42,7 @@
           data-section="MonthlyPayments"
           label="Monthly CapEx Constants"
           variant="label-inline"
-          value={loanVersion.Monthly_Cap_Ex__c}
+          value={loanVersionLocal.Monthly_Cap_Ex__c}
           formatter="currency"
           step="0.01"
           onchange={handleChange}
@@ -56,7 +56,7 @@
           data-section="MonthlyPayments"
           label="Monthly Insurance Constants"
           variant="label-inline"
-          value={loanVersion.Monthly_Insurance__c}
+          value={loanVersionLocal.Monthly_Insurance__c}
           formatter="currency"
           step="0.01"
           onchange={handleChange}
@@ -72,6 +72,7 @@
           value={monthlyTotal}
           formatter="currency"
           step="0.01"
+          style="pointer-events: none;"
           readonly
         ></lightning-input>
         <br />
@@ -83,7 +84,7 @@
           data-section="Unrelated"
           label="Holdback Reserve Collected at Closing"
           variant="label-inline"
-          value={loanVersion.Required_Holdback_Reserve__c}
+          value={loanVersionLocal.Required_Holdback_Reserve__c}
           formatter="currency"
           step="0.01"
           onchange={handleChange}
@@ -152,11 +153,12 @@
               label="Recourse"
               data-name="Recourse__c"
               data-record="Loan_Version__c"
-              value={loanVersion.Recourse__c}
+              value={loanVersionLocal.Recourse__c}
               variant="label-inline"
               placeholder="Select Recourse"
               options={recoursePicklistValues.data.values}
               onchange={handleChange}
+              dropdown-alignment="auto"
               required
             ></lightning-combobox>
           </template>
@@ -171,6 +173,7 @@
               placeholder="Select Option"
               options={tprPicklistVals.data.values}
               onchange={handleChange}
+              dropdown-alignment="auto"
               required
             ></lightning-combobox>
           </template>
@@ -190,11 +193,12 @@
               label="Taxes Paid at Closing"
               data-name="Taxes_Paid_at_Closing__c"
               data-record="Loan_Version__c"
-              value={loanVersion.Taxes_Paid_at_Closing__c}
+              value={loanVersionLocal.Taxes_Paid_at_Closing__c}
               variant="label-inline"
               placeholder="Select Option"
               options={taxesPaidPicklistVals.data.values}
               onchange={handleChange}
+              dropdown-alignment="auto"
               required
             ></lightning-combobox>
           </template>

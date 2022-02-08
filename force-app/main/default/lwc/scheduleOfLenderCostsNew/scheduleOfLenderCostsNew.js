@@ -242,9 +242,14 @@ export default class ScheduleOfLenderCostsNew extends LightningElement {
 
   totalSourcesCalc() {
     var TotalSources = null;
+    var Deposit_Amount = 0;
     if (this.deal.Current_Loan_Amount__c && this.deal.Deposit_Amount__c) {
       var Final_Loan_Amount = parseFloat(this.deal.Current_Loan_Amount__c);
-      var Deposit_Amount = parseFloat(this.deal.Deposit_Amount__c);
+      if (this.deal.Deposit_Amount__c != null || this.deal.Deposit_Amount__c != 0) {
+        Deposit_Amount = parseFloat(this.deal.Deposit_Amount__c);
+      } else {
+        Deposit_Amount = 0;
+      }
       TotalSources = parseFloat(Final_Loan_Amount + Deposit_Amount).toFixed(2);
     }
 
@@ -259,8 +264,8 @@ export default class ScheduleOfLenderCostsNew extends LightningElement {
     let closingDate = new Date(this.deal.CloseDate);
 
     let fundingDate2 = new Date(
-      closingDate.getFullYear(),
-      closingDate.getMonth() + 1,
+      closingDate.getUTCFullYear(),
+      closingDate.getUTCMonth() + 1,
       0
     );
     fundingDate2 = fundingDate2.toISOString();
@@ -276,8 +281,9 @@ export default class ScheduleOfLenderCostsNew extends LightningElement {
 
     var date1 = new Date(fundingDate1);
     var date2 = new Date(fundingDate2);
-    var diffTime = Math.abs(date2 - date1 + 1);
-    stubInterestDayCount = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    var diffTime = Math.abs(date2.getUTCDate() - date1.getUTCDate() + 1);
+    stubInterestDayCount = diffTime;
+    // console.log(date2.getUTCDate() + ' - ' +  date1.getUTCDate());
     // console.log("stub interest day count");
     // console.log(stubInterestDayCount);
     return stubInterestDayCount;
@@ -299,18 +305,21 @@ export default class ScheduleOfLenderCostsNew extends LightningElement {
       );
     }
 
+    //Round(Interest Rate/360*Final Loan Amount*(Date difference of the last day of the closed date month - the Closed Date)
+
+
     let stubInterestDay = this.stubInterestDayCountCalc();
 
     if (stubInterestDay) {
       stubInterestDayCount = parseFloat(stubInterestDay).toFixed(2);
     }
     stubInterest = parseFloat(
-      (parseFloat(InterestRateTermSheet) *
+      parseFloat((InterestRateTermSheet) / 36000) *
         parseFloat(Final_Loan_Amount) *
-        parseFloat(stubInterestDayCount)) /
-        36000
+        parseFloat(stubInterestDayCount)
     ).toFixed(2);
-
+    
+    console.log(`Calculating as: (${InterestRateTermSheet}/36000)*${Final_Loan_Amount}*${stubInterestDayCount} = ${stubInterest}`);
     return stubInterest;
   }
 

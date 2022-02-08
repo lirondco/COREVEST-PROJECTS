@@ -1,0 +1,63 @@
+<template>
+  <c-modal title="New Item">
+    <div slot="body">
+      <template if:true={sectionId}>
+        <lightning-record-edit-form
+          object-api-name="Checklist_Item__c"
+          density="comfy"
+        >
+          <lightning-layout multiple-rows>
+            <lightning-layout-item size="12">
+              <template if:true={showDocumentTypes}>
+                <lightning-combobox
+                  label="Document Type"
+                  options={documentTypes}
+                  required
+                ></lightning-combobox>
+              </template>
+              <template if:false={showDocumentTypes}>
+                <lightning-input
+                  name="taskType"
+                  label="Task Type"
+                  required
+                ></lightning-input>
+              </template>
+            </lightning-layout-item>
+
+            <lightning-layout-item size="12">
+              <lightning-input-field
+                field-name="Name"
+                required
+              ></lightning-input-field>
+            </lightning-layout-item>
+
+            <lightning-layout-item size="12"
+              ><lightning-input-field
+                field-name="Status__c"
+              ></lightning-input-field>
+            </lightning-layout-item>
+            <lightning-layout-item size="12">
+              <lightning-input-field
+                field-name="Responsible_Party__c"
+              ></lightning-input-field>
+            </lightning-layout-item>
+            <lightning-layout-item size="12"
+              ><lightning-input-field
+                field-name="Comments__c"
+              ></lightning-input-field>
+            </lightning-layout-item>
+            <lightning-layout-item size="12">
+              <lightning-input-field
+                field-name="External_Comments__c"
+              ></lightning-input-field
+            ></lightning-layout-item>
+          </lightning-layout>
+        </lightning-record-edit-form>
+      </template>
+    </div>
+    <div slot="footer">
+      <lightning-button label="Close" onclick={close}></lightning-button>
+      <lightning-button label="Save" onclick={save}></lightning-button>
+    </div>
+  </c-modal>
+</template>

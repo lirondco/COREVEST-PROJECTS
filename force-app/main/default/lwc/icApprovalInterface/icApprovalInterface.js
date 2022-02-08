@@ -45,7 +45,7 @@ export default class IcApprovalInterface extends LightningElement {
   };
 
   handleChange = (evt) => {
-    const name = evt.target.getAttribute("data-name");
+    const name = evt.target.dataset.name;
     const data = { ...this.data };
     if (name === "user") {
       data.user.Email = evt.target.value;
@@ -62,7 +62,7 @@ export default class IcApprovalInterface extends LightningElement {
       toastEvent = {
         title: "Please select an attachment.",
         message:
-          "You cannot send an email without an attacment.",
+          "You cannot send an email without an attachment.",
         variant: "error"
       };
     } else if (!this.data.recipients) {
@@ -82,9 +82,12 @@ export default class IcApprovalInterface extends LightningElement {
               recEmails[i] + " is not a valid email address",
             variant: "error"
           };
+          break;
         }
       }
-    } else if (this.data.cc) {
+    }
+    
+    if (this.data.cc) {
       const recEmails = this.data.cc.split(";");
       for(let i = 0; i < recEmails.length; i++) {
         if(!recEmails[i].trim().match(mailformat)) {
@@ -94,6 +97,7 @@ export default class IcApprovalInterface extends LightningElement {
               recEmails[i] + " is not a valid email address",
             variant: "error"
           };
+          break;
         }
       }
     }
@@ -107,6 +111,7 @@ export default class IcApprovalInterface extends LightningElement {
       attachIds: JSON.stringify(this.selectedAttachments.map((a) => a.Id))
     });
     const { Error, Success } = await JSON.parse(res);
+    console.log(res);
     if (Error) {
       console.error(Error);
       this.errorMessage = Error;
@@ -117,8 +122,8 @@ export default class IcApprovalInterface extends LightningElement {
           "Your email for IC Approval has been succesfully sent.",
         variant: "success"
       });
-      this.dispatchEvent(event);
 
+      this.dispatchEvent(event);
       this.closeModal();
     }
   };

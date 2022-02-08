@@ -46,7 +46,7 @@
               Reviewed By
             </div>
           </th>
-          <template if:true={showAdditionalFields}>
+          <template if:true={recordedDocument}>
             <th class="" scope="col">
               <div class="slds-truncate" title="Recorded Date">
                 Recorded Date
@@ -148,7 +148,7 @@
                     value={document.Reviewed_By__r.Name}
                   ></lightning-formatted-text>
                 </td>
-                <template if:true={showAdditionalFields}>
+                <template if:true={recordedDocument}>
                   <td class={document.styleClass.Recorded_Date__c}>
                     <!-- Recorded Date -->
                     <!-- <lightning-formatted-date-time
@@ -259,7 +259,7 @@
                     value={document.Reviewed_By__r.Name}
                   ></lightning-formatted-text>
                 </td>
-                <template if:true={showAdditionalFields}>
+                <template if:true={recordedDocument}>
                   <td>
                     <input
                       type="date"

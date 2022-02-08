@@ -31,6 +31,9 @@
               <th class="" scope="col">
                 <div class="" title="Status">Status</div>
               </th>
+              <!-- <th class="" scope="col">
+                <div class="" title="Reviewed By">Added On</div>
+              </th> -->
               <th class="" scope="col">
                 <div class="" title="Reviewed By">Reviewed By</div>
               </th>
@@ -67,6 +70,9 @@
                   <td data-label="Account Name">
                     <div class="" title="Reviewed By">{document.Status__c}</div>
                   </td>
+                  <!-- <td data-label="Account Name">
+                    <div class="">{document.Added_On__c}</div>
+                  </td> -->
                   <td data-label="Account Name">
                     <div class="" title="Reviewed By">
                       <template if:true={document.Reviewed_By__c}>
