@@ -272,15 +272,15 @@ public without sharing class lightning_Controller {
         .subStringAfterLast('.') +
       '.salesforce.com'
     );
-    if (
+    if (res.get('endpoint').contains('full')) {
+      res.put('endpoint', 'https://cs215.salesforce.com');
+    } else if (
       res.get('endpoint').contains('colonyamericanfinance.salesforce') ||
       res.get('endpoint').contains('cvest.salesforce') ||
       res.get('endpoint').contains('corevest.salesforce')
     ) {
       res.put('endpoint', 'https://na54.salesforce.com');
-    } else if (res.get('endpoint').contains('full')) {
-      res.put('endpoint', 'https://cs215.salesforce.com');
-    }
+    } 
 
     return JSON.serialize(res);
   }
