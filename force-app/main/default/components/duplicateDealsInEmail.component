@@ -1,13 +1,25 @@
 <apex:component controller="DuplicateDealsEmailController" access="global">
   <apex:attribute name="deal" description="" type="Opportunity" />
   <apex:attribute type="Id" name="recordId" description="Record ID" assignTo="{!recId}" />
-  <apex:outputPanel rendered="{!hasDuplicates}" >
+  <apex:outputPanel rendered="{!hasDuplicates}">
     <br />
-    <p style="font-weight: bold;">Potential Duplicate Properties are in the following deal: <a href="{!baseUrl + deal.Id}">{!deal.Name}</a></p>
+    <p style="font-weight: bold;">Potential Duplicate Properties are in the following deal:
+      <a href="{!baseUrl + deal.Id}">{!deal.Name}</a>
+    </p>
     <p>Number of Potential Duplicate Properties: {!numDuplicates}</p>
     <ul>
       <apex:repeat value="{!properties}" var="p">
-        <li><a href="{!baseUrl + p.Id}">{!p.Name}</a> on Deal <a href="{!baseUrl + p.Deal__c}">{!p.Deal__r.Name}</a></li>
+        <li>
+          <span>
+            <a href="{!baseUrl + p.Id}">{!p.Name}</a> on Deal
+            <a href="{!baseUrl + p.Deal__c}">{!p.Deal__r.Name}</a>
+          </span>
+          <br />
+          <span>
+            &nbsp;Stage: {!p.Deal__r.StageName},
+            &nbsp;Originator: <a href="{!baseUrl + p.Deal__r.OwnerId}">{!p.Deal__r.Owner.Name}</a>
+          </span>
+        </li>
       </apex:repeat>
     </ul>
     <br />

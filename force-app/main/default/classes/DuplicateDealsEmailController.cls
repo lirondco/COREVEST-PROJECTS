@@ -10,6 +10,7 @@ public class DuplicateDealsEmailController {
     'Deal__r.StageName',
     'CreatedDate',
     'Deal__r.Owner.Name',
+    'Deal__r.OwnerId',
     'Deal__r.CloseDate',
     'Deal__r.CAF_Analyst__r.Name'
   };
