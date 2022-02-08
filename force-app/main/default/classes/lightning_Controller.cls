@@ -273,14 +273,12 @@ public without sharing class lightning_Controller {
       '.salesforce.com'
     );
     if (
-      res.get('endpoint') == 'https://colonyamericanfinance.salesforce.com/' ||
-      res.get('endpoint') == 'https://cvest.salesforce.com/' ||
-      res.get('endpoint') == 'https://corevest.salesforce.com/'
+      res.get('endpoint').contains('colonyamericanfinance.salesforce') ||
+      res.get('endpoint').contains('cvest.salesforce') ||
+      res.get('endpoint').contains('corevest.salesforce')
     ) {
       res.put('endpoint', 'https://na54.salesforce.com');
-    } else if (
-      res.get('endpoint').contains('full')
-    ) {
+    } else if (res.get('endpoint').contains('full')) {
       res.put('endpoint', 'https://cs215.salesforce.com');
     }
 
@@ -417,8 +415,8 @@ public without sharing class lightning_Controller {
     return objs;
   }
 
-    //CIP-2111 - Raj Sirivlu - 1/13/2022. Begin. Added new method getrecordList1 as a clone of getrecordList and changed how the ids are processed.
-     @AuraEnabled
+  //CIP-2111 - Raj Sirivlu - 1/13/2022. Begin. Added new method getrecordList1 as a clone of getrecordList and changed how the ids are processed.
+  @AuraEnabled
   public static List<sObject> getRecordListPropAdva(
     String parentId,
     String parentFieldName,
@@ -430,45 +428,42 @@ public without sharing class lightning_Controller {
     String orderBy,
     Boolean showAdvancesDocs
   ) {
-   
     if (sobjectType.equalsIgnoreCase('Property__c')) {
       fields.add('recordTypeId');
     }
-    
+
     String queryString = 'SELECT ';
-     
+
     for (String field : fields) {
       queryString += field + ', ';
     }
-      
+
     queryString = queryString.substringBeforeLast(',');
     queryString += ' FROM ' + sobjectType;
 
-    queryString += ' WHERE '; 
-   
-    if (showAdvancesDocs == True)
-    {
-    parentFieldName = 'Advance__c'; //Override parent field name
+    queryString += ' WHERE ';
 
-	//Get documents for all the advances for the property.
-      queryString += parentFieldName + ' IN (select Advance__c FROM Property_Advance__c  WHERE Property__c  = \'' + parentId + '\')';
+    if (showAdvancesDocs == true) {
+      parentFieldName = 'Advance__c'; //Override parent field name
+
+      //Get documents for all the advances for the property.
+      queryString +=
+        parentFieldName +
+        ' IN (select Advance__c FROM Property_Advance__c  WHERE Property__c  = \'' +
+        parentId +
+        '\')';
       if (String.isNotBlank(whereClause)) {
         queryString += ' AND ';
       }
-
-	}
-    else
-    {
-
-    if (String.isNotBlank(parentFieldName) && String.isNotBlank(parentId)) {
-      queryString += parentFieldName + ' = \'' + parentId + '\'';
-      if (String.isNotBlank(whereClause)) {
-        queryString += ' AND ';
+    } else {
+      if (String.isNotBlank(parentFieldName) && String.isNotBlank(parentId)) {
+        queryString += parentFieldName + ' = \'' + parentId + '\'';
+        if (String.isNotBlank(whereClause)) {
+          queryString += ' AND ';
+        }
       }
-    }   
-     
     }
-     
+
     if (String.isNotBlank(whereClause)) {
       queryString += whereClause;
     }
@@ -479,7 +474,7 @@ public without sharing class lightning_Controller {
       queryString += ' ORDER BY ' + sortCol + ' ' + sortDir;
     }
 
-    system.debug('RS queryString :' +queryString);
+    system.debug('RS queryString :' + queryString);
     List<sObject> objs = new List<sObject>();
     objs = database.query(queryString);
     // System.debug('Possible_Duplicate__c 111----->');
@@ -508,8 +503,8 @@ public without sharing class lightning_Controller {
 
     return objs;
   }
-    //CIP-2111 - Raj Sirivlu - 1/13/2022. End. Added new method getrecordList1 as a clone of getrecordList and changed how the ids are processed.
-    
+  //CIP-2111 - Raj Sirivlu - 1/13/2022. End. Added new method getrecordList1 as a clone of getrecordList and changed how the ids are processed.
+
   @AuraEnabled
   public static List<sobject> getRecords(
     String parentId,
@@ -578,7 +573,7 @@ public without sharing class lightning_Controller {
     if (String.isNotBlank(orderClause)) {
       queryString += ' ORDER BY ' + orderClause;
     }
-    system.debug('RS:' +queryString);
+    system.debug('RS:' + queryString);
     //queryString += ' LIMIT ' + maxRecords;
     //queryString += ' OFFSET ' + skipRecords;
 
@@ -1069,7 +1064,6 @@ resultsData.add(new propertyListWrapper(sobj, 'No', null, null));
           FROM Deal_Contacts__r
           WHERE Contact__c != NULL AND Entity_Type__c = 'Portal Access'
         )
-        
       FROM Opportunity
       WHERE Id = :recordId
     ]) {
@@ -1173,7 +1167,7 @@ resultsData.add(new propertyListWrapper(sobj, 'No', null, null));
 
   @AuraEnabled
   public static String getDocuments(
-    String recordId,  
+    String recordId,
     String userType,
     String accountId,
     String accountType
@@ -1202,7 +1196,7 @@ resultsData.add(new propertyListWrapper(sobj, 'No', null, null));
         recordId +
         '\' AND Attachment_Id__c != null AND ContentVersion_Id__c != null AND Borrower_Access__c = true AND Is_Viewable__c = true AND Is_Deleted__c = false ';
     }
-		
+
     List<Deal_Document__c> docs = (List<Deal_Document__c>) database.query(
       queryString
     );
@@ -1241,7 +1235,6 @@ resultsData.add(new propertyListWrapper(sobj, 'No', null, null));
 
     return JSON.serialize(docMap.values());
   }
-    
 
   //@AuraEnabled
   //public static List<sObject> getOpportunities(Id accountId){
