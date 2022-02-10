@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Prevent_Lost_Deal_From_Being_Reopened</fullName>
+    <active>false</active>
+    <description>This will prevent Users from updating the Stage of a Deal that is Rejected or Withdrawn</description>
+    <errorConditionFormula>AND(
+ NOT ( $Profile.Name= &quot;System Administrator&quot;),
+ NOT ( $Profile.Name= &quot;Integration&quot;),
+ ISCHANGED( StageName ),
+  PRIORVALUE( StageName ) = &apos;Withdrawn&apos;,
+  PRIORVALUE( StageName ) = &apos;Rejected&apos;
+ 
+)</errorConditionFormula>
+    <errorMessage>A Withdrawn or Rejected Deal cannot be re-opened.  If you would like have the Deal re-opened by the IT Team, please email the request to support@cvest.com.  Approval may need to be requested from management and the head of Originations</errorMessage>
+</ValidationRule>

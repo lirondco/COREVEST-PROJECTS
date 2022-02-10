@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Folder__c</fullName>
+    <externalId>false</externalId>
+    <label>Folder</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Parent_Object__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Loan Documents</fullName>
+                <default>false</default>
+                <label>Loan Documents</label>
+            </value>
+            <value>
+                <fullName>Assignments &amp; Allonges</fullName>
+                <default>false</default>
+                <label>Assignments &amp; Allonges</label>
+            </value>
+            <value>
+                <fullName>Borrower Underwriting</fullName>
+                <default>false</default>
+                <label>Borrower Underwriting</label>
+            </value>
+            <value>
+                <fullName>Asset Underwriting</fullName>
+                <default>false</default>
+                <label>Asset Underwriting</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Trade__c</controllingFieldValue>
+            <controllingFieldValue>Trade_Deal__c</controllingFieldValue>
+            <valueName>Loan Documents</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Trade__c</controllingFieldValue>
+            <controllingFieldValue>Trade_Deal__c</controllingFieldValue>
+            <valueName>Assignments &amp; Allonges</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Trade__c</controllingFieldValue>
+            <controllingFieldValue>Trade_Deal__c</controllingFieldValue>
+            <valueName>Borrower Underwriting</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Trade__c</controllingFieldValue>
+            <controllingFieldValue>Trade_Deal__c</controllingFieldValue>
+            <valueName>Asset Underwriting</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

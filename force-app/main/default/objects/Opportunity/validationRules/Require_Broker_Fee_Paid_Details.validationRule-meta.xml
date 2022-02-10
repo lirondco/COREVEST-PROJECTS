@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Require_Broker_Fee_Paid_Details</fullName>
+    <active>false</active>
+    <description>This requires that Users fill in the Broker Fee Paid When and Broker Fee Paid by Whom fields when there is a Broker Fee</description>
+    <errorConditionFormula>AND(
+ ISCHANGED( Broker_Fees__c ) ,
+ Broker_Fees__c  &gt; 0,
+ OR(
+  ISPICKVAL( Broker_Fee_Paid_By_Whom__c , &quot;N/A&quot;),
+  ISPICKVAL( Broker_Fee_Paid_When__c , &quot;N/A&quot;)
+ )
+)</errorConditionFormula>
+    <errorDisplayField>Broker_Fee_Paid_By_Whom__c</errorDisplayField>
+    <errorMessage>Broker Fee Paid by Whom and Broker Fee Paid When must be entered and not &quot;N/A&quot; when there is a Broker Fee</errorMessage>
+</ValidationRule>

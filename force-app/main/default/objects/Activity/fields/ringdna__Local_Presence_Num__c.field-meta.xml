@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ringdna__Local_Presence_Num__c</fullName>
+    <deprecated>false</deprecated>
+    <externalId>false</externalId>
+    <inlineHelpText>This is the Local Presence number that was used to place the outbound call</inlineHelpText>
+    <label>Local Presence #</label>
+    <required>false</required>
+    <type>Phone</type>
+</CustomField>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ringdna__Call_Disposition__c</fullName>
+    <deprecated>false</deprecated>
+    <description>This describes the outcome of a call</description>
+    <externalId>false</externalId>
+    <label>Call Disposition</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Contacted</fullName>
+                <default>false</default>
+                <label>Contacted</label>
+            </value>
+            <value>
+                <fullName>Left Voicemail</fullName>
+                <default>false</default>
+                <label>Left Voicemail</label>
+            </value>
+            <value>
+                <fullName>CAF Internal</fullName>
+                <default>false</default>
+                <label>CAF Internal</label>
+            </value>
+            <value>
+                <fullName>DO NOT CALL</fullName>
+                <default>false</default>
+                <label>DO NOT CALL</label>
+            </value>
+            <value>
+                <fullName>Set Appointment</fullName>
+                <default>false</default>
+                <label>Set Appointment</label>
+            </value>
+            <value>
+                <fullName>Wrong Number</fullName>
+                <default>false</default>
+                <label>Wrong Number</label>
+            </value>
+            <value>
+                <fullName>PC1ST</fullName>
+                <default>false</default>
+                <label>PC1ST</label>
+            </value>
+            <value>
+                <fullName>PC2ST</fullName>
+                <default>false</default>
+                <label>PC2ST</label>
+            </value>
+            <value>
+                <fullName>PC3ST</fullName>
+                <default>false</default>
+                <label>PC3ST</label>
+            </value>
+            <value>
+                <fullName>EM1ST</fullName>
+                <default>false</default>
+                <label>EM1ST</label>
+            </value>
+            <value>
+                <fullName>EM2ST</fullName>
+                <default>false</default>
+                <label>EM2ST</label>
+            </value>
+            <value>
+                <fullName>EM3ST</fullName>
+                <default>false</default>
+                <label>EM3ST</label>
+            </value>
+            <value>
+                <fullName>SPAM</fullName>
+                <default>false</default>
+                <label>SPAM</label>
+            </value>
+            <value>
+                <fullName>Dial Hang Up</fullName>
+                <default>false</default>
+                <label>Dial Hang Up</label>
+            </value>
+            <value>
+                <fullName>Missed Call</fullName>
+                <default>false</default>
+                <label>Missed Call</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

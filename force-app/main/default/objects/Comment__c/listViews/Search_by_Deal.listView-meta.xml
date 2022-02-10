@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Search_by_Deal</fullName>
+    <columns>NAME</columns>
+    <columns>Subject__c</columns>
+    <columns>Comment__c</columns>
+    <columns>Body__c</columns>
+    <columns>CREATED_DATE</columns>
+    <columns>Deal__c</columns>
+    <columns>OBJECT_ID</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Deal__c</field>
+        <operation>equals</operation>
+        <value>Broker Term loan</value>
+    </filters>
+    <label>Search by Deal</label>
+</ListView>

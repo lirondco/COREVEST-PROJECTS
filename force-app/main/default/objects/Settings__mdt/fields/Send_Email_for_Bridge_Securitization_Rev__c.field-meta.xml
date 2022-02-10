@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Send_Email_for_Bridge_Securitization_Rev__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Enable the email alert to the addresses listed below when a Deal is added to a RTL Warehouse Line</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>Enable the email alert to the addresses listed below when a Deal is added to a RTL Warehouse Line</inlineHelpText>
+    <label>Send Email for Bridge Securitization Rev</label>
+    <type>Checkbox</type>
+</CustomField>

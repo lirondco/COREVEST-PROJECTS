@@ -1,4 +1,4 @@
-public class opportunity_Helper {
+public without sharing class opportunity_Helper {
   public static boolean isRecursive = false;
   public static boolean hasBeforeUpdateRun = false;
   public static boolean hasAfterUpdateRun = false;
@@ -1289,7 +1289,7 @@ public class opportunity_Helper {
    * @description
    * @param
    **/
-  public static void afterUpdate(
+public static void afterUpdate(
     Map<Id, Opportunity> newMap,
     Map<Id, Opportunity> oldMap
   ) {
@@ -1376,14 +1376,12 @@ public class opportunity_Helper {
         dealsWithSecsToExclude.add(o.Id);
       }
 
+      System.debug('SECURITIZATIONS: ' + o.Securitization__c + ' OLD: ' + oldMap.get(o.Id).Securitization__c);
       if (
         o.Securitization__c != null &&
         oldMap.get(o.Id).Securitization__c != o.Securitization__c
       ) {
         dealsWithSec.add(o);
-
-        
-
         if (String.isNotEmpty(oldMap.get(o.Id).Warehouse_Line__c)) {
           updatedWarehouseLines.put(o.Id, oldMap.get(o.Id).Warehouse_Line__c);
         }
@@ -1752,6 +1750,11 @@ public class opportunity_Helper {
         );
       }
     }
+      
+    if (updatedLineItems.size() > 0) {      
+      Database.update(updatedLineItems, false);
+      updatedLineItems = new List<OpportunityLineItem>();
+    }
 
     if (securitizationsToExclude.size() > 0) {
       excludeSecuritizations(securitizationsToExclude,dealsWithSecsToExclude);
@@ -1767,8 +1770,8 @@ public class opportunity_Helper {
       );
     }
 
-    if (updatedLineItems.size() > 0) {
-      update updatedLineItems;
+    if (updatedLineItems.size() > 0) {      
+      Database.update(updatedLineItems, false);
     }
 
     if (approvedIcDeals.size() > 0) {
@@ -2606,7 +2609,7 @@ public class opportunity_Helper {
         FROM Opportunity
         WHERE
           Id IN :oppMap.keySet()
-          AND RecordType__c = 'Term Loan'
+          AND RecordType__c = 'Term'
           AND Id NOT IN (
             SELECT Deal__c
             FROM Deal_Contact__c
@@ -2769,9 +2772,34 @@ public class opportunity_Helper {
     }
   }
 
+  public static void createApprovalHistory(Map<Id, Opportunity> dealMap) {
+    List<Approval_History__c> ahcs = new List<Approval_History__c>();
+
+    for(Id i : dealMap.keySet()) {
+      ahcs.add(new Approval_History__c(
+        Parent_Status__c = 'Rejected',
+        Deal__c = i,
+        Name = 'Approval Request: ' + dealMap.get(i).Name.left(50),
+        ProcessName__c = 'Automatic IC Rejection',
+        Actor__c = UserInfo.getUserId(),
+        Approver__c = UserInfo.getName(),
+        Date_Acted__c = System.now(),
+        Status__c = 'Rejected',
+        Status_Text__c = 'Rejected',
+        Approval_Type__c = 'IC Approval',
+        Tracking_Status__c = 'Committee',
+        Deal_Stage_At_Time_of_Submission__c = 'Approved by Committee',
+        Comments__c = 'Approval was reversed due to an increase in Max LTV% and/or Current Loan Amount.'
+      ));
+    }
+
+    insert ahcs;
+  }
+
   public static void emailReversedIcApprovalAlert(
     Map<Id, Opportunity> dealMap
   ) {
+    createApprovalHistory(dealMap);
     List<EmailServicesAddress> esas = [
       SELECT Id, LocalPart, EmailDomainName, DeveloperName
       FROM EmailServicesAddress
@@ -3096,6 +3124,8 @@ public class opportunity_Helper {
         SELECT Deal__c
         FROM Loan_Status__c
         WHERE Deal__c IN :dealMap.keySet()
+        AND CreatedById = :UserInfo.getUserId()
+        AND CreatedDate > :Datetime.now().addMinutes(-30)
       )
     ];
 

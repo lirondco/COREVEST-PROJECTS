@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ringdna__Automated_Voicemail__c</fullName>
+    <defaultValue>false</defaultValue>
+    <deprecated>false</deprecated>
+    <externalId>false</externalId>
+    <inlineHelpText>If checked this indicates that an Automated Voicemail was left during the outbound call</inlineHelpText>
+    <label>Automated Voicemail?</label>
+    <type>Checkbox</type>
+</CustomField>

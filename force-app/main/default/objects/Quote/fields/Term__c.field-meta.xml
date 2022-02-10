@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Term__c</fullName>
+    <description>Term Loan Type from the Deal Record.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Term Loan Type from the Deal Record.</inlineHelpText>
+    <label>Term</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>5 Year</fullName>
+                <default>false</default>
+                <label>5 Year</label>
+            </value>
+            <value>
+                <fullName>7 Year</fullName>
+                <default>false</default>
+                <label>7 Year</label>
+            </value>
+            <value>
+                <fullName>10 Year</fullName>
+                <default>false</default>
+                <label>10 Year</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

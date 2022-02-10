@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Covenant_Milestones__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Is checked when covenant has a milestone value in the milestone picklist of the covenant record.</description>
+    <externalId>false</externalId>
+    <label>Covenant Milestones</label>
+    <type>Checkbox</type>
+</CustomField>

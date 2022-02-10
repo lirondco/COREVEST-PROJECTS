@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Is_Undewriter__c</fullName>
+    <description>This will equal true if the Underwriter if the same person as current User</description>
+    <externalId>false</externalId>
+    <formula>$User.Id = Underwriter__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>This will equal true if the Underwriter if the same person as current User</inlineHelpText>
+    <label>Is Undewriter</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

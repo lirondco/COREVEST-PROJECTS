@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LOC_Property_Status_Pending_Required</fullName>
+    <active>true</active>
+    <description>Requires properties on a LOC deal in due diligence status to go to pending status before closing status (cannot skip pending status)</description>
+    <errorConditionFormula>AND(
+ ISPICKVAL(Deal__r.LOC_Loan_Type__c,&quot;Credit Line&quot;),
+ ISPICKVAL(Status__c,&quot;Closing&quot;),
+ ISPICKVAL(PRIORVALUE(Status__c),&quot;Due Diligence&quot;)
+)</errorConditionFormula>
+    <errorDisplayField>Status__c</errorDisplayField>
+    <errorMessage>Property Status cannot jump from  Due Diligence to Closing. Please update property Status to Pending before using Closing.</errorMessage>
+</ValidationRule>

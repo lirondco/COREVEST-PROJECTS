@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Type__c</fullName>
+    <externalId>false</externalId>
+    <label>Type</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Folder__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Loan Agreement</fullName>
+                <default>false</default>
+                <label>Loan Agreement</label>
+            </value>
+            <value>
+                <fullName>Promissory Note</fullName>
+                <default>false</default>
+                <label>Promissory Note</label>
+            </value>
+            <value>
+                <fullName>Guaranty</fullName>
+                <default>false</default>
+                <label>Guaranty</label>
+            </value>
+            <value>
+                <fullName>Holdback Agreement</fullName>
+                <default>false</default>
+                <label>Holdback Agreement</label>
+            </value>
+            <value>
+                <fullName>Security Instrument</fullName>
+                <default>false</default>
+                <label>Security Instrument</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+            <value>
+                <fullName>Allonge</fullName>
+                <default>false</default>
+                <label>Allonge</label>
+            </value>
+            <value>
+                <fullName>Omnibus Assignment</fullName>
+                <default>false</default>
+                <label>Omnibus Assignment</label>
+            </value>
+            <value>
+                <fullName>Assignment of Security Instrument</fullName>
+                <default>false</default>
+                <label>Assignment of Security Instrument</label>
+            </value>
+            <value>
+                <fullName>Credit &amp; Background</fullName>
+                <default>false</default>
+                <label>Credit &amp; Background</label>
+            </value>
+            <value>
+                <fullName>Bank Statements</fullName>
+                <default>false</default>
+                <label>Bank Statements</label>
+            </value>
+            <value>
+                <fullName>ID</fullName>
+                <default>false</default>
+                <label>ID</label>
+            </value>
+            <value>
+                <fullName>Track Record</fullName>
+                <default>false</default>
+                <label>Track Record</label>
+            </value>
+            <value>
+                <fullName>Application</fullName>
+                <default>false</default>
+                <label>Application</label>
+            </value>
+            <value>
+                <fullName>Appraisal</fullName>
+                <default>false</default>
+                <label>Appraisal</label>
+            </value>
+            <value>
+                <fullName>Rehab Scope of Work</fullName>
+                <default>false</default>
+                <label>Rehab Scope of Work</label>
+            </value>
+            <value>
+                <fullName>Title Commitment</fullName>
+                <default>false</default>
+                <label>Title Commitment</label>
+            </value>
+            <value>
+                <fullName>Title Policy</fullName>
+                <default>false</default>
+                <label>Title Policy</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Loan Documents</controllingFieldValue>
+            <valueName>Loan Agreement</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Loan Documents</controllingFieldValue>
+            <valueName>Promissory Note</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Loan Documents</controllingFieldValue>
+            <valueName>Guaranty</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Loan Documents</controllingFieldValue>
+            <valueName>Holdback Agreement</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Loan Documents</controllingFieldValue>
+            <valueName>Security Instrument</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Loan Documents</controllingFieldValue>
+            <controllingFieldValue>Assignments &amp; Allonges</controllingFieldValue>
+            <controllingFieldValue>Borrower Underwriting</controllingFieldValue>
+            <controllingFieldValue>Asset Underwriting</controllingFieldValue>
+            <valueName>Other</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Assignments &amp; Allonges</controllingFieldValue>
+            <valueName>Allonge</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Assignments &amp; Allonges</controllingFieldValue>
+            <valueName>Omnibus Assignment</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Assignments &amp; Allonges</controllingFieldValue>
+            <valueName>Assignment of Security Instrument</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Borrower Underwriting</controllingFieldValue>
+            <valueName>Credit &amp; Background</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Borrower Underwriting</controllingFieldValue>
+            <valueName>Bank Statements</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Borrower Underwriting</controllingFieldValue>
+            <valueName>ID</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Borrower Underwriting</controllingFieldValue>
+            <valueName>Track Record</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Borrower Underwriting</controllingFieldValue>
+            <valueName>Application</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Asset Underwriting</controllingFieldValue>
+            <valueName>Appraisal</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Asset Underwriting</controllingFieldValue>
+            <valueName>Rehab Scope of Work</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Asset Underwriting</controllingFieldValue>
+            <valueName>Title Commitment</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Asset Underwriting</controllingFieldValue>
+            <valueName>Title Policy</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

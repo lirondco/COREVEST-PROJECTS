@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Interest_Rate__c</fullName>
+    <description>Indicative Rate from the Deal Record.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Indicative Rate from the Deal Record.</inlineHelpText>
+    <label>Interest Rate</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Percent</type>
+</CustomField>

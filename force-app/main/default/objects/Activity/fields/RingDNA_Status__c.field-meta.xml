@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RingDNA_Status__c</fullName>
+    <description>This custom field helps bucket calls as voicemail, abandoned, or answered.</description>
+    <externalId>false</externalId>
+    <formula>If(ringdna__Voicemail__c = True, &quot;Voicemail&quot;, 
+If(ringdna__Abandoned_Call__c = True, &quot;Abandoned&quot;, 
+IF(AND(ringdna__Abandoned_Call__c = False,ringdna__Voicemail__c = False), &quot;Answered&quot;, &quot;other&quot;)))</formula>
+    <label>RingDNA Status</label>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

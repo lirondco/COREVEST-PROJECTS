@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>In_Process_of_Withdrawn_or_Rejected__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>This field is to identify if the Deal will go to Withdrawn or Rejected Stage</description>
+    <externalId>false</externalId>
+    <inlineHelpText>If Deal is in UW Hold Stage and will go to Withdrawn or Rejected then populate the checkbox</inlineHelpText>
+    <label>In Process of Withdrawn or Rejected</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

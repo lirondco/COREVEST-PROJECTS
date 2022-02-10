@@ -2624,6 +2624,7 @@ public with sharing class opportunity_Tests {
     topp1.Final_Loan_Amount__c = 2000000;
     topp1.StageName = 'Closed Won';
     topp1.Servicer_Name__c = 'Midland';
+    topp1.Servicer_Commitment_Id__c = '12345';
     topp1.First_Payment_Date__c = System.today() + 30;
     topp1.Last_Payment_Date__c = System.today() + 30;
     topp1.Delinquent_30_Days__c = 1;
@@ -2637,6 +2638,11 @@ public with sharing class opportunity_Tests {
     topp1.T_I__c = 3333;
     topp1.Servicer_Status__c = 'Active';
     topp1.Servicer_Provided_Portfolio_Name__c = 'CAF 2020';
+    update topp1;
+
+    topp1.Servicer_Name__c = 'Midland1';
+    topp1.Servicer_Commitment_Id__c = '123455';
+
     update topp1;
     Test.stopTest();
   }
@@ -3524,6 +3530,7 @@ public with sharing class opportunity_Tests {
     sab.Co_Originator__c = origU3.Id;
     sab.Term_Sheet_Issued__c = System.today();
     sab.CloseDate = Date.newInstance(2014, 4, 17);
+    sab.Broker_Fees__c = 1;
     insert sab;
 
     Test.stopTest();
@@ -3788,6 +3795,9 @@ public with sharing class opportunity_Tests {
 
     opp.StageName = 'Withdrawn';
     opp.Deal_Lost_Reason__c = 'Background';
+    opp.Broker_Fees__c = 1;
+    opp.Broker_Fee_Paid_When__c = 'Origination';
+    opp.Broker_Fee_Paid_By_Whom__c = 'Escrow';
     update opp;
 
     opp.RecordTypeId = [
@@ -3941,6 +3951,8 @@ public with sharing class opportunity_Tests {
 
     Account acc = [SELECT Id FROM Account ORDER BY CreatedDate DESC LIMIT 1];
     Contact cont = [SELECT Id FROM Contact ORDER BY CreatedDate DESC LIMIT 1];
+    cont.AccountId = acc.Id;
+    update cont;
 
     Opportunity opp = new Opportunity();
     opp.Name = 'test';
@@ -3975,12 +3987,16 @@ public with sharing class opportunity_Tests {
       Document_Loaded__c = true,
       Is_Deleted__c = false
     );
+
+
     insert doc;
 
     Document_Information__c docInfo = new Document_Information__c(
       Deal__c = opp.Id,
       Doc_String__c = 'Loan Document;Title Policies|Miscellaneous'
     );
+
+    Test.startTest();
     insert docInfo;
 
     Opportunity opp2 = new Opportunity();
@@ -4007,7 +4023,6 @@ public with sharing class opportunity_Tests {
     opp2.GLC_Approved__c = false;
     opp2.Background_Check_Completed__c = false;
 
-    Test.startTest();
     update opp2;
 
 
@@ -4036,7 +4051,6 @@ public with sharing class opportunity_Tests {
     opp.Term_Loan_Type__c = '10 Year';
     opp.YM_Prepayment_Penalty__c = '114 Months';
     update opp;
-
 
     List<String> docIds = new List<String>();
     docIds.add(doc.id);
@@ -4094,5 +4108,86 @@ public with sharing class opportunity_Tests {
     opp.GLC_Approved__c = true;
     opp.Background_Check_Completed__c = true;
     insert opp;
+  }
+    
+  @isTest
+  public static void securitizationDealTest() {
+    Account testAcc = [SELECT Id FROM Account WHERE Name ='Test Helper Account'];
+    Contact testCtc = [SELECT Id FROM Contact WHERE AccountId = :testAcc.Id];
+    Opportunity testDeal = Test_Helper.createTermDeal(testAcc, testCtc);
+
+    Securitization__c testSc = Test_Helper.createSecuritization();
+    testDeal.Securitized__c =false;
+    testDeal.Securitization__c = null;
+    Map<Id, Opportunity> oldTestMap = new Map<Id, Opportunity>{testDeal.Id => testDeal};
+
+    Opportunity newTestDeal = testDeal.clone(true, true, true, true);
+    newTestDeal.Securitization__c = testSc.Id;
+    newTestDeal.Securitized__c = true;
+
+    Map<Id, Opportunity> newTestMap = new Map<Id, Opportunity>{newTestDeal.Id => newTestDeal};
+    
+
+
+    opportunity_Helper.beforeUpdate(newTestMap, oldTestMap);
+    opportunity_Helper.afterUpdate(newTestMap, oldTestMap);
+
+    update newTestDeal;
+
+    Securitization__c testSc2 = testSc.clone(false, true, false, false);
+    testSc2.Name = 'Test 2';
+    insert testSc2;
+
+    oldTestMap.put(newTestDeal.Id, newTestDeal);
+    Opportunity newerTestDeal = newTestDeal.clone(true,true,true,true);
+    newerTestDeal.Securitization__c = testSc2.Id;
+    newTestMap.put(newerTestDeal.Id, newerTestDeal);
+
+    opportunity_Helper.beforeUpdate(newTestMap, oldTestMap);
+    opportunity_Helper.afterUpdate(newTestMap, oldTestMap);
+    update newerTestDeal;
+    
+  }
+
+  @isTest
+  public static void fundingVehiclesTests() {
+    Account testAcc = [SELECT Id FROM Account WHERE Name ='Test Helper Account'];
+    Contact testCtc = [SELECT Id FROM Contact WHERE AccountId = :testAcc.Id];
+    Opportunity testDeal = Test_Helper.createTermDeal(testAcc, testCtc);
+
+    Funding_Vehicle__c testFv = Test_Helper.createFundingVehicle(false, null);
+
+    testDeal.Warehouse_Line__c = null;
+    Map<Id, Opportunity> oldTestMap = new Map<Id, Opportunity>{testDeal.Id => testDeal};
+
+    Opportunity newTestDeal = testDeal.clone(true, true, true, true);
+    newTestDeal.Warehouse_Line__c = 'Churchill';
+    Map<Id, Opportunity> newTestMap = new Map<Id, Opportunity>{newTestDeal.Id => newTestDeal};
+
+    opportunity_Helper.beforeUpdate(newTestMap, oldTestMap);
+    opportunity_Helper.afterUpdate(newTestMap, oldTestMap);
+
+    update newTestDeal;
+
+    Securitization__c testSc2 = Test_Helper.createSecuritization();
+
+    Funding_Vehicle__c testFv2 = [
+      SELECT Id,Securitization__c
+      FROM Funding_Vehicle__c
+      WHERE Securitization__c = :testSc2.Id
+    ];
+    
+    oldTestMap.put(newTestDeal.Id, newTestDeal);
+    Opportunity newerTestDeal = newTestDeal.clone(true, true, true, true);
+
+    newerTestDeal.Securitized__c = true;
+    newerTestDeal.Securitization__c = testSc2.Id;
+    newTestMap.put(newerTestDeal.Id, newerTestDeal);
+
+    opportunity_Helper.beforeUpdate(newTestMap, oldTestMap);
+    opportunity_Helper.afterUpdate(newTestMap, oldTestMap);
+
+    update newerTestDeal;
+
   }
 }

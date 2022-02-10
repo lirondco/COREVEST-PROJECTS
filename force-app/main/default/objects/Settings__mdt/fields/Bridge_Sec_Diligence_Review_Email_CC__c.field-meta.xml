@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Bridge_Sec_Diligence_Review_Email_CC__c</fullName>
+    <description>These are the CC: email addresses for when a Deal is added to an RTL Warehouse Line</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>These are the CC: email addresses for when a Deal is added to an RTL Warehouse Line</inlineHelpText>
+    <label>Bridge Sec Diligence Review Email CC</label>
+    <required>false</required>
+    <type>TextArea</type>
+</CustomField>

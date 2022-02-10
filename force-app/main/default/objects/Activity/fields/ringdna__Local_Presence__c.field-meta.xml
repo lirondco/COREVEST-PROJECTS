@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ringdna__Local_Presence__c</fullName>
+    <defaultValue>false</defaultValue>
+    <deprecated>false</deprecated>
+    <externalId>false</externalId>
+    <inlineHelpText>If checked this indicates that Local Presence was used to make the outbound call</inlineHelpText>
+    <label>Local Presence?</label>
+    <type>Checkbox</type>
+</CustomField>

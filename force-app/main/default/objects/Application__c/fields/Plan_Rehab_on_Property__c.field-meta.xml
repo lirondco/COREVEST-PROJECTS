@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Plan_Rehab_on_Property__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Indicates if the Borrower intends on doing rehab on the Property</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Indicates if the Borrower intends on doing rehab on the Property</inlineHelpText>
+    <label>Plan Rehab on Property</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

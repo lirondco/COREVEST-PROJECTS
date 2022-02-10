@@ -434,21 +434,28 @@ public with sharing class Test_Helper {
   public static Securitization__c createSecuritization() {
     Securitization__c sec = new Securitization__c();
     sec.Name = 'Test';
+    sec.Close_Date__c = System.today();
     insert sec;
     return sec;
   }
 
-  public static Funding_Vehicle__c createFundingVehicle(Boolean isSecuritization, Securitization__c sec) {
+  public static Funding_Vehicle__c createFundingVehicle(
+    Boolean isSecuritization,
+    Securitization__c sec
+  ) {
     Funding_Vehicle__c fv = new Funding_Vehicle__c();
-    fv.Name = 'Test';
-    fv.Funding_Vehicle_Type__c = isSecuritization ? 'Securitization' : 'Warehouse Line';
+    fv.Name = isSecuritization ? 'Test' : 'Churchill';
+    fv.Funding_Vehicle_Type__c = isSecuritization
+      ? 'Securitization'
+      : 'Warehouse Line';
     fv.Securitization__c = isSecuritization ? sec.Id : null;
     String devName = isSecuritization ? 'Securitization' : 'Warehouse_Line';
     fv.RecordTypeId = [
       SELECT Id
       FROM RecordType
       WHERE sobjecttype = 'Funding_Vehicle__c' AND DeveloperName = :devName
-    ].Id;
+    ]
+    .Id;
     insert fv;
     return fv;
   }
@@ -598,5 +605,22 @@ public with sharing class Test_Helper {
 
     insert settings;
     return settings;
+  }
+
+  public static User createBridgeOperationsUser() {
+    User u = new User(
+      Alias = 'clos',
+      Email = 'standarduser@testorg.com',
+      EmailEncodingKey = 'UTF-8',
+      LastName = 'Testing',
+      LanguageLocaleKey = 'en_US',
+      LocaleSidKey = 'en_US',
+      ProfileId = [SELECT Id FROM Profile WHERE Name = 'Bridge Operations']
+      .Id,
+      TimeZoneSidKey = 'America/Los_Angeles',
+      UserName = 'closer2@teada22.com'
+    );
+    insert u;
+    return u;
   }
 }

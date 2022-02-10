@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Term_Deals_Closed_Won_LY</fullName>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>Current_Loan_Amount__c</columns>
+    <columns>Origination_Fee__c</columns>
+    <columns>Final_Loan_Amount__c</columns>
+    <columns>Final_Interest_Rate__c</columns>
+    <columns>OPPORTUNITY.CLOSE_DATE</columns>
+    <columns>YSP_perc__c</columns>
+    <columns>Broker_Fee_Paid_Date__c</columns>
+    <columns>Owner_Name__c</columns>
+    <columns>Underwriter__c</columns>
+    <columns>Closer__c</columns>
+    <columns>Third_Party_Title__c</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>Servicer_Commitment_Id__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>OPPORTUNITY.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Opportunity.Term_Loan</value>
+    </filters>
+    <filters>
+        <field>OPPORTUNITY.STAGE_NAME</field>
+        <operation>equals</operation>
+        <value>Closed Won</value>
+    </filters>
+    <filters>
+        <field>OPPORTUNITY.CLOSE_DATE</field>
+        <operation>lessThan</operation>
+        <value>1/1/2019</value>
+    </filters>
+    <label>Term Deals - Closed Won LY</label>
+</ListView>

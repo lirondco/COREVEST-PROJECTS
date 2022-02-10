@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NewQuote</fullName>
+    <active>true</active>
+    <compactLayoutAssignment>Custom_Default</compactLayoutAssignment>
+    <description>Used to only Show Initial Input Fields</description>
+    <label>Enter Values</label>
+    <picklistValues>
+        <picklist>Amortization__c</picklist>
+        <values>
+            <fullName>0 months</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>120 months</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>180 months</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>240 months</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>300 months</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>360 months</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Prepayment_Penalty__c</picklist>
+        <values>
+            <fullName>114 Months</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>36 Months</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>48 Months</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>54 Months</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>78 Months</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>84 Months</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Step Down %2810%2C9%2C8%2C7%2C6%2C5%2C4%2C3%2C2%2C1%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Step Down %285%2C4%2C3%2C2%2C1%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Step Down %285%2C5%2C5%2C4%2C3%2C2%2C1%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Step Down %285%2C5%2C5%2C5%2C5%2C5%2C4%2C3%2C2%2C1%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Step Down %287%2C6%2C5%2C4%2C3%2C2%2C1%29</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Purpose__c</picklist>
+        <values>
+            <fullName>Purchase</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Refinance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Refinance%2FPurchase</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Recourse__c</picklist>
+        <values>
+            <fullName>Non-Recourse</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Recourse</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status</picklist>
+        <values>
+            <fullName>Accepted</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>In Review</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Rejected</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Term__c</picklist>
+        <values>
+            <fullName>10 Year</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>5 Year</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>7 Year</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>
