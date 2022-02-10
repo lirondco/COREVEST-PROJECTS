@@ -305,7 +305,7 @@ public without sharing class IcApprovalController {
       m.put('Subject', new List<Object>{ mail.getSubject() });
     }
     m.put('Recipients', new List<Object>{ EMAILSMAP.get(approvalType) });
-    List<String> ccList = new List<String>{};
+    Set<String> ccList = new Set<String>{};
     if (null != oRecordType && (oRecordType == 'Term_Loan' || oRecordType == 'LOC_Loan')) {
       ccList.addAll(CCMAP.get(approvalType));
     }
@@ -330,7 +330,9 @@ public without sharing class IcApprovalController {
       ccList.add(deal[0].Second_Production_Analyst__r.Email);
     }
 
-    m.put('CC',(List<Object>) ccList);
+    List<String> ccListFromSet = new List<String>();
+    ccListFromSet.addAll(ccList);
+    m.put('CC',(List<Object>) ccListFromSet);
 
 
 
