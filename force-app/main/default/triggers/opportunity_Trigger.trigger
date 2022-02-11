@@ -43,6 +43,7 @@ trigger opportunity_Trigger on Opportunity(
     ) {
       opportunity_Helper.hasAfterUpdateRun = true;
       opportunity_Helper.afterUpdate(Trigger.newMap, Trigger.oldMap);
+      ResoluteVendorAssignment.checkForRtl(Trigger.oldMap, Trigger.newMap);
       if (!settings.Disable_Post_Close_Trigger__c) {
         PostClosingHelper.createPostClosingItems(
           Trigger.newMap,

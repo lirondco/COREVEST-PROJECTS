@@ -5,6 +5,7 @@ global class dealEmailHandler implements Messaging.InboundEmailHandler {
   ) {
     String subject = email.Subject;
     String parsedSubject = subject.substringAfter('#');
+    parsedSubject = parsedSubject.replaceAll('_', ' ');
 
     while (parsedSubject.startsWith(' ')) {
       parsedSubject = parsedSubject.substringAfter(' ');
@@ -13,6 +14,10 @@ global class dealEmailHandler implements Messaging.InboundEmailHandler {
     String dealLoanNumber = parsedSubject.contains(' ')
       ? parsedSubject.substringBefore(' ')
       : parsedSubject;
+
+    if(dealLoanNumber.endsWith('-')) {
+      dealLoanNumber = dealLoanNumber.substringBeforeLast('-');
+    }
 
     System.debug(
       subject +
@@ -309,9 +314,9 @@ global class dealEmailHandler implements Messaging.InboundEmailHandler {
 
     email.setToAddresses(
       new List<String>{
-        'ldecastro@mkpartners.com',
         'logins+cvest@mkpartners.com',
-        'bryon.harland@cvest.com'
+        'bryon.harland@cvest.com',
+        'jonathan.lay@cvest.com'
       }
     );
 
