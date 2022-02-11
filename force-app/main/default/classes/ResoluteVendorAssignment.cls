@@ -58,7 +58,19 @@ public without sharing class ResoluteVendorAssignment {
     }
 
     if (rtlDeals.size() > 0) {
-      createRtlDealContacts(rtlDeals);
+      Savepoint sp = Database.setSavepoint();
+      
+      try { 
+        createRtlDealContacts(rtlDeals);
+      } catch (Exception err) {
+        if(!Test.isRunningTest()) {
+          Database.rollback(sp);
+        }
+        for(Opportunity o : rtlDeals.values()) {
+          o.addError(err.getMessage());
+        }
+      }
+
     }
   }
   public static void createRtlDealContacts(Map<Id, Opportunity> dealMap) {
@@ -95,6 +107,7 @@ public without sharing class ResoluteVendorAssignment {
       } catch (Exception err) {
         System.debug(err.getMessage() + ' on line # ' + err.getLineNumber());
         sendExceptionEmails(err, 'Error in ResoluteVendorAssignment');
+        throw err;
       }
     }
   }
@@ -190,7 +203,7 @@ public without sharing class ResoluteVendorAssignment {
           List<Messaging.SendEmailResult> results = Messaging.sendEmail(emailsToSend);
 
           if(Test.isRunningTest()) {
-            throw new ResVenException('Custom exception to trigger in test class');
+            throw new ResVenException('Custom exception to trigger in test class for test coverage');
           }
         } catch(Exception err) {
           throw err;

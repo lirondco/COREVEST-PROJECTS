@@ -22,7 +22,6 @@ public class advance_Helper {
     }
     return recordmap;
   }
-
   /**
    * @name beforeInsert
    * @description
@@ -32,7 +31,10 @@ public class advance_Helper {
   public static void beforeInsert(List<Advance__c> newList) {
     Map<Id, List<Advance__c>> advanceMap = new Map<Id, List<Advance__c>>();
     Map<Id, List<Advance__c>> interestReserveMap = new Map<Id, List<Advance__c>>();
+      System.Debug('RS999 - newList :' +newList);
+      System.Debug('RS999 - newList :' +newList);
     for (Integer i = 0; i < newList.size(); i++) {
+        System.Debug('RS999 - newList[i].RecordTypeId :' +newList[i].RecordTypeId);
       if (newList[i].RecordTypeId != RECORDTYPE_MAP.get('Interest Reserve')) {
         if (!advanceMap.containsKey(newList[i].Deal__c)) {
           advanceMap.put(newList[i].Deal__c, new List<Advance__c>());
@@ -140,8 +142,10 @@ public class advance_Helper {
             adv.name = 'IR-1';
           }
         }
+       SYSTEM.DEBUG('RS999 - adv' + adv);
       }
     }
+
   }
 
   /**
@@ -164,7 +168,7 @@ public class advance_Helper {
           // oli.Product2Id = '01t0a000005zHebAAE';
           oli.Quantity = 1;
           oli.UnitPrice = newList[i].Approved_Advance_Amount_Total__c;
-          oli.ServiceDate = system.today();
+          oli.ServiceDate = System.today();
           olisToInsert.add(oli);
         } else if (
           newList[i].Deal_RecordType__c == 'Single_Asset_Bridge_Loan'
@@ -177,32 +181,22 @@ public class advance_Helper {
           oli.UnitPrice = util.fixNull(
             newList[i].Approved_Advance_Amount_Total__c
           );
-          oli.ServiceDate = system.today();
+          oli.ServiceDate = System.today();
           olisToInsert.add(oli);
         } else if (
-          newList[i].Deal_RecordType__c == 'Acquired_SAB_Loan_Active'
+          newList[i].Deal_RecordType__c == 'Acquired_Bridge_Loan_Active' ||
+          newList[i].Deal_RecordType__c == 'Acquired_Bridge_Loan'
         ) {
           oli.OpportunityId = newList[i].Deal__c;
           oli.Advance__c = newList[i].Id;
-          oli.PricebookEntryId = '01u0a00000K75EFAAZ';
+          oli.PricebookEntryId = '01u5b00000L8lMiAAJ';
           // oli.Product2Id = '01t0a000005zHegAAE';
           oli.Quantity = 1;
           oli.UnitPrice = util.fixNull(
             newList[i].Approved_Advance_Amount_Total__c
           );
-          oli.ServiceDate = system.today();
+          oli.ServiceDate = System.today();
           olisToInsert.add(oli);
-        } else if (newList[i].Deal_RecordType__c == 'Acquired_Bridge_Loan') {
-          oli.OpportunityId = newList[i].Deal__c;
-          oli.Advance__c = newList[i].Id;
-          oli.PricebookEntryId = '01u78000000LkkUAAS';
-          // oli.Product2Id = '01t0a000005zHebAAE';
-          oli.Quantity = 1;
-          oli.UnitPrice = newList[i].Approved_Advance_Amount_Total__c;
-          oli.ServiceDate = system.today();
-          olisToInsert.add(oli);
-
-          
         }
       }
     }
@@ -422,6 +416,9 @@ public class advance_Helper {
 
     list<id> myAdvanceList = new List<id>();
 
+    //CIP-2149 - Raj Sirivolu. 1/20/2022.Begin.
+    Set<id> advanceProjUpdatesIds = new Set<id>();
+    //CIP-2149 - Raj Sirivolu. 1/20/2022.End.
     for (Integer i = 0; i < newList.size(); i++) {
       if (newList[i].RecordTypeId != RECORDTYPE_MAP.get('Interest Reserve')) {
         if (
@@ -438,11 +435,17 @@ public class advance_Helper {
           }
         }
 
-        if(oldList[i].Wire_Date__c != newList[i].Wire_Date__c && newList[i].Wire_Date__c != null) {
+        if (
+          oldList[i].Wire_Date__c != newList[i].Wire_Date__c &&
+          newList[i].Wire_Date__c != null
+        ) {
           updateBridgeProduct.add(newList[i].Id);
         }
 
-        if(oldList[i].Approved_Advance_Amount_Total__c != newList[i].Approved_Advance_Amount_Total__c) {
+        if (
+          oldList[i].Approved_Advance_Amount_Total__c !=
+          newList[i].Approved_Advance_Amount_Total__c
+        ) {
           updateBridgeProduct.add(newList[i].Id);
         }
 
@@ -480,6 +483,24 @@ public class advance_Helper {
         if (newList[i].Wire_Date__c != oldList[i].Wire_Date__c) {
           updateRollups.add(newList[i].Id);
         }
+
+        //CIP-2149 - Raj Sirivolu. 1/20/2022. Begin.
+        if (
+          newList[i].RecordTypeId ==
+          RECORDTYPE_MAP.get('Non Renovation Initial') ||
+          newList[i].RecordTypeId == RECORDTYPE_MAP.get('Renovation Initial')
+        ) {
+          if (
+            (newList[i].Target_Advance_Date__c !=
+            oldList[i].Target_Advance_Date__c &&
+            newList[i].Target_Advance_Date__c != null) ||
+            (newList[i].Underwriter__c != oldList[i].Underwriter__c &&
+            newList[i].Target_Advance_Date__c != null)
+          ) {
+            advanceProjUpdatesIds.add(newList[i].id);
+          }
+        }
+        //CIP-2149 - Raj Sirivolu. 1/20/2022. End.
       }
 
       //system.debug(wires);
@@ -508,8 +529,6 @@ public class advance_Helper {
       //   myAdvanceList.add(newList[i].id);
       // }
     }
-
-
 
     List<Wire__c> wires = new List<Wire__c>();
     for (Advance__c adv : [
@@ -581,30 +600,35 @@ public class advance_Helper {
       }
     }
 
-    if(updateBridgeProduct.size() > 0) {
+    if (updateBridgeProduct.size() > 0) {
       updateOppLineItems(updateBridgeProduct);
     }
 
     List<Property__c> properties = new List<Property__c>();
     Map<Id, Property_Advance__c> propertyMap = new Map<Id, Property_Advance__c>();
     Map<Id, Id> propertyMap2 = new Map<Id, Id>();
-    for (Property_Advance__c pAdv : [
-      SELECT
-        Id,
-        Property__c,
-        Advance__c,
-        Approved_Advance_Amount_Calc__c,
-        Advance__r.Wire_Date__c,
-        Property__r.Status__c,
-        Property__r.First_Funding_Date__c,
-        Property__r.Funding_Date__c,
-        Property__r.Approved_Advance_Amount__c,
-        Property__r.Approved_Advance_Amount_Remaining__c
-      FROM Property_Advance__c
-      WHERE
-        Advance__c IN :completedAdvanceIds
-        OR Advance__c IN :uncompletedAdvanceIds
-    ]) {
+    for (
+      Property_Advance__c pAdv : [
+        SELECT
+          Id,
+          Property__c,
+          Advance__c,
+          Advance__r.Target_Advance_Date__c, //CIP-2149 - Raj Sirivolu. 1/20/2022.
+          Advance__r.Underwriter__c, //CIP-2149 - Raj Sirivolu. 1/20/2022.
+          Approved_Advance_Amount_Calc__c,
+          Advance__r.Wire_Date__c,
+          Property__r.Status__c,
+          Property__r.First_Funding_Date__c,
+          Property__r.Funding_Date__c,
+          Property__r.Approved_Advance_Amount__c,
+          Property__r.Approved_Advance_Amount_Remaining__c
+        FROM Property_Advance__c
+        WHERE
+          Advance__c IN :completedAdvanceIds
+          OR Advance__c IN :uncompletedAdvanceIds
+          OR Advance__c IN :advanceProjUpdatesIds //CIP-2149 - Raj Sirivolu. 1/20/2022.
+      ]
+    ) {
       //propertyMap.put(p.Property__c, p);
 
       Property__c property = new Property__c(Id = pAdv.Property__c);
@@ -634,6 +658,16 @@ public class advance_Helper {
           property.First_Funding_Date__c = null;
         }
       }
+      //CIP-2149 - Raj Sirivolu. 1/20/2022. Begin.
+      if (advanceProjUpdatesIds.contains(pAdv.Advance__c)) {
+        if (pAdv.Advance__r.Target_Advance_Date__c != null) {
+          property.Requested_Funding_Date__c = pAdv.Advance__r.Target_Advance_Date__c;
+        }
+        if (pAdv.Advance__r.Underwriter__c != null) {
+          property.Underwriter__c = pAdv.Advance__r.Underwriter__c;
+        }
+      }
+      //CIP-2149 - Raj Sirivolu. 1/20/2022.End.
 
       properties.add(property);
     }
@@ -1258,17 +1292,22 @@ public class advance_Helper {
 
   public static void updateOppLineItems(Set<Id> updatedLineIds) {
     List<OpportunityLineItem> oliList = [
-      SELECT Id, Advance__r.Wire_Date__c, Advance__r.Approved_Advance_Amount_Total__c
+      SELECT
+        Id,
+        Advance__r.Wire_Date__c,
+        Advance__r.Approved_Advance_Amount_Total__c
       FROM OpportunityLineItem
       WHERE Advance__c IN :updatedLineIds
       // AND ProductCode LIKE 'bridge%'
     ];
-    
-    for(OpportunityLineItem oli : oliList) {
-      if(oli.Advance__r.Wire_Date__c != null) {
+
+    for (OpportunityLineItem oli : oliList) {
+      if (oli.Advance__r.Wire_Date__c != null) {
         oli.ServiceDate = oli.Advance__r.Wire_Date__c;
       }
-      oli.UnitPrice = oli.Advance__r.Approved_Advance_Amount_Total__c != null ? oli.Advance__r.Approved_Advance_Amount_Total__c : 0;
+      oli.UnitPrice = oli.Advance__r.Approved_Advance_Amount_Total__c != null
+        ? oli.Advance__r.Approved_Advance_Amount_Total__c
+        : 0;
     }
 
     update oliList;

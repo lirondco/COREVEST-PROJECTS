@@ -3,6 +3,7 @@ private class advance_Tests {
   //static List<Account> testAccounts = testDataFactory.createTestRecords(new Account[10]);
 
   static testMethod void advance_Tests_UnitTest() {
+    User u = test_Helper.createBridgeOperationsUser();
     Account acc = test_Helper.createAccount();
     Contact cont = test_Helper.createContact(acc);
     Opportunity opp = test_Helper.createOpportunity(acc, cont);
@@ -56,7 +57,11 @@ private class advance_Tests {
           Escrow_Company_text__c = 'ESCROW',
           Insurance_Company_text__c = 'INSURANCE',
           Status__c = 'Pending',
-          RecordTypeId = recordTypeId
+          Acquisition_Price__c = 600000,
+          RecordTypeId = recordTypeId,
+          Closer__c = u.Id,
+          Underwriter__c = u.Id,
+          Requested_Funding_Date__c = system.today() + 5
         )
       );
     }
@@ -287,7 +292,7 @@ private class advance_Tests {
     Test.stopTest();
   }
 
-  static testMethod void advance_Tests_UnitTest5() {
+   static testMethod void advance_Tests_UnitTest5() {
     //direct
 
     Account acc = test_Helper.createAccount();
@@ -335,6 +340,7 @@ private class advance_Tests {
     property.Insurance_Company_text__c = 'INSURANCE';
     property.Status__c = 'Pending';
     property.Override_Origination_Fee__c = 1000;
+    property.Acquisition_Price__c = 800000;
     property.RecordTypeId = [
       SELECT Id
       FROM RecordType
@@ -356,7 +362,7 @@ private class advance_Tests {
     );
     insert adv;
 
-    Property_Advance__c padv = new Property_Advance__c();
+   /*RS Property_Advance__c padv = new Property_Advance__c();
     padv.Property__c = property.Id;
     padv.Advance__c = adv.Id;
     padv.Advance_Fee__c = 1000;
@@ -364,7 +370,7 @@ private class advance_Tests {
     padv.Renovation_Reserve__c = 500000;
     padv.Origination_Fee__c = 1000;
 
-    insert padv;
+    insert padv;RS */
 
     Test.startTest();
     adv.Wire_Date__c = system.today();
@@ -378,7 +384,7 @@ private class advance_Tests {
     Test.stopTest();
   }
 
-  static testMethod void advance_Tests_UnitTest6() {
+ static testMethod void advance_Tests_UnitTest6() {
     //internal
     Account acc = test_Helper.createAccount();
     Contact cont = test_Helper.createContact(acc);
@@ -427,6 +433,7 @@ private class advance_Tests {
     property.Insurance_Company_text__c = 'INSURANCE';
     property.Status__c = 'Pending';
     property.Override_Origination_Fee__c = 1000;
+    property.Acquisition_Price__c = 800000;
     property.RecordTypeId = [
       SELECT Id
       FROM RecordType
@@ -448,7 +455,7 @@ private class advance_Tests {
     );
     insert adv;
 
-    Property_Advance__c padv = new Property_Advance__c();
+   /*RS Property_Advance__c padv = new Property_Advance__c();
     padv.Property__c = property.Id;
     padv.Advance__c = adv.Id;
     padv.Advance_Fee__c = 1000;
@@ -456,7 +463,7 @@ private class advance_Tests {
     padv.Renovation_Reserve__c = 500000;
     padv.Origination_Fee__c = 1000;
 
-    insert padv;
+    insert padv;RS*/
 
     Test.startTest();
     adv.Wire_Date__c = system.today();
@@ -470,8 +477,9 @@ private class advance_Tests {
     Test.stopTest();
   }
 
-  static testMethod void advance_Tests_UnitTest7() {
+ static testMethod void advance_Tests_UnitTest7() {
     //internal
+    User u = test_Helper.createBridgeOperationsUser();
     Account acc = test_Helper.createAccount();
     Contact cont = test_Helper.createContact(acc);
     Opportunity opp = test_Helper.createOpportunity(acc, cont);
@@ -518,6 +526,7 @@ private class advance_Tests {
     property.Insurance_Company_text__c = 'INSURANCE';
     property.Status__c = 'Closing';
     property.Override_Origination_Fee__c = 1000;
+    property.Acquisition_Price__c = 600000;
     property.RecordTypeId = [
       SELECT Id
       FROM RecordType
@@ -539,7 +548,7 @@ private class advance_Tests {
     );
     insert adv;
 
-    Property_Advance__c padv = new Property_Advance__c();
+    /*RS Property_Advance__c padv = new Property_Advance__c();
     padv.Property__c = property.Id;
     padv.Advance__c = adv.Id;
     padv.Advance_Fee__c = 1000;
@@ -547,9 +556,14 @@ private class advance_Tests {
     padv.Renovation_Reserve__c = 500000;
     padv.Origination_Fee__c = 1000;
 
-    insert padv;
+    insert padv;*/
 
     Test.startTest();
+    adv.Target_Advance_Date__c = System.today() + 5;
+    adv.Closer__c = u.Id;
+    adv.Underwriter__c = u.Id;
+    update adv;
+    
     adv.Wire_Date__c = system.today();
 
     adv.Status__c = 'Completed';
@@ -652,6 +666,7 @@ private class advance_Tests {
     property.Insurance_Company_text__c = 'INSURANCE';
     property.Status__c = 'Pending';
     property.Override_Origination_Fee__c = 1000;
+    property.Acquisition_Price__c = 600000;
     property.RecordTypeId = [
       SELECT Id
       FROM RecordType
@@ -787,6 +802,7 @@ private class advance_Tests {
     property.Insurance_Company_text__c = 'INSURANCE';
     property.Status__c = 'Pending';
     property.Override_Origination_Fee__c = 1000;
+    property.Acquisition_Price__c = 500000;
     property.RecordTypeId = [
       SELECT Id
       FROM RecordType
@@ -829,7 +845,7 @@ private class advance_Tests {
     Test.stopTest();
   }
 
-  static testMethod void advance_Tests_UnitTest10() {
+  /*Raj static testMethod void advance_Tests_UnitTest10() {
     //internal
     Account acc = test_Helper.createAccount();
     Contact cont = test_Helper.createContact(acc);
@@ -920,6 +936,8 @@ private class advance_Tests {
     property.Insurance_Company_text__c = 'INSURANCE';
     property.Status__c = 'Pending';
     property.Override_Origination_Fee__c = 1000;
+    property.Acquisition_Price__c = 500000;
+    property.Rehab_Budget__c = 70000;
     property.RecordTypeId = [
       SELECT Id
       FROM RecordType
@@ -960,7 +978,7 @@ private class advance_Tests {
     system.debug('Deal Amount' + opp.Amount);
     system.debug('account amount' + acc.Borrowed_on_Bridge_Loans__c);
     Test.stopTest();
-  }
+  } Raj*/
   static testMethod void advance_Tests_UnitTest11() {
     //internal
     Account acc = test_Helper.createAccount();
@@ -1012,7 +1030,7 @@ private class advance_Tests {
     opp1.RecordTypeId = [
       SELECT Id
       FROM RecordType
-      WHERE sobjecttype = 'Opportunity' AND DeveloperName = 'LOC_Loan'
+      WHERE sobjecttype = 'Opportunity' AND DeveloperName = 'Single_Asset_Bridge_Loan'
     ]
     .Id;
     opp1.StageName = 'Closed Won';
@@ -1093,6 +1111,176 @@ private class advance_Tests {
 
     system.debug('Deal Amount' + opp.Amount);
     system.debug('account amount' + acc.Borrowed_on_Bridge_Loans__c);
+    Test.stopTest();
+  }
+
+  static testMethod void advance_Tests_SABTest() {
+    //internal
+    Account acc = test_Helper.createAccount();
+    Contact cont = test_Helper.createContact(acc);
+    Opportunity opp = test_Helper.createOpportunity(acc, cont);
+    opp.Apex_Context__c = true;
+    opp.RecordTypeId = [
+      SELECT Id
+      FROM RecordType
+      WHERE sobjecttype = 'Opportunity' AND DeveloperName = 'Single_Asset_Bridge_Loan'
+    ]
+    .Id;
+    opp.StageName = 'Underwriting';
+    opp.Draw_Period__c = '12 Months';
+    opp.Repayment_Period__c = '9 Months';
+    opp.LOC_Loan_Type__c = 'Credit Line';
+    opp.Loan_Size__c = 3000000;
+    opp.Maturity_Date_Calculation_Type__c = 'Fixed at Closing';
+    opp.Line_Expiration__c = '18 Months';
+    opp.Requested_LTC_Max__c = 70;
+    opp.Requested_LTV_Max__c = 80;
+    opp.Requested_Origination_Fee__c = 0;
+    opp.Requested_Draw_Fee__c = 2;
+    opp.Requested_Exit_Fee__c = 0;
+    opp.Requested_Interest_Type__c = 'Fixed';
+    opp.Requested_Rate_1_9_Months__c = 10;
+    opp.Requested_Revolving__c = 'Yes';
+    opp.Requested_Draw_Fee_Cap__c = 'None';
+    opp.Product_Sub_Type__c = 'No Renovation';
+    opp.Interest_Rate_Type__c = 'Floating';
+    opp.Index__c = '1M LIBOR';
+    opp.Commission_Type__c = 'Internal';
+    opp.Index_Floor__c = '1.00%';
+    opp.Index_Margin__c = 1.50;
+    opp.Deal_Intro_Source__c = 'Hotline';
+    opp.Deal_Intro_Sub_source__c = 'Direct Mail';
+    opp.Fee__c = 2;
+
+    update opp;
+
+    Property__c property = new Property__c();
+    property.Name = 'Test1';
+    property.Deal__c = opp.Id;
+    property.Escrow_Company_text__c = 'ESCROW';
+    property.Insurance_Company_text__c = 'INSURANCE';
+    property.Status__c = 'Pending';
+    property.Override_Origination_Fee__c = 1000;
+    property.RecordTypeId = [
+      SELECT Id
+      FROM RecordType
+      WHERE
+        sobjecttype = 'Property__c'
+        AND DeveloperName = 'Bridge_No_Renovation'
+    ]
+    .Id;
+
+    insert property;
+    Test.startTest();
+    Advance__c adv = new Advance__c(
+      Deal__c = opp.Id,
+      Status__c = 'Pending',
+      Closing_Funds_Checklist__c = true,
+      Manager_Approved__c = true,
+      Evidence_of_Insurance_Approved__c = true,
+      Flood_Certificate_Approved__c = true
+    );
+    insert adv;
+
+    Property_Advance__c padv = new Property_Advance__c();
+    padv.Property__c = property.Id;
+    padv.Advance__c = adv.Id;
+    padv.Advance_Fee__c = 1000;
+    padv.Initial_Disbursement__c = 500000;
+    padv.Renovation_Reserve__c = 500000;
+    padv.Origination_Fee__c = 1000;
+    insert padv;
+
+    adv.Wire_Date__c = system.today();
+    adv.Status__c = 'Completed';
+    system.debug('subtotal adv' + adv.Advance_and_Origination_Fee_Subtotal__c);
+    update adv;
+
+    Test.stopTest();
+  }
+
+  static testMethod void advance_Tests_AcquiredBridgeTest() {
+    //internal
+    Account acc = test_Helper.createAccount();
+    Contact cont = test_Helper.createContact(acc);
+    Opportunity opp = test_Helper.createOpportunity(acc, cont);
+    opp.Apex_Context__c = true;
+    opp.RecordTypeId = [
+      SELECT Id
+      FROM RecordType
+      WHERE sobjecttype = 'Opportunity' AND DeveloperName = 'Acquired_Bridge_Loan_Active'
+    ]
+    .Id;
+    opp.StageName = 'Underwriting';
+    opp.Draw_Period__c = '12 Months';
+    opp.Repayment_Period__c = '9 Months';
+    opp.LOC_Loan_Type__c = 'Credit Line';
+    opp.Loan_Size__c = 3000000;
+    opp.Maturity_Date_Calculation_Type__c = 'Fixed at Closing';
+    opp.Line_Expiration__c = '18 Months';
+    opp.Requested_LTC_Max__c = 70;
+    opp.Requested_LTV_Max__c = 80;
+    opp.Requested_Origination_Fee__c = 0;
+    opp.Requested_Draw_Fee__c = 2;
+    opp.Requested_Exit_Fee__c = 0;
+    opp.Requested_Interest_Type__c = 'Fixed';
+    opp.Requested_Rate_1_9_Months__c = 10;
+    opp.Requested_Revolving__c = 'Yes';
+    opp.Requested_Draw_Fee_Cap__c = 'None';
+    opp.Product_Sub_Type__c = 'No Renovation';
+    opp.Interest_Rate_Type__c = 'Floating';
+    opp.Index__c = '1M LIBOR';
+    opp.Commission_Type__c = 'Internal';
+    opp.Index_Floor__c = '1.00%';
+    opp.Index_Margin__c = 1.50;
+    opp.Deal_Intro_Source__c = 'Hotline';
+    opp.Deal_Intro_Sub_source__c = 'Direct Mail';
+    opp.Fee__c = 2;
+
+    update opp;
+
+    Property__c property = new Property__c();
+    property.Name = 'Test1';
+    property.Deal__c = opp.Id;
+    property.Escrow_Company_text__c = 'ESCROW';
+    property.Insurance_Company_text__c = 'INSURANCE';
+    property.Status__c = 'Pending';
+    property.Override_Origination_Fee__c = 1000;
+    property.RecordTypeId = [
+      SELECT Id
+      FROM RecordType
+      WHERE
+        sobjecttype = 'Property__c'
+        AND DeveloperName = 'Bridge_No_Renovation'
+    ]
+    .Id;
+
+    insert property;
+    Test.startTest();
+    Advance__c adv = new Advance__c(
+      Deal__c = opp.Id,
+      Status__c = 'Pending',
+      Closing_Funds_Checklist__c = true,
+      Manager_Approved__c = true,
+      Evidence_of_Insurance_Approved__c = true,
+      Flood_Certificate_Approved__c = true
+    );
+    insert adv;
+
+    Property_Advance__c padv = new Property_Advance__c();
+    padv.Property__c = property.Id;
+    padv.Advance__c = adv.Id;
+    padv.Advance_Fee__c = 1000;
+    padv.Initial_Disbursement__c = 500000;
+    padv.Renovation_Reserve__c = 500000;
+    padv.Origination_Fee__c = 1000;
+    insert padv;
+
+    adv.Wire_Date__c = system.today();
+    adv.Status__c = 'Completed';
+    system.debug('subtotal adv' + adv.Advance_and_Origination_Fee_Subtotal__c);
+    update adv;
+
     Test.stopTest();
   }
 }
