@@ -309,6 +309,23 @@ public class PricingReviewRequest_LightningController {
     return JSON.serialize(ri, true);
   }
 
+  @AuraEnabled
+  public static Integer queryPricingCount(Id recId){
+    try {
+      return [
+        SELECT Count()
+        FROM Approval_History__c
+        WHERE Parent_Status__c = 'Approved'
+        AND Status__c LIKE '%Submitted'
+        AND Deal__c = :recId
+        AND Approval_Type__c LIKE 'Pricing%'
+      ];
+      
+    } catch (Exception e) {
+      throw new AuraHandledException(e.getMessage());
+    }
+  }
+
   // public wrapper name, userId
 
   public class returnItem {
@@ -362,8 +379,21 @@ public class PricingReviewRequest_LightningController {
     qs += ' (SELECT Id FROM Properties__r) FROM Opportunity WHERE Id = :recordId LIMIT 1';
     Opportunity opp = (Opportunity) Database.query(qs);
 
+    Integer pricingCount = queryPricingCount(recordId);
+
+    Boolean oppUpdated = false;
+
     if (String.isNotBlank(resolution)) {
       opp.GLC_Approved__c = true;
+      oppUpdated = true;
+    }
+
+    if(opp.StageName == 'Approved by Committee' && pricingCount > 0) {
+      opp.StageName = 'Underwriting';
+      oppUpdated = true;
+    }
+
+    if(oppUpdated) {
       update opp;
     }
 

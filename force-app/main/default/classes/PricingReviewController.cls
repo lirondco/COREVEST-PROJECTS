@@ -28,4 +28,17 @@ public class PricingReviewController {
       } private set;
   }
 
+  public Integer repriceCount {
+    get { 
+      return [
+        SELECT Count()
+        FROM Approval_History__c
+        WHERE Parent_Status__c = 'Approved'
+        AND Status__c LIKE '%Submitted'
+        AND Deal__c = :recId
+        AND Approval_Type__c LIKE 'Pricing%'
+      ];
+    } private set;
+  }
+
 }

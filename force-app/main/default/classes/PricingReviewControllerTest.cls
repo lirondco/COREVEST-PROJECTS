@@ -18,6 +18,7 @@ public with sharing class PricingReviewControllerTest {
         ProcessInstanceStep approval = controller.ApprovalProcess;
         String comments = controller.approvalComments;
         String approvalUrl = controller.approvalUrl;
+        Integer count = controller.repriceCount;
         Test.stopTest();
         System.assertEquals(true, approval != null, 'Approval Process is null');
         System.assertEquals(approval.Comments, comments, 'Comments');

@@ -18,5 +18,32 @@
 			error += listStr;
 		}
 		cb(error);
+	},
+	
+	doQueryPricingCount : function(component, helper) {
+		let recId = component.get("v.recordId");
+    let qpcAction = component.get("c.queryPricingCount");
+		qpcAction.setParams({ recId });
+		qpcAction.setCallback(this, function(res) {
+			let state = res.getState();
+			if(state === "SUCCESS") {
+				 let value = res.getReturnValue();
+				 component.set("v.requireComments", value > 0);
+			} else {
+				let errors = res.getError();
+				if(errors) {
+					let errMessages = component.get("v.errorMessage");
+					if(errors[0] && errors[0].message) {
+						errMessages.push(errors[0].message);
+						console.error(errors[0].message);
+					}
+				} else {
+					errMessages.push('An unknown exception has occured.');
+				}
+				component.set("v.errorMessage", errMessages);
+			}
+		});
+
+		$A.enqueueAction(qpcAction);
 	}
 })

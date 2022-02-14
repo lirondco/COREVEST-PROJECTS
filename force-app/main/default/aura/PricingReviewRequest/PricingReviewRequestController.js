@@ -44,6 +44,7 @@
             }
           });
         }
+        helper.doQueryPricingCount(component, helper);
       } else {
         console.log(response.getError());
       }

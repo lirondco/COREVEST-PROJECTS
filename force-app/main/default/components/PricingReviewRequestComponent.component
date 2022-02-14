@@ -5,6 +5,20 @@
     <tr valign="top" height="400">
       <td tEditID="c1r1" style=" background-color:#FFFFFF; bEditID:r3st1; color:#000000; bLabel:main; font-size:12pt; font-family:arial;"
         aEditID="c1r1" locked="0">
+        <apex:outputPanel rendered="{!repriceCount > 0}">
+          <div style="color: rgb(150, 20, 55); font-family: arial; font-size: 12pt; font-weight: bold;">
+            <apex:outputText value="Reprice - {0} - {1} - Term Loan Pricing Review - {2}">
+              <apex:param value="{!repriceCount}" />
+              <apex:param value="{!Opportunity.StageName}" />
+              <apex:param value="{!Opportunity.Name}" />
+            </apex:outputText>
+          </div>
+          <div style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;">
+            <font face="arial">
+              <br />
+            </font>
+          </div>
+        </apex:outputPanel>
         <div style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;">
           <font face="arial">Hi Team,</font>
         </div>
@@ -63,8 +77,7 @@
         </div>
         <div style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;">
           <span style="font-size: x-small;">If that does not work, please copy the following URL and paste it into your browser to gain access:&nbsp;&nbsp;</span>
-          <span
-            style="font-size: x-small;">{!approvalUrl}</span>
+          <span style="font-size: x-small;">{!approvalUrl}</span>
         </div>
         <div style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;">
           <br />
