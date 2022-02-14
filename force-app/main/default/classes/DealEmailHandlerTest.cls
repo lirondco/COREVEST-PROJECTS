@@ -41,9 +41,9 @@ public without sharing class DealEmailHandlerTest {
     email.headers.add(h);
     Messaging.InboundEnvelope env = new Messaging.InboundEnvelope();
 
-    String subject = '#      ' + dealLoanNumber;
+    String subject = '#      ' + dealLoanNumber + '/+-$#%^ALCMD';
 
-    for (Integer i = 1; i < 81; i++) {
+    for(Integer i = 1; i < 81; i++) {
       subject += ' Long Subject + ' + i;
     }
 
@@ -56,14 +56,13 @@ public without sharing class DealEmailHandlerTest {
     email.toAddresses = new List<String>{ 'test@test.com' };
 
     Messaging.InboundEmail.BinaryAttachment mefa = new Messaging.InboundEmail.BinaryAttachment();
-
-    mefa.Body = Blob.valueOf('test');
+   
+    mefa.Body= Blob.valueOf('test');
     mefa.mimeTypeSubType = 'application/pdf';
     mefa.fileName = 'Test.pdf';
 
-    email.binaryAttachments = new List<Messaging.inboundEmail.BinaryAttachment>{
-      mefa
-    };
+    email.binaryAttachments = new List<Messaging.inboundEmail.BinaryAttachment> {mefa};
+
 
     dealEmailHandler cls = new dealEmailHandler();
 
@@ -103,14 +102,13 @@ public without sharing class DealEmailHandlerTest {
     email.toAddresses = new List<String>{ 'test@test.com' };
 
     Messaging.InboundEmail.BinaryAttachment mefa = new Messaging.InboundEmail.BinaryAttachment();
-
-    mefa.Body = Blob.valueOf('test');
+   
+    mefa.Body= Blob.valueOf('test');
     mefa.mimeTypeSubType = 'application/pdf';
     mefa.fileName = 'Test.pdf';
 
-    email.binaryAttachments = new List<Messaging.inboundEmail.BinaryAttachment>{
-      mefa
-    };
+    email.binaryAttachments = new List<Messaging.inboundEmail.BinaryAttachment> {mefa};
+
 
     dealEmailHandler cls = new dealEmailHandler();
 

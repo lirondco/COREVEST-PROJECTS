@@ -5,14 +5,21 @@ global class dealEmailHandler implements Messaging.InboundEmailHandler {
   ) {
     String subject = email.Subject;
     String parsedSubject = subject.substringAfter('#');
+    parsedSubject = parsedSubject.replaceAll('_', ' ');
 
     while (parsedSubject.startsWith(' ')) {
       parsedSubject = parsedSubject.substringAfter(' ');
     }
 
+    
+
     String dealLoanNumber = parsedSubject.contains(' ')
       ? parsedSubject.substringBefore(' ')
       : parsedSubject;
+
+    while(!(dealLoanNumber.right(1)).isNumeric()) {
+      dealLoanNumber = dealLoanNumber.removeEnd(dealLoanNumber.right(1));
+    }
 
     System.debug(
       subject +
@@ -94,7 +101,9 @@ global class dealEmailHandler implements Messaging.InboundEmailHandler {
       WHERE Email IN :toAddresses
     ]) {
       recipientIds.add(recipient.Id);
-      toAddresses.remove(toAddresses.indexOf(recipient.Email));
+      if (toAddresses.contains(recipient.Email)) {
+        toAddresses.remove(toAddresses.indexOf(recipient.Email));
+      }
     }
 
     if (ccAddresses.size() > 0) {
@@ -104,7 +113,9 @@ global class dealEmailHandler implements Messaging.InboundEmailHandler {
         WHERE Email IN :ccAddresses
       ]) {
         ccRecipientIds.add(ccRecipient.Id);
-        ccAddresses.remove(ccAddresses.indexOf(ccRecipient.Email));
+        if (ccAddresses.contains(ccRecipient.Email)) {
+          ccAddresses.remove(ccAddresses.indexOf(ccRecipient.Email));
+        }
       }
     }
 
@@ -213,6 +224,9 @@ global class dealEmailHandler implements Messaging.InboundEmailHandler {
         }
 
         cvIdString = cvIdString.removeEnd(';');
+        if(cvIdString.length() > 255) {
+          cvIdString = cvIdString.substring(0, 230) + ' [...]';
+        }
 
         customEmailRecord.ContentVersionId__c = cvIdString;
 
@@ -301,14 +315,13 @@ global class dealEmailHandler implements Messaging.InboundEmailHandler {
     String subject,
     String senderAddress
   ) {
-    
     Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
 
     email.setToAddresses(
       new List<String>{
-        'ldecastro@mkpartners.com',
         'logins+cvest@mkpartners.com',
-        'bryon.harland@cvest.com'
+        'bryon.harland@cvest.com',
+        'jonathan.lay@cvest.com'
       }
     );
 
