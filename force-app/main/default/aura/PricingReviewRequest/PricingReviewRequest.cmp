@@ -10,6 +10,9 @@
   <aura:attribute name="errorMessage" type="List" />
   <aura:attribute name="requireComments" type="Boolean" default="false" />
   <aura:attribute name="isDisplayGLC" type="Boolean" default="false" />
+  <aura:attribute name="toastTitle" type="String" />
+  <aura:attribute name="toastMessage" type="String" />
+  <aura:attribute name="toastType" type="String" />
   <aura:handler name="init" value="{!this}" action="{!c.init}" />
 
   <aura:html tag="style">

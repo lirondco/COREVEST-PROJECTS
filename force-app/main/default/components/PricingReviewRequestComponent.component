@@ -60,7 +60,11 @@
             <font face="arial">{!Opportunity.LOC_Loan_Type__c}</font>
           </div>
           <div style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;">
-            <font face="arial">Requested Loan Amount:&nbsp;{!Opportunity.Loan_Size__c}</font>
+            <font face="arial">
+              <apex:outputText value="Requested Loan Amount: {0, Number, Currency}">
+                <apex:param value="{!Opportunity.Loan_Size__c}" />
+              </apex:outputText>
+            </font>
           </div>
           <div style="">
             <font face="arial" style="">Exception: {!Opportunity.Exception__c}</font>

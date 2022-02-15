@@ -60,9 +60,18 @@
         $A.util.isUndefined(component.get("v.resolution")))
     ) {
       //component.set("v.errorMessage", ['Resolution field is required.']);
-      alert("Resolution field is required.");
+      component.set("v.toastMessage", "Resolution field is required.")
+      component.set("v.toastTitle", "Missing field value");
+      component.set("v.toastType", "error");
       component.find("submitButton").set("v.disabled", false);
-
+      helper.showToast(component);
+      return;
+    } else if (component.get("v.requireComments") == true && $A.util.isEmpty(component.get("v.comments"))) {
+      component.set("v.toastMessage", "Comments are required for deals that have been previously submitted for pricing.")
+      component.set("v.toastTitle", "Missing Comments");
+      component.set("v.toastType", "error");
+      component.find("submitButton").set("v.disabled", false);
+      helper.showToast(component);
       return;
     } else {
       console.log("submitting for approval");
