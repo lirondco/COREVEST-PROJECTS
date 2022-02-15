@@ -4,37 +4,17 @@ import { loadScript } from "lightning/platformResourceLoader";
 import { CloseActionScreenEvent } from "lightning/actions";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { deleteRecord, getRecord} from "lightning/uiRecordApi";
-import getFileBody from "@salesforce/apex/DscrImportHelper.getFileBody";
-import getLastAttachment from "@salesforce/apex/DscrImportHelper.getLastAttachment";
+import getFileBody from "@salesforce/apex/ExcelUploadLwcHelper.getFileBody";
+import getLastAttachment from "@salesforce/apex/ExcelUploadLwcHelper.getLastAttachment";
 import parseFileValues from "@salesforce/apex/DscrImportHelper.parseFileValues";
-import NUMBER_LOANS_FIELD from '@salesforce/schema/Lender_Deal__c.of_Loans__c';
 
 
 export default class DscrImportAction extends LightningElement {
   @api recordId;
+  @api errorMessage = '';
+  @api showComponent = false;
   uploadedFile;
-  showComponent = false;
   hasRendered = false;
-  errorMessage = '';
-
-  @wire(getRecord, { recordId: '$recordId', fields: [NUMBER_LOANS_FIELD] })
-  wiredRecord({ error, data }) {
-    if (data) {
-      const numberOfLoans = data.fields.of_Loans__c.value;
-      if(numberOfLoans > 0) {
-        this.errorMessage = 'An import has already been performed for this record.';
-      }
-      
-    } else if (error) {
-      let message = 'Unknown error';
-      if (Array.isArray(error.body)) {
-          message = error.body.map(e => e.message).join(', ');
-      } else if (typeof error.body.message === 'string') {
-          message = error.body.message;
-      }
-      this.errorMessage = message;
-    }
-  }
 
   async renderedCallback() {
     if (this.recordId && !this.showComponent && !this.hasRendered) {
@@ -44,6 +24,7 @@ export default class DscrImportAction extends LightningElement {
       }
       this.showComponent = true;
       this.hasRendered = true;
+      this.checkIfImportsAreDisabled();
     }
   }
 
@@ -76,21 +57,16 @@ export default class DscrImportAction extends LightningElement {
     }
   }
 
-  get disallowImport() {
-    return this.uploadedFile == null || !this.showComponent || this.showErrorMessage;
-  }
-
-  async handleClick(evt) {
-    if (evt.target.dataset.name == "cancel") {
-      this.handleCloseModal();
-    } else if (evt.target.dataset.name == "upload") {
-      await this.handleParseFile();
-    }
+  checkIfImportsAreDisabled() {
+    console.log('checkIfImportsAreDisabled');
+    const retVal = this.uploadedFile == null || !this.showComponent || this.showErrorMessage;
+    this.dispatchEvent(new CustomEvent('toggleimport', { detail: retVal }));
   }
 
   handleUploadFinished(evt) {
     evt.preventDefault();
     this.uploadedFile = evt.detail.files[0];
+    this.checkIfImportsAreDisabled();
   }
 
   fixData(data) {
@@ -106,6 +82,7 @@ export default class DscrImportAction extends LightningElement {
     return o;
   }
 
+  @api
   async handleParseFile() {
     const fileBody = await getFileBody({
       fileId: this.uploadedFile.contentVersionId
@@ -130,14 +107,17 @@ export default class DscrImportAction extends LightningElement {
               XLSX.utils.sheet_to_json(workbook.Sheets[sheetName])
             );
           });
-
-          this.doParseFile(JSON.stringify(workBookAsJson));
+          this.showComponent = false;
+          this.checkIfImportsAreDisabled();
+          const detail = JSON.stringify(workBookAsJson);
+          this.dispatchEvent(new CustomEvent("parsefile", { detail }));
         };
         reader.readAsArrayBuffer(new Blob([fileBody]));
       })
       .catch((error) => {
         console.error(error);
         this.showComponent = true;
+        this.checkIfImportsAreDisabled();
         this.dispatchEvent(
           new ShowToastEvent({
             title: "Error",
@@ -146,39 +126,16 @@ export default class DscrImportAction extends LightningElement {
           })
         );
       });
-  }
-
-  async doParseFile(file) {
-    try {
-      this.showComponent = false;
-      const res = await parseFileValues({ fileJson : file, recordId: this.recordId });
-      this.handleCloseModal();
-      this.dispatchEvent(
-        new ShowToastEvent({
-          title: "Import Successful",
-          message: 'Successfully imported ' + res.length + ' records',
-          variant: "success"
-        })
-      );
-    } catch(e) {
-      console.error(e);
-      this.showComponent = true;
-      this.dispatchEvent(
-        new ShowToastEvent({
-          title: "Import Failed",
-          message: e.body.message,
-          variant: "error"
-        })
-      );
-    }
-  }
+      }
 
   handleFileRemove() {
     deleteRecord(this.uploadedFile.documentId)
       .then(() => {
         this.uploadedFile = null;
+        this.checkIfImportsAreDisabled();
       })
       .catch((err) => {
+        this.checkIfImportsAreDisabled();
         this.dispatchEvent(
           new ShowToastEvent({
             title: "Error deleting record",
@@ -187,9 +144,5 @@ export default class DscrImportAction extends LightningElement {
           })
         );
       });
-  }
-
-  handleCloseModal() {
-    this.dispatchEvent(new CloseActionScreenEvent());
   }
 }

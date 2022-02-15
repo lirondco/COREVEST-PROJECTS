@@ -1,6 +1,5 @@
 <!-- sldsValidatorIgnore -->
 <template>
-  <lightning-quick-action-panel header="Upload Lender Tape">
     <template if:true={recordId}>
       <template if:true={showComponent}>
         <template if:true={showErrorMessage}>
@@ -42,28 +41,8 @@
       </template>
       <template if:false={showComponent}>
         <div class="slds-text-align_center">
-          <lightning-spinner
-            alternative-text="Loading"
-            size="small"
-          ></lightning-spinner>
+          <c-loading-animation></c-loading-animation>
         </div>
       </template>
-      <div slot="footer">
-        <lightning-button
-          variant="neutral"
-          label="Cancel"
-          data-name="cancel"
-          onclick={handleClick}
-        ></lightning-button>
-        <lightning-button
-          variant="brand"
-          label="Begin Import"
-          class="slds-m-left_x-small"
-          onclick={handleClick}
-          data-name="upload"
-          disabled={disallowImport}
-        ></lightning-button>
-      </div>
     </template>
-  </lightning-quick-action-panel>
 </template>

@@ -28,7 +28,7 @@
     "husky": "^7.0.0",
     "lint-staged": "^11.0.0",
     "prettier": "^2.3.2",
-    "prettier-plugin-apex": "^1.10.1"
+    "prettier-plugin-apex": "^1.0.0"
   },
   "lint-staged": {
     "**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}": [
@@ -37,5 +37,8 @@
     "**/{aura,lwc}/**": [
       "eslint"
     ]
+  },
+  "dependencies": {
+    "@salesforce/lwc-dev-server": "^2.11.0"
   }
 }

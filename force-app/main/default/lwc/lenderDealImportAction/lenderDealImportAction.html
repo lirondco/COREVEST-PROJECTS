@@ -1,0 +1,24 @@
+<!-- sldsValidatorIgnore -->
+<template>
+  <lightning-quick-action-panel header="Upload Lender Tape">
+    <template if:true={recordId}>
+      <c-excel-uploader record-id={recordId} error-message={errorMessage} show-component={showComponent} ontoggleimport={handleToggleImport} onparsefile={doParseFile}></c-excel-uploader>
+      <div slot="footer">
+        <lightning-button
+          variant="neutral"
+          label="Cancel"
+          data-name="cancel"
+          onclick={handleClick}
+        ></lightning-button>
+        <lightning-button
+          variant="brand"
+          label="Begin Import"
+          class="slds-m-left_x-small"
+          onclick={handleClick}
+          data-name="upload"
+          disabled={disallowImport}
+        ></lightning-button>
+      </div>
+    </template>
+  </lightning-quick-action-panel>
+</template>
