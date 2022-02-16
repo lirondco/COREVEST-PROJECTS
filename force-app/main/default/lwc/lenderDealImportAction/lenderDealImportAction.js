@@ -3,6 +3,7 @@ import { CloseActionScreenEvent } from "lightning/actions";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { getRecord} from "lightning/uiRecordApi";
 import parseBridge from "@salesforce/apex/BridgeLenderDealImportHelper.parseFileValues";
+import parseDscr from "@salesforce/apex/DscrImportHelper.parseFileValues";
 import NUMBER_LOANS_FIELD from '@salesforce/schema/Lender_Deal__c.Number_of_Loans__c';
 import RECORD_TYPE_FIELD from '@salesforce/schema/Lender_Deal__c.RecordType.Name';
 
@@ -58,6 +59,10 @@ export default class LenderDealImportAction extends LightningElement {
       let res;
       if(this.recordTypeName.toLowerCase().includes('bridge')){
         res = await parseBridge({ fileJson : file, recordId: this.recordId });
+      } else if (this.recordTypeName.toLowerCase().includes('dscr')) {
+        console.log(JSON.parse(file));
+        return;
+        // res = await parseDscr({ fileJson : file, recordId: this.recordId });
       }
       this.handleCloseModal();
       this.dispatchEvent(
