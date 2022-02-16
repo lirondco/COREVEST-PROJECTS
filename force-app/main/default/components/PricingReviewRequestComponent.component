@@ -30,7 +30,7 @@
         <div style="">
           <span style="color: rgb(22, 17, 17); font-family: arial; font-size: 12pt;">Please review the following Pricing Request for&nbsp;</span>
           <font face="arial">
-            <a href="https://cvest.lightning.force.com/lightning/r/Opportunity/{!Opportunity.Id}/view">{!Opportunity.Name}.</a>
+            <a href="{!dealUrl}">{!Opportunity.Name}.</a>
           </font>
         </div>
         <div style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;">

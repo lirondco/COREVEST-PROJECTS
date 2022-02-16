@@ -28,6 +28,14 @@ public class PricingReviewController {
       } private set;
   }
 
+  public String dealUrl {
+    get {
+      return recId == null
+        ? null
+        : URL.getOrgDomainUrl().toExternalForm() + '/' + recId;
+    } private set;
+  }
+
   public Integer repriceCount {
     get { 
       return [
