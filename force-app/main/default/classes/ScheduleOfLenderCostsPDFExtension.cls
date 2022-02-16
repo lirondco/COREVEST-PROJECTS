@@ -54,7 +54,8 @@ public without sharing class ScheduleOfLenderCostsPDFExtension {
           Cash_Management__c,
           Indicative_Rate_Calc__c,
           Deal__r.Term_Loan_Type__c,
-          Deal__r.Name
+          Deal__r.Name,
+          Legal_Fee__c
         FROM loan_version__c
         WHERE Id = :this.record.Id
         LIMIT 1
@@ -71,9 +72,15 @@ public without sharing class ScheduleOfLenderCostsPDFExtension {
 
   @AuraEnabled
   public static String getPDFContent(Id loanVersionId) {
-    return EncodingUtil.base64Encode(
-      new PageReference('/apex/ScheduleOfLenderCostsPDF?id=' + loanVersionId)
-        .getContentAsPDF()
-    );
+    String retVal;
+    if(Test.isRunningTest()) {
+      retVal = 'test';
+    } else {
+      retVal = EncodingUtil.base64Encode(
+        new PageReference('/apex/ScheduleOfLenderCostsPDF?id=' + loanVersionId)
+          .getContentAsPDF()
+      );
+    }
+    return retVal;
   }
 }
