@@ -35,9 +35,15 @@
         record["sobjectType"] = "Advance__c";
         console.log(record);
         component.set("v.record", JSON.parse(JSON.stringify(record)));
-        if(!!record["Broker_Fee_Paid_By_Whom__c"] && record["Broker_Fee_Paid_By_Whom__c"].toLowerCase() == "corevest") {
+        if (
+          !!record["Broker_Fee_Paid_By_Whom__c"] &&
+          record["Broker_Fee_Paid_By_Whom__c"].toLowerCase() == "corevest"
+        ) {
           component.set("v.brokerFeeLabel", "Broker Fee Paid by CoreVest");
-        } else if (!!record["Broker_Fee_Paid_By_Whom__c"] && record["Broker_Fee_Paid_By_Whom__c"].toLowerCase() == "escrow") {
+        } else if (
+          !!record["Broker_Fee_Paid_By_Whom__c"] &&
+          record["Broker_Fee_Paid_By_Whom__c"].toLowerCase() == "escrow"
+        ) {
           component.set("v.brokerFeeLabel", "Broker Fee Paid on HUD");
         } else {
           component.set("v.brokerFeeLabel", "Broker Fee");
@@ -206,10 +212,95 @@
     let fields = ["Status__c"];
 
     component.find("util").getPermissions("Property__c", fields, (response) => {
-      console.log('Prop permissions', JSON.stringify(response));
+      console.log("Prop permissions", JSON.stringify(response));
 
       component.set("v.propertyPermissionsMap", response);
     });
+  },
+  updatePropertyStatus: function (component, helper, records) {
+    $A.util.toggleClass(component.find("spinner"), "slds-hide");
+    const newRecord = [
+      {
+        sobjectType: "Property__c",
+        Id: component.get("v.currentlyEditing"),
+        Status__c: component.get("v.currentEditingValue")
+      }
+    ];
+    const upsertAction = component.get("c.upsertRecords");
+    upsertAction.setParams({
+      records: newRecord
+    });
+    upsertAction.setCallback(this, function (response) {
+      var state = response.getState();
+      let toastEvent = $A.get("e.force:showToast");
+      if (state === "SUCCESS") {
+        helper.resetPropertyStatusSelection(component);
+        helper.queryPropertyAdvances(component);
+        $A.util.toggleClass(component.find("spinner"), "slds-hide");
+        toastEvent.setParams({
+          title: "Success!",
+          message: "Property status updated successfully.",
+          type: "success"
+        });
+      } else if (state === "ERROR") {
+        const errs = response.getError();
+        $A.util.toggleClass(component.find("spinner"), "slds-hide");
+        if (errs) {
+          if (errs[0] && errs[0].message) {
+            console.error("Error message: " + errs[0].message);
+            toastEvent.setParams({
+              title: "Error",
+              message: errs[0].message,
+              type: "error"
+            });
+          }
+        } else {
+          toastEvent.setParams({
+            title: "Error",
+            message: "Unknown error when saving property status",
+            type: "error"
+          });
+          console.error("unknown error");
+        }
+      }
+      toastEvent.fire();
+    });
+    $A.enqueueAction(upsertAction);
+  },
+  retrievePropertyStatusPicklistValues: function (component, helper, records) {
+    let action = component.get("c.getPicklistFieldValue");
+    action.setParams({
+      objectApiName: "Property__c",
+      fieldAPiName: "Status__c"
+    });
+    action.setCallback(this, function (response) {
+      var state = response.getState();
+      if (state === "SUCCESS") {
+        let picklistVals = [];
+        console.log("picklist values", response.getReturnValue());
+        for (const key in response.getReturnValue()) {
+          const picklistItem = {
+            label: response.getReturnValue()[key],
+            value: key
+          };
+          picklistVals.push(picklistItem);
+        }
+        console.log("picklist values", picklistVals);
+        component.set("v.propertyStatusPicklistValues", picklistVals);
+      } else if (state === "ERROR") {
+        const errs = response.getError();
+        if (errs) {
+          if (errs[0] && errs[0].message) {
+            console.log(
+              "Error message getting picklist values: " + errs[0].message
+            );
+          }
+        } else {
+          console.error("unknown error retrieving picklist values");
+        }
+      }
+    });
+    $A.enqueueAction(action);
   },
 
   queryDealNotes: function (component) {
@@ -220,5 +311,10 @@
       // console.log("--deposit notes--", data);
       component.set("v.depositNotes", data[0].Deal__r.Deposit_Notes__c);
     });
+  },
+
+  resetPropertyStatusSelection: function (component) {
+    component.set("v.currentlyEditing", null);
+    component.set("v.currentEditingValue", null);
   }
 });

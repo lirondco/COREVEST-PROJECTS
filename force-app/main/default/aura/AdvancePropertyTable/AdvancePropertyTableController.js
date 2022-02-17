@@ -1,11 +1,51 @@
 ({
   init: function (component, event, helper) {
+    helper.resetPropertyStatusSelection(component);
     helper.queryRecord(component);
     helper.queryPropertyAdvances(component);
     helper.queryWires(component);
     helper.compilePermissions(component);
     helper.queryDealNotes(component);
     helper.compilePropertyPermissions(component);
+    helper.retrievePropertyStatusPicklistValues(component);
+  },
+  handleOutsideClick: function (component, event, helper) {
+    if (!component.get("v.isEditButtonClicked") &&
+      (!$A.util.isUndefinedOrNull(component.get("v.currentlyEditing")) ||
+      !$A.util.isUndefinedOrNull(component.get("v.currentEditingValue")))
+    ) {
+      helper.resetPropertyStatusSelection(component);
+      $A.get('e.force:refreshView').fire();
+    }
+  },
+  handleKeyPress: function (component, event, helper) {
+    if(event.keyCode == 13 && !$A.util.isUndefinedOrNull(component.get("v.currentEditingValue")) && !$A.util.isUndefinedOrNull(component.get("v.currentlyEditing"))) {
+      helper.updatePropertyStatus(component, helper);
+
+    } else if (event.keyCode == 27) {
+      helper.resetPropertyStatusSelection(component);
+      $A.get('e.force:refreshView').fire();
+    }
+  },
+  toggleStatusEdit: function (component, event, helper) {
+    event.preventDefault();
+    event.stopPropagation();
+    if (
+      component.get("v.currentlyEditing") != event.getSource().get("v.value")
+    ) {
+      component.set("v.currentlyEditing", event.getSource().get("v.value"));
+    } else if ("Save" == event.getSource().get("v.title")) {
+      helper.updatePropertyStatus(component, helper);
+    } else {
+      helper.resetPropertyStatusSelection(component);
+      $A.get('e.force:refreshView').fire();
+    }
+  },
+
+  handleStatusSelect: function (component, event, helper) {
+    if (component.get("v.currentlyEditing") != null) {
+      component.set("v.currentEditingValue", event.getParam("value"));
+    }
   },
 
   calculateSubTotals: function (component, event, helper) {
