@@ -120,6 +120,10 @@ public without sharing class BridgeLenderDealImportHelper {
           emailToAccount.put(email, accountName);
           cleanMapMain.put(cleanMap.get('Loan ID'), cleanMap);
         }
+
+        if(cleanMapMain.size() == 0) {
+          throw new ImportException('This does not seem to be a valid excel file.');
+        }
   
         Map<String, Contact> contactMap = generateContactsMap(
           emailToAccount,

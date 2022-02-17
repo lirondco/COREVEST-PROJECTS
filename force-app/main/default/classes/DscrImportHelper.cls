@@ -37,6 +37,7 @@ public without sharing class DscrImportHelper {
       ];
 
       Integer sheetNo = 0;
+      System.debug('entering parseFileValues');
       List<Map<String, String>> mapToParse = new List<Map<String, String>>();
       Map<String, String> fileRecords = (Map<String, String>) JSON.deserialize(
         fileJson,
@@ -116,6 +117,10 @@ public without sharing class DscrImportHelper {
         cleanedMapList.add(cleanMap);
       }
 
+      if(cleanedMapList.size() == 0) {
+        throw new ImportException('This does not seem to be a valid excel file.');
+      }
+
       Map<String, Contact> contactMap = generateContactsMap(
         emailToAccount,
         cleanedMapList,
@@ -157,7 +162,7 @@ public without sharing class DscrImportHelper {
       return newLdds;
     } catch (Exception e) {
       Database.rollback(sp);
-      System.debug(e.getMessage());
+      System.debug(e.getLineNumber() + ' : ' + e.getMessage());
       throw new AuraHandledException(e.getLineNumber() + ': ' + e.getMessage());
     }
   }

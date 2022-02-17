@@ -60,9 +60,7 @@ export default class LenderDealImportAction extends LightningElement {
       if(this.recordTypeName.toLowerCase().includes('bridge')){
         res = await parseBridge({ fileJson : file, recordId: this.recordId });
       } else if (this.recordTypeName.toLowerCase().includes('dscr')) {
-        console.log(JSON.parse(file));
-        return;
-        // res = await parseDscr({ fileJson : file, recordId: this.recordId });
+        res = await parseDscr({ fileJson : file, recordId: this.recordId });
       }
       this.handleCloseModal();
       this.dispatchEvent(
