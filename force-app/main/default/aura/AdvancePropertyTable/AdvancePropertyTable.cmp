@@ -13,7 +13,7 @@
   <aura:attribute name="currentlyEditing" type="String" />
   <aura:attribute name="isEditButtonClicked" type="Boolean" default="false" />
   <aura:attribute name="currentEditingValue" type="String" />
-  <aura:attribute name="originalEditingValue" type="String" />
+  <aura:attribute name="updatedPropertyStatuses" type="Object" />
   <aura:handler event="force:refreshView" action="{!c.init}" />
   <aura:handler name="init" value="{!this}" action="{!c.init}" />
   <aura:attribute name="permissionsMap" type="Map" />
@@ -21,7 +21,11 @@
 
   <!-- <aura:handler name="change" value={!v.record.Inspection_Fee} -->
 
-  <div class="slds-is-relative" onclick="{!c.handleOutsideClick}" onkeyup="{!c.handleKeyPress}">
+  <div
+    class="slds-is-relative"
+    onclick="{!c.handleOutsideClick}"
+    onkeyup="{!c.handleKeyPress}"
+  >
     <lightning:spinner
       variant="brand"
       aura:id="spinner"
@@ -39,6 +43,12 @@
         onclick="{!c.refresh}"
         class="{!v.record.Status__c == 'Completed' ? 'slds-hide' : ''}"
       />
+      <aura:if isTrue="{!v.isEditButtonClicked}">
+        <lightning:buttonGroup>
+          <lightning:button onclick="{!c.handleStatusButtonsClick}" label="Update Statuses" title="update" variant="brand" />
+          <lightning:button onclick="{!c.handleStatusButtonsClick}" label="Cancel" title="cancel" />
+        </lightning:buttonGroup>
+      </aura:if>
     </div>
 
     <!-- Begin Non Renovation Table -->
@@ -228,26 +238,15 @@
                             options="{! v.propertyStatusPicklistValues }"
                             onchange="{! c.handleStatusSelect }"
                           />
-                          <div>
-                            <lightning:buttonIcon
-                              iconName="utility:save"
-                              variant="bare"
-                              onclick="{! c.toggleStatusEdit }"
-                              alternativeText="save"
-                              title="Save"
-                              value="{!item.Property__c}"
-                              tooltip="Save"
-                            />
-                            <lightning:buttonIcon
-                              iconName="utility:close"
-                              variant="bare"
-                              onclick="{! c.toggleStatusEdit }"
-                              alternativeText="Cancel"
-                              title="Cancel"
-                              value="{!item.Property__c}"
-                              tooltip="Cancel"
-                            />
-                          </div>
+                          <lightning:buttonIcon
+                            iconName="utility:close"
+                            variant="bare"
+                            onclick="{! c.toggleStatusEdit }"
+                            alternativeText="Cancel"
+                            title="Cancel"
+                            value="{!item.Property__r}"
+                            tooltip="Cancel"
+                          />
                         </div>
                         <aura:set attribute="else">
                           <div class="flexed-div">
@@ -260,7 +259,7 @@
                               onclick="{! c.toggleStatusEdit }"
                               alternativeText="Edit"
                               title="Edit"
-                              value="{!item.Property__c}"
+                              value="{!item.Property__r}"
                               tooltip="Edit"
                             />
                           </div>
@@ -966,26 +965,15 @@
                             options="{! v.propertyStatusPicklistValues }"
                             onchange="{! c.handleStatusSelect }"
                           />
-                          <div>
-                            <lightning:buttonIcon
-                              iconName="utility:save"
-                              variant="bare"
-                              onclick="{! c.toggleStatusEdit }"
-                              alternativeText="save"
-                              title="Save"
-                              value="{!item.Property__c}"
-                              tooltip="Save"
-                            />
-                            <lightning:buttonIcon
-                              iconName="utility:close"
-                              variant="bare"
-                              onclick="{! c.toggleStatusEdit }"
-                              alternativeText="Cancel"
-                              title="Cancel"
-                              value="{!item.Property__c}"
-                              tooltip="Cancel"
-                            />
-                          </div>
+                          <lightning:buttonIcon
+                            iconName="utility:close"
+                            variant="bare"
+                            onclick="{! c.toggleStatusEdit }"
+                            alternativeText="Cancel"
+                            title="Cancel"
+                            value="{!item.Property__r}"
+                            tooltip="Cancel"
+                          />
                         </div>
                         <aura:set attribute="else">
                           <div class="flexed-div">
@@ -998,7 +986,7 @@
                               onclick="{! c.toggleStatusEdit }"
                               alternativeText="Edit"
                               title="Edit"
-                              value="{!item.Property__c}"
+                              value="{!item.Property__r}"
                               tooltip="Edit"
                             />
                           </div>

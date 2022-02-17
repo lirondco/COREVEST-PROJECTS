@@ -37,6 +37,7 @@ trigger advance_Trigger on Advance__c(
           'afterUpdate'
         );
       }
+      PropertyTriggerExtensions.checkAdvancesPropertyCount(Trigger.oldMap, Trigger.newMap);
     }
     if (Trigger.isBefore && Trigger.isDelete) {
       Advance_Helper.beforeDelete(Trigger.Old);

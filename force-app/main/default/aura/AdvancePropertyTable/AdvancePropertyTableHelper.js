@@ -59,6 +59,7 @@
     var fieldList = [
       "Property__r.APN__c",
       "Property__r.Name",
+      "Property__r.Id",
       "Property__r.Yardi_Id__c",
       "Purchase_Price__c",
       "Property__r.Status__c",
@@ -120,8 +121,16 @@
       var state = response.getState();
       if (state === "SUCCESS") {
         console.log(response.getReturnValue());
-        component.set("v.propertyAdvances", response.getReturnValue());
-        component.find("refresh").set("v.disabled", false);
+        if (response.getReturnValue().length > 0) {
+          component.set("v.propertyAdvances", response.getReturnValue());
+          component.find("refresh").set("v.disabled", false);
+        } else {
+          var navEvt = $A.get("e.force:navigateToSObject");
+          navEvt.setParams({
+            recordId: component.get("v.record").Deal__c
+          });
+          navEvt.fire();
+        }
       } else if (state === "ERROR") {
         console.log(response.getError());
         console.log("error query prop adv");
@@ -217,55 +226,57 @@
       component.set("v.propertyPermissionsMap", response);
     });
   },
-  updatePropertyStatus: function (component, helper, records) {
+  updatePropertyStatuses: function (component, helper, records) {
     $A.util.toggleClass(component.find("spinner"), "slds-hide");
-    const newRecord = [
-      {
-        sobjectType: "Property__c",
-        Id: component.get("v.currentlyEditing"),
-        Status__c: component.get("v.currentEditingValue")
-      }
-    ];
-    const upsertAction = component.get("c.upsertRecords");
-    upsertAction.setParams({
-      records: newRecord
-    });
-    upsertAction.setCallback(this, function (response) {
-      var state = response.getState();
-      let toastEvent = $A.get("e.force:showToast");
-      if (state === "SUCCESS") {
-        helper.resetPropertyStatusSelection(component);
-        helper.queryPropertyAdvances(component);
-        $A.util.toggleClass(component.find("spinner"), "slds-hide");
-        toastEvent.setParams({
-          title: "Success!",
-          message: "Property status updated successfully.",
-          type: "success"
-        });
-      } else if (state === "ERROR") {
-        const errs = response.getError();
-        $A.util.toggleClass(component.find("spinner"), "slds-hide");
-        if (errs) {
-          if (errs[0] && errs[0].message) {
-            console.error("Error message: " + errs[0].message);
+    const propStatuses = Object.assign({}, component.get("v.updatedPropertyStatuses"));
+    console.log("prop statuses", propStatuses);
+    if (Object.values(propStatuses).length > 0) {
+      const upsertAction = component.get("c.upsertRecords");
+      upsertAction.setParams({
+        records: Object.values(propStatuses)
+      });
+      upsertAction.setCallback(this, function (response) {
+        var state = response.getState();
+        let toastEvent = $A.get("e.force:showToast");
+        if (state === "SUCCESS") {
+          helper.resetPropertyStatusSelection(component);
+          helper.clearUpdatedPropertyStatuses(component);
+          helper.queryPropertyAdvances(component);
+          $A.util.toggleClass(component.find("spinner"), "slds-hide");
+          toastEvent.setParams({
+            title: "Success!",
+            message: "Property status updated successfully.",
+            type: "success"
+          });
+        } else if (state === "ERROR") {
+          const errs = response.getError();
+          $A.util.toggleClass(component.find("spinner"), "slds-hide");
+          if (errs) {
+            if (errs[0] && errs[0].message) {
+              console.error("Error message: " + errs[0].message);
+              toastEvent.setParams({
+                title: "Error",
+                message: errs[0].message,
+                type: "error"
+              });
+            }
+          } else {
             toastEvent.setParams({
               title: "Error",
-              message: errs[0].message,
+              message: "Unknown error when saving property status",
               type: "error"
             });
+            console.error("unknown error");
           }
-        } else {
-          toastEvent.setParams({
-            title: "Error",
-            message: "Unknown error when saving property status",
-            type: "error"
-          });
-          console.error("unknown error");
         }
-      }
-      toastEvent.fire();
-    });
-    $A.enqueueAction(upsertAction);
+        toastEvent.fire();
+      });
+      $A.enqueueAction(upsertAction);
+    } else {
+      component.set("v.isEditButtonClicked", false);
+      helper.resetPropertyStatusSelection(component);
+      $A.util.toggleClass(component.find("spinner"), "slds-hide");
+    }
   },
   retrievePropertyStatusPicklistValues: function (component, helper, records) {
     let action = component.get("c.getPicklistFieldValue");
@@ -309,12 +320,22 @@
 
     component.find("util").query(queryString, (data) => {
       // console.log("--deposit notes--", data);
-      component.set("v.depositNotes", data[0].Deal__r.Deposit_Notes__c);
+      if (
+        data[0].hasOwnProperty("Deal__r") &&
+        data[0].Deal__r.hasOwnProperty("Deposit_Notes__c")
+      ) {
+        component.set("v.depositNotes", data[0].Deal__r.Deposit_Notes__c);
+      }
     });
   },
 
   resetPropertyStatusSelection: function (component) {
     component.set("v.currentlyEditing", null);
     component.set("v.currentEditingValue", null);
+  },
+
+  clearUpdatedPropertyStatuses: function (component) {
+    component.set("v.updatedPropertyStatuses", {});
+    component.set("v.isEditButtonClicked", false);
   }
 });

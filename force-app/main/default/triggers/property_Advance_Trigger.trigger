@@ -23,6 +23,7 @@ trigger property_Advance_Trigger on Property_Advance__c(
     }
     if (Trigger.isBefore && Trigger.isDelete) {
       //	Property_Advance__c_Helper.beforeDelete(Trigger.New);
+
     }
     if (Trigger.isAfter && Trigger.isDelete) {
       Property_Advance_Helper.afterDelete(Trigger.New, Trigger.Old);

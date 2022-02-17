@@ -1,6 +1,7 @@
 ({
   init: function (component, event, helper) {
     helper.resetPropertyStatusSelection(component);
+    helper.clearUpdatedPropertyStatuses(component);
     helper.queryRecord(component);
     helper.queryPropertyAdvances(component);
     helper.queryWires(component);
@@ -10,35 +11,69 @@
     helper.retrievePropertyStatusPicklistValues(component);
   },
   handleOutsideClick: function (component, event, helper) {
-    if (!component.get("v.isEditButtonClicked") &&
+    if (
       (!$A.util.isUndefinedOrNull(component.get("v.currentlyEditing")) ||
-      !$A.util.isUndefinedOrNull(component.get("v.currentEditingValue")))
+        !$A.util.isUndefinedOrNull(component.get("v.currentEditingValue")))
     ) {
+      const updatedStatuses = Object.assign({}, component.get("v.updatedPropertyStatuses"));
+      const propObj = {
+        sobjectType: "Property__c",
+        Id: component.get("v.currentlyEditing"),
+        Status__c: component.get("v.currentEditingValue")
+      };
+      updatedStatuses[component.get("v.currentlyEditing")] = propObj;
+      component.set("v.updatedPropertyStatuses", updatedStatuses);
       helper.resetPropertyStatusSelection(component);
-      $A.get('e.force:refreshView').fire();
     }
   },
   handleKeyPress: function (component, event, helper) {
-    if(event.keyCode == 13 && !$A.util.isUndefinedOrNull(component.get("v.currentEditingValue")) && !$A.util.isUndefinedOrNull(component.get("v.currentlyEditing"))) {
-      helper.updatePropertyStatus(component, helper);
-
-    } else if (event.keyCode == 27) {
+    if (
+      (event.keyCode == 13 || event.keyCode == 27) &&
+      !$A.util.isUndefinedOrNull(component.get("v.currentEditingValue")) &&
+      !$A.util.isUndefinedOrNull(component.get("v.currentlyEditing"))
+    ) {
+      const updatedStatuses = Object.assign({} , component.get("v.updatedPropertyStatuses"));
+      const propObj = {
+        sobjectType: "Property__c",
+        Id: component.get("v.currentlyEditing"),
+        Status__c: component.get("v.currentEditingValue")
+      };
+      updatedStatuses[component.get("v.currentlyEditing")] = propObj;
+      component.set("v.updatedPropertyStatuses", updatedStatuses);
       helper.resetPropertyStatusSelection(component);
-      $A.get('e.force:refreshView').fire();
+    }
+  },
+  handleStatusButtonsClick: function (component, event, helper) {
+    if(event.getSource().get("v.title") == "update") {
+      helper.updatePropertyStatuses(component, helper);
+    } else {
+      helper.resetPropertyStatusSelection(component);
+      helper.clearUpdatedPropertyStatuses(component);
+      $A.get("e.force:refreshView").fire();
     }
   },
   toggleStatusEdit: function (component, event, helper) {
     event.preventDefault();
     event.stopPropagation();
+    const propertyDetails = JSON.parse(JSON.stringify(event.getSource().get("v.value")));
     if (
-      component.get("v.currentlyEditing") != event.getSource().get("v.value")
+      component.get("v.currentlyEditing") != propertyDetails.Id
     ) {
-      component.set("v.currentlyEditing", event.getSource().get("v.value"));
-    } else if ("Save" == event.getSource().get("v.title")) {
-      helper.updatePropertyStatus(component, helper);
-    } else {
+      component.set("v.currentlyEditing", propertyDetails.Id);
+      component.set("v.currentEditingValue", propertyDetails.Status__c);
+      if(!component.get("v.isEditButtonClicked")) {
+        component.set("v.isEditButtonClicked", true);
+      }
+    }  else {
+      const updatedStatuses = Object.assign({}, component.get("v.updatedPropertyStatuses")); 
+      const propObj = {
+        "sobjectType": "Property__c",
+        "Id": component.get("v.currentlyEditing"),
+        "Status__c": component.get("v.currentEditingValue")
+      }
+      updatedStatuses[component.get("v.currentlyEditing")] = propObj;
+      component.set("v.updatedPropertyStatuses", updatedStatuses);
       helper.resetPropertyStatusSelection(component);
-      $A.get('e.force:refreshView').fire();
     }
   },
 
