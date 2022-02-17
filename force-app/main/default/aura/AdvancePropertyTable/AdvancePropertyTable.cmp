@@ -13,6 +13,7 @@
   <aura:handler name="init" value="{!this}" action="{!c.init}" />
 
   <aura:attribute name="permissionsMap" type="Map" />
+  <aura:attribute name="propertyPermissionsMap" type="Map" />
 
   <!-- <aura:handler name="change" value={!v.record.Inspection_Fee} -->
 
@@ -84,6 +85,9 @@
               </th>
               <th scope="col">
                 <div class="slds-truncate" title="Title Company">Title Company</div>
+              </th>
+              <th scope="col">
+                <div class="slds-truncate" title="Title Company">Title Review</div>
               </th>
               <th scope="col">
                 <div class="slds-truncate" title="Acquisition Price">
@@ -194,7 +198,12 @@
                 </th>
                 <th scope="" data-label="">
                   <div class="slds-truncate" title="Property Status">
-                    {!item.Property__r.Status__c}
+                    <aura:if isTrue="{! and (!empty(v.propertyPermissionsMap), v.propertyPermissionsMap.Status__c.isUpdateable)}">
+                      <!-- add input -->
+                      <aura:set attribute="else">
+                        {!item.Property__r.Status__c}
+                      </aura:set>
+                    </aura:if>
                   </div>
                 </th>
                 <th scope="" data-label="">
@@ -207,6 +216,11 @@
                 <th scope="" data-label="">
                   <div class="slds-truncate" title="">
                     <ui:outputText value="{!item.Title_Company__r.Name}" />
+                  </div>
+                </th>
+                <th scope="" data-label="">
+                  <div class="slds-truncate" title="">
+                    <ui:outputText value="{!item.Property__r.Title_Review_Company__c}" />
                   </div>
                 </th>
                 <th scope="" data-label="">
@@ -317,6 +331,9 @@
                 <div class="slds-truncate" title=""></div>
               </th>
               <th scope="row" data-label="">
+                <div class="slds-truncate" title=""></div>
+              </th>
+              <th scope="" data-label="">
                 <div class="slds-truncate" title=""></div>
               </th>
               <th scope="" data-label="">
@@ -457,6 +474,9 @@
               <th scope="" data-label="">
                 <div class="slds-truncate" title=""></div>
               </th>
+              <th scope="" data-label="">
+                <div class="slds-truncate" title=""></div>
+              </th>
               <th scope="" data-label="Adjustments:">
                 <div class="slds-truncate" title="Adjustments:">
                   Adjustments:
@@ -546,6 +566,9 @@
                 <div class="slds-truncate" title=""></div>
               </th>
               <th scope="row" data-label="">
+                <div class="slds-truncate" title=""></div>
+              </th>
+              <th scope="" data-label="">
                 <div class="slds-truncate" title=""></div>
               </th>
               <th scope="" data-label="">
@@ -715,6 +738,9 @@
                 <div class="slds-truncate" title="Title Company">Title Company</div>
               </th>
               <th scope="col">
+                <div class="slds-truncate" title="Title Company">Title Review</div>
+              </th>
+              <th scope="col">
                 <div class="slds-truncate" title="Acquisition Price">
                   Acquisition Price
                 </div>
@@ -844,8 +870,15 @@
                 </th>
                 <th scope="" data-label="">
                   <div class="slds-truncate" title="Property Status">
-                    {!item.Property__r.Status__c}
-                  </div>
+                    <div class="slds-truncate" title="Property Status">
+                      <aura:if isTrue="{! and (!empty(v.propertyPermissionsMap), v.propertyPermissionsMap.Status__c.isUpdateable)}">
+                        <!-- add input -->
+                        <aura:set attribute="else">
+                          {!item.Property__r.Status__c}
+                        </aura:set>
+                      </aura:if>
+                    </div>
+                    </div>
                 </th>
                 <th scope="" data-label="">
                   <div class="slds-truncate" title="">
@@ -857,6 +890,11 @@
                 <th scope="" data-label="">
                   <div class="slds-truncate" title="">
                     {!item.Title_Company__r.Name}
+                  </div>
+                </th>
+                <th scope="" data-label="">
+                  <div class="slds-truncate" title="">
+                    {!item.Property__r.Title_Review_Company__c}
                   </div>
                 </th>
                 <th scope="" data-label="">
@@ -1009,6 +1047,9 @@
                 <div class="slds-truncate" title=""></div>
               </th>
               <th scope="row" data-label="">
+                <div class="slds-truncate" title=""></div>
+              </th>
+              <th scope="" data-label="">
                 <div class="slds-truncate" title=""></div>
               </th>
               <th scope="" data-label="">
@@ -1180,6 +1221,9 @@
               <th scope="" data-label="">
                 <div class="slds-truncate" title=""></div>
               </th>
+              <th scope="" data-label="">
+                <div class="slds-truncate" title=""></div>
+              </th>
               <th scope="" data-label="Adjustments:">
                 <div class="slds-truncate" title="Adjustments:">
                   Adjustments:
@@ -1290,6 +1334,9 @@
                 <div class="slds-truncate" title=""></div>
               </th>
               <th scope="row" data-label="">
+                <div class="slds-truncate" title=""></div>
+              </th>
+              <th scope="" data-label="">
                 <div class="slds-truncate" title=""></div>
               </th>
               <th scope="" data-label="">

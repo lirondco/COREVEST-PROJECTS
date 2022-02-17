@@ -5,6 +5,7 @@
     helper.queryWires(component);
     helper.compilePermissions(component);
     helper.queryDealNotes(component);
+    helper.compilePropertyPermissions(component);
   },
 
   calculateSubTotals: function (component, event, helper) {

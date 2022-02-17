@@ -87,13 +87,15 @@
       "Daily_Interest_Rate_Total__c",
       "Inspection_Fee__c",
       "Escrow_Agent__r.Name",
+      "Title_Company__r.Name",
       "Wire__r.Name",
       "Wire__r.Wire_Number__c",
       "Wire__r.Origination_Fee__c",
       "Wire__r.Daily_Interest_Rate__c",
       "Wire__r.BlackSquare_Fee__c",
       "Approved_Renovation_Holdback__c",
-      "Approved_Advance_Amount_Max__c"
+      "Approved_Advance_Amount_Max__c",
+      "Property__r.Title_Review_Company__c"
     ];
 
     var action = component.get("c.getRecordList");
@@ -197,6 +199,16 @@
 
     component.find("util").getPermissions("Advance__c", fields, (response) => {
       component.set("v.permissionsMap", response);
+    });
+  },
+
+  compilePropertyPermissions: function (component, helper, records) {
+    let fields = ["Status__c"];
+
+    component.find("util").getPermissions("Property__c", fields, (response) => {
+      console.log('Prop permissions', JSON.stringify(response));
+
+      component.set("v.propertyPermissionsMap", response);
     });
   },
 
