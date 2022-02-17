@@ -146,8 +146,11 @@ public without sharing class DscrImportHelper {
       );
 
       List<Lender_Deal_to_Deal__c> newLdds = new List<Lender_Deal_to_Deal__c>();
-
+      // Set<String> newLoanIds = newDeals.keySet();
       for(Map<String, String> m : cleanedMapList) {
+        // if(!newLoanIds.contains(m.get('Loan ID'))) {
+        //   continue;
+        // }
         String uniqueId = m.get('Loan ID');
         Opportunity deal = newDeals.get(uniqueId);
         Lender_Deal_to_Deal__c ldd = new Lender_Deal_to_Deal__c();
@@ -155,6 +158,7 @@ public without sharing class DscrImportHelper {
         ldd.Lender_Deal__c = recordId;
         ldd.Status__c = 'Decision Pending';
         newLdds.add(ldd);
+        // newLoanIds.remove(uniqueId);
       }
 
       insert newLdds;
