@@ -58,6 +58,17 @@ public class opportunity_Helper {
   public static Map<String, ID> VENDOR_MAP;
 
   public static void beforeInsert(List<Opportunity> newList) {
+    List<Swap_Rate__c> SwapRate = [
+      SELECT
+        Five_Year_Swap__c,
+        Seven_Year_Swap__c,
+        Ten_Year_Swap__c,
+        Thirty_Year_Swap__c
+      FROM Swap_Rate__c
+      WHERE CreatedDateTime__c != NULL
+      ORDER BY CreatedDateTime__c DESC
+      LIMIT 1
+    ]; //Raj. 2/14/2022. CIP304.
     for (Opportunity o : newList) {
       o.Pricebook2Id = '01sj0000001DCOIAA4';
 
@@ -168,6 +179,61 @@ public class opportunity_Helper {
           o.Asset_Unit_Count_Max__c = 'N/A';
         }
       }
+      //Raj. 2/14/2022. CIP304. Begin
+      if (
+        o.RecordType__c == 'Term' &&
+        o.Rate_Locked__c == false &&
+        o.Term_Loan_Type__c != null &&
+        o.StageName != 'Withdrawn' &&
+        o.StageName != 'Rejected' &&
+        SwapRate.size() > 0
+      ) {
+        decimal floor;
+        if (o.Floor__c != null)
+          floor = o.Floor__c;
+        else
+          floor = 0;
+
+        switch on o.Term_Loan_Type__c {
+          when '5 Year' {
+            if (SwapRate[0].Five_Year_Swap__c != null) {
+              if (SwapRate[0].Five_Year_Swap__c > floor) {
+                o.Swap_Rate__c = SwapRate[0].Five_Year_Swap__c;
+              } else {
+                o.Swap_Rate__c = floor;
+              }
+            }
+          }
+          when '7 Year' {
+            if (SwapRate[0].Seven_Year_Swap__c != null) {
+              if (SwapRate[0].Seven_Year_Swap__c > floor) {
+                o.Swap_Rate__c = SwapRate[0].Seven_Year_Swap__c;
+              } else {
+                o.Swap_Rate__c = floor;
+              }
+            }
+          }
+          when '10 Year' {
+            if (SwapRate[0].Ten_Year_Swap__c != null) {
+              if (SwapRate[0].Ten_Year_Swap__c > floor) {
+                o.Swap_Rate__c = SwapRate[0].Ten_Year_Swap__c;
+              } else {
+                o.Swap_Rate__c = floor;
+              }
+            }
+          }
+          when '30 Year' {
+            if (SwapRate[0].Thirty_Year_Swap__c != null) {
+              if (SwapRate[0].Thirty_Year_Swap__c > floor) {
+                o.Swap_Rate__c = SwapRate[0].Thirty_Year_Swap__c;
+              } else {
+                o.Swap_Rate__c = floor;
+              }
+            }
+          }
+        } //switch
+      }
+      //Raj. 2/14/2022. CIP304. End
     }
   }
 
@@ -764,7 +830,10 @@ public class opportunity_Helper {
       if (o.StageName != oldMap.get(o.Id).StageName) {
         o.Loan_Status_Change_Date__c = System.today();
 
-        if (oldMap.get(o.Id).StageName == 'UW Hold' && o.StageName != 'UW Hold') {
+        if (
+          oldMap.get(o.Id).StageName == 'UW Hold' &&
+          o.StageName != 'UW Hold'
+        ) {
           o.In_Process_of_Withdrawn_or_Rejected__c = false;
         }
 
@@ -1399,7 +1468,6 @@ public class opportunity_Helper {
         }
       }
 
-
       if (
         o.Securitization__c != null &&
         oldMap.get(o.Id).Securitization__c != o.Securitization__c
@@ -1423,8 +1491,10 @@ public class opportunity_Helper {
         (o.StageName == 'Approved by Committee' ||
         o.StageName == 'Underwriting') &&
         o.Type == 'Term Loan' &&
-        (o.Third_Party_Title__c != oldMap.get(o.Id).Third_Party_Title__c ||
-        o.Title__c != oldMap.get(o.Id).Title__c)
+        ((o.Third_Party_Title__c != oldMap.get(o.Id).Third_Party_Title__c &&
+        o.Third_Party_Title__c != null) ||
+        o.Title__c != oldMap.get(o.Id).Title__c &&
+        o.Title__c != null)
       ) {
         sendToYardiCSV.add(o.Id);
       }
@@ -2884,7 +2954,7 @@ public class opportunity_Helper {
       'SELECT Id, OpportunityId, ' +
       fieldToUpdate +
       ' FROM OpportunityLineItem WHERE OpportunityId IN (\'' +
-      String.join(new List<Id>(oppMap.keySet()), '\',') +
+      String.join(new List<Id>(oppMap.keySet()), '\',\'') +
       '\')';
     List<OpportunityLineItem> oppLineItems = Database.query(soql);
 

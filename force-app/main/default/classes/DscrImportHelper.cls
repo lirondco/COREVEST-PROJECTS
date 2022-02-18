@@ -2,7 +2,6 @@ public without sharing class DscrImportHelper {
   public class ImportException extends Exception {
   }
 
-
   // field reference from the JS file is commented at the bottom of this file.
 
   public static final Id HOUSE_ACCOUNT_USER = retrieveHouseAccountUserId();
@@ -14,7 +13,6 @@ public without sharing class DscrImportHelper {
   public static final Id PROP_RECID = Schema.SObjectType.Property__c.getRecordTypeInfosByName()
     .get('Single Rental Loan')
     .getRecordTypeId();
-
 
   public static Id retrieveHouseAccountUserId() {
     List<User> contacts = [SELECT Id FROM USer WHERE Name = 'House Account'];
@@ -59,7 +57,7 @@ public without sharing class DscrImportHelper {
 
       Map<String, String> emailToAccount = new Map<String, String>();
 
-      List<Map<String,String>> cleanedMapList = new List<Map<String,String>>();
+      List<Map<String, String>> cleanedMapList = new List<Map<String, String>>();
       Set<String> loanIdSet = new Set<String>();
 
       for (Map<String, String> m : mapToParse) {
@@ -84,7 +82,7 @@ public without sharing class DscrImportHelper {
             newKey = 'Loan Purpose';
           }
 
-          if(key.contains('Amortization Type')) {
+          if (key.contains('Amortization Type')) {
             newKey = 'Amortization Type';
           }
 
@@ -117,8 +115,10 @@ public without sharing class DscrImportHelper {
         cleanedMapList.add(cleanMap);
       }
 
-      if(cleanedMapList.size() == 0) {
-        throw new ImportException('This does not seem to be a valid excel file.');
+      if (cleanedMapList.size() == 0) {
+        throw new ImportException(
+          'This does not seem to be a valid excel file.'
+        );
       }
 
       Map<String, Contact> contactMap = generateContactsMap(
@@ -146,11 +146,11 @@ public without sharing class DscrImportHelper {
       );
 
       List<Lender_Deal_to_Deal__c> newLdds = new List<Lender_Deal_to_Deal__c>();
-      // Set<String> newLoanIds = newDeals.keySet();
-      for(Map<String, String> m : cleanedMapList) {
-        // if(!newLoanIds.contains(m.get('Loan ID'))) {
-        //   continue;
-        // }
+      Set<String> newLoanIds = newDeals.keySet();
+      for (Map<String, String> m : cleanedMapList) {
+        if (!newLoanIds.contains(m.get('Loan ID'))) {
+          continue;
+        }
         String uniqueId = m.get('Loan ID');
         Opportunity deal = newDeals.get(uniqueId);
         Lender_Deal_to_Deal__c ldd = new Lender_Deal_to_Deal__c();
@@ -158,7 +158,7 @@ public without sharing class DscrImportHelper {
         ldd.Lender_Deal__c = recordId;
         ldd.Status__c = 'Decision Pending';
         newLdds.add(ldd);
-        // newLoanIds.remove(uniqueId);
+        newLoanIds.remove(uniqueId);
       }
 
       insert newLdds;
@@ -177,17 +177,16 @@ public without sharing class DscrImportHelper {
     Lender_Deal__c ldRecord,
     Set<String> loanIDs
   ) {
-
     Map<String, Opportunity> newDeals = new Map<String, Opportunity>();
     Map<String, Id> existingDeals = generateExistingDealsMap(loanIDs);
 
     for (Map<String, String> cm : cleanedMapList) {
       String uniqueId = cm.get('Loan ID');
-      if(newDeals.containsKey(uniqueId)) {
+      if (newDeals.containsKey(uniqueId)) {
         continue;
       }
       Opportunity existingDeal = new Opportunity();
-      if(existingDeals.containsKey(uniqueId)) {
+      if (existingDeals.containsKey(uniqueId)) {
         existingDeal.Id = existingDeals.get(uniqueId);
       }
 
@@ -384,7 +383,10 @@ public without sharing class DscrImportHelper {
     return accountMap;
   }
 
-  public static Opportunity generateDeal(Map<String, String> m, Opportunity opp) {
+  public static Opportunity generateDeal(
+    Map<String, String> m,
+    Opportunity opp
+  ) {
     Opportunity deal = opp;
 
     deal.RecordTypeId = DEAL_RECID;
@@ -392,7 +394,7 @@ public without sharing class DscrImportHelper {
     deal.Deal_Intro_Source__c = 'Imported List';
     deal.StageName = 'Initial Review';
     deal.LOC_Loan_Type__c = 'Investor DSCR';
-    
+
     //deal.Renovation_Funding__c ??? waiting for response
 
     deal.Deal_Code__c = m.get('Loan ID');
@@ -451,19 +453,26 @@ public without sharing class DscrImportHelper {
       deal.Final_Loan_Amount__c = tla;
     }
 
-    if (String.isNotEmpty(m.get('LTC')) && (m.get('LTC').replaceAll('\\.', '')).isNumeric()) {
+    if (
+      String.isNotEmpty(m.get('LTC')) &&
+      (m.get('LTC').replaceAll('\\.', '')).isNumeric()
+    ) {
       Decimal ltc = Decimal.valueOf(m.get('LTC')) * 100;
       deal.LTC__c = ltc;
     }
 
     if (
-      String.isNotEmpty(m.get('Total LTC')) && (m.get('Total LTC').replaceAll('\\.', '')).isNumeric()
+      String.isNotEmpty(m.get('Total LTC')) &&
+      (m.get('Total LTC').replaceAll('\\.', '')).isNumeric()
     ) {
       Decimal totalLTC = Decimal.valueOf(m.get('Total LTC')) * 100;
       deal.Total_Loan_LTC__c = totalLTC;
     }
 
-    if (String.isNotEmpty(m.get('LTV')) && (m.get('LTV').replaceAll('\\.', '')).isNumeric()) {
+    if (
+      String.isNotEmpty(m.get('LTV')) &&
+      (m.get('LTV').replaceAll('\\.', '')).isNumeric()
+    ) {
       Decimal ltv = Decimal.valueOf(m.get('LTV')) * 100;
       deal.Closing_LTV__c = ltv;
     }
@@ -472,12 +481,17 @@ public without sharing class DscrImportHelper {
       Date dateOfFirstPayment = Date.valueOf(m.get('Date of 1st Payment'));
       deal.First_Payment_Date__c = dateOfFirstPayment;
     }
-    
-    if(String.isNotEmpty(m.get('Prepayment Type'))) {
-      deal.Stepdown_Prepayment_Period__c = m.get('Prepayment Type').replaceAll('/', ',');
+
+    if (String.isNotEmpty(m.get('Prepayment Type'))) {
+      deal.Stepdown_Prepayment_Period__c = m.get('Prepayment Type')
+        .replaceAll('/', ',');
     }
 
-    deal.Foreign_National__c = String.isNotEmpty(m.get('Foreign National (Y/N)')) ? m.get('Foreign National (Y/N)') == 'Y' : false;
+    deal.Foreign_National__c = String.isNotEmpty(
+        m.get('Foreign National (Y/N)')
+      )
+      ? m.get('Foreign National (Y/N)') == 'Y'
+      : false;
 
     if (
       String.isNotEmpty(m.get('IO Term')) &&
@@ -496,7 +510,7 @@ public without sharing class DscrImportHelper {
       deal.IO_Term__c = m.get('IO Term');
     }
 
-    if(String.isNotEmpty(m.get('Amortization Type'))) {
+    if (String.isNotEmpty(m.get('Amortization Type'))) {
       deal.Interest_Rate_Type__c = m.get('Amortization Type');
     }
 
@@ -532,12 +546,14 @@ public without sharing class DscrImportHelper {
 
     p.Deal__c = deal.Id;
     p.Status__c = 'Active';
-    if(String.isNotEmpty(PROP_RECID)) {
+    if (String.isNotEmpty(PROP_RECID)) {
       p.RecordTypeId = PROP_RECID;
     }
 
-    if(String.isNotEmpty(m.get('Property Type')) && 
-    DATA_TRANSFORMATION_MAP.containsKey('Property_Type__c')) {
+    if (
+      String.isNotEmpty(m.get('Property Type')) &&
+      DATA_TRANSFORMATION_MAP.containsKey('Property_Type__c')
+    ) {
       Map<String, Data_Transformation__mdt> dtMap = DATA_TRANSFORMATION_MAP.get(
         'Property_Type__c'
       );
@@ -551,75 +567,104 @@ public without sharing class DscrImportHelper {
       p.Property_Type__c = m.get('Property Type');
     }
 
-    if(String.isNotEmpty(m.get('Address'))) {
+    if (String.isNotEmpty(m.get('Address'))) {
       p.Name = m.get('Address');
       p.Property_Name__c = m.get('Address');
     } else {
-      throw new ImportException('Unable to finish import due to: Address is missing for Loan ID: ' + m.get('Loan ID'));
+      throw new ImportException(
+        'Unable to finish import due to: Address is missing for Loan ID: ' +
+        m.get('Loan ID')
+      );
     }
 
-    if(String.isNotEmpty(m.get('City'))) {
+    if (String.isNotEmpty(m.get('City'))) {
       p.City__c = m.get('City');
     } else {
-      throw new ImportException('Unable to finish import due to: City is missing for Loan ID: ' + m.get('Loan ID'));
+      throw new ImportException(
+        'Unable to finish import due to: City is missing for Loan ID: ' +
+        m.get('Loan ID')
+      );
     }
 
-    if(String.isNotEmpty(m.get('State'))) {
+    if (String.isNotEmpty(m.get('State'))) {
       String state = m.get('State').trim();
-      if(state.length() != 2) {
-        throw new ImportException('Unable to finish import due to: State value (' + state + ') is invalid for Loan ID: ' + m.get('Loan ID') + '.\n State must be a 2 character abbreviation.');
+      if (state.length() != 2) {
+        throw new ImportException(
+          'Unable to finish import due to: State value (' +
+          state +
+          ') is invalid for Loan ID: ' +
+          m.get('Loan ID') +
+          '.\n State must be a 2 character abbreviation.'
+        );
       }
       p.State__c = state;
     } else {
-      throw new ImportException('Unable to finish import due to: State is missing for Loan ID: ' + m.get('Loan ID'));
+      throw new ImportException(
+        'Unable to finish import due to: State is missing for Loan ID: ' +
+        m.get('Loan ID')
+      );
     }
 
-    if(String.isNotEmpty(m.get('Zip'))) {
+    if (String.isNotEmpty(m.get('Zip'))) {
       p.ZipCode__c = m.get('Zip');
     }
 
-    if(String.isNotEmpty(m.get('Units')) && (m.get('Units').replaceAll('\\.', '')).isNumeric()) {
+    if (
+      String.isNotEmpty(m.get('Units')) &&
+      (m.get('Units').replaceAll('\\.', '')).isNumeric()
+    ) {
       p.Number_of_Units__c = Decimal.valueOf(m.get('Units'));
     }
 
-    if(String.isNotEmpty(m.get('Sqft'))) {
+    if (String.isNotEmpty(m.get('Sqft'))) {
       String sqft = m.get('Sqft').replaceAll('[^0-9.]', '');
       p.Square_Feet__c = sqft;
     }
 
-    if(String.isNotEmpty(m.get('Purchase Price')) && (m.get('Purchase Price').replaceAll('\\.', '')).isNumeric()) {
+    if (
+      String.isNotEmpty(m.get('Purchase Price')) &&
+      (m.get('Purchase Price').replaceAll('\\.', '')).isNumeric()
+    ) {
       p.Acquisition_Price__c = Decimal.valueOf(m.get('Purchase Price'));
     }
 
-    if(String.isNotEmpty(m.get('Date of 1st Payment'))) {
+    if (String.isNotEmpty(m.get('Date of 1st Payment'))) {
       Date firstPayDate = Date.valueOf(m.get('Date of 1st Payment'));
-      if(firstPayDate != null) {
+      if (firstPayDate != null) {
         p.First_Payment_Date__c = firstPayDate;
       }
     }
 
-    if(String.isNotEmpty(m.get('3rd Party Valuation Date'))) {
+    if (String.isNotEmpty(m.get('3rd Party Valuation Date'))) {
       Date thirdPvd = Date.valueOf(m.get('3rd Party Valuation Date'));
-      if(thirdPvd != null) {
+      if (thirdPvd != null) {
         p.BPO_Appraisal_Date__c = thirdPvd;
       }
     }
 
-    if(String.isNotEmpty(m.get('3rd Party Valuation Type'))) {
+    if (String.isNotEmpty(m.get('3rd Party Valuation Type'))) {
       p.Valuation_Type__c = m.get('3rd Party Valuation Type');
     }
 
-    if(String.isNotEmpty(m.get('3rd Party AIV')) && (m.get('3rd Party AIV').replaceAll('\\.', '')).isNumeric()) {
+    if (
+      String.isNotEmpty(m.get('3rd Party AIV')) &&
+      (m.get('3rd Party AIV').replaceAll('\\.', '')).isNumeric()
+    ) {
       p.Appraised_Value_Amount__c = Decimal.valueOf(m.get('3rd Party AIV'));
     }
 
-    if(String.isNotEmpty(m.get('3rd Party Valuation Provider')) && 
-    DATA_TRANSFORMATION_MAP.containsKey('BPO_Appraisal_Firm__c')) {
+    if (
+      String.isNotEmpty(m.get('3rd Party Valuation Provider')) &&
+      DATA_TRANSFORMATION_MAP.containsKey('BPO_Appraisal_Firm__c')
+    ) {
       Map<String, Data_Transformation__mdt> dtMap = DATA_TRANSFORMATION_MAP.get(
         'BPO_Appraisal_Firm__c'
       );
       if (dtMap.containsKey(m.get('3rd Party Valuation Provider').trim())) {
-        p.BPO_Appraisal_Firm__c = dtMap.get(m.get('3rd Party Valuation Provider')).Updated_Data__c;
+        p.BPO_Appraisal_Firm__c = dtMap.get(
+            m.get('3rd Party Valuation Provider')
+          )
+          .Updated_Data__c;
       }
     } else if (
       String.isNotEmpty(m.get('3rd Party Valuation Provider')) &&
@@ -636,7 +681,8 @@ public without sharing class DscrImportHelper {
         'Refinance_Acquisition__c'
       );
       if (dtMap.containsKey(m.get('Loan Purpose').trim())) {
-        p.Refinance_Acquisition__c = dtMap.get(m.get('Loan Purpose')).Updated_Data__c;
+        p.Refinance_Acquisition__c = dtMap.get(m.get('Loan Purpose'))
+          .Updated_Data__c;
       }
     } else if (
       String.isNotEmpty(m.get('Loan Purpose')) &&
@@ -645,18 +691,22 @@ public without sharing class DscrImportHelper {
       p.Refinance_Acquisition__c = m.get('Loan Purpose');
     }
 
-    if(String.isNotEmpty(m.get('Leased (Y/N)'))) {
+    if (String.isNotEmpty(m.get('Leased (Y/N)'))) {
       p.Currently_Leased__c = m.get('Leased (Y/N');
     }
 
-    if(String.isNotEmpty(m.get('Occupancy Status/Type'))) {
+    if (String.isNotEmpty(m.get('Occupancy Status/Type'))) {
       p.Occupancy_Status__c = m.get('Occupancy Status/Type');
     }
 
     return p;
   }
 
-  public static List<Deal_Contact__c> generateDealContacts(Opportunity deal, Contact contact, Map<String,String> m) {
+  public static List<Deal_Contact__c> generateDealContacts(
+    Opportunity deal,
+    Contact contact,
+    Map<String, String> m
+  ) {
     List<Deal_Contact__c> generatedDealContacts = new List<Deal_Contact__c>();
 
     Deal_Contact__c entityDc = new Deal_Contact__c();
@@ -666,11 +716,11 @@ public without sharing class DscrImportHelper {
     entityDc.Deal_Contact_Type__c = 'Entity';
     entityDc.Entity_Type__c = 'Borrower';
 
-    if(String.isNotEmpty(m.get('Borrower Name'))) {
+    if (String.isNotEmpty(m.get('Borrower Name'))) {
       String borrowerName = m.get('Borrower Name');
       entityDc.Company_Name__c = borrowerName;
 
-      if(borrowerName.containsIgnoreCase('llc')) {
+      if (borrowerName.containsIgnoreCase('llc')) {
         entityDc.Company_Type__c = 'Limited Liability Company';
       }
     }
@@ -682,11 +732,19 @@ public without sharing class DscrImportHelper {
     guarantorDc.Entity_Type__c = 'Guarantor';
     guarantorDc.Contact__c = contact.Id;
 
-    if(String.isNotEmpty(m.get('Experience')) && (m.get('Experience').replaceAll('\\.', '')).isNumeric()) {
-      guarantorDc.Years_of_Experience1__c = Decimal.valueOf(m.get('Experience'));
+    if (
+      String.isNotEmpty(m.get('Experience')) &&
+      (m.get('Experience').replaceAll('\\.', '')).isNumeric()
+    ) {
+      guarantorDc.Years_of_Experience1__c = Decimal.valueOf(
+        m.get('Experience')
+      );
     }
 
-    if(String.isNotEmpty(m.get('FICO')) && (m.get('FICO').replaceAll('\\.', '')).isNumeric()) {
+    if (
+      String.isNotEmpty(m.get('FICO')) &&
+      (m.get('FICO').replaceAll('\\.', '')).isNumeric()
+    ) {
       Decimal fico = Decimal.valueOf(m.get('FICO'));
       guarantorDc.Experian__c = fico;
       guarantorDc.TransUnion__c = fico;
@@ -737,4 +795,5 @@ public without sharing class DscrImportHelper {
     "Prepayment Type": "5/4/3/2/1",
     "Foreign National (Y/N)": "N"
 }
-*/ 
+*/
+
