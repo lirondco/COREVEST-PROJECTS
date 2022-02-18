@@ -14,6 +14,7 @@ trigger property_Advance_Trigger on Property_Advance__c(
     }
     if (Trigger.isAfter && Trigger.isInsert) {
       Property_Advance_Helper.afterInsert(Trigger.New);
+      PropertyTriggerExtensions.checkAdvancePropertyStatuses(Trigger.newMap);
     }
     if (Trigger.isBefore && Trigger.isUpdate) {
       Property_Advance_Helper.beforeUpdate(Trigger.New, Trigger.Old);

@@ -539,7 +539,7 @@
 
 				<c:DataTableColumn
 				label="Advance Group"
-				name="Initial_Advance__r.Name"
+				name="Initial_Advance__r.Advance_Group_Name__c"
 				linkToRecord="Initial_Advance__c"
 				sortable="true"
 				displayType="text"

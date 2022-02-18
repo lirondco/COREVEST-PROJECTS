@@ -124,7 +124,7 @@
         if (response.getReturnValue().length > 0) {
           component.set("v.propertyAdvances", response.getReturnValue());
           component.find("refresh").set("v.disabled", false);
-        } else {
+        } else if(response.getReturnValue().length == 0 && component.get("v.record") != null) {
           var navEvt = $A.get("e.force:navigateToSObject");
           navEvt.setParams({
             recordId: component.get("v.record").Deal__c
@@ -241,7 +241,7 @@
         if (state === "SUCCESS") {
           helper.resetPropertyStatusSelection(component);
           helper.clearUpdatedPropertyStatuses(component);
-          helper.queryPropertyAdvances(component);
+          $A.get("e.force:refreshView").fire();
           $A.util.toggleClass(component.find("spinner"), "slds-hide");
           toastEvent.setParams({
             title: "Success!",
@@ -321,6 +321,7 @@
     component.find("util").query(queryString, (data) => {
       // console.log("--deposit notes--", data);
       if (
+        data[0] != undefined &&
         data[0].hasOwnProperty("Deal__r") &&
         data[0].Deal__r.hasOwnProperty("Deposit_Notes__c")
       ) {
