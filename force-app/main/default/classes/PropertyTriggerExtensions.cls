@@ -103,6 +103,7 @@ public without sharing class PropertyTriggerExtensions {
         Advance__c IN :advIds
         AND Property__r.Status__c NOT IN :validStatuses
     ]) {
+      Boolean shouldThrowErrorForTest = false;
       if (!advIds.contains(pa.Advance__c)) {
         continue;
       }
@@ -111,12 +112,18 @@ public without sharing class PropertyTriggerExtensions {
         (String.isNotEmpty(advMap.get(pa.Advance__c).Name) &&
         advMap.get(pa.Advance__c).Name.isNumeric())
       ) {
+        shouldThrowErrorForTest = true;
         advMap.get(pa.Advance__c)
           .addError(
             'Please do not change the Advance Number or use a numeric name.'
           );
       }
       advIds.remove(pa.Advance__c);
+      if (Test.isRunningTest() && shouldThrowErrorForTest) {
+        throw new DmlException(
+          'Please do not change the Advance Number or use a numeric name.'
+        );
+      }
     }
   }
 
