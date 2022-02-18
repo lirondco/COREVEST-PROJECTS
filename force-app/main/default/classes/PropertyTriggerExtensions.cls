@@ -1,5 +1,20 @@
 public without sharing class PropertyTriggerExtensions {
- public static List<String> validStatuses = new List<String>{ 'Closing', 'Active' };
+  public static List<String> validStatuses = new List<String>{
+    'Closing',
+    'Active'
+  };
+  public static final Set<String> NUMBERS_SET = new Set<String>{
+    '%0%',
+    '%1%',
+    '%2%',
+    '%3%',
+    '%4%',
+    '%5%',
+    '%6%',
+    '%7%',
+    '%8%',
+    '%9%'
+  };
 
   public static void checkStatusChanges(
     Map<Id, Property__c> oldMap,
@@ -21,7 +36,9 @@ public without sharing class PropertyTriggerExtensions {
         );
       }
 
-      if(oP.Status__c != nP.Status__c && validStatuses.contains(nP.Status__c)) {
+      if (
+        oP.Status__c != nP.Status__c && validStatuses.contains(nP.Status__c)
+      ) {
         advanceIds.add(nP.Initial_Advance__c);
       }
     }
@@ -36,8 +53,8 @@ public without sharing class PropertyTriggerExtensions {
       update cxledProperties.values();
     }
 
-    if(advanceIds.size() >0) {
-        updateAdvances(advanceIds);
+    if (advanceIds.size() > 0) {
+      updateAdvances(advanceIds);
     }
   }
 
@@ -73,19 +90,44 @@ public without sharing class PropertyTriggerExtensions {
     }
 
     if (advanceIds.size() > 0) {
-        updateAdvances(advanceIds);
+      updateAdvances(advanceIds);
+    }
+  }
+
+  public static void validateAdvanceNames(Map<Id, Advance__c> advMap) {
+    Set<Id> advIds = advMap.keySet();
+    for (Property_Advance__c pa : [
+      SELECT Id, Advance__c
+      FROM Property_Advance__c
+      WHERE
+        Advance__c IN :advIds
+        AND Property__r.Status__c NOT IN :validStatuses
+    ]) {
+      if (!advIds.contains(pa.Advance__c)) {
+        continue;
+      }
+      if (
+        advMap.get(pa.Advance__c).Advance_Num__c != null ||
+        (String.isNotEmpty(advMap.get(pa.Advance__c).Name) &&
+        advMap.get(pa.Advance__c).Name.isNumeric())
+      ) {
+        advMap.get(pa.Advance__c)
+          .addError(
+            'Please do not change the Advance Number or use a numeric name.'
+          );
+      }
+      advIds.remove(pa.Advance__c);
     }
   }
 
   public static void updateAdvances(Set<Id> advanceIds) {
-
     Map<Id, Advance__c> advances = new Map<Id, Advance__c>(
       [
         SELECT Id, Deal__c, Name
         FROM Advance__c
         WHERE
           Id IN :advanceIds
-          AND Name = 'TBD'
+          AND (NOT Name LIKE :NUMBERS_SET)
           AND Id NOT IN (
             SELECT Advance__c
             FROM Property_Advance__c
@@ -103,7 +145,7 @@ public without sharing class PropertyTriggerExtensions {
             (
               SELECT Id, Name, Advance_Num__c
               FROM Advances__r
-              WHERE Name != 'TBD'
+              WHERE Name LIKE :NUMBERS_SET AND Advance_Num__c != NULL
               ORDER BY Advance_Num__c DESC
               LIMIT 1
             )

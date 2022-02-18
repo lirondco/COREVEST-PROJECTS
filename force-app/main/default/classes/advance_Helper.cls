@@ -228,6 +228,7 @@ public class advance_Helper {
 
     Map<Id, Advance__c> advMap = new Map<Id, Advance__c>();
     List<Id> advancesForCompletion = new List<Id>();
+    Map<Id, Advance__c> advanceWithNameChanges = new Map<Id, Advance__c>();
 
     for (Integer i = 0; i < newList.size(); i++) {
       if (
@@ -247,6 +248,14 @@ public class advance_Helper {
       }
 
       if (newList[i].RecordTypeId != RECORDTYPE_MAP.get('Interest Reserve')) {
+        if(
+          (newList[i].Name != oldList[i].Name ||
+          newList[i].Advance_Num__c != oldList[i].Advance_Num__c) &&
+          newList[i].Status__c != 'Completed'
+        ) {
+          advanceWithNameChanges.put(newList[i].Id, newList[i]);
+        }
+
         if (
           newList[i].Status__c != oldList[i].Status__c &&
           newList[i].Status__c == 'Completed'
@@ -383,6 +392,10 @@ public class advance_Helper {
             );
         }
       }
+    }
+
+    if(advanceWithNameChanges.size() > 0) {
+      PropertyTriggerExtensions.validateAdvanceNames(advanceWithNameChanges);
     }
 
     for (Opportunity o : [

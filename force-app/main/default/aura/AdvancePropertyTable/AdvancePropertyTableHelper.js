@@ -102,7 +102,8 @@
       "Wire__r.BlackSquare_Fee__c",
       "Approved_Renovation_Holdback__c",
       "Approved_Advance_Amount_Max__c",
-      "Property__r.Title_Review_Company__c"
+      "Property__r.Title_Review_Company__c",
+      "Advance__r.Status__c"
     ];
 
     var action = component.get("c.getRecordList");

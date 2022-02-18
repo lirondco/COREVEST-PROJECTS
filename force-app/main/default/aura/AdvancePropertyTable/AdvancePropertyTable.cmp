@@ -45,8 +45,17 @@
       />
       <aura:if isTrue="{!v.isEditButtonClicked}">
         <lightning:buttonGroup>
-          <lightning:button onclick="{!c.handleStatusButtonsClick}" label="Update Statuses" title="update" variant="brand" />
-          <lightning:button onclick="{!c.handleStatusButtonsClick}" label="Cancel" title="cancel" />
+          <lightning:button
+            onclick="{!c.handleStatusButtonsClick}"
+            label="Update Statuses"
+            title="update"
+            variant="brand"
+          />
+          <lightning:button
+            onclick="{!c.handleStatusButtonsClick}"
+            label="Cancel"
+            title="cancel"
+          />
         </lightning:buttonGroup>
       </aura:if>
     </div>
@@ -223,10 +232,10 @@
                 <th scope="" data-label="">
                   <div class="slds-truncate" title="Property Status">
                     <aura:if
-                      isTrue="{! and (!empty(v.propertyPermissionsMap), v.propertyPermissionsMap.Status__c.isUpdateable, v.record.Status__c != 'Completed')}"
+                      isTrue="{!v.propertyPermissionsMap != null &amp;&amp; v.propertyPermissionsMap.Status__c.isUpdateable &amp;&amp; item.Advance__r.Status__c != 'Completed'}"
                     >
                       <aura:if
-                        isTrue="{!and(!empty(v.currentlyEditing), v.currentlyEditing == item.Property__c)}"
+                        isTrue="{!v.currentlyEditing != null &amp;&amp; v.currentlyEditing == item.Property__c}"
                       >
                         <div class="flexed-div combobox-div">
                           <lightning:combobox
@@ -950,10 +959,10 @@
                 <th scope="" data-label="">
                   <div class="slds-truncate" title="Property Status">
                     <aura:if
-                      isTrue="{! and (!empty(v.propertyPermissionsMap), v.propertyPermissionsMap.Status__c.isUpdateable,  v.record.Status__c != 'Completed')}"
+                      isTrue="{!v.propertyPermissionsMap != null &amp;&amp; v.propertyPermissionsMap.Status__c.isUpdateable &amp;&amp; item.Advance__r.Status__c != 'Completed'}"
                     >
                       <aura:if
-                        isTrue="{!and(!empty(v.currentlyEditing), v.currentlyEditing == item.Property__c)}"
+                        isTrue="{!v.currentlyEditing != null &amp;&amp; v.currentlyEditing == item.Property__c}"
                       >
                         <div class="flexed-div combobox-div">
                           <lightning:combobox
