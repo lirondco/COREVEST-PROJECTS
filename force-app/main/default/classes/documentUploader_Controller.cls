@@ -283,7 +283,7 @@ public without sharing class documentUploader_Controller {
     String apiFieldName = sobjectType;
     if (apiFieldName == 'Opportunity') {
       apiFieldName = 'Deal__c';
-    } else if (!apiFieldName.contains('__c') && apiFieldName != 'Account') {
+    } else if (!apiFieldName.contains('__c')) {
       apiFieldName = apiFieldName + '__c';
     }
 
@@ -445,9 +445,7 @@ public without sharing class documentUploader_Controller {
           );
           Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
           email.setToAddresses(new List<string>{ 'karen.wade@alston.com' });
-          email.setCCAddresses(
-            new List<string>{ 'leah@cvest.com', 'bryon.harland@cvest.com' }
-          );
+          email.setCCAddresses(new List<string>{ 'leah@cvest.com', 'bryon.harland@cvest.com' });
           email.setTemplateId(et.id);
           email.setSubject('Documents are ready to review for a Term Loan');
           email.setHtmlBody(emailBody);
@@ -678,9 +676,7 @@ public without sharing class documentUploader_Controller {
     for (Property__c property : [
       SELECT Id, Status__c, Name
       FROM Property__c
-      WHERE
-        Deal__c = :dealId
-        AND Status__c IN ('Active', 'Due Diligence', 'Pending', 'Closing')
+      WHERE Deal__c = :dealId AND Status__c IN ('Active','Due Diligence','Pending','Closing')
       ORDER BY Name ASC
     ]) {
       Map<String, String> picklist = new Map<String, String>();

@@ -45,7 +45,7 @@
           picklistValues = picklistValues.concat(
             JSON.parse(response.getReturnValue())
           );
-          //console.log(picklistValues);
+          console.log("picklistValues", picklistValues);
           component.set("v.propertyOptions", picklistValues);
         } else if (state === "ERROR") {
           console.log("error");
