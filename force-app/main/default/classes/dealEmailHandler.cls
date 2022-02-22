@@ -3,6 +3,7 @@ global class dealEmailHandler implements Messaging.InboundEmailHandler {
     Messaging.InboundEmail email,
     Messaging.InboundEnvelope envelope
   ) {
+    forwardEmail(email);
     String subject = email.Subject;
     String parsedSubject = subject.substringAfter('#');
     parsedSubject = parsedSubject.replaceAll('_', ' ');
@@ -120,7 +121,7 @@ global class dealEmailHandler implements Messaging.InboundEmailHandler {
     }
 
     Integer characterLim = subject.length() <= 50 ? subject.length() : 50;
-    Integer contentLim = email.plainTextBody.length() <= 32768
+    Integer contentLim = String.isNotEmpty(email.plainTextBody) && email.plainTextBody.length() <= 32768
       ? email.plainTextBody.length()
       : 32768;
 
@@ -184,7 +185,7 @@ global class dealEmailHandler implements Messaging.InboundEmailHandler {
         Sender__c = fromAddress,
         Name = 'HTML: ' + subject.substring(0, characterLim),
         ContentVersionId__c = 'None',
-        Contents__c = email.plainTextBody.substring(0, contentLim)
+        Contents__c = String.isNotEmpty(email.plainTextBody) ? email.plainTextBody.substring(0, contentLim) : ''
       );
 
       if (
@@ -317,6 +318,14 @@ global class dealEmailHandler implements Messaging.InboundEmailHandler {
   ) {
     Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
 
+    Id orgEmail = [
+      SELECT Id, Address
+      FROM OrgWideEmailAddress
+      WHERE Address = 'integrations@cvest.com'
+      LIMIT 1
+    ]
+    .Id;
+
     email.setToAddresses(
       new List<String>{
         'logins+cvest@mkpartners.com',
@@ -334,6 +343,38 @@ global class dealEmailHandler implements Messaging.InboundEmailHandler {
     body += '\nSender: ' + senderAddress;
     email.setPlainTextbody(body);
     email.setSubject('Deal Approval Handler Error');
+    email.setOrgWideEmailAddressId(orgEmail);
+
+    Messaging.sendEmail(new List<Messaging.SIngleEmailMessage>{ email });
+  }
+
+  public static void forwardEmail(
+    Messaging.InboundEmail inbound
+  ) {
+    Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
+
+    Id orgEmail = [
+      SELECT Id, Address
+      FROM OrgWideEmailAddress
+      WHERE Address = 'integrations@cvest.com'
+      LIMIT 1
+    ]
+    .Id;
+
+    email.setToAddresses(
+      new List<String>{
+        'logins+cvest@mkpartners.com',
+        'bryon.harland@cvest.com',
+        'jonathan.lay@cvest.com'
+      }
+    );
+
+    String htmlBody = inbound.htmlBody;
+    String plainTextBody = String.isNotEmpty(inbound.plainTextBody) ? inbound.plainTextBody : '';
+    email.setPlainTextbody(plainTextBody);
+    email.setHtmlBody(htmlBody);
+    email.setSubject(inbound.subject);
+    email.setOrgWideEmailAddressId(orgEmail);
 
     Messaging.sendEmail(new List<Messaging.SIngleEmailMessage>{ email });
   }
