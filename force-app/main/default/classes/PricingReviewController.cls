@@ -1,5 +1,5 @@
 public class PricingReviewController {
-  public string recId { get; set; }
+public string recId { get; set; }
 
   public ProcessInstanceStep ApprovalProcess {
     get {

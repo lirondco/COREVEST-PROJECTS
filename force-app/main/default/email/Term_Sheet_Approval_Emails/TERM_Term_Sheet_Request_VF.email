@@ -1,5 +1,5 @@
 <messaging:emailTemplate subject="{!relatedTo.Name} - Term Sheet Request" recipientType="User" relatedToType="Opportunity">
-    <messaging:htmlEmailBody>
+    <messaging:htmlEmailBody >
         <p style="margin-top:20px;">
             Dear Beth or Executive Committee Member,</p>
 
