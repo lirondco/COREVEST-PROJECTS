@@ -670,6 +670,17 @@ public without sharing class documentUploader_Controller {
   }
 
   @AuraEnabled
+  public static Map<String,String> getPropertyPicklistsFromDealDoc(String dealDocId){
+    try {
+      Deal_Document__c dealDoc = [SELECT Id, Deal__c from Deal_Document__c where Id = :dealDocId];
+
+      return new Map<String,String>{'dealId' => dealDoc.Deal__c, 'properties' => getPropertyPicklists(dealDoc.Deal__c)};
+    } catch (Exception e) {
+      throw new AuraHandledException(e.getMessage());
+    }
+  }
+
+  @AuraEnabled
   public static String getPropertyPicklists(String dealId) {
     List<Map<String, String>> picklists = new List<Map<String, String>>();
 

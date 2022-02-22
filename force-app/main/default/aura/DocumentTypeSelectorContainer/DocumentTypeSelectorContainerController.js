@@ -22,11 +22,38 @@
     if (sobjectType == "Deal_Document__c") {
       let recordIds = [component.get("v.recordId")];
       component.set("v.recordIds", recordIds);
+      var action = component.get("c.getPropertyPicklistsFromDealDoc");
+      action.setParams({
+        dealDocId: component.get("v.recordId")
+      });
 
+      action.setCallback(this, function(response) {
+        var state = response.getState();
+        if (state === "SUCCESS") {
+          //console.log(JSON.parse(response.getReturnValue()));
+          var picklistValues = [];
+          picklistValues.push({
+            value: "",
+            label: ""
+          });
+
+          let retVal = response.getReturnValue();
+
+          picklistValues = picklistValues.concat(
+            JSON.parse(retVal['properties'])
+          );
+          console.log("picklistValues", picklistValues);
+          component.set("v.propertyOptions", picklistValues);
+          component.set('v.dealId', retVal['dealId']);
+        } else if (state === "ERROR") {
+          console.log("error");
+        }
+      });
+
+      $A.enqueueAction(action);
       //sobjectType =
-    }
-
-    if (sobjectType === "Opportunity") {
+    } else if (sobjectType === "Opportunity") {
+      component.set("v.dealId", component.get("v.recordId"));
       var action = component.get("c.getPropertyPicklists");
       action.setParams({
         dealId: component.get("v.recordId")

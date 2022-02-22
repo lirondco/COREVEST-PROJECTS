@@ -7,6 +7,7 @@
   <aura:attribute name="saving" type="Boolean" default="false" />
   <aura:attribute name="sObjectName" type="String" />
   <aura:attribute name="recordId" type="String" />
+  <aura:attribute name="dealId" type="String" />
   <aura:attribute name="recordIds" type="List" />
   <aura:attribute name="modalOpen" type="Boolean" />
 
@@ -108,7 +109,7 @@
                 <aura:if isTrue="{!and(v.dealSingleSelected, v.dealSelected)}">
                   <c:dealDocumentTypeSelector
                     aura:id="bulkSelector"
-                    recordId="{!v.recordId}"
+                    recordId="{!v.dealId}"
                     sObjectName="Opportunity"
                     recordIds="{!v.recordIds}"
                     mode="single"
@@ -126,7 +127,7 @@
                   <!-- <c:DocumentUploader recordId="{#v.recordId}" uploadType="bulk" recordType="Term_Loan" /> -->
                   <c:dealDocumentTypeSelector
                     aura:id="bulkSelector"
-                    recordId="{!v.recordId}"
+                    recordId="{!v.dealId}"
                     sObjectName="Opportunity"
                     recordIds="{!v.recordIds}"
                     mode="bulk"
@@ -163,7 +164,7 @@
                   <aura:if isTrue="{! !empty(v.propertyId)}">
                     <c:dealDocumentTypeSelector
                       aura:id="bulkSelector"
-                      recordId="{!v.recordId}"
+                      recordId="{!v.dealId}"
                       sObjectName="Opportunity"
                       sobjectType="Property__c"
                       propertyId="{!v.propertyId}"
@@ -183,7 +184,7 @@
                 >
                   <c:dealDocumentTypeSelector
                     aura:id="bulkSelector"
-                    recordId="{!v.recordId}"
+                    recordId="{!v.dealId}"
                     sObjectName="Opportunity"
                     sobjectType="Property__c"
                     recordIds="{!v.recordIds}"
