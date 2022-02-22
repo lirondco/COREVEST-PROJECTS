@@ -2,21 +2,21 @@ public without sharing class DealXFundingVehicleHelper {
 
   public static void beforeInsert(List<Deal_x_Funding_Vehicle__c> newList) {
 
-    Set<Id> fvIdsToCheck = new Set<Id>();
+    // Set<Id> fvIdsToCheck = new Set<Id>();
 
     for (Deal_x_Funding_Vehicle__c x : newList) {
       if(!x.Include_Yes_No__c) {
-        fvIdsToCheck.add(x.Funding_Vehicle__c);
+        // fvIdsToCheck.add(x.Funding_Vehicle__c);
       }
     }
   
-    Set<Id> fvSecIds = filterForSecuritizations(fvIdsToCheck);
+    // Set<Id> fvSecIds = filterForSecuritizations(fvIdsToCheck);
 
-    for (Deal_x_Funding_Vehicle__c x : newList) {
-      if(!x.Include_Yes_No__c && fvSecIds.contains(x.Funding_Vehicle__c)) {
-        x.Include_Yes_No__c = true;
-      }
-    }
+    // for (Deal_x_Funding_Vehicle__c x : newList) {
+    //   if(!x.Include_Yes_No__c && fvSecIds.contains(x.Funding_Vehicle__c)) {
+    //     x.Include_Yes_No__c = true;
+    //   }
+    // }
 
 
   }
@@ -75,7 +75,7 @@ public without sharing class DealXFundingVehicleHelper {
           AND Securitized__c = TRUE
       ]) {
         o.Securitized__c = false;
-        o.Securitization__c = null;
+        // o.Securitization__c = null;
         updatedDeals.add(o);
       }
 

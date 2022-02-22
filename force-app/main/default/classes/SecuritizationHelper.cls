@@ -1,4 +1,4 @@
-public with sharing class SecuritizationHelper {
+public without sharing class SecuritizationHelper {
   public static final Map<String, Id> RT_MAP = queryRecordTypeMap();
 
   public static void beforeInsert(List<Securitization__c> newList) {
@@ -6,8 +6,7 @@ public with sharing class SecuritizationHelper {
     //   Funding_Vehicle__c fv = new Funding_Vehicle__c();
     //   fv.Name = sec.Name;
     //   fv.Funding_Vehicle_Type__c = 'Securitization';
-    //   fv.RecordTypeId = recordTypeMap.get('Securitization');
-    //   fv.Securitization__c = sec.Id;
+    //   fv.RecordTypeId = recordTypeMap.get('SecuritizatiupdateFundingVehicleCnx
     //   insert fv;
     // response.put('fvId', fv.Id);
     //   sec.Funding_Vehicle__c = fv.Id;
@@ -27,7 +26,7 @@ public with sharing class SecuritizationHelper {
     for (Securitization__c sec : newList) {
       Securitization__c oldSec = oldMap.get(sec.Id);
       if (
-        (oldSec.Status__c != sec.Status__c && sec.Status__c == 'Redeemed') ||
+        (oldSec.Status__c != sec.Status__c && (sec.Status__c == 'Redeemed' || sec.Status__c == 'Closed')) ||
         (oldSec.Close_Date__c != sec.Close_Date__c &&
         sec.Close_Date__c != null)
       ) {
@@ -43,9 +42,9 @@ public with sharing class SecuritizationHelper {
   public static void updateFundingVehicleCnx(
     Map<Id, Securitization__c> secMap
   ) {
-    Set<Id> dealsToUpdate = new Set<Id>();
+    Map<Id, Securitization__c> dealsToUpdate = new Map<Id, Securitization__c>();
     List<Deal_x_Funding_Vehicle__c> dfvs = [
-      SELECT Id, End_Date__c, Deal__c, Deal__r.Warehouse_Line__c, Funding_Vehicle__r.Securitization__c
+      SELECT Id, End_Date__c, Deal__c, Deal__r.Securitization__c, Deal__r.Warehouse_Line__c, Funding_Vehicle__r.Securitization__c
       FROM Deal_x_Funding_Vehicle__c
       WHERE Funding_Vehicle__r.Securitization__c IN :secMap.keySet()
     ];
@@ -57,13 +56,16 @@ public with sharing class SecuritizationHelper {
         d.Funding_Vehicle__r.Securitization__c
       );
 
-      if (sec.Close_Date__c != null) {
+      if (sec.Close_Date__c != null && String.isNotEmpty(d.Deal__r.Warehouse_Line__c)) {
         d.Start_Date__c = sec.Close_Date__c;
         warehouseMap.put(d.Deal__c, d.Deal__r.Warehouse_Line__c);
       }
-      if (sec.Status__c == 'Redeemed') {
+      if (sec.Status__c == 'Redeemed' && d.Deal__r.Securitization__c != null) {
         d.End_Date__c = (Date) System.today();
-        dealsToUpdate.add(d.Deal__c);
+        dealsToUpdate.put(d.Deal__c, sec);
+      } else if (sec.Status__c == 'Closed' && d.Deal__r.Securitization__c != null) {
+        d.Include_Yes_No__c = true;
+        dealsToUpdate.put(d.Deal__c, sec);
       }
     }
 
@@ -101,14 +103,16 @@ public with sharing class SecuritizationHelper {
     }
   }
 
-  public static void updateDeals(Set<Id> dealIds) {
+  public static void updateDeals(Map<Id, Securitization__c> dealSecMap) {
     List<Opportunity> updDeals = new List<Opportunity>();
 
-    for (Id id : dealIds) {
+    for (Id id : dealSecMap.keySet()) {
+      Securitization__c sec = dealSecMap.get(id);
+      Boolean securitised = sec.Status__c == 'Closed';
       updDeals.add(
         new Opportunity(
           Id = id,
-          Securitized__c = false
+          Securitized__c = securitised
         )
       );
     }
