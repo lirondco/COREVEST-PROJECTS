@@ -3,7 +3,7 @@ global class dealEmailHandler implements Messaging.InboundEmailHandler {
     Messaging.InboundEmail email,
     Messaging.InboundEnvelope envelope
   ) {
-    forwardEmail(email);
+    // forwardEmail(email);
     String subject = email.Subject;
     String parsedSubject = subject.substringAfter('#');
     parsedSubject = parsedSubject.replaceAll('_', ' ');
@@ -348,34 +348,34 @@ global class dealEmailHandler implements Messaging.InboundEmailHandler {
     Messaging.sendEmail(new List<Messaging.SIngleEmailMessage>{ email });
   }
 
-  public static void forwardEmail(
-    Messaging.InboundEmail inbound
-  ) {
-    Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
+  // public static void forwardEmail(
+  //   Messaging.InboundEmail inbound
+  // ) {
+  //   Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
 
-    Id orgEmail = [
-      SELECT Id, Address
-      FROM OrgWideEmailAddress
-      WHERE Address = 'integrations@cvest.com'
-      LIMIT 1
-    ]
-    .Id;
+  //   Id orgEmail = [
+  //     SELECT Id, Address
+  //     FROM OrgWideEmailAddress
+  //     WHERE Address = 'integrations@cvest.com'
+  //     LIMIT 1
+  //   ]
+  //   .Id;
 
-    email.setToAddresses(
-      new List<String>{
-        'logins+cvest@mkpartners.com',
-        'bryon.harland@cvest.com',
-        'jonathan.lay@cvest.com'
-      }
-    );
+  //   email.setToAddresses(
+  //     new List<String>{
+  //       'logins+cvest@mkpartners.com',
+  //       'bryon.harland@cvest.com',
+  //       'jonathan.lay@cvest.com'
+  //     }
+  //   );
 
-    String htmlBody = inbound.htmlBody;
-    String plainTextBody = String.isNotEmpty(inbound.plainTextBody) ? inbound.plainTextBody : '';
-    email.setPlainTextbody(plainTextBody);
-    email.setHtmlBody(htmlBody);
-    email.setSubject(inbound.subject);
-    email.setOrgWideEmailAddressId(orgEmail);
+  //   String htmlBody = inbound.htmlBody;
+  //   String plainTextBody = String.isNotEmpty(inbound.plainTextBody) ? inbound.plainTextBody : '';
+  //   email.setPlainTextbody(plainTextBody);
+  //   email.setHtmlBody(htmlBody);
+  //   email.setSubject(inbound.subject);
+  //   email.setOrgWideEmailAddressId(orgEmail);
 
-    Messaging.sendEmail(new List<Messaging.SIngleEmailMessage>{ email });
-  }
+  //   Messaging.sendEmail(new List<Messaging.SIngleEmailMessage>{ email });
+  // }
 }
