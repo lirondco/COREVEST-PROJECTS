@@ -25,29 +25,29 @@ public without sharing class DealXFundingVehicleHelper {
     Map<Id, Deal_x_Funding_Vehicle__c> oldMap,
     List<Deal_x_Funding_Vehicle__c> newList
   ) {
-    List<Id> uncheckedDeals = new List<Id>();
-    List<Id> uncheckedFundingVehicles = new List<Id>();
+    Map<Id, Boolean> toggledDeals = new Map<Id, Boolean>();
+    List<Id> toggledFundingVehicles = new List<Id>();
 
     for (Deal_x_Funding_Vehicle__c n : newList) {
       Deal_x_Funding_Vehicle__c o = oldMap.get(n.Id);
       if (
         n.Funding_Vehicle__c != null &&
         n.Deal__c != null &&
-        o.Include_Yes_No__c &&
-        !n.Include_Yes_No__c
+        o.Include_Yes_No__c !=
+        n.Include_Yes_No__c
       ) {
-        uncheckedFundingVehicles.add(n.Funding_Vehicle__c);
-        uncheckedDeals.add(n.Deal__c);
+        toggledFundingVehicles.add(n.Funding_Vehicle__c);
+        toggledDeals.put(n.Deal__c, n.Include_Yes_No__c);
       }
     }
 
-    if (uncheckedDeals.size() > 0 && uncheckedFundingVehicles.size() > 0) {
-      removeDealSecuritisation(uncheckedDeals, uncheckedFundingVehicles);
+    if (toggledDeals.size() > 0 && toggledFundingVehicles.size() > 0) {
+      toggleDealSecuritisation(toggledDeals, toggledFundingVehicles);
     }
   }
 
-  public static void removeDealSecuritisation(
-    List<Id> dealIds,
+  public static void toggleDealSecuritisation(
+    Map<Id, Boolean> dealToggledMap,
     List<Id> fvIds
   ) {
     Map<Id, Securitization__c> securitizationMap = new Map<Id, Securitization__c>(
@@ -70,11 +70,10 @@ public without sharing class DealXFundingVehicleHelper {
         SELECT Id, Securitization__c
         FROM Opportunity
         WHERE
-          Id IN :dealIds
+          Id IN :dealToggledMap.keySet()
           AND Securitization__c IN :securitizationMap.keySet()
-          AND Securitized__c = TRUE
       ]) {
-        o.Securitized__c = false;
+        o.Securitized__c = dealToggledMap.get(o.Id);
         // o.Securitization__c = null;
         updatedDeals.add(o);
       }
