@@ -174,7 +174,7 @@ export default class ConfirmationTerms extends LightningElement {
     if (this.isUnderWriterPanel && this.isEnabledUnderwriterPanel) {
       //do validation for the values to be populated;
       if(!this.currentDetails.amortizationStatus) {
-        const amortizationStatus = this.template.querySelector(['[data-field="amortizationStatus"]']);
+        const amortizationStatus = this.template.querySelector('lightning-combobox[data-field="amortizationStatus"]');
         amortizationStatus.required = true;
         amortizationStatus.reportValidity();
         validated = false;

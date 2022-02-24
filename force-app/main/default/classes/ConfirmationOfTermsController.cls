@@ -1105,7 +1105,7 @@ public without sharing class ConfirmationOfTermsController {
     if (underwriterHistory.Property_Management_Adjustment__c != null) {
       underwriterHistory.Property_management_Adjustment__c *= 100;
     }
-
+    underwriterHistory.Amortization_Status__c = details.amortizationStatus;
     underwriterHistory.Total_Annual_Cap_Ex__c = details.totalAnnualCapEx;
     underwriterHistory.Valuations_Invoices__c = details.valuationInvoices;
     underwriterHistory.Valuation_Invoice_uploaded_to_SF__c = details.valuationInvoiceUploaded ==
@@ -1143,6 +1143,7 @@ public without sharing class ConfirmationOfTermsController {
     underwriterHistory.Insurance_complete_Comment__c = allComments.insuranceComplete;
     underwriterHistory.Model_up_to_date_Comment__c = allComments.modelUpToDate;
     underwriterHistory.Clear_to_Lock_Comment__c = allComments.clearToLock;
+    underwriterHistory.Amortization_Status_Comment__c = allComments.amortizationStatus;
 
     underwriterHistory.Actor__c = UserInfo.getUserId();
     underwriterHistory.Approver__c = UserInfo.getName();
