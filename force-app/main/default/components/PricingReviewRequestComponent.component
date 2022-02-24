@@ -69,6 +69,13 @@
           <div style="">
             <font face="arial" style="">Exception: {!Opportunity.Exception__c}</font>
           </div>
+          <apex:outputPanel rendered="{!Opportunity.Exception__c}">
+            <div>
+              <font face="arial" style="">
+                Exception Reason: {!Opportunity.Exception_Reason__c}
+              </font>
+            </div>
+          </apex:outputPanel>
         </div>
         <div style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;">
           <br />
