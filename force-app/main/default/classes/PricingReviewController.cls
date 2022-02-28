@@ -1,19 +1,35 @@
 public class PricingReviewController {
-public string recId { get; set; }
+  public string recId { get; set; }
+  public string recipId { get; set; }
+
 
   public ProcessInstanceStep ApprovalProcess {
     get {
-      return recId == null
-        ? null
-        : [
-            SELECT Comments, Id
-            FROM ProcessInstanceStep
-            WHERE ProcessInstance.TargetObjectId = :recId
-            ORDER BY SystemModStamp DESC
-            LIMIT 1
-          ];
+      if(recId == null) {
+        return null;
+      }
+
+      String soqlQuery = 'SELECT Comments, Id, ActorId FROM ProcessInstanceStep WHERE ProcessInstance.TargetObjectId = :recId';
+      if(recipId != null) {
+        soqlQuery += ' AND ActorId = :recipId';
+      }
+      soqlQuery += ' ORDER BY SystemModstamp DESC LIMIT 1';
+      List<ProcessInstanceStep> steps = Database.query(soqlQuery);
+      if(steps.size() > 0) {
+        return steps[0];
+      } else {
+        return [
+          SELECT Comments, Id, ActorId FROM ProcessInstanceStep WHERE ProcessInstance.TargetObjectId = :recId ORDER BY SystemModstamp DESC LIMIT 1
+        ];
+      }
     }
     private set;
+  }
+
+  public Boolean isApprover {
+    get {
+      return recipId != null && ApprovalProcess != null && recipId == ApprovalProcess.ActorId;
+    } private set;
   }
 
   public String approvalComments {
