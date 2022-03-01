@@ -224,8 +224,8 @@ private class lightning_Tests {
       'Desc',
       '',
       '',
-      True
-    );    
+      true
+    );
     lightning_Controller.getRecordListPropAdva(
       opp.Id,
       'Deal__c',
@@ -235,8 +235,8 @@ private class lightning_Tests {
       'Desc',
       '',
       '',
-      False
-    );       
+      false
+    );
     lightning_Controller.getRecords(
       opp.Id,
       'Deal__c',
@@ -314,7 +314,7 @@ private class lightning_Tests {
       Body = Blob.valueOf('saadsf'),
       Name = 'Test'
     );
-
+    Test.startTest();
     List<documentUploader_Controller.AttachmentWrapper> wrapper = (List<documentUploader_Controller.AttachmentWrapper>) JSON.deserialize(
       documentUploader_Controller.getAttachments(opp.Id),
       List<documentUploader_Controller.AttachmentWrapper>.class
@@ -382,12 +382,15 @@ private class lightning_Tests {
       String.valueOf(acc.Id),
       'Title and Escrow'
     );
+
     lightning_Controller.getDocuments(
       String.valueOf(opp.Id),
       'borrower',
       String.valueOf(acc.Id),
       'Title and Escrow'
     );
+    Test.stopTest();
+
     //lightning_Controller.getDocuments(String.valueOf(opp.Id), 'internal', String.valueOf(acc.Id), 'Title and Escrow');
     //contentVersion cv = [SELECT Id FROM ContentVersion LIMIT 1];
     //lightning_Controller.getDOcumentData(cv.Id);
@@ -839,7 +842,6 @@ private class lightning_Tests {
     opp1.RecordTypeId = opp.RecordTypeId;
 
     update new List<Opportunity>{ opp, opp1 };
-
 
     // for (Integer i = 0; i < properties1.size(); i++) {
     // }
