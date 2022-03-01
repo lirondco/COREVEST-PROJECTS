@@ -39,6 +39,16 @@
         </td>
       </tr>
       <tr>
+        <td style="border:1px solid black;">
+          Monthly Insurance Constants
+        </td>
+        <td style="border:1px solid black;text-align:right;">
+          <apex:outputtext value="{0, Number, Currency}">
+            <apex:param value="{!loanVersion.Monthly_Insurance__c}" />
+          </apex:outputtext>
+        </td>
+      </tr>
+      <tr>
         <td style="border:1px solid black;font-weight:bold">
           Total
         </td>

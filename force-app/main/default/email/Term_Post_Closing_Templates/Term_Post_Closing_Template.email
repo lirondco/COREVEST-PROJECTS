@@ -1,0 +1,5 @@
+<messaging:emailTemplate subject="Onboarding - Please Confirm - {!relatedTo.Name}" recipientType="User" relatedToType="Opportunity">
+  <messaging:htmlEmailBody >
+    <c:TermPostClosingEmailComponent deal="{!relatedTo}" recordId="{!relatedTo.Id}" />
+  </messaging:htmlEmailBody>
+</messaging:emailTemplate>
