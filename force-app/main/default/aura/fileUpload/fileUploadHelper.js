@@ -200,8 +200,9 @@
         //sfInstanceUrl = 'https://caf--partial.lightning.force.com';
         //sfInstanceUrl = 'https://caf--partial.cs62.my.salesforce.com';
         //
-        if(sfInstanceUrl == 'https://corevest.salesforce.com/'){
-            sfInstanceUrl = 'https://na54.salesforce.com';
+        console.log(sfInstanceUrl); 
+        if(sfInstanceUrl.includes('salesforce.com')){
+            sfInstanceUrl = 'https://cs213.salesforce.com';
         }
         client.setSessionToken(sessionId ,'v36.0',sfInstanceUrl);
         client.proxyUrl = null;

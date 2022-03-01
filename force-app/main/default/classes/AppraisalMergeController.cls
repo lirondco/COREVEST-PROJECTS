@@ -36,7 +36,8 @@ public with sharing class AppraisalMergeController {
     'CreatedDate' => '',
     'Flood_Zone__c' => '',
     'Status__c' => '',
-    'Appraisal_Product_Ordered__c' => ''
+    'Appraisal_Product_Ordered__c' => '',
+    'Appraisal_Replacement_Cost_Value__c' => 'Appraisal_Replacement_Cost_Value__c'
   };
 
   public static Map<String, Schema.SObjectField> APPRAISAL_FIELD_MAP = Schema.SObjectType.Appraisal__c.fields.getMap();

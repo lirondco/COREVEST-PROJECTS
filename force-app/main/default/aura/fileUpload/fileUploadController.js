@@ -19,9 +19,10 @@
         //var splitUrl = url.split("/s")
         //var sfInstanceUrl = splitUrl[0];
         //console.log(sfInstanceUrl);
-
+        console.log(res);
         component.set("v.sessionId", res.sessionId);
         component.set("v.sfInstanceUrl", res.endpoint);
+        component.set("v.isLoading", true);
       } else if (state === "ERROR") {
         //resolve();
         console.log("error");

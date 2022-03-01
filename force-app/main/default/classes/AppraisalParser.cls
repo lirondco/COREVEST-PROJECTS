@@ -78,6 +78,8 @@ public without sharing class AppraisalParser implements Queueable {
       );
     }
 
+
+
     Dom.XMLNode valuationNode = root.getChildElement('VALUATION', null);
     String appraisalValueAmount = valuationNode.getAttribute(
       'PropertyAppraisedValueAmount',
@@ -89,6 +91,7 @@ public without sharing class AppraisalParser implements Queueable {
       ? Decimal.ValueOf(appraisalValueAmount.replaceAll('[^0-9.]', ''))
       : null;
 
+    
     //Date theDate;
     String appraisalEffectiveDate = valuationNode.getAttribute(
       'AppraisalEffectiveDate',
@@ -347,6 +350,19 @@ public without sharing class AppraisalParser implements Queueable {
     DOM.XMLNode valuationMethodsNode = root
       .getChildElement('VALUATION_METHODS', null);
     if (valuationMethodsNode != null) {
+      Dom.XMLNode costAnalysisNode = valuationMethodsNode.getChildElement('COST_ANALYSIS', null);
+
+      String newImprovementTotalCostAmount = costAnalysisNode.getAttribute(
+        'NewImprovementTotalCostAmount',
+        null
+      );
+  
+      appraisal.Appraisal_Replacement_Cost_Value__c = String.isNotBlank(
+          newImprovementTotalCostAmount
+        )
+        ? Decimal.ValueOf(newImprovementTotalCostAmount.replaceAll('[^0-9.]', ''))
+        : null;
+
       Dom.XMLNode salesComparisonNode = valuationMethodsNOde.getChildElement(
         'SALES_COMPARISON',
         null
@@ -673,7 +689,10 @@ public without sharing class AppraisalParser implements Queueable {
                   );
                 }
 
-                if (
+                if (unitNode.getAttribute(
+                  'GrossLivingAreaSquareFeetCount',
+                  null
+                ) != null &&
                   unitNode.getAttribute(
                     'GrossLivingAreaSquareFeetCount',
                     null

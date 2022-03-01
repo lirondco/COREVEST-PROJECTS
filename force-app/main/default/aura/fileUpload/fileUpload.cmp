@@ -7,6 +7,7 @@
   <aura:attribute name="uploaderType" type="String" default="internal" />
   <aura:attribute name="accountId" type="String" />
   <aura:attribute name="randomId" type="String" />
+  <aura:attribute name="isLoading" type="Boolean" default="false" />
 
   <aura:attribute
     name="vfHost"
@@ -23,12 +24,14 @@
   />
 
   <div class="slds-form-element">
-    <lightning:spinner
-      variant="brand"
-      class="slds-hide"
-      aura:id="spinner"
-      alternativeText="Uploading Documents"
-    />
+    <aura:if isTrue="{!v.isLoading}">
+      <lightning:spinner
+        variant="brand"
+        class="slds-hide"
+        aura:id="spinner"
+        alternativeText="Uploading Documents"
+      />
+    </aura:if>
 
     <div class="slds-form-element__control">
       <div class="slds-file-selector slds-file-selector--files">
