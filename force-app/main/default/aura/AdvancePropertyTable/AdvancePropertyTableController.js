@@ -12,10 +12,13 @@
   },
   handleOutsideClick: function (component, event, helper) {
     if (
-      (!$A.util.isUndefinedOrNull(component.get("v.currentlyEditing")) ||
-        !$A.util.isUndefinedOrNull(component.get("v.currentEditingValue")))
+      !$A.util.isUndefinedOrNull(component.get("v.currentlyEditing")) ||
+      !$A.util.isUndefinedOrNull(component.get("v.currentEditingValue"))
     ) {
-      const updatedStatuses = Object.assign({}, component.get("v.updatedPropertyStatuses"));
+      const updatedStatuses = Object.assign(
+        {},
+        component.get("v.updatedPropertyStatuses")
+      );
       const propObj = {
         sobjectType: "Property__c",
         Id: component.get("v.currentlyEditing"),
@@ -32,7 +35,10 @@
       !$A.util.isUndefinedOrNull(component.get("v.currentEditingValue")) &&
       !$A.util.isUndefinedOrNull(component.get("v.currentlyEditing"))
     ) {
-      const updatedStatuses = Object.assign({} , component.get("v.updatedPropertyStatuses"));
+      const updatedStatuses = Object.assign(
+        {},
+        component.get("v.updatedPropertyStatuses")
+      );
       const propObj = {
         sobjectType: "Property__c",
         Id: component.get("v.currentlyEditing"),
@@ -44,7 +50,23 @@
     }
   },
   handleStatusButtonsClick: function (component, event, helper) {
-    if(event.getSource().get("v.title") == "update") {
+    if (event.getSource().get("v.title") == "update") {
+      if (
+        !$A.util.isUndefinedOrNull(component.get("v.currentlyEditing")) ||
+        !$A.util.isUndefinedOrNull(component.get("v.currentEditingValue"))
+      ) {
+        const updatedStatuses = Object.assign(
+          {},
+          component.get("v.updatedPropertyStatuses")
+        );
+        const propObj = {
+          sobjectType: "Property__c",
+          Id: component.get("v.currentlyEditing"),
+          Status__c: component.get("v.currentEditingValue")
+        };
+        updatedStatuses[component.get("v.currentlyEditing")] = propObj;
+        component.set("v.updatedPropertyStatuses", updatedStatuses);
+      }
       helper.updatePropertyStatuses(component, helper);
     } else {
       helper.resetPropertyStatusSelection(component);
@@ -55,22 +77,25 @@
   toggleStatusEdit: function (component, event, helper) {
     event.preventDefault();
     event.stopPropagation();
-    const propertyDetails = JSON.parse(JSON.stringify(event.getSource().get("v.value")));
-    if (
-      component.get("v.currentlyEditing") != propertyDetails.Id
-    ) {
+    const propertyDetails = JSON.parse(
+      JSON.stringify(event.getSource().get("v.value"))
+    );
+    if (component.get("v.currentlyEditing") != propertyDetails.Id) {
       component.set("v.currentlyEditing", propertyDetails.Id);
       component.set("v.currentEditingValue", propertyDetails.Status__c);
-      if(!component.get("v.isEditButtonClicked")) {
+      if (!component.get("v.isEditButtonClicked")) {
         component.set("v.isEditButtonClicked", true);
       }
-    }  else {
-      const updatedStatuses = Object.assign({}, component.get("v.updatedPropertyStatuses")); 
+    } else {
+      const updatedStatuses = Object.assign(
+        {},
+        component.get("v.updatedPropertyStatuses")
+      );
       const propObj = {
-        "sobjectType": "Property__c",
-        "Id": component.get("v.currentlyEditing"),
-        "Status__c": component.get("v.currentEditingValue")
-      }
+        sobjectType: "Property__c",
+        Id: component.get("v.currentlyEditing"),
+        Status__c: component.get("v.currentEditingValue")
+      };
       updatedStatuses[component.get("v.currentlyEditing")] = propObj;
       component.set("v.updatedPropertyStatuses", updatedStatuses);
       helper.resetPropertyStatusSelection(component);

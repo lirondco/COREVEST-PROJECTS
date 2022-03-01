@@ -240,15 +240,16 @@
         var state = response.getState();
         let toastEvent = $A.get("e.force:showToast");
         if (state === "SUCCESS") {
-          helper.resetPropertyStatusSelection(component);
-          helper.clearUpdatedPropertyStatuses(component);
-          $A.get("e.force:refreshView").fire();
-          $A.util.toggleClass(component.find("spinner"), "slds-hide");
           toastEvent.setParams({
             title: "Success!",
             message: "Property status updated successfully.",
             type: "success"
           });
+          toastEvent.fire();
+          helper.resetPropertyStatusSelection(component);
+          helper.clearUpdatedPropertyStatuses(component);
+          $A.get("e.force:refreshView").fire();
+          $A.util.toggleClass(component.find("spinner"), "slds-hide");
         } else if (state === "ERROR") {
           const errs = response.getError();
           $A.util.toggleClass(component.find("spinner"), "slds-hide");
@@ -260,6 +261,7 @@
                 message: errs[0].message,
                 type: "error"
               });
+              toastEvent.fire();
             }
           } else {
             toastEvent.setParams({
@@ -267,10 +269,10 @@
               message: "Unknown error when saving property status",
               type: "error"
             });
+            toastEvent.fire();
             console.error("unknown error");
           }
         }
-        toastEvent.fire();
       });
       $A.enqueueAction(upsertAction);
     } else {
