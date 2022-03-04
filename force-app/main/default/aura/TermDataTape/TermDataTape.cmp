@@ -512,6 +512,13 @@
                   format="$0,0.00"
                   readOnly="true"
                 />
+                <c:hotColumn
+                  data="Appraisal_Replacement_Cost_Value__c"
+                  title="Appraisal Replacement Cost Value"
+                  type="numeric"
+                  format="$0,0.00"
+                  readOnly="true"
+                />
               </aura:set>
             </c:hotTable>
           </ui:scrollerWrapper>

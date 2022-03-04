@@ -281,6 +281,12 @@
                   format="$0,0.00"
                 />
                 <c:hotColumn
+                  data="Appraisal_Replacement_Cost_Value__c"
+                  title="Appraisal Replacement Cost Value"
+                  type="numeric"
+                  format="$0,0.00"
+                />
+                <c:hotColumn
                   data="Valuation_Type__c"
                   title="Valuation Type"
                   type="dropdown"
