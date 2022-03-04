@@ -21,6 +21,8 @@ public class AppraisalParseBatch implements Database.Batchable<sObject> {
     List<Property__c> properties = new List<Property__c>();
     List<Appraisal__c> appraisals = new List<Appraisal__c>();
     List<String> attachmentIds = new List<String>();
+    property_Helper.hasAfterUpdateRun = true;
+    property_Helper.hasAfterUpdateRun = true;
 
     for (Appraisal__c s : scope) {
       if (String.isNotEmpty(s.Deal_Document__r.Attachment_Id__c)) {
@@ -64,6 +66,7 @@ public class AppraisalParseBatch implements Database.Batchable<sObject> {
 
   public void finish(Database.BatchableContext bc) {
     // execute any post-processing operations
+    
   }
 
   public static Map<String, Decimal> parseXML(
