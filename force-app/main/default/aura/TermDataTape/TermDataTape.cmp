@@ -165,6 +165,12 @@
                 />
                 <c:hotColumn data="Square_Feet__c" title="SF" type="text" />
                 <c:hotColumn
+                  data="No_of_Stories__c"
+                  title="# of Stories"
+                  type="numeric"
+                  format="0,0.0"
+                  />
+                <c:hotColumn
                   data="Year_Built__c"
                   title="Year Built"
                   type="text"
@@ -517,7 +523,6 @@
                   title="Appraisal Replacement Cost Value"
                   type="numeric"
                   format="$0,0.00"
-                  readOnly="true"
                 />
               </aura:set>
             </c:hotTable>

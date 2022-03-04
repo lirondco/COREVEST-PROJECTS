@@ -139,6 +139,12 @@
                   title="Square Footage"
                   type="text"
                 />
+                <c:hotColumn
+                  data="No_of_Stories__c"
+                  title="# of Stories"
+                  type="numeric"
+                  format="0.00"
+                />
                 <c:hotColumn data="APN__c" title="Assessor's Parcel Number" />
                 <c:hotColumn
                   data="Year_Built__c"
