@@ -5,8 +5,8 @@
   <aura:attribute name="sObjectName" type="String" />
   <aura:attribute name="propertyIds" type="String" />
   <aura:attribute name="filterFields" type="Map" />
-  <aura:attribute name="churchillStateOptions" type="Object[]" />
-  <aura:attribute name="showChurchillOptions" type="Boolean" default="false" />
+  <aura:attribute name="assignmentSetStateOptions" type="Object[]" />
+  <aura:attribute name="showAssignmentSets" type="Boolean" default="false" />
   <aura:attribute
     name="displayBridgeIcMemoCmp"
     type="Boolean"
@@ -358,15 +358,15 @@
                 Assignment of SI from CF Corevest Purchaser to Warehouse
                 Borrower (GS)
               </option>
-              <option value="Churchill Assignments">
-                Churchill Assignments
+              <option value="Assignment Sets">
+                Assignment Sets
               </option>
             </lightning:select>
           </aura:if>
-          <aura:if isTrue="{!v.showChurchillOptions}">
-            <lightning:select aura:id="churchillAssignments" label="Select State">
+          <aura:if isTrue="{!v.showAssignmentSets}">
+            <lightning:select aura:id="assignmentSets" label="Select State">
               <option value=""></option>
-              <aura:iteration items="{!v.churchillStateOptions}" var="opt">
+              <aura:iteration items="{!v.assignmentSetStateOptions}" var="opt">
                 <option value="{!opt.value}">{!opt.label}</option>
               </aura:iteration>
               <option value="TestDoc.docx">Test Document</option>

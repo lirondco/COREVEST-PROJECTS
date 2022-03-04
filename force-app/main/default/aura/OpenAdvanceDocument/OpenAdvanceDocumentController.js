@@ -5,14 +5,14 @@
     let sobjectType = component.get("v.sObjectName");
 
     if (sobjectType == "Opportunity") {
-      queryString = `SELECT Id, StageName, RecordType.DeveloperName, Product_Sub_Type__c,LOC_Loan_Type__c `; // Trivikram- Added LOC_Loan_Type__c
+      queryString = `SELECT Id, StageName, RecordType.DeveloperName, Product_Sub_Type__c,LOC_Loan_Type__c, Type `; // Trivikram- Added LOC_Loan_Type__c
       queryString += `FROM Opportunity WHERE Id = '${recordId}'`;
     } else if (sobjectType == "Advance__c") {
-      queryString = `SELECT Id, Deal__r.StageName, Deal__r.RecordType.DeveloperName, Deal__r.Product_Sub_Type__c,Deal__r.LOC_Loan_Type__c `; // Trivikram- Added Deal__r.LOC_Loan_Type__c
+      queryString = `SELECT Id, Deal__r.StageName, Deal__r.RecordType.DeveloperName, Deal__r.Product_Sub_Type__c, Deal__r.LOC_Loan_Type__c, Deal__r.Type `; // Trivikram- Added Deal__r.LOC_Loan_Type__c
       queryString += `FROM Advance__c WHERE Id = '${recordId}'`;
     }
 
-    helper.generateChurchillStateOptions(component);
+    helper.generateAssignmentSetOptions(component);
 
     component.find("util").query(queryString, (result) => {
       let filterFields = {};
@@ -45,11 +45,11 @@
         }
       } else if (val == "Assignments") {
         val = component.find("assignments").get("v.value");
-        if (!$A.util.isEmpty(val) && val != "Churchill Assignments") {
+        if (!$A.util.isEmpty(val) && val != "Assignment Sets") {
           helper.generateDocx(component, val);
-        } else if (!$A.util.isEmpty(val) && val == "Churchill Assignments") {
+        } else if (!$A.util.isEmpty(val) && val == "Assignment Sets") {
           helper.setStaticResourceName(component, val);
-          val = component.find("churchillAssignments").get("v.value");
+          val = component.find("assignmentSets").get("v.value");
           if (!$A.util.isEmpty(val)) {
             helper.generateDocx(component, val);
           }
@@ -66,7 +66,7 @@
     }
   },
   evaluateAssignment: function(component, event, helper) {
-    component.set("v.showChurchillOptions", component.find("assignments").get("v.value") == "Churchill Assignments");
+    component.set("v.showAssignmentSets", component.find("assignments").get("v.value") == "Assignment Sets");
   },
   cancel: function (component, event, helper) {
     $A.get("e.force:closeQuickAction").fire();
