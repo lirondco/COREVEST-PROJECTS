@@ -345,7 +345,7 @@ public without sharing class PricingReviewRequest_LightningController {
           Parent_Status__c = 'Approved'
           AND Status__c LIKE '%Submitted'
           AND Deal__c = :recId
-          AND Approval_Type__c LIKE 'Pricing%'
+          AND Approval_Type__c LIKE '%Pricing%'
       ];
     } catch (Exception e) {
       throw new AuraHandledException(e.getMessage());
