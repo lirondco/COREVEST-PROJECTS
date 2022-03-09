@@ -22,6 +22,7 @@ public without sharing class PropertyTriggerExtensions {
   ) {
     Map<Id, Property__c> cxledProperties = new Map<Id, Property__c>();
     Set<Id> advanceIds = new Set<Id>();
+    Set<Id> propIDs = new Set<Id>();
     for (Id key : newMap.keySet()) {
       Property__c oP = oldMap.get(key);
       Property__c nP = newMap.get(key);
@@ -39,7 +40,7 @@ public without sharing class PropertyTriggerExtensions {
       if (
         oP.Status__c != nP.Status__c && validStatuses.contains(nP.Status__c)
       ) {
-        advanceIds.add(nP.Initial_Advance__c);
+        propIDs.add(nP.Id);
       }
     }
 
@@ -51,6 +52,17 @@ public without sharing class PropertyTriggerExtensions {
       ];
 
       update cxledProperties.values();
+    }
+
+    if(propIDs.size() > 0) {
+      for(Property_Advance__c pa : [
+        SELECT Advance__c
+        FROM Property_Advance__c
+        WHERE Property__c IN :propIDs
+        AND Advance__r.Name NOT IN :NUMBERS_SET
+      ]) {
+        advanceIds.add(pa.Advance__c);
+      }
     }
 
     if (advanceIds.size() > 0) {
@@ -128,6 +140,7 @@ public without sharing class PropertyTriggerExtensions {
   }
 
   public static void updateAdvances(Set<Id> advanceIds) {
+    System.debug('updating advances');
     Map<Id, Advance__c> advances = new Map<Id, Advance__c>(
       [
         SELECT Id, Deal__c, Name
