@@ -1,7 +1,7 @@
 <apex:component controller="PricingReviewController" access="global">
-  <apex:attribute name="Opportunity" description="" type="Opportunity" />
-  <apex:attribute type="Id" name="recordId" description="Record ID" assignTo="{!recId}" />
-  <apex:attribute type="Id" name="userId" description="Recipient User Id" assignTo="{!recipId}" />
+  <apex:attribute name="Opportunity" description="" type="Opportunity" access="global" />
+  <apex:attribute name="isApprover" description="" type="Boolean" access="global" />
+  <apex:attribute type="Id" name="recordId" description="Record ID" assignTo="{!recId}" access="global" />
   <table border="0" cellpadding="5" width="550" cellspacing="5" height="400">
     <tr valign="top" height="400">
       <td tEditID="c1r1" style=" background-color:#FFFFFF; bEditID:r3st1; color:#000000; bLabel:main; font-size:12pt; font-family:arial;"

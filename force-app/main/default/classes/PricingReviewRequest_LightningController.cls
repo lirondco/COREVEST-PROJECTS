@@ -611,7 +611,9 @@ public without sharing class PricingReviewRequest_LightningController {
           System.debug('successful notification');
         }
       }
-      sendRepricingEmail(oppId);
+      if(isReprice) {
+        sendRepricingEmail(oppId);
+      }
       return 'The record has been submitted for review.';
     } catch (Exception e) {
       System.debug(e.getMessage());
@@ -624,7 +626,7 @@ public without sharing class PricingReviewRequest_LightningController {
     EmailTemplate template = [
       SELECT Id, DeveloperName
       FROM EmailTemplate
-      WHERE DeveloperName = 'Pricing_Review_Request_Custom'
+      WHERE DeveloperName = 'Pricing_Review_Request_Courtesy'
     ];
 
     if(template == null) {

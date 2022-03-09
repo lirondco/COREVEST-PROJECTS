@@ -230,7 +230,7 @@ public without sharing class ApprovalAttachments_lightningController {
             m.put('Verified', 'true');
           }
           roleName = 'Capital Markets';
-        } else if (processName == 'Term_Pricing_Review_Capital_Markets') {
+        } else if (processName == 'Term_Pricing_Review_Capital_Markets' || processName == 'Term_Repricing_Review_Capital_Markets') {
           if (capitalMarketsPricingApprover) {
             m.put('Verified', 'true');
           }
@@ -250,7 +250,7 @@ public without sharing class ApprovalAttachments_lightningController {
             }
           }
           roleName = 'Underwriter';
-        } else if (processName == 'Term_Pricing_Review') {
+        } else if (processName == 'Term_Pricing_Review' || processName == 'Term_Repricing_Review') {
           if (termPricingApprover) {
             if (null != o.Approved_by_Underwriter__c) {
               // if (o.Approval_Status__c == 'Approved'){

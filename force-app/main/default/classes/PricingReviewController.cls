@@ -1,81 +1,45 @@
-public class PricingReviewController {
-  public string recId { get; set; }
-  public string recipId { get; set; }
+global class PricingReviewController {
+  global string recId { get; set; }
 
-  public ProcessInstanceStep ApprovalProcess {
+  global ProcessInstanceStep ApprovalProcess {
     get {
       if (recId == null) {
         return null;
       }
 
       String soqlQuery = 'SELECT Comments, Id, ActorId FROM ProcessInstanceStep WHERE ProcessInstance.TargetObjectId = :recId';
-      if (recipId != null) {
-        soqlQuery += ' AND ActorId = :recipId';
-      }
       soqlQuery += ' ORDER BY SystemModstamp DESC LIMIT 1';
       List<ProcessInstanceStep> steps = Database.query(soqlQuery);
-      if (steps.size() > 0) {
-        return steps[0];
+      return steps.size() > 0 ? steps[0] : null;
+    }
+    private set;
+  }
+
+  global ProcessInstanceWorkItem WorkItem {
+    get {
+      if (recId == null) {
+        return null;
       } else {
-        return [
-          SELECT Comments, Id, ActorId
-          FROM ProcessInstanceStep
+        List<ProcessInstanceWorkItem> workItems = [
+          SELECT Id, OriginalActorId, OriginalActor.Name, ActorId, Actor.Name
+          FROM ProcessInstanceWorkitem
           WHERE ProcessInstance.TargetObjectId = :recId
           ORDER BY SystemModstamp DESC
           LIMIT 1
         ];
+        return workItems.size() > 0 ? workItems[0] : null;
       }
-    }
-    private set;
+    } private set;
   }
 
-  public ProcessInstanceWorkItem WorkItem {
-    get {
-      if (recId == null && recipId == null) {
-        return null;
-      }
-
-      List<ProcessInstanceWorkItem> workItems = [
-        SELECT Id, OriginalActorId, OriginalActor.Name, ActorId
-        FROM ProcessInstanceWorkitem
-        WHERE ProcessInstance.TargetObjectId = :recId
-        AND ActorId = :recipId
-        ORDER BY SystemModstamp DESC
-        LIMIT 1
-      ];
-
-      if(workItems.size() > 0) {
-        return workItems[0];
-      } else {
-        List<ProcessInstanceWorkItem> noRecipWorkItems = [
-        SELECT Id, OriginalActorId, OriginalActor.Name, ActorId
-        FROM ProcessInstanceWorkitem
-        WHERE ProcessInstance.TargetObjectId = :recId
-        ORDER BY SystemModstamp DESC
-        LIMIT 1
-      ];
-        return noRecipWorkItems.size() > 0 ? noRecipWorkItems[0] : null;
-      }
-    }
-  }
-
-  public Boolean isApprover {
-    get {
-      return recipId != null &&
-      WorkItem != null &&
-        recipId == WorkItem.ActorId;
-    }
-    private set;
-  }
-
-  public String approvalComments {
+  global String approvalComments {
     get {
       return ApprovalProcess != null ? ApprovalProcess.Comments : null;
     }
     private set;
   }
 
-  public String approvalUrl {
+  global String approvalUrl {
     get {
       return WorkItem != null
         ? URL.getOrgDomainUrl().toExternalForm() + '/' + WorkItem.Id
@@ -84,7 +48,7 @@ public class PricingReviewController {
     private set;
   }
 
-  public String dealUrl {
+  global String dealUrl {
     get {
       return recId == null
         ? null
@@ -93,7 +57,7 @@ public class PricingReviewController {
     private set;
   }
 
-  public Integer repriceCount {
+  global Integer repriceCount {
     get {
       return [
         SELECT COUNT()
