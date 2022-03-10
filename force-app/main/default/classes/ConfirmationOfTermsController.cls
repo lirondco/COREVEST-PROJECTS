@@ -60,6 +60,13 @@ public without sharing class ConfirmationOfTermsController {
         id,
         Name,
         Contact__c,
+        Contact__r.Name,
+        Contact__r.Phone,
+        Contact__r.Email,
+        Contact__r.MailingStreet,
+        Contact__r.MailingCity,
+        Contact__r.MailingState,
+        Contact__r.MailingPostalCode,
         Closer__r.Email,
         Closer__r.Name,
         Closer__c,
@@ -81,6 +88,7 @@ public without sharing class ConfirmationOfTermsController {
       FROM Approval_History__c
       WHERE
         Deal__c = :oppRecordID
+        AND Status__c = 'Submitted'
         AND Approval_Type__c = 'Confirmation Of Terms'
         AND Tracking_Status__c = 'Closer'
         AND Role__c = 'Submitter'
@@ -109,7 +117,7 @@ public without sharing class ConfirmationOfTermsController {
       // toEmailAddressList.add(opp.Closer__r.Email);
       // toEmailAddressList.add(opp.Owner.Email);
       if (opp.CAF_Analyst__r.Email != null && opp.CAF_Analyst__r.Email != '') {
-        // toEmailAddressList.add(opp.CAF_Analyst__r.Email); Matthew John Tanner Ryan Bryon
+        // toEmailAddressList.add(opp.CAF_Analyst__r.Email);
         emailAddressSet.add(opp.CAF_Analyst__r.Email);
         recipientIds.add(opp.CAF_Analyst__c);
       }
@@ -524,6 +532,11 @@ public without sharing class ConfirmationOfTermsController {
       ahc.Foreign_National__c = submission.foreignNational; //(Boolean) submission.get('foreignNational');
       ahc.Holdback_Multiplier__c = submission.holdback;
       ahc.Broker_Fee__c = submission.brokerFees;
+      
+      ahc.Contact_Name__c = submission.contactName;
+      ahc.Contact_Email__c = submission.contactEmail;
+      ahc.Contact_Phone__c = submission.contactPhone;
+      ahc.Contact_Address__c = submission.contactAddress;
 
       if (ahc.Broker_Fee__c != null) {
         ahc.Broker_Fee__c *= 100;
@@ -543,6 +556,8 @@ public without sharing class ConfirmationOfTermsController {
       if (ahc.Property_Management_Adjustment__c != null) {
         ahc.Property_Management_Adjustment__c *= 100;
       }
+
+
 
       ahc.Origination_Fee__c = submission.originationFee; //(Decimal) submission.get('originationFee');
 
@@ -1104,7 +1119,7 @@ public without sharing class ConfirmationOfTermsController {
     if (underwriterHistory.Property_Management_Adjustment__c != null) {
       underwriterHistory.Property_management_Adjustment__c *= 100;
     }
-
+    underwriterHistory.Amortization_Status__c = details.amortizationStatus;
     underwriterHistory.Total_Annual_Cap_Ex__c = details.totalAnnualCapEx;
     underwriterHistory.Valuations_Invoices__c = details.valuationInvoices;
     underwriterHistory.Valuation_Invoice_uploaded_to_SF__c = details.valuationInvoiceUploaded ==
@@ -1142,6 +1157,7 @@ public without sharing class ConfirmationOfTermsController {
     underwriterHistory.Insurance_complete_Comment__c = allComments.insuranceComplete;
     underwriterHistory.Model_up_to_date_Comment__c = allComments.modelUpToDate;
     underwriterHistory.Clear_to_Lock_Comment__c = allComments.clearToLock;
+    underwriterHistory.Amortization_Status_Comment__c = allComments.amortizationStatus;
 
     underwriterHistory.Actor__c = UserInfo.getUserId();
     underwriterHistory.Approver__c = UserInfo.getName();
@@ -1275,6 +1291,10 @@ public without sharing class ConfirmationOfTermsController {
     public String propertyManagement { get; set; }
     public Decimal propertyManagementAdjustment { get; set; }
     public String amortizationStatus { get; set; }
+    public String contactName { get; set; }
+    public String contactAddress { get; set; }
+    public String contactEmail { get; set; }
+    public String contactPhone { get; set; }
     SubmissionPanel(Opportunity deal) {
       this.recourse = deal.Recourse__c;
       this.depositCollected = deal.Deposit_Amount__c;
@@ -1300,6 +1320,11 @@ public without sharing class ConfirmationOfTermsController {
         ? deal.Property_Management_Adjustment__c / 100
         : null;
       this.amortizationStatus = null;
+      this.contactName = deal.Contact__r.Name;
+      this.contactAddress = deal.Contact__r.MailingStreet + '\n' + deal.Contact__r.MailingCity +
+        ', ' + deal.Contact__r.MailingState + ' ' + deal.Contact__r.MailingPostalCode;
+      this.contactEmail = deal.Contact__r.Email;
+      this.contactPhone = deal.Contact__r.Phone;
     }
 
     public void setHistory(Approval_History__c history) {
@@ -1331,6 +1356,10 @@ public without sharing class ConfirmationOfTermsController {
       this.amortizationStatus = history.Amortization_Status__c != null
         ? history.Amortization_Status__c
         : null;
+      this.contactName = history.Contact_Name__c;
+      this.contactAddress = history.Contact_Address__c;
+      this.contactEmail = history.Contact_Email__c;
+      this.contactPhone = history.Contact_Phone__c;
     }
   }
 
@@ -1357,6 +1386,10 @@ public without sharing class ConfirmationOfTermsController {
     public String modelUpToDate { get; set; }
     public String clearToLock { get; set; }
     public String amortizationStatus { get; set; }
+    public String contactName { get; set; }
+    public String contactAddress { get; set; }
+    public String contactEmail { get; set; }
+    public String contactPhone { get; set; }
     CurrentPanel(Opportunity deal) {
       this.recourse = deal.Recourse__c;
       this.depositCollected = null;
@@ -1390,6 +1423,11 @@ public without sharing class ConfirmationOfTermsController {
       this.modelUpToDate = '';
       this.clearToLock = '';
       this.amortizationStatus = null;
+      this.contactName = deal.Contact__r.Name;
+      this.contactAddress = deal.Contact__r.MailingStreet + '\n' + deal.Contact__r.MailingCity +
+        ', ' + deal.Contact__r.MailingState + ' ' + deal.Contact__r.MailingPostalCode;
+      this.contactEmail = deal.Contact__r.Email;
+      this.contactPhone = deal.Contact__r.Phone;
     }
 
     public void setOriginationsHistory(Approval_History__c history) {
@@ -1412,6 +1450,10 @@ public without sharing class ConfirmationOfTermsController {
       this.brokerYsp = history.Broker_YSP__c != null
         ? history.Broker_YSP__c / 100
         : null;
+      this.contactName = history.Contact_Name__c;
+      this.contactAddress = history.Contact_Address__c;
+      this.contactEmail = history.Contact_Email__c;
+      this.contactPhone = history.Contact_Phone__c;
     }
 
     public void setUnderwriterHistory(Approval_History__c history) {
@@ -1466,6 +1508,12 @@ public without sharing class ConfirmationOfTermsController {
     public String originationsComments { get; set; }
     public String underwriterComments { get; set; }
 
+    public String contactNameComments { get; set; }
+    public String contactAddressComments { get; set; }
+    public String contactEmailComments { get; set; }
+    public String contactPhoneComments { get; set; }
+
+
     Comments() {
       depositCollected = '';
       finalSpread = '';
@@ -1489,6 +1537,10 @@ public without sharing class ConfirmationOfTermsController {
       modelUpToDate = '';
       clearToLock = '';
       amortizationStatus = '';
+      contactNameComments = '';
+      contactAddressComments = '';
+      contactEmailComments = '';
+      contactPhoneComments = '';
     }
 
     public void setOriginationsComments(Approval_History__c history) {
@@ -1504,6 +1556,10 @@ public without sharing class ConfirmationOfTermsController {
       originationFee = history.Origination_Fee_Comment__c;
       brokerYSP = history.Broker_YSP_Comment__c;
       originationsComments = history.Comments__c;
+      contactNameComments = history.Contact_Name_Comment__c;
+      contactAddressComments = history.Contact_Address_Comment__c;
+      contactEmailComments = history.Contact_Email_Comment__c;
+      contactPhoneComments = history.Contact_Phone_Comment__c;
     }
 
     public void setUnderwriterComments(Approval_History__c history) {
