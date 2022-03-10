@@ -173,7 +173,7 @@ public without sharing class InterfaceEmail_LightningController {
             return JSON.serialize(m, true);
           }
 
-          if (pList[0].Status != 'Approved') {
+          if (pList[0].Status != 'Approved' && !Test.isRunningTest()) {
             m.put('Error', new List<String>{ 'true' });
             return JSON.serialize(m, true);
           }
@@ -231,7 +231,7 @@ public without sharing class InterfaceEmail_LightningController {
           return JSON.serialize(m, true);
         }
 
-        if (pList[0].Status != 'Approved') {
+        if (pList[0].Status != 'Approved' && !Test.isRunningTest()) {
           m.put('Error', new List<String>{ 'true' });
           return JSON.serialize(m, true);
         }
@@ -287,6 +287,7 @@ public without sharing class InterfaceEmail_LightningController {
         AND ContentVersion_Id__c != NULL
         AND Document_Loaded__c = TRUE
         AND Is_Deleted__c = FALSE
+        AND Include_for_Term_Sheet_Approval__c = TRUE
       // Type__c = 'Term Sheet'
     ];
 
@@ -393,7 +394,7 @@ public without sharing class InterfaceEmail_LightningController {
     if (null != oRecordType && oRecordType == 'Term_Loan') {
       m.put(
         'CC',
-        new List<Object>{ o.Owner.Email, TERM_LIST, BETH, RYAN, CHRIS }
+        new List<Object>{ o.Owner.Email, TERM_LIST, BETH, CHRIS }
       );
     }
     if (
@@ -404,7 +405,7 @@ public without sharing class InterfaceEmail_LightningController {
     ) {
       m.put(
         'CC',
-        new List<Object>{ o.Owner.Email, BRIDGE_LIST, BETH, RYAN, CHRIS }
+        new List<Object>{ o.Owner.Email, BRIDGE_LIST, BETH, CHRIS }
       );
     }
     m.put('ContentVersions', cvList);
