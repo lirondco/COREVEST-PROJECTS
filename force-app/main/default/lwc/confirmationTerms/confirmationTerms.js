@@ -54,6 +54,8 @@ export default class ConfirmationTerms extends LightningElement {
 
   isInApproval = false;
 
+  formUpdated = false;
+
   @wire(getRecord, { recordId: "$recordId", fields: [CONTACT_FIELD] })
   deal;
 
@@ -79,6 +81,22 @@ export default class ConfirmationTerms extends LightningElement {
 
   get showServicerContactForm() {
     return this.contactId && (this.showContactNameField || this.showContactAddressFields || this.showContactPhoneField || this.showContactEmailField);
+  }
+
+  get originatorButtonLabel() {
+    return !this.showServicerContactForm 
+      ? "Submit" 
+      : this.formUpdated
+      ? "Submit and Save"
+      : "Submit without Saving";
+  }
+
+  get originatorButtonVariant() {
+    return this.formUpdated ? 'brand' : 'neutral';
+  }
+
+  handleFormChange() {
+    this.formUpdated = true;
   }
 
   historyChange(event) {

@@ -962,6 +962,11 @@ public without sharing class ConfirmationOfTermsController {
       originatorHistory.Broker_YSP__c *= 100;
     }
 
+    originatorHistory.Servicer_Contact_Name__c = details.servicerContactName;
+    originatorHistory.Servicer_Contact_Phone__c = details.servicerContactPhone;
+    originatorHistory.Servicer_Contact_Email__c = details.servicerContactEmail;
+    originatorHistory.Servicer_Contact_Address__c = details.servicerContactAddress;
+
     originatorHistory.Deposit_Amount_Comment__c = allComments.depositCollected;
     originatorHistory.Final_Spread_Comment__c = allComments.finalSpread;
     originatorHistory.Recourse_Comment__c = allComments.recourse;
@@ -975,12 +980,18 @@ public without sharing class ConfirmationOfTermsController {
     originatorHistory.Origination_Fee_Comment__c = allComments.originationFee;
     originatorHistory.Broker_YSP_Comment__c = allComments.brokerYSP;
 
+    originatorHistory.Contact_Name_Comment__c = allComments.contactNameComments;
+    originatorHistory.Contact_Phone_Comment__c = allComments.contactPhoneComments;
+    originatorHistory.Contact_Email_Comment__c = allComments.contactEmailComments;
+    originatorHistory.Contact_Address_Comment__c = allComments.contactAddressComments;
+
     originatorHistory.Actor__c = UserInfo.getUserId();
     originatorHistory.Approver__c = UserInfo.getName();
     originatorHistory.Status__c = 'Approved';
     originatorHistory.Status_Text__c = 'Approved';
     originatorHistory.Comments__c = comment;
     originatorHistory.Date_Acted__c = System.now();
+    
 
     update originatorHistory;
     createTask('Origination', recordId, true, APPROVED_COMMENT);
