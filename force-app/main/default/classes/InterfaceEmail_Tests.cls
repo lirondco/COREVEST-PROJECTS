@@ -17,6 +17,7 @@ private class InterfaceEmail_Tests {
         Email_Addresses__c BRIDGE_LIST = InterfaceEmail_LightningController.queryEmailAddress('Bridge Term Sheet Mailing List');
         Email_Addresses__c TERM_LIST = InterfaceEmail_LightningController.queryEmailAddress('Term Sheet Mailing List');
         upsert new List<Email_Addresses__c>{BETH,RYAN,CHRIS,BRIDGE_LIST,TERM_LIST};
+  
     }
 
     static TestMethod void InterfaceEmail_Tests_UnitTest(){
@@ -29,6 +30,21 @@ private class InterfaceEmail_Tests {
         Account acc = test_Helper.createAccount();
         Contact cont = test_Helper.createContact( acc );
         Opportunity opp = test_Helper.createOpportunity( acc, cont );
+        ContentVersion testCv=new Contentversion();
+
+        testCv.title='ABC';
+        testCv.PathOnClient ='test';
+        testCv.versiondata=EncodingUtil.base64Decode('Unit Test Attachment Body');
+        insert testCv;
+
+        Deal_Document__c dealDoc = new Deal_Document__c();
+        dealDoc.ContentVersion_Id__c = testCv.Id;
+        dealDoc.Type__c= 'Term Sheet';
+        dealDoc.Document_Loaded__c = true;
+        dealDoc.Include_for_Term_Sheet_Approval__c = true;
+        dealDoc.Deal__c = opp.Id;
+        insert dealDoc;
+        
         opp.RecordTypeId = opptyRecordTypes[0].Id;
         opp.Loan_Effective_Date__c = system.today();
         update opp;

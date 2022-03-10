@@ -263,7 +263,15 @@ public without sharing class ConfirmationOfTermsController {
         YSP_perc__c,
         Current_Loan_Amount__c,
         Property_Management__c,
-        Property_Management_Adjustment__c
+        Property_Management_Adjustment__c,
+        Contact__c,
+        Contact__r.Name,
+        Contact__r.Phone,
+        Contact__r.Email,
+        Contact__r.MailingStreet,
+        Contact__r.MailingCity,
+        Contact__r.MailingState,
+        Contact__r.MailingPostalCode
       FROM Opportunity
       WHERE Id = :recordId
     ];
@@ -311,7 +319,11 @@ public without sharing class ConfirmationOfTermsController {
           Origination_Fee__c,
           Status__c,
           Amortization_Status__c,
-          Amortization_Status_Comment__c
+          Amortization_Status_Comment__c,
+          Contact_Name__c,
+          Contact_Email__c,
+          Contact_Phone__c,
+          Contact_Address__c
         FROM Approval_History__c
         WHERE
           Tracking_Status__c = 'Closer'
@@ -356,7 +368,15 @@ public without sharing class ConfirmationOfTermsController {
           Origination_Fee_Comment__c,
           Status__c,
           Amortization_Status__c,
-          Amortization_Status_Comment__c
+          Amortization_Status_Comment__c,
+          Servicer_Contact_Name__c,
+          Servicer_Contact_Email__c,
+          Servicer_Contact_Phone__c,
+          Servicer_Contact_Address__c,
+          Contact_Name_Comment__c,
+          Contact_Email_Comment__c,
+          Contact_Phone_Comment__c,
+          Contact_Address_Comment__c
         FROM Approval_History__c
         WHERE
           Tracking_Status__c = 'Originations'
@@ -725,7 +745,7 @@ public without sharing class ConfirmationOfTermsController {
       WHERE
         PermissionSet.Name = 'Term_Underwriter'
         AND AssigneeId = :UserInfo.getUserId()
-        AND AssigneeId = :dealRecord.Underwriter__c
+        // AND AssigneeId = :dealRecord.Underwriter__c
     ];
 
     isUnderWriterPanel = permissionSetAssignmentListForUnderWriter.size() > 0;
@@ -1386,10 +1406,10 @@ public without sharing class ConfirmationOfTermsController {
     public String modelUpToDate { get; set; }
     public String clearToLock { get; set; }
     public String amortizationStatus { get; set; }
-    public String contactName { get; set; }
-    public String contactAddress { get; set; }
-    public String contactEmail { get; set; }
-    public String contactPhone { get; set; }
+    public String servicerContactName { get; set; }
+    public String servicerContactAddress { get; set; }
+    public String servicerContactEmail { get; set; }
+    public String servicerContactPhone { get; set; }
     CurrentPanel(Opportunity deal) {
       this.recourse = deal.Recourse__c;
       this.depositCollected = null;
@@ -1423,11 +1443,6 @@ public without sharing class ConfirmationOfTermsController {
       this.modelUpToDate = '';
       this.clearToLock = '';
       this.amortizationStatus = null;
-      this.contactName = deal.Contact__r.Name;
-      this.contactAddress = deal.Contact__r.MailingStreet + '\n' + deal.Contact__r.MailingCity +
-        ', ' + deal.Contact__r.MailingState + ' ' + deal.Contact__r.MailingPostalCode;
-      this.contactEmail = deal.Contact__r.Email;
-      this.contactPhone = deal.Contact__r.Phone;
     }
 
     public void setOriginationsHistory(Approval_History__c history) {
@@ -1450,10 +1465,10 @@ public without sharing class ConfirmationOfTermsController {
       this.brokerYsp = history.Broker_YSP__c != null
         ? history.Broker_YSP__c / 100
         : null;
-      this.contactName = history.Contact_Name__c;
-      this.contactAddress = history.Contact_Address__c;
-      this.contactEmail = history.Contact_Email__c;
-      this.contactPhone = history.Contact_Phone__c;
+      this.servicerContactName = history.Servicer_Contact_Name__c;
+      this.servicerContactAddress = history.Servicer_Contact_Address__c;
+      this.servicerContactEmail = history.Servicer_Contact_Email__c;
+      this.servicerContactPhone = history.Servicer_Contact_Phone__c;
     }
 
     public void setUnderwriterHistory(Approval_History__c history) {

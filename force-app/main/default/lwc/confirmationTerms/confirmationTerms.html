@@ -724,6 +724,274 @@
           </tr>
         </tbody>
       </table>
+      <br />
+      <table>
+        <thead>
+          <tr
+            style="
+              width: 100%;
+              border-bottom: 1px solid rgb(90, 90, 90);
+              border-collapse: collapse;
+              font-weight: bold;
+            "
+          >
+            <td style="width: 15%; padding: 5px">
+              Servicer Contact Information
+            </td>
+            <td
+              style="
+                width: 25%;
+                padding: 5px;
+                font-weight: bold;
+                font-size: 15px;
+                text-align: center;
+              "
+            >
+              Details at Submission
+            </td>
+            <td
+              style="
+                width: 25%;
+                padding: 5px;
+                font-weight: bold;
+                font-size: 15px;
+                text-align: center;
+              "
+            >
+              Current Details
+            </td>
+            <td
+              style="
+                width: 35%;
+                padding: 5px;
+                font-weight: bold;
+                font-size: 15px;
+                text-align: center;
+              "
+            >
+              Comments
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td
+              style="
+                width: 15%;
+                padding-left: 10px;
+                border-right: 1px solid rgb(90, 90, 90);
+                border-collapse: collapse;
+              "
+            >
+              Name
+            </td>
+            <td
+              style="
+                width: 25%;
+                padding-left: 20px;
+                padding-right: 20px;
+                border-right: 1px solid rgb(90, 90, 90);
+                border-collapse: collapse;
+              "
+            >
+              <lightning-formatted-text
+                value={submissionDetails.contactName}
+              ></lightning-formatted-text>
+            </td>
+            <td
+              style="
+                width: 25%;
+                padding-left: 20px;
+                padding-right: 20px;
+                border-right: 1px solid rgb(90, 90, 90);
+                border-collapse: collapse;
+              "
+            >
+              <lightning-combobox
+                value={currentDetails.servicerContactName}
+                variant="label-hidden"
+                aria-label="Servicer Contact Name Options"
+                options={servicerOptions}
+                onchange={handleCurrentDetailsUpdate}
+                data-field="servicerContactName"
+                disabled={originationsFieldsDisabled}
+              ></lightning-combobox>
+            </td>
+            <td style="width: 35%; padding-left: 20px; padding-right: 20px">
+              <lightning-textarea
+                label="comments"
+                variant="label-hidden"
+                value={comments.contactNameComments}
+                disabled={originationsFieldsDisabled}
+                onchange={handleCommentsUpdate}
+                data-field="contactNameComments"
+              ></lightning-textarea>
+            </td>
+          </tr>
+          <tr>
+            <td
+              style="
+                width: 15%;
+                padding-left: 10px;
+                border-right: 1px solid rgb(90, 90, 90);
+                border-collapse: collapse;
+              "
+            >
+              Phone Number
+            </td>
+            <td
+              style="
+                width: 25%;
+                padding-left: 20px;
+                padding-right: 20px;
+                border-right: 1px solid rgb(90, 90, 90);
+                border-collapse: collapse;
+              "
+            >
+              <lightning-formatted-phone
+                value={submissionDetails.contactPhone}
+              ></lightning-formatted-phone>
+            </td>
+            <td
+              style="
+                width: 25%;
+                padding-left: 20px;
+                padding-right: 20px;
+                border-right: 1px solid rgb(90, 90, 90);
+                border-collapse: collapse;
+              "
+            >
+              <lightning-combobox
+                value={currentDetails.servicerContactPhone}
+                variant="label-hidden"
+                aria-label="Servicer Contact Phone Options"
+                options={servicerOptions}
+                onchange={handleCurrentDetailsUpdate}
+                data-field="servicerContactPhone"
+                disabled={originationsFieldsDisabled}
+              ></lightning-combobox>
+            </td>
+            <td style="width: 35%; padding-left: 20px; padding-right: 20px">
+              <lightning-textarea
+                label="comments"
+                variant="label-hidden"
+                value={comments.contactPhoneComments}
+                disabled={originationsFieldsDisabled}
+                onchange={handleCommentsUpdate}
+                data-field="contactPhoneComments"
+              ></lightning-textarea>
+            </td>
+          </tr>
+          <tr>
+            <td
+              style="
+                width: 15%;
+                padding-left: 10px;
+                border-right: 1px solid rgb(90, 90, 90);
+                border-collapse: collapse;
+              "
+            >
+              Address
+            </td>
+            <td
+              style="
+                width: 25%;
+                padding-left: 20px;
+                padding-right: 20px;
+                border-right: 1px solid rgb(90, 90, 90);
+                border-collapse: collapse;
+              "
+            >
+              <lightning-formatted-text
+                value={submissionDetails.contactAddress}
+              ></lightning-formatted-text>
+            </td>
+            <td
+              style="
+                width: 25%;
+                padding-left: 20px;
+                padding-right: 20px;
+                border-right: 1px solid rgb(90, 90, 90);
+                border-collapse: collapse;
+              "
+            >
+              <lightning-combobox
+                value={currentDetails.servicerContactAddress}
+                variant="label-hidden"
+                aria-label="Servicer Contact Address Options"
+                options={servicerOptions}
+                onchange={handleCurrentDetailsUpdate}
+                data-field="servicerContactAddress"
+                disabled={originationsFieldsDisabled}
+              ></lightning-combobox>
+            </td>
+            <td style="width: 35%; padding-left: 20px; padding-right: 20px">
+              <lightning-textarea
+                label="comments"
+                variant="label-hidden"
+                value={comments.contactAddressComments}
+                disabled={originationsFieldsDisabled}
+                onchange={handleCommentsUpdate}
+                data-field="contactAddressComments"
+              ></lightning-textarea>
+            </td>
+          </tr>
+          <tr>
+            <td
+              style="
+                width: 15%;
+                padding-left: 10px;
+                border-right: 1px solid rgb(90, 90, 90);
+                border-collapse: collapse;
+              "
+            >
+              Email
+            </td>
+            <td
+              style="
+                width: 25%;
+                padding-left: 20px;
+                padding-right: 20px;
+                border-right: 1px solid rgb(90, 90, 90);
+                border-collapse: collapse;
+              "
+            >
+              <lightning-formatted-email
+                value={submissionDetails.contactEmail}
+              ></lightning-formatted-email>
+            </td>
+            <td
+              style="
+                width: 25%;
+                padding-left: 20px;
+                padding-right: 20px;
+                border-right: 1px solid rgb(90, 90, 90);
+                border-collapse: collapse;
+              "
+            >
+              <lightning-combobox
+                value={currentDetails.servicerContactEmail}
+                variant="label-hidden"
+                aria-label="Servicer Contact Email Options"
+                options={servicerOptions}
+                onchange={handleCurrentDetailsUpdate}
+                data-field="servicerContactEmail"
+                disabled={originationsFieldsDisabled}
+              ></lightning-combobox>
+            </td>
+            <td style="width: 35%; padding-left: 20px; padding-right: 20px">
+              <lightning-textarea
+                label="comments"
+                variant="label-hidden"
+                value={comments.contactEmailComments}
+                disabled={originationsFieldsDisabled}
+                onchange={handleCommentsUpdate}
+                data-field="contactEmailComments"
+              ></lightning-textarea>
+            </td>
+          </tr>
+        </tbody>
+      </table>
       <div class="spacing">
         Originations Comments: {comments.originationsComments}
       </div>
@@ -1372,8 +1640,33 @@
           data-field="origingatorReviewComment"
           onchange={handleModalComments}
           required
-        >
-        </lightning-textarea>
+        ></lightning-textarea>
+          <template if:true={showServicerContactForm}>
+            <br />
+            <h1><strong>Updated Servicer Contact Details</strong></h1>
+            <lightning-record-edit-form
+              record-id={contactId}
+              object-api-name="Contact"
+            >
+              <lightning-messages></lightning-messages>
+              <template if:true={showContactNameField}>
+                <lightning-input-field field-name="FirstName"></lightning-input-field>
+                <lightning-input-field field-name="LastName"></lightning-input-field>
+              </template>
+              <template if:true={showContactPhoneField}>
+                <lightning-input-field field-name="Phone"></lightning-input-field>
+              </template>
+              <template if:true={showContactAddressFields}>
+                <lightning-input-field field-name="MailingStreet"></lightning-input-field>
+                <lightning-input-field field-name="MailingCity"></lightning-input-field>
+                <lightning-input-field field-name="MailingState"></lightning-input-field>
+                <lightning-input-field field-name="MailingPostalCode"></lightning-input-field>
+              </template>
+              <template if:true={showContactEmailField}>
+                <lightning-input-field field-name="Email"></lightning-input-field>
+              </template>
+            </lightning-record-edit-form>
+          </template>
       </template>
 
       <template if:true={showButtonsUnderwriter}>

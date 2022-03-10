@@ -394,7 +394,7 @@ public without sharing class InterfaceEmail_LightningController {
     if (null != oRecordType && oRecordType == 'Term_Loan') {
       m.put(
         'CC',
-        new List<Object>{ o.Owner.Email, TERM_LIST, BETH, RYAN, CHRIS }
+        new List<Object>{ o.Owner.Email, TERM_LIST, BETH, CHRIS }
       );
     }
     if (
@@ -405,7 +405,7 @@ public without sharing class InterfaceEmail_LightningController {
     ) {
       m.put(
         'CC',
-        new List<Object>{ o.Owner.Email, BRIDGE_LIST, BETH, RYAN, CHRIS }
+        new List<Object>{ o.Owner.Email, BRIDGE_LIST, BETH, CHRIS }
       );
     }
     m.put('ContentVersions', cvList);
