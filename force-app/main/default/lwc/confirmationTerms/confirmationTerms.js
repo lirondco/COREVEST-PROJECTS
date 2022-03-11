@@ -14,6 +14,7 @@ import underwriterReject from "@salesforce/apex/ConfirmationOfTermsController.un
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 
 import getApprovalPicklists from "@salesforce/apex/ConfirmationOfTermsController.getApprovalPicklists";
+import getPicklistValues from "@salesforce/apex/lightning_Util.getPicklistValues";
 
 export default class ConfirmationTerms extends LightningElement {
   @api
@@ -46,6 +47,7 @@ export default class ConfirmationTerms extends LightningElement {
   isRejection = false;
 
   isInApproval = false;
+  localAmortizationStatusOptions = [{ label: "", value: "" }];
 
   historyChange(event) {
     const processInstanceId = event.detail.value;
@@ -154,10 +156,36 @@ export default class ConfirmationTerms extends LightningElement {
 
         this.getRecordDetails();
         this.getWrapperBundle();
+        this.getAmortizationStatusPicklistvalues();
       })
       .catch((error) => {
         console.log(error);
         console.log("error");
+      });
+  }
+
+  getAmortizationStatusPicklistvalues() {
+    getPicklistValues({
+      sobjectType: "Approval_History__c",
+      fieldName: "Amortization_Status__c"
+    })
+      .then((results) => {
+        console.log(results);
+        const currentOptions = [];
+  
+        if (results.length > 0) {
+          results.forEach((element) => {
+            currentOptions.push({
+              label: element,
+              value: element
+            });
+          });
+        }
+  
+        this.amortizationStatusOptions = currentOptions;
+      })
+      .catch((error) => {
+        console.error(error);
       });
   }
 
@@ -174,7 +202,7 @@ export default class ConfirmationTerms extends LightningElement {
     if (this.isUnderWriterPanel && this.isEnabledUnderwriterPanel) {
       //do validation for the values to be populated;
       if(!this.currentDetails.amortizationStatus) {
-        const amortizationStatus = this.template.querySelector(['[data-field="amortizationStatus"]']);
+        const amortizationStatus = this.template.querySelector('lightning-combobox[data-field="amortizationStatus"]');
         amortizationStatus.required = true;
         amortizationStatus.reportValidity();
         validated = false;
@@ -441,11 +469,11 @@ export default class ConfirmationTerms extends LightningElement {
   }
 
   get amortizationStatusOptions() {
-    return [
-      { label: "", value: "" },
-      { label: "Loan Amortized", value: "Loan Amortized" },
-      { label: "Interest Only", value: "Interest Only" }
-    ]
+    return this.localAmortizationStatusOptions;
+  }
+  
+  set amortizationStatusOptions(val) {
+    this.localAmortizationStatusOptions = val;
   }
 
   showErrorToast(message) {
