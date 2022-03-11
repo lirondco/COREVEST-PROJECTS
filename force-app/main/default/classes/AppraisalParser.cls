@@ -1,18 +1,18 @@
 public without sharing class AppraisalParser implements Queueable {
   List<Deal_Document__c> documents;
-  APILoggerQueueable apiLogger;
+  // APILoggerQueueable apiLogger;
 
   public AppraisalParser(List<Deal_Document__c> documents) {
     this.documents = documents;
   }
 
-  public AppraisalParser(
-    List<Deal_Document__c> documents,
-    APILoggerQueueable logger
-  ) {
-    this.documents = documents;
-    this.apiLogger = logger;
-  }
+  // public AppraisalParser(
+  //   List<Deal_Document__c> documents,
+  //   APILoggerQueueable logger
+  // ) {
+  //   this.documents = documents;
+  //   this.apiLogger = logger;
+  // }
 
   public void execute(QueueableContext context) {
     system.debug('inside parser');
@@ -23,9 +23,9 @@ public without sharing class AppraisalParser implements Queueable {
       system.enqueueJob(new AppraisalParser(documents));
     }
 
-    if (apiLogger != null) {
-      system.enqueueJob(apiLogger);
-    }
+    // if (apiLogger != null) {
+    //   system.enqueueJob(apiLogger);
+    // }
   }
 
   public static void parseXML(Deal_Document__c dealDocument) {
@@ -183,7 +183,9 @@ public without sharing class AppraisalParser implements Queueable {
 
     if (
       structureInformationNode != null &&
-      String.isNotEmpty(structureInformationNode.getAttribute('GSEStoriesCount', null))
+      String.isNotEmpty(
+        structureInformationNode.getAttribute('GSEStoriesCount', null)
+      )
     ) {
       Decimal gseStories = Decimal.ValueOf(
         structureInformationNode.getAttribute('GSEStoriesCount', null)
@@ -390,10 +392,9 @@ public without sharing class AppraisalParser implements Queueable {
         null
       );
 
-      String newImprovementTotalCostAmount = costAnalysisNode != null ? costAnalysisNode.getAttribute(
-        'NewImprovementTotalCostAmount',
-        null
-      ) : null;
+      String newImprovementTotalCostAmount = costAnalysisNode != null
+        ? costAnalysisNode.getAttribute('NewImprovementTotalCostAmount', null)
+        : null;
 
       appraisal.Appraisal_Replacement_Cost_Value__c = String.isNotBlank(
           newImprovementTotalCostAmount
