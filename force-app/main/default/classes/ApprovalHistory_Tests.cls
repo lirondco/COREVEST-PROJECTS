@@ -86,6 +86,7 @@ private class ApprovalHistory_Tests {
 
         Test.startTest();
         List<Approval_History__c> testList = ApprovalHistory_lightningController.returnHistory(workItemIds[0]);
+        ApprovalHistory_lightningController.approveDeal(workItemIds[0], 'Capital Markets', o.Id, 'Test Comment', o, 'Term_Pricing_Review');
         // System.assertEquals(testList.size(), );
         ApprovalHistory_lightningController.returnHistoryOpp(o.Id);
         ApprovalAttachments_LightningController.rejectDealForGLCApproval(workItemIds[0], o.Id, 'test', 'Capital Markets');

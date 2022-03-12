@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <alerts>
+        <fullName>Lost_Deal_Analysis_Record_Creation</fullName>
+        <description>Lost Deal Analysis Record Creation</description>
+        <protected>false</protected>
+        <recipients>
+            <type>owner</type>
+        </recipients>
+        <senderAddress>integrations@cvest.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>Process_Builder_Emails/Lost_Deal_Analysis_Record_Creation</template>
+    </alerts>
+</Workflow>

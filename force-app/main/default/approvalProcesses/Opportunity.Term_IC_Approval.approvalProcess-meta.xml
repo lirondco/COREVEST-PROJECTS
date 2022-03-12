@@ -211,7 +211,6 @@
         <field>HOA_Fees_Adjustment__c</field>
         <field>Holdback__c</field>
         <field>Holdback_Multiplier__c</field>
-        <field>Hold_Reason__c</field>
         <field>IC_Approval_Date__c</field>
         <field>Implied_Cap_Rate__c</field>
         <field>Implied_Cap_Rate_Calc__c</field>
@@ -581,7 +580,7 @@
     </finalRejectionActions>
     <finalRejectionRecordLock>false</finalRejectionRecordLock>
     <label>Term IC Approval</label>
-    <processOrder>10</processOrder>
+    <processOrder>12</processOrder>
     <recordEditability>AdminOrCurrentApprover</recordEditability>
     <showApprovalHistory>false</showApprovalHistory>
 </ApprovalProcess>

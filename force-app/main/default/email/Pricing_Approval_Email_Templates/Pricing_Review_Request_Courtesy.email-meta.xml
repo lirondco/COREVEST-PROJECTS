@@ -3,7 +3,7 @@
     <apiVersion>54.0</apiVersion>
     <available>true</available>
     <encodingKey>ISO-8859-1</encodingKey>
-    <name>Pricing Review Request Custom</name>
+    <name>Pricing Review Request Courtesy</name>
     <style>none</style>
     <subject>Pricing Review - Opportunity Loan ID: {!Opportunity.Deal_Loan_Number__c} - Field from Account - {!Account.BillingStreet}</subject>
     <type>visualforce</type>

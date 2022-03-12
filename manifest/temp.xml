@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+      <types>
+		<members>Opportunity.Repricing_Approval_Alert_Term</members>
+        <members>Opportunity.Repricing_Rejected_Alert_Term</members>
+		<name>WorkflowAlert</name>
+	</types>
+    <version>53.0</version>
+</Package>

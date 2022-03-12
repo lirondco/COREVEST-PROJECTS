@@ -122,7 +122,7 @@
         </action>
     </initialSubmissionActions>
     <label>Submit Bridge Deal to UW Approval</label>
-    <processOrder>8</processOrder>
+    <processOrder>10</processOrder>
     <recallActions>
         <action>
             <name>Current_Approval_Process_NULL</name>

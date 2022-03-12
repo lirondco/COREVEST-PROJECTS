@@ -40,6 +40,7 @@ private class PricingReviewRequest_Tests {
       'Test Resolution',
       'Term_Loan'
     );
+    PricingReviewRequest_LightningController.sendRepricingEmail(opp.Id);
     Test.stopTest();
   }
 }

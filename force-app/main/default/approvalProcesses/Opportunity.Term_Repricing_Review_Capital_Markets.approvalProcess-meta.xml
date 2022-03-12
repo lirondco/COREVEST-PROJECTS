@@ -20,7 +20,7 @@
         <allowDelegate>false</allowDelegate>
         <approvalActions>
             <action>
-                <name>Pricing_Approval_Alert_Term</name>
+                <name>Repricing_Approval_Alert_Term</name>
                 <type>Alert</type>
             </action>
         </approvalActions>
@@ -38,15 +38,11 @@
     <emailTemplate>Pricing_Approval_Email_Templates/Pricing_Review_Request_Custom</emailTemplate>
     <enableMobileDeviceAccess>false</enableMobileDeviceAccess>
     <entryCriteria>
-        <booleanFilter>(1 OR 3) AND 2</booleanFilter>
+        <booleanFilter>1 OR 2</booleanFilter>
         <criteriaItems>
             <field>Opportunity.Record_Type_Name__c</field>
             <operation>equals</operation>
             <value>Term Loan</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.Approved_Term_Sheet_Name__c</field>
-            <operation>equals</operation>
         </criteriaItems>
         <criteriaItems>
             <field>Opportunity.RecordType</field>
@@ -79,7 +75,7 @@
             <type>FieldUpdate</type>
         </action>
         <action>
-            <name>Pricing_Rejected_Alert_Term</name>
+            <name>Repricing_Rejected_Alert_Term</name>
             <type>Alert</type>
         </action>
     </finalRejectionActions>
@@ -94,12 +90,12 @@
             <type>FieldUpdate</type>
         </action>
     </initialSubmissionActions>
-    <label>Term Pricing Review - Capital Markets</label>
+    <label>Term Repricing Review - Capital Markets</label>
     <nextAutomatedApprover>
         <useApproverFieldOfRecordOwner>false</useApproverFieldOfRecordOwner>
         <userHierarchyField>Manager</userHierarchyField>
     </nextAutomatedApprover>
-    <processOrder>1</processOrder>
+    <processOrder>7</processOrder>
     <recallActions>
         <action>
             <name>Current_Approval_Process_NULL</name>

@@ -18,9 +18,12 @@ public with sharing class PricingReviewControllerTest {
         ProcessInstanceStep approval = controller.ApprovalProcess;
         String comments = controller.approvalComments;
         String approvalUrl = controller.approvalUrl;
+        String dealUrl = controller.dealUrl;
+        Integer count = controller.repriceCount;
         Test.stopTest();
         System.assertEquals(true, approval != null, 'Approval Process is null');
         System.assertEquals(approval.Comments, comments, 'Comments');
         System.assertEquals(true, String.isNotEmpty(approvalUrl), 'Approval Url');
+        System.assertEquals(true, String.isNotEmpty(dealUrl), 'Deal Url');
     }
 }

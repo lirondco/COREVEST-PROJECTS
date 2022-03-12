@@ -1,10 +1,30 @@
 <apex:component controller="PricingReviewController" access="global">
-  <apex:attribute name="Opportunity" description="" type="Opportunity" />
-  <apex:attribute type="Id" name="recordId" description="Record ID" assignTo="{!recId}" />
+  <apex:attribute name="Opportunity" description="" type="Opportunity" access="global" />
+  <apex:attribute name="isApprover" description="" type="Boolean" access="global" />
+  <apex:attribute type="Id" name="recordId" description="Record ID" assignTo="{!recId}" access="global" />
   <table border="0" cellpadding="5" width="550" cellspacing="5" height="400">
     <tr valign="top" height="400">
       <td tEditID="c1r1" style=" background-color:#FFFFFF; bEditID:r3st1; color:#000000; bLabel:main; font-size:12pt; font-family:arial;"
         aEditID="c1r1" locked="0">
+        <apex:outputPanel rendered="{!repriceCount > 0}">
+          <div style="color: rgb(150, 20, 55); font-family: arial; font-size: 12pt; font-weight: bold;">
+            <apex:outputText value="Reprice - {0} - {1} - Term Loan Pricing Review - {2}">
+              <apex:param value="{!repriceCount}" />
+              <apex:param value="{!Opportunity.StageName}" />
+              <apex:param value="{!Opportunity.Name}" />
+            </apex:outputText>
+          </div>
+          <apex:outputPanel rendered="{!isApprover == false}">
+            <div style="font-style: italic">
+              A separate pricing review email has been sent to the Approvers.
+            </div>
+          </apex:outputPanel>
+          <div style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;">
+            <font face="arial">
+              <br />
+            </font>
+          </div>
+        </apex:outputPanel>
         <div style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;">
           <font face="arial">Hi Team,</font>
         </div>
@@ -16,7 +36,7 @@
         <div style="">
           <span style="color: rgb(22, 17, 17); font-family: arial; font-size: 12pt;">Please review the following Pricing Request for&nbsp;</span>
           <font face="arial">
-            <a href="https://cvest.lightning.force.com/lightning/r/Opportunity/{!Opportunity.Id}/view">{!Opportunity.Name}.</a>
+            <a href="{!dealUrl}">{!Opportunity.Name}.</a>
           </font>
         </div>
         <div style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;">
@@ -46,25 +66,37 @@
             <font face="arial">{!Opportunity.LOC_Loan_Type__c}</font>
           </div>
           <div style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;">
-            <font face="arial">Requested Loan Amount:&nbsp;{!Opportunity.Loan_Size__c}</font>
+            <font face="arial">
+              <apex:outputText value="Requested Loan Amount: {0, Number, Currency}">
+                <apex:param value="{!Opportunity.Loan_Size__c}" />
+              </apex:outputText>
+            </font>
           </div>
           <div style="">
             <font face="arial" style="">Exception: {!Opportunity.Exception__c}</font>
           </div>
+          <apex:outputPanel rendered="{!Opportunity.Exception__c}">
+            <div>
+              <font face="arial" style="">
+                Exception Reason: {!Opportunity.Exception_Reason__c}
+              </font>
+            </div>
+          </apex:outputPanel>
         </div>
         <div style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;">
           <br />
         </div>
-        <div style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;">
-          <span style="font-family: arial;">
-            <a href="{!approvalUrl}">
-              <b>CLICK HERE</b>
-            </a> to access the Pricing Review Page for this deal.&nbsp;&nbsp;</span>
-        </div>
+        <apex:outputPanel rendered="{!approvalUrl != null}">
+          <div style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;">
+            <span style="font-family: arial;">
+              <a href="{!approvalUrl}">
+                <b>CLICK HERE</b>
+              </a> to access the Pricing Review Page for this deal.&nbsp;&nbsp;</span>
+          </div>
+        </apex:outputPanel>
         <div style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;">
           <span style="font-size: x-small;">If that does not work, please copy the following URL and paste it into your browser to gain access:&nbsp;&nbsp;</span>
-          <span
-            style="font-size: x-small;">{!approvalUrl}</span>
+          <span style="font-size: x-small;">{!approvalUrl}</span>
         </div>
         <div style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;">
           <br />

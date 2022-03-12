@@ -9,11 +9,12 @@
 		<members>PricingReviewController</members>
         <members>PricingReviewControllerTest</members>
         <members>PricingReviewRequest_LightningController</members>
-        <members>ApprovalHistory_lightningController</members>
         <members>ApprovalAttachments_lightningController</members>
         <members>util</members>
+        <members>util_Tests</members>
+        <members>PricingReviewRequest_Tests</members>
+        <members>ApprovalAttachments_Tests</members>
 		<name>ApexClass</name>
-        <!-- PricingReviewControllerTest,util_Tests,PricingReviewRequest_Tests,ApprovalHistory_Tests,ApprovalAttachments_Tests,UnderwritingApprovalTests-->
 	</types>
     <types>
 		<members>PricingReviewRequestComponent</members>
@@ -27,11 +28,6 @@
     <types>
 		<members>PricingReviewRequest</members>
 		<name>AuraDefinitionBundle</name>
-	</types>
-    <types>
-		<members>Opportunity.Repricing_Approval_Alert_Term</members>
-        <members>Opportunity.Repricing_Rejected_Alert_Term</members>
-		<name>WorkflowAlert</name>
 	</types>
     <version>53.0</version>
 </Package>

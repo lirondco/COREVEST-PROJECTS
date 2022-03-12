@@ -39,7 +39,7 @@
         <name>Underwriter_and_Capital_Markets_Review</name>
     </approvalStep>
     <description>Approval Process for the Term Deal Pricing Review.</description>
-    <emailTemplate>Pricing_Approval_Email_Templates/Pricing_Review_Request</emailTemplate>
+    <emailTemplate>Pricing_Approval_Email_Templates/Pricing_Review_Request_Custom</emailTemplate>
     <enableMobileDeviceAccess>false</enableMobileDeviceAccess>
     <entryCriteria>
         <booleanFilter>(1 OR 3) AND 2</booleanFilter>
@@ -103,7 +103,7 @@
         <useApproverFieldOfRecordOwner>false</useApproverFieldOfRecordOwner>
         <userHierarchyField>Manager</userHierarchyField>
     </nextAutomatedApprover>
-    <processOrder>1</processOrder>
+    <processOrder>3</processOrder>
     <recallActions>
         <action>
             <name>Current_Approval_Process_NULL</name>

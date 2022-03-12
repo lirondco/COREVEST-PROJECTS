@@ -90,7 +90,7 @@
     </fieldUpdates>
     <rules>
         <fullName>CovenantTaskEmailAlert</fullName>
-        <active>true</active>
+        <active>false</active>
         <criteriaItems>
             <field>Task.Covenant_Milestones__c</field>
             <operation>equals</operation>

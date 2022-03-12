@@ -1,5 +1,5 @@
 <messaging:emailTemplate subject="{!relatedTo.Type} Pricing Review - {!relatedTo.Name}" recipientType="User" relatedToType="Opportunity">
   <messaging:htmlEmailBody >
-    <c:PricingReviewRequestComponent isApprover="true" recordId="{!relatedTo.Id}" Opportunity="{!relatedTo}" />
+    <c:PricingReviewRequestComponent isApprover="false" recordId="{!relatedTo.Id}" Opportunity="{!relatedTo}" />
   </messaging:htmlEmailBody>
 </messaging:emailTemplate>

@@ -26,7 +26,6 @@
         <name>Term_Confirmation_of_Terms</name>
     </approvalStep>
     <description>Approval Process for the Originating Team and the Underwriting Team to approver the Terms of this Loan</description>
-    <emailTemplate>Confirmation_of_Terms_Templates/Term_Confirmation_of_Terms_Originations_Submission</emailTemplate>
     <enableMobileDeviceAccess>false</enableMobileDeviceAccess>
     <finalApprovalActions>
         <action>
@@ -49,7 +48,7 @@
         </action>
     </initialSubmissionActions>
     <label>Term-Confirmation of Terms</label>
-    <processOrder>9</processOrder>
+    <processOrder>11</processOrder>
     <recallActions>
         <action>
             <name>Approval_Request_Recalled</name>

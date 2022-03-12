@@ -9,12 +9,12 @@ public without sharing class ApprovalHistory_lightningController {
     'Term'
   };
 
-  public static final List<String> IC_APPROVAL_NAMES = new List<String>{
-    'Term_IC_Approval',
-    'Bridge_IC_Approval',
-    'Term_Sub_IC',
-    'Bridge_Sub_IC'
-  };
+  // public static final List<String> IC_APPROVAL_NAMES = new List<String>{
+  //   'Term_IC_Approval',
+  //   'Bridge_IC_Approval',
+  //   'Term_Sub_IC',
+  //   'Bridge_Sub_IC'
+  // };
 
 
   @AuraEnabled
@@ -279,82 +279,84 @@ public without sharing class ApprovalHistory_lightningController {
         // 	//m.put('Verified', verified);
         //     //ah.Verified__c
         // }
-
-        if (processName == 'Submit_Term_Deal_to_UW_Approval') {
-          if (termEntryIntoUWApprover) {
-            ah.Verified__c = true;
-          }
-        } else if (processName == 'Submit_Bridge_Deal_to_UW_Approval') {
-          if (bridgeEntryIntoUWApprover) {
-            ah.Verified__c = true;
-          }
-        } else if (capitalMarketsPricingApprover) {
-          if (null != o.Approved_by_Capital_Markets__c) {
-            // if (o.Approval_Status__c == 'Approved'){
-            //     o = modifyOpportunity(o);
-
-            // }
-            // ah.Verified__c = true;
-          } else {
-            ah.Verified__c = true;
-          }
-          roleName = 'Capital Markets';
-        } else if (processName == 'Bridge_LOC_Pricing_Review') {
-          if (bridgePricingApprover) {
-            if (null != o.Approved_by_Underwriter__c) {
+        // if (IC_APPROVAL_NAMES.contains(processName) && ah.Actor__c == UserInfo.getUserId()) {
+        //   ah.Verified__c = true;
+        // } else {
+          if (processName == 'Submit_Term_Deal_to_UW_Approval') {
+            if (termEntryIntoUWApprover) {
+              ah.Verified__c = true;
+            }
+          } else if (processName == 'Submit_Bridge_Deal_to_UW_Approval') {
+            if (bridgeEntryIntoUWApprover) {
+              ah.Verified__c = true;
+            }
+          } else if (capitalMarketsPricingApprover) {
+            if (null != o.Approved_by_Capital_Markets__c) {
               // if (o.Approval_Status__c == 'Approved'){
               //     o = modifyOpportunity(o);
+  
               // }
               // ah.Verified__c = true;
             } else {
               ah.Verified__c = true;
             }
-          }
-          roleName = 'Underwriter';
-        } else if (processName == 'Term_Pricing_Review') {
-          if (termPricingApprover) {
-            if (null != o.Approved_by_Underwriter__c) {
-              // if (o.Approval_Status__c == 'Approved'){
-              //     o = modifyOpportunity(o);
-              // }
-              // ah.Verified__c = true;
-            } else {
-              ah.Verified__c = true;
+            roleName = 'Capital Markets';
+          } else if (processName == 'Bridge_LOC_Pricing_Review') {
+            if (bridgePricingApprover) {
+              if (null != o.Approved_by_Underwriter__c) {
+                // if (o.Approval_Status__c == 'Approved'){
+                //     o = modifyOpportunity(o);
+                // }
+                // ah.Verified__c = true;
+              } else {
+                ah.Verified__c = true;
+              }
             }
-          }
-          roleName = 'Underwriter';
-        } else if (processName == 'Custom_SAB_Pricing_Review') {
-          if (sabPricingApprover) {
-            if (null != o.Approved_by_Underwriter__c) {
-              // if (o.Approval_Status__c == 'Approved'){
-              //     o = modifyOpportunity(o);
-              // }
-              // ah.Verified__c = true;
-            } else {
-              ah.Verified__c = true;
+            roleName = 'Underwriter';
+          } else if (processName == 'Term_Pricing_Review' || processName == 'Term_Repricing_Review') {
+            if (termPricingApprover) {
+              if (null != o.Approved_by_Underwriter__c) {
+                // if (o.Approval_Status__c == 'Approved'){
+                //     o = modifyOpportunity(o);
+                // }
+                // ah.Verified__c = true;
+              } else {
+                ah.Verified__c = true;
+              }
             }
-          }
-          roleName = 'Underwriter';
-        } else if (processName == 'Standard_SAB_Pricing_Review') {
-          if (sabPricingApprover) {
-            if (null != o.Approved_by_Underwriter__c) {
-              // if (o.Approval_Status__c == 'Approved'){
-              //     o = modifyOpportunity(o);
-              // }
-            } else {
-              ah.Verified__c = true;
+            roleName = 'Underwriter';
+          } else if (processName == 'Custom_SAB_Pricing_Review') {
+            if (sabPricingApprover) {
+              if (null != o.Approved_by_Underwriter__c) {
+                // if (o.Approval_Status__c == 'Approved'){
+                //     o = modifyOpportunity(o);
+                // }
+                // ah.Verified__c = true;
+              } else {
+                ah.Verified__c = true;
+              }
             }
-          }
-          roleName = 'Underwriter';
-        } 
-        if (IC_APPROVAL_NAMES.contains(processName) && ah.Actor__c == UserInfo.getUserId()) {
-          ah.Verified__c = true;
+            roleName = 'Underwriter';
+          } else if (processName == 'Standard_SAB_Pricing_Review') {
+            if (sabPricingApprover) {
+              if (null != o.Approved_by_Underwriter__c) {
+                // if (o.Approval_Status__c == 'Approved'){
+                //     o = modifyOpportunity(o);
+                // }
+              } else {
+                ah.Verified__c = true;
+              }
+            }
+            roleName = 'Underwriter';
+          } 
         }
 
-        if(IC_APPROVAL_NAMES.contains(processName) && (otmList.size() > 0 || ah.Deal__r.Underwriter__c == UserInfo.getUserId())){
-          allowUnderwriterRecall = true;
-        }
-      }
+        
+
+      //   if(IC_APPROVAL_NAMES.contains(processName) && (otmList.size() > 0 || ah.Deal__r.Underwriter__c == UserInfo.getUserId()) || IcApprovalController.verifyPermission()){
+      //     allowUnderwriterRecall = true;
+      //   }
+      // }
     }
 
     Boolean b = submitterId == UserInfo.getUserId() || allowUnderwriterRecall;
@@ -598,10 +600,10 @@ public without sharing class ApprovalHistory_lightningController {
     system.debug(userRole);
     system.debug(approvalName);
     // system.debug(JSON.serialize(opp));
-    Opportunity updDeal = new Opportunity(
-      Id = oppId,
-      Final_Sponsor_Tier__c = 'Tier 1'
-    );
+    // Opportunity updDeal = new Opportunity(
+    //   Id = oppId,
+    //   Final_Sponsor_Tier__c = 'Tier 1'
+    // );
 
     ApprovalAttachments_lightningController.approveDeal(
       recordId,

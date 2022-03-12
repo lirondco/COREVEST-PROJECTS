@@ -468,7 +468,9 @@ public without sharing class util {
       'Standard_SAB_Pricing_Review' => true,
       'Term_Pricing_Review_Capital_Markets' => true,
       'Bridge_LOC_Pricing_Review_Capital_Market' => true,
-      'Term_Confirmation_of_Terms' => true
+      'Term_Confirmation_of_Terms' => true,
+      'Term_Repricing_Review_Capital_Markets' => true,
+      'Term_Repricing_Review' => true
     };
   }
 }

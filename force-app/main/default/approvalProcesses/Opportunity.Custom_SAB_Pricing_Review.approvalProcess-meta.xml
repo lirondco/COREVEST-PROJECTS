@@ -86,7 +86,7 @@
         <useApproverFieldOfRecordOwner>false</useApproverFieldOfRecordOwner>
         <userHierarchyField>Manager</userHierarchyField>
     </nextAutomatedApprover>
-    <processOrder>5</processOrder>
+    <processOrder>6</processOrder>
     <recallActions>
         <action>
             <name>Current_Approval_Process_NULL</name>
