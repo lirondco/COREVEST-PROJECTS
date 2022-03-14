@@ -153,6 +153,14 @@ public class AppraisalParseBatch implements Database.Batchable<sObject> {
           .replaceAll('[^0-9.]', '')
       );
       retMap.put('storiesCount', gseStories);
+    } else {
+      if(String.isNotEmpty(structure_node_new.getAttribute('StoriesCount', null))){
+        Decimal stories = Decimal.ValueOf(
+          structure_node_new.getAttribute('StoriesCount', null)
+            .replaceAll('[^0-9.]', '')
+        );
+        retMap.put('storiesCount', stories);
+      }
     }
 
     return retMap;
