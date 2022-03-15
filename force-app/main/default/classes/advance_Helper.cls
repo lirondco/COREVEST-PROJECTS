@@ -395,7 +395,7 @@ public class advance_Helper {
     }
 
     if(advanceWithNameChanges.size() > 0) {
-      PropertyTriggerExtensions.validateAdvanceNames(advanceWithNameChanges);
+      // PropertyTriggerExtensions.validateAdvanceNames(advanceWithNameChanges);
     }
 
     for (Opportunity o : [

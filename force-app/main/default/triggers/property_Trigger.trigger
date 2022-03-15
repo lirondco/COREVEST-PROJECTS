@@ -31,7 +31,7 @@ trigger property_Trigger on Property__c(
     ) {
       // property_Helper.hasafterUpdateRun=true;
 		Property_Helper.afterUpdate(Trigger.New, Trigger.Old);
-    PropertyTriggerExtensions.checkStatusChanges(Trigger.oldMap, Trigger.newMap);
+    // PropertyTriggerExtensions.checkStatusChanges(Trigger.oldMap, Trigger.newMap);
     }
     if (Trigger.isBefore && Trigger.isDelete) {
       //  Property__c_Helper.beforeDelete(Trigger.New);
