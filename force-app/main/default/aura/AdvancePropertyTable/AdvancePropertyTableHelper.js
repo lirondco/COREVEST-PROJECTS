@@ -63,6 +63,7 @@
       "Property__r.Yardi_Id__c",
       "Purchase_Price__c",
       "Property__r.Status__c",
+      "Property__r.Special_Asset__c",
       "Appraisal_Due_Date__c",
       "Renovation_Budget__c",
       "BPO_Appraisal_Value__c",

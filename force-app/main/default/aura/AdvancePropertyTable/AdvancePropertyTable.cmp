@@ -18,6 +18,11 @@
   <aura:handler name="init" value="{!this}" action="{!c.init}" />
   <aura:attribute name="permissionsMap" type="Map" />
   <aura:attribute name="propertyPermissionsMap" type="Map" />
+  <aura:attribute
+    name="specialAssetText"
+    type="String"
+    default="This is a Special Asset Property"
+  />
 
   <!-- <aura:handler name="change" value={!v.record.Inspection_Fee} -->
 
@@ -200,7 +205,15 @@
             >
               <tr>
                 <th scope="row" data-lable="">
-                  <ui:inputCheckbox aura:id="checkbox" name="{!item.Id}" />
+                  <div class="slds-truncate">
+                      <lightning:helptext
+                        content="{!v.specialAssetText}"
+                        iconName="utility:warning"
+                        iconVariant="error"
+                        class="{!item.Property__r.Special_Asset__c != null &amp;&amp; v.record.Status__c == 'Pending' ? '' : 'slds-hide'}"
+                      />
+                    <ui:inputCheckbox aura:id="checkbox" name="{!item.Id}" />
+                  </div>
                 </th>
                 <th scope="row" data-label="{!index}">
                   <div class="slds-truncate" title="{!index}">{!index+1}</div>
@@ -927,7 +940,15 @@
             >
               <tr>
                 <th scope="row" data-lable="">
+                  <div class="slds-truncate">
+                    <lightning:helptext
+                    content="{!v.specialAssetText}"
+                    iconName="utility:warning"
+                    iconVariant="error"
+                    class="{!item.Property__r.Special_Asset__c != null &amp;&amp; v.record.Status__c == 'Pending' ? '' : 'slds-hide'}"
+                  />                   
                   <ui:inputCheckbox aura:id="checkbox" name="{!item.Id}" />
+                  </div>
                 </th>
                 <th scope="row" data-label="{!index}">
                   <div class="slds-truncate" title="{!index}">{!index+1}</div>
@@ -1627,7 +1648,7 @@
         >
           <thead>
             <tr class="slds-text-title--caps">
-              <th>
+              <th class="slds-p-left_large">
                 <div
                   class="{! and(!empty(v.permissionsMap), v.permissionsMap.sobject.isUpdateable) ? '' : 'slds-hide'}"
                 >
