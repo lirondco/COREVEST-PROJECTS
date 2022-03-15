@@ -9,7 +9,7 @@ public without sharing class CAFTestingClass {
     List<String> cvIds = new List<String>();
     for (Deal_Document__c doc : dealDocs.values()) {
       Deal_Document__c oldDoc = oldDocs.get(doc.Id);
-      if (VALID_DOCTYPES.contains(doc.Document_Type__c) && doc.ContentVersion_Id__c != null) {
+      if (VALID_DOCTYPES.contains(doc.Document_Type__c) && doc.ContentVersion_Id__c != null && doc.ContentVersion_Id__c != oldDoc.ContentVersion_Id__c) {
         applicationDocs.add(doc.Id);
         cvIds.add(doc.ContentVersion_Id__c);
       }
