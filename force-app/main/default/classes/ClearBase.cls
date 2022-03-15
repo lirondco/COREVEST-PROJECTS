@@ -428,14 +428,14 @@ public class ClearBase {
         Link = '';
       }
 
-      // System.enqueueJob(
-      //   new APILoggerQueueable(req, res, clearResultlist[0].id, false)
-      // );
+      System.enqueueJob(
+        new APILoggerQueueable(req, res, clearResultlist[0].id, false)
+      );
       return Link;
     } catch (Exception e) {
-      // System.enqueueJob(
-      //   new APILoggerQueueable(req, res, clearResultlist[0].id, e)
-      // );
+      System.enqueueJob(
+        new APILoggerQueueable(req, res, clearResultlist[0].id, e)
+      );
       throw new AuraHandledException(e.getMessage());
     }
   }

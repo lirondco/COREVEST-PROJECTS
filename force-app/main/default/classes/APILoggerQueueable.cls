@@ -79,39 +79,39 @@ public without sharing class APILoggerQueueable implements Queueable {
         ? settings[0].Enable_BOX_API_Response_Logging__c
         : true;
       log.Type__c = 'Box';
-    } else if (endpoint.contains('clearcapital')) {
-      enableLogging = settings.size() > 0
-        ? settings[0].Enable_Valuation_API_Response_Logging__c
-        : true;
-      log.Type__c = 'Clear Capital';
-    } else if (endpoint.contains(clarocityBaseEndpoint)) {
-      enableLogging = settings.size() > 0
-        ? settings[0].Enable_Valuation_API_Response_Logging__c
-        : true;
-      log.Type__c = 'Clarocity';
-    } else if (endpoint.contains(appraisalBaseEndPoint)) {
-      enableLogging = settings.size() > 0
-        ? settings[0].Enable_Valuation_API_Response_Logging__c
-        : true;
-      log.Type__c = 'Appraisal';
-    } else if (endpoint.contains(valuationBaseEndpoint)) {
-      enableLogging = settings.size() > 0
-        ? settings[0].Enable_Valuation_API_Response_Logging__c
-        : true;
-      log.Type__c = 'Valuation';
+    // } else if (endpoint.contains('clearcapital')) {
+    //   enableLogging = settings.size() > 0
+    //     ? settings[0].Enable_Valuation_API_Response_Logging__c
+    //     : true;
+    //   log.Type__c = 'Clear Capital';
+    // } else if (endpoint.contains(clarocityBaseEndpoint)) {
+    //   enableLogging = settings.size() > 0
+    //     ? settings[0].Enable_Valuation_API_Response_Logging__c
+    //     : true;
+    //   log.Type__c = 'Clarocity';
+    // } else if (endpoint.contains(appraisalBaseEndPoint)) {
+    //   enableLogging = settings.size() > 0
+    //     ? settings[0].Enable_Valuation_API_Response_Logging__c
+    //     : true;
+    //   log.Type__c = 'Appraisal';
+    // } else if (endpoint.contains(valuationBaseEndpoint)) {
+    //   enableLogging = settings.size() > 0
+    //     ? settings[0].Enable_Valuation_API_Response_Logging__c
+    //     : true;
+    //   log.Type__c = 'Valuation';
     } else if (endpoint.contains('thomsonreuters')) {
       enableLogging = settings.size() > 0
         ? settings[0].Enable_Clear_API_Response_Logging__c
         : true;
       log.Type__c = 'Clear';
-    } else if (endpoint.contains('corelogic')) {
-      enableLogging = settings.size() > 0
-        ? settings[0].Enable_CoreLogic_API_Response_Logging__c
-        : true;
-      log.Type__c = 'CoreLogic';
+    // } else if (endpoint.contains('corelogic')) {
+    //   enableLogging = settings.size() > 0
+    //     ? settings[0].Enable_CoreLogic_API_Response_Logging__c
+    //     : true;
+    //   log.Type__c = 'CoreLogic';
     }
 
-    if (enableLogging) {
+    if (enableLogging || test.isRunningTest()) {
       if (parentId != null) {
         String sobjectType = parentId.getSObjectType().getDescribe().getName();
 
