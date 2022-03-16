@@ -1,0 +1,16 @@
+<template>
+  <template if:true={loadComponent}>
+    <div class="slds-notify slds-notify_alert slds-alert_warning" role="alert">
+      <span class="slds-assistive-text">{alertText}</span>
+      <span
+        class="slds-icon_container slds-icon-utility-warning slds-m-right_x-small"
+      >
+        <lightning-icon
+          icon-name="utility:warning"
+          size="x-small"
+        ></lightning-icon>
+      </span>
+      <h2>{alertText}</h2>
+    </div>
+  </template>
+</template>
