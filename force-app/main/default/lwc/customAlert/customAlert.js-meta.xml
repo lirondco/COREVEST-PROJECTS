@@ -14,12 +14,11 @@
         type="String"
         required="true"
       />
-            <property
+        <property
         name="soqlQuery"
         label="Soql Query"
         type="String"
-        required="true"
-        description="Use the syntax ':recordId:' to use this current record's Salesforce ID. Example: Advance__c=':recordId:'"
+        description="Only use to query and filtre based on value/s from related records. For values from the current record itself, please use the built-in filters below. In your SOQL Query, use the syntax ':recordId:' to use this current record's Salesforce ID. Example: Advance__c=':recordId:'"
       />
         </targetConfig>
     </targetConfigs>

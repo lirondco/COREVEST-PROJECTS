@@ -19,7 +19,7 @@ export default class CustomAlert extends LightningElement {
 
   set soqlQuery(value) {
     let soqlLocal = value;
-    if (soqlLocal.includes(":recordId:")) {
+    if (soqlLocal && soqlLocal.includes(":recordId:")) {
       soqlLocal = soqlLocal.replace(":recordId:", this.recordId);
     }
     this._soqlQuery = soqlLocal;
@@ -28,6 +28,10 @@ export default class CustomAlert extends LightningElement {
   loadComponent;
 
   async connectedCallback() {
+    if(!this.soqlQuery) {
+      this.loadComponent = true;
+      return;
+    }
     let res = await queryRecords({ queryString: this.soqlQuery });
 
     if (res.length > 0) {
