@@ -34,7 +34,7 @@ export default class CustomAlert extends LightningElement {
     }
     let res = await queryRecords({ queryString: this.soqlQuery });
 
-    if (res.length > 0) {
+    if (res && res.length > 0) {
       this.loadComponent = true;
     }
   }
