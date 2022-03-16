@@ -1647,24 +1647,29 @@
             <lightning-record-edit-form
               record-id={contactId}
               object-api-name="Contact"
+              onsubmit={handleFormSubmit}
+              onerror={handleFormError}
+              onsuccess={handleFormSuccess}
+              class="slds-p-around_medium"
             >
               <lightning-messages></lightning-messages>
               <template if:true={showContactNameField}>
-                <lightning-input-field onchange={handleFormChange} field-name="FirstName"></lightning-input-field>
-                <lightning-input-field onchange={handleFormChange} field-name="LastName"></lightning-input-field>
+                <lightning-input-field variant="label-stacked" onchange={handleFormChange} field-name="FirstName"></lightning-input-field>
+                <lightning-input-field variant="label-stacked" onchange={handleFormChange} field-name="LastName"></lightning-input-field>
               </template>
               <template if:true={showContactPhoneField}>
-                <lightning-input-field onchange={handleFormChange} field-name="Phone"></lightning-input-field>
+                <lightning-input-field variant="label-stacked" onchange={handleFormChange} field-name="Phone"></lightning-input-field>
               </template>
               <template if:true={showContactAddressFields}>
-                <lightning-input-field onchange={handleFormChange} field-name="MailingStreet"></lightning-input-field>
-                <lightning-input-field onchange={handleFormChange} field-name="MailingCity"></lightning-input-field>
+                <lightning-input-field variant="label-stacked" onchange={handleFormChange} field-name="MailingAddress"></lightning-input-field>
+                <!-- <lightning-input-field onchange={handleFormChange} field-name="MailingCity"></lightning-input-field>
                 <lightning-input-field onchange={handleFormChange} field-name="MailingState"></lightning-input-field>
-                <lightning-input-field onchange={handleFormChange} field-name="MailingPostalCode"></lightning-input-field>
+                <lightning-input-field onchange={handleFormChange} field-name="MailingPostalCode"></lightning-input-field> -->
               </template>
               <template if:true={showContactEmailField}>
-                <lightning-input-field onchange={handleFormChange} field-name="Email"></lightning-input-field>
+                <lightning-input-field variant="label-stacked" onchange={handleFormChange} field-name="Email"></lightning-input-field>
               </template>
+              <input data-name="hidden-submit" type="submit" style="display: none;" />
             </lightning-record-edit-form>
           </template>
       </template>
