@@ -146,6 +146,8 @@ private class ApprovalAttachments_Tests {
       acceptableRoleName
     );
 
+
+    ApprovalAttachments_lightningController.sendRejectionEmail(o, new List<String>{'test@test.com'});
     ApprovalAttachments_lightningController.returnParentAndChild(piwId);
     Attachment a = Approval_TestDataFactory.createAttachment(o.Id);
     ContentVersion cv = Approval_TestDataFactory.createCv();
@@ -233,6 +235,8 @@ private class ApprovalAttachments_Tests {
       FROM ProcessInstanceStep
       WHERE ProcessInstance.TargetObjectId = :o.Id
     ];
+
+    ApprovalAttachments_lightningController.returnParentAndChild(pisList[0].Id);
 
     List<ProcessInstanceWorkItem> piwList = [
       SELECT Id

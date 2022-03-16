@@ -1,5 +1,21 @@
-public class PricingReviewRequest_LightningController {
+public without sharing class PricingReviewRequest_LightningController {
   public static Id userId = UserInfo.getUserId();
+  public static final List<String> REPRICE_CC_NAMES = new List<String>{
+    'Libby Burgeson',
+    'Behnam Hoss'
+  };
+
+  public static Set<Id> repriceCcUsers {
+    get {
+      if(REPRICE_CC_NAMES.size() == 0) {
+        return new Set<Id>();
+      }
+      Map<Id, User> users = new Map<Id,User>([SELECT Id FROM User WHERE Name IN :REPRICE_CC_NAMES]);
+
+      return users.keySet();
+    }
+    private set;
+  }
 
   public static Map<String, String> bridgeFields = new Map<String, String>{
     // 'Name' => 'Name',
@@ -174,7 +190,9 @@ public class PricingReviewRequest_LightningController {
     }
 
     if (o.Current_Approval_Process__c != null) {
-      ri.otherMessage.add('Deal is already in an Approval Process.  See Approvals Tab for details');
+      ri.otherMessage.add(
+        'Deal is already in an Approval Process.  See Approvals Tab for details'
+      );
     }
 
     List<String> nullFields = new List<String>();
@@ -210,7 +228,9 @@ public class PricingReviewRequest_LightningController {
     // Validation for submitting a Single Asset Bridge Loan for Pricing Approval
     if (o.RecordType.DeveloperName == 'Single_Asset_Bridge_Loan') {
       if (o.Account.Number_of_Contacts__c == 0) {
-        ri.otherMessage.add('Account does not have any related Contact. Please add Contact before submitting.');
+        ri.otherMessage.add(
+          'Account does not have any related Contact. Please add Contact before submitting.'
+        );
       }
 
       if (o.Properties__r.size() == 0) {
@@ -220,10 +240,12 @@ public class PricingReviewRequest_LightningController {
         if (null == o.get(field)) {
           nullFields.add(sabFields.get(field));
         }
-      }  // Validation for submitting a Term Loan for Pricing Approval
+      } // Validation for submitting a Term Loan for Pricing Approval
     } else if (o.RecordType.DeveloperName == 'Term_Loan') {
       if (o.Account.Number_of_Contacts__c == 0) {
-        ri.otherMessage.add('Account does not have any related Contact. Please add Contact before submitting.');
+        ri.otherMessage.add(
+          'Account does not have any related Contact. Please add Contact before submitting.'
+        );
       }
 
       if (o.Properties__r.size() == 0) {
@@ -268,12 +290,15 @@ public class PricingReviewRequest_LightningController {
           o.Properties__r
         )
       ) {
-        ri.OtherMessage.add('Properties must be synced with Red Bell. Go to the RedBell Data Tab under the Properties Tab');
-
-      }  // Validation for submitting a Bridge Loan for Pricing Approval
+        ri.OtherMessage.add(
+          'Properties must be synced with Red Bell. Go to the RedBell Data Tab under the Properties Tab'
+        );
+      } // Validation for submitting a Bridge Loan for Pricing Approval
     } else if (o.RecordType.DeveloperName == 'LOC_Loan') {
       if (o.Account.Number_of_Contacts__c == 0) {
-        ri.otherMessage.add('Account does not have any related Contact. Please add Contact before submitting.');
+        ri.otherMessage.add(
+          'Account does not have any related Contact. Please add Contact before submitting.'
+        );
       }
 
       if (
@@ -307,6 +332,23 @@ public class PricingReviewRequest_LightningController {
 
     System.debug(ri);
     return JSON.serialize(ri, true);
+  }
+
+  @AuraEnabled
+  public static Integer queryPricingCount(Id recId) {
+    try {
+      return [
+        SELECT COUNT()
+        FROM Approval_History__c
+        WHERE
+          Parent_Status__c = 'Approved'
+          AND Status__c LIKE '%Submitted'
+          AND Deal__c = :recId
+          AND Approval_Type__c LIKE '%Pricing%'
+      ];
+    } catch (Exception e) {
+      throw new AuraHandledException(e.getMessage());
+    }
   }
 
   // public wrapper name, userId
@@ -362,8 +404,22 @@ public class PricingReviewRequest_LightningController {
     qs += ' (SELECT Id FROM Properties__r) FROM Opportunity WHERE Id = :recordId LIMIT 1';
     Opportunity opp = (Opportunity) Database.query(qs);
 
+    Boolean isReprice = queryPricingCount(recordId) > 0;
+
+    Boolean oppUpdated = false;
+
     if (String.isNotBlank(resolution)) {
       opp.GLC_Approved__c = true;
+      oppUpdated = true;
+    }
+
+    if (opp.StageName == 'Approved by Committee' && isReprice) {
+      opp.StageName = 'Underwriting';
+      opp.Apex_Context__c = true;
+      oppUpdated = true;
+    }
+
+    if (oppUpdated) {
       update opp;
     }
 
@@ -407,11 +463,11 @@ public class PricingReviewRequest_LightningController {
       if (opp.Loan_Size__c < 5000000) {
         System.debug('inside here, looking for term loan approval process');
         processName = 'Term_Pricing_Review_Capital_Markets';
-        req.setProcessDefinitionNameOrId('Term_Pricing_Review_Capital_Markets');
+        req.setProcessDefinitionNameOrId(isReprice ? 'Term_Repricing_Review_Capital_Markets' : 'Term_Pricing_Review_Capital_Markets');
       } else {
         System.debug('inside here, looking for term loan approval process');
         processName = 'Term_Pricing_Review';
-        req.setProcessDefinitionNameOrId('Term_Pricing_Review');
+        req.setProcessDefinitionNameOrId(isReprice ? 'Term_Repricing_Review' : 'Term_Pricing_Review');
         // req.setProcessDefinitionNameOrId('Test_Willie_Dinorah_Term');
         // req.setProcessDefinitionNameOrId('Test_Marc_Winnie_Term');
       }
@@ -543,9 +599,9 @@ public class PricingReviewRequest_LightningController {
             UserInfo.getLastName() +
             ' has submitted a Pricing Review Request for ' +
             o.Name +
-            '. ';
+            '.';
           ApprovalAttachments_lightningController.createNotification(
-            o,
+          o,
             UserInfo.getUserId(),
             'all',
             s,
@@ -554,10 +610,54 @@ public class PricingReviewRequest_LightningController {
           System.debug('successful notification');
         }
       }
+      if(isReprice) {
+        sendRepricingEmail(oppId);
+      }
       return 'The record has been submitted for review.';
     } catch (Exception e) {
       System.debug(e.getMessage());
       return e.getMessage();
     }
+  }
+
+  @future
+  public static void sendRepricingEmail(String oppId) {
+    EmailTemplate template = [
+      SELECT Id, DeveloperName
+      FROM EmailTemplate
+      WHERE DeveloperName = 'Pricing_Review_Request_Courtesy'
+    ];
+
+    if(template == null) {
+      return;
+    }
+    Opportunity opp = [SELECT Id, Closer__c,Contact__c, Underwriter__c FROM Opportunity WHERE Id = :oppId];
+    Set<Id> recipientIds = new Set<Id>();
+    recipientIds.addAll(repriceCcUsers);
+    if (opp.Closer__c != null) {
+      recipientIds.add(opp.Closer__c);
+    }
+    if (opp.Underwriter__c != null) {
+      recipientIds.add(opp.Underwriter__c);
+    }
+
+
+    List<Id> recipIdsAsList = new List<Id>();
+    recipIdsAsList.addAll(recipientIds);
+    Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
+    email.setToAddresses(recipIdsAsList);
+    email.setTemplateId(template.Id);
+    email.setTargetObjectId(opp.Contact__c);
+    email.setTreatTargetObjectAsRecipient(false);
+    email.setWhatId(opp.Id);
+    List<OrgWideEmailAddress> owea = [
+      SELECT Id
+      FROM OrgWideEmailAddress
+      WHERE Address = 'caf-apps@cvest.com'
+    ];
+    if(owea.size() > 0) {
+      email.setOrgWideEmailAddressId(owea[0].Id);
+    }
+    Messaging.sendEmail(new List<Messaging.SingleEmailMessage>{email});
   }
 }

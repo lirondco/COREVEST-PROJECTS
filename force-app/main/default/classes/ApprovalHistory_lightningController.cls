@@ -9,14 +9,6 @@ public without sharing class ApprovalHistory_lightningController {
     'Term'
   };
 
-  public static final List<String> IC_APPROVAL_NAMES = new List<String>{
-    'Term_IC_Approval',
-    'Bridge_IC_Approval',
-    'Term_Sub_IC',
-    'Bridge_Sub_IC'
-  };
-
-
   @AuraEnabled
   public static String recallApproval(Id processId) {
     Approval.ProcessWorkitemRequest pwr = new Approval.ProcessWorkitemRequest();
@@ -200,8 +192,7 @@ public without sharing class ApprovalHistory_lightningController {
         ProcessInstance.ElapsedTimeInDays,
         ProcessInstance.TargetObjectId,
         ProcessInstance.Status,
-        ProcessInstance.ProcessDefinition.DeveloperName,
-        ActorId
+        ProcessInstance.ProcessDefinition.DeveloperName
       FROM ProcessInstanceWorkItem
       WHERE Id IN :idMap.keySet()
     ]) {
@@ -299,7 +290,7 @@ public without sharing class ApprovalHistory_lightningController {
             }
           }
           roleName = 'Underwriter';
-        } else if (processName == 'Term_Pricing_Review') {
+        } else if (processName == 'Term_Pricing_Review' || processName == 'Term_Repricing_Review') {
           if (termPricingApprover) {
             if (null != o.Approved_by_Underwriter__c) {
               // if (o.Approval_Status__c == 'Approved'){
@@ -334,14 +325,11 @@ public without sharing class ApprovalHistory_lightningController {
             }
           }
           roleName = 'Underwriter';
-        } 
-        if (IC_APPROVAL_NAMES.contains(processName) && ah.Actor__c == UserInfo.getUserId()) {
-          ah.Verified__c = true;
         }
       }
     }
 
-    Boolean b = submitterId == UserInfo.getUserId() || (String.isNotEmpty(ahList[0].ProcessName__c) && IC_APPROVAL_NAMES.contains(ahList[0].ProcessName__c) && roleName == 'Underwriter');
+    Boolean b = submitterId == UserInfo.getUserId();
 
     returnWrapper rw = new returnWrapper();
     rw.ahList = ahList;
@@ -422,14 +410,11 @@ public without sharing class ApprovalHistory_lightningController {
       SELECT Id, ProcessDefinition.Name
       FROM ProcessInstance
       WHERE ID IN :processIds
+      AND ProcessDefinition.Name LIKE '%Pricing Review%'
     ]) {
-      if (
-        pi.ProcessDefinition.Name.contains(
-          'Pricing Review'
-        ) /* || pi.ProcessDefinition.Name.contains('Pricing_Review')*/
-      ) {
+      
         pricingReviewIds.add(pi.Id);
-      }
+      
     }
 
     Map<Id, historyWrapper> m = new Map<Id, historyWrapper>();
@@ -582,11 +567,6 @@ public without sharing class ApprovalHistory_lightningController {
     system.debug(userRole);
     system.debug(approvalName);
     // system.debug(JSON.serialize(opp));
-    Opportunity updDeal = new Opportunity(
-      Id = oppId,
-      Final_Sponsor_Tier__c = 'Tier 1'
-    );
-
     ApprovalAttachments_lightningController.approveDeal(
       recordId,
       userRole,

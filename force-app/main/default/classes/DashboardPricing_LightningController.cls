@@ -54,10 +54,9 @@ public without sharing class DashboardPricing_LightningController {
       SELECT Id, ProcessDefinition.Name
       FROM ProcessInstance
       WHERE ID IN :processIds
+      AND ProcessDefinition.Name LIKE '%pricing review%'
     ]) {
-      if (pi.ProcessDefinition.Name.contains('Pricing Review')) {
-        pricingReviewIds.add(pi.Id);
-      }
+      pricingReviewIds.add(pi.Id);
     }
 
     Map<String, List<Approval_History__c>> ahMap = new Map<String, List<Approval_History__c>>();
