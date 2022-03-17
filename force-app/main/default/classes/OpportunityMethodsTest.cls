@@ -1,5 +1,5 @@
 @isTest
-public with sharing class OpportunityMethodsTest {
+public without sharing class OpportunityMethodsTest {
   @isTest
   public static void testUpdatePaidOffProperties() {
     Account a = Test_Helper.createAccount();
@@ -28,7 +28,10 @@ public with sharing class OpportunityMethodsTest {
       Number_of_Units__c = 2,
       Interior_Access_POC_Email__c = 'test@test.com',
       Security_Deposit__c = 800,
-      Status__c = 'Active'
+      Status__c = 'Active',
+      RecordTypeId = Schema.SObjectType.Property__c.getRecordTypeInfosByName()
+        .get('Single Rental Loan Special Asset')
+        .getRecordTypeId()
     );
 
     insert testProp;
