@@ -13,8 +13,7 @@ public class AppraisalParseBatch implements Database.Batchable<sObject> {
     appraisalQuery += ' FROM Appraisal__c';
     appraisalQuery += ' WHERE Appraisal_Replacement_Cost_Value__c = null';
     appraisalQuery += ' AND Deal_Document__c != null';
-    appraisalQuery += ' AND No_of_Stories__c = null';
-    appraisalQuery += ' LIMIT 100';
+    appraisalQuery += ' AND No_of_Stories__c = null AND CreatedDate >= 2021-06-30T00:00:00-08:00 AND CreatedDate <= 2021-12-31T00:00:00-08:00 LIMIT 5000';
     return Database.getQueryLocator(appraisalQuery);
   }
   public void execute(Database.BatchableContext bc, List<Appraisal__c> scope) {
@@ -65,7 +64,7 @@ public class AppraisalParseBatch implements Database.Batchable<sObject> {
   }
 
   public void finish(Database.BatchableContext bc) {
-    // execute any post-processing operations
+    
     
   }
 
