@@ -1480,7 +1480,8 @@ public class opportunity_Helper {
         && (
           oldMap.get(o.Id).StageName != o.StageName ||
           o.RecordTypeId != oldMap.get(o.Id).RecordTypeId ||
-          o.LOC_Loan_Type__c != oldMap.get(o.Id).LOC_Loan_Type__c
+          o.LOC_Loan_Type__c != oldMap.get(o.Id).LOC_Loan_Type__c ||
+          o.Payoff_Date__c != oldMap.get(o.Id).Payoff_Date__c
         )
       ) {
         paidOffDeals.put(o.Id, o);
