@@ -192,14 +192,20 @@ public without sharing class AppraisalParser implements Queueable {
           .replaceAll('[^0-9.]', '')
       );
       appraisal.No_of_Stories__c = gseStories;
-    } else {
-      if(String.isNotEmpty(structure_node_new.getAttribute('StoriesCount', null))){
-        Decimal stories = Decimal.ValueOf(
-          structure_node_new.getAttribute('StoriesCount', null)
-            .replaceAll('[^0-9.]', '')
-        );
-        appraisal.No_of_Stories__c = stories;
-      }
+    } else if (
+      String.isNotEmpty(
+        structure_node_new.getAttribute('StoriesCount', null)
+      ) &&
+      structure_node_new.getAttribute('StoriesCount', null) != null &&
+      structure_node_new.getAttribute('StoriesCount', null)
+        .replaceAll('[^0-9.]', '')
+        .isNumeric()
+    ) {
+      Decimal stories = Decimal.ValueOf(
+        structure_node_new.getAttribute('StoriesCount', null)
+          .replaceAll('[^0-9.]', '')
+      );
+      appraisal.No_of_Stories__c = stories;
     }
 
     DOM.XMLNode unit_node = structure_node_new.getChildElement('_UNIT', null);

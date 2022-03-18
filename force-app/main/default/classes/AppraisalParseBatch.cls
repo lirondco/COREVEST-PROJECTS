@@ -1,4 +1,4 @@
-public class AppraisalParseBatch implements Database.Batchable<sObject> {
+global class AppraisalParseBatch implements Database.Batchable<sObject> {
   public static List<String> appraisalFields = new List<String>{
     'Id',
     'Deal__c',
@@ -8,6 +8,8 @@ public class AppraisalParseBatch implements Database.Batchable<sObject> {
     'No_of_Stories__c',
     'Deal_Document__r.Attachment_Id__c'
   };
+
+
   public Database.QueryLocator start(Database.BatchableContext bc) {
     String appraisalQuery = 'SELECT ' + String.join(appraisalFields, ',');
     appraisalQuery += ' FROM Appraisal__c';
@@ -41,36 +43,26 @@ public class AppraisalParseBatch implements Database.Batchable<sObject> {
     for (Appraisal__c s : scope) {
       Appraisal__c app = s;
       Property__c prop = new Property__c(Id = s.Property__c);
-      app.Appraisal_Replacement_Cost_Value__c = 0;
-      prop.Appraisal_Replacement_Cost_Value__c = 0;
-      app.No_of_Stories__c = 0;
-      prop.No_of_Stories__c = 0;
-
       if (documents.containsKey(s.Deal_Document__r.Attachment_Id__c)) {
         Map<String, Decimal> parsedXML = parseXML(s, documents);
         app.Appraisal_Replacement_Cost_Value__c = parsedXML.get('costVal');
         prop.Appraisal_Replacement_Cost_Value__c = parsedXML.get('costVal');
         app.No_of_Stories__c = parsedXML.get('storiesCount');
         prop.No_of_Stories__c = parsedXML.get('storiesCount');
+        properties.add(prop);
+        appraisals.add(app);
       }
-
-      properties.add(prop);
-      appraisals.add(app);
     }
 
-    Database.update(properties, false);
-    Database.update(appraisals, false);
+    if(properties.size() > 0) {
+      Database.update(properties);
+    }
+    if(appraisals.size() > 0) {
+      Database.update(appraisals);
+    }
   }
 
   public void finish(Database.BatchableContext BC) {
-    String a = [
-      SELECT a.Name, a.Id
-      FROM ApexClass a
-      WHERE a.Name LIKE 'appraisalp%' AND (NOT a.Name LIKE '%test%')
-      LIMIT 1
-    ]
-    .Id;
-
     List<AsyncApexJob> jobs = [
       SELECT
         Id,
@@ -82,13 +74,14 @@ public class AppraisalParseBatch implements Database.Batchable<sObject> {
         CompletedDate
       FROM AsyncApexJob
       WHERE
-        ApexClassID = :a
+        Id = :BC.getJobId()
         AND completeddate > :Datetime.now().addMinutes(-2)
         AND Status IN ('Aborted', 'Completed')
+        AND JobType != 'BatchApexWorker'
       ORDER BY createddate DESC
       LIMIT 1
     ];
-
+    
     if (jobs.size() > 0) {
       sendCompletedEmail(jobs[0]);
     }
@@ -100,7 +93,8 @@ public class AppraisalParseBatch implements Database.Batchable<sObject> {
     email.setToAddresses(
       new List<String>{
         'ldecastro@mkpartners.com',
-        'logins+cvest@mkpartners.com',
+        'logins+cvest@mkpartners.com'
+        ,
         'integrations@cvest.com',
         'jonathan.lay@cvest.com',
         'bryon.harland@cvest.com'
@@ -113,6 +107,7 @@ public class AppraisalParseBatch implements Database.Batchable<sObject> {
       WHERE DisplayName = 'Integrations User'
     ];
 
+
     String body = 'Batch ' + job.Status + '.\n';
     body += '\nTotal Job Items: ' + job.TotalJobItems;
     body += '\nJob Items Processed: ' + job.JobItemsProcessed;
@@ -124,7 +119,6 @@ public class AppraisalParseBatch implements Database.Batchable<sObject> {
     body +=
       '\nCompleted Date: ' +
       job.CompletedDate.format('MM/dd/yyyy HH:mm:ss', 'America/Los_Angeles');
-
     // if (job.NumberOfErrors > 0) {
     //   body += '\n\nPlease refer to separate email with details about the error.';
     // }
@@ -143,8 +137,8 @@ public class AppraisalParseBatch implements Database.Batchable<sObject> {
     Map<Id, ContentDocument> documents
   ) {
     Map<String, Decimal> retMap = new Map<String, Decimal>{
-      'costVal' => 0,
-      'storiesCount' => 0
+      'costVal' => null,
+      'storiesCount' => null
     };
     ContentDocument document = documents.get(
       s.Deal_Document__r.Attachment_Id__c
@@ -169,7 +163,7 @@ public class AppraisalParseBatch implements Database.Batchable<sObject> {
         ? Decimal.ValueOf(
             newImprovementTotalCostAmount.replaceAll('[^0-9.]', '')
           )
-        : 0;
+        : null;
       retMap.put('costVal', repValue);
     }
 
@@ -238,7 +232,7 @@ public class AppraisalParseBatch implements Database.Batchable<sObject> {
       );
       retMap.put('storiesCount', stories);
     } else {
-      retMap.put('storiesCount', 0);
+      retMap.put('storiesCount', null);
     }
 
     return retMap;
