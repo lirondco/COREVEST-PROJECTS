@@ -58,7 +58,11 @@ public with sharing class AppraisalParseBatchTest {
     Test.stopTest();
 
     Appraisal__c appraisal2 = [
-      SELECT Id, Appraisal_Replacement_Cost_Value__c, No_of_Stories__c, Property__c
+      SELECT
+        Id,
+        Appraisal_Replacement_Cost_Value__c,
+        No_of_Stories__c,
+        Property__c
       FROM Appraisal__c
       WHERE Id = :appraisal.Id
       LIMIT 1
@@ -71,13 +75,27 @@ public with sharing class AppraisalParseBatchTest {
       LIMIT 1
     ];
 
-    System.assertEquals(100560, appraisal2.Appraisal_Replacement_Cost_Value__c, 'Appraisal_Replacement_Cost_Value__c');
+    System.assertEquals(
+      100560,
+      appraisal2.Appraisal_Replacement_Cost_Value__c,
+      'Appraisal_Replacement_Cost_Value__c'
+    );
     System.assertEquals(1, appraisal2.No_of_Stories__c, 'No_of_Stories__c');
 
-    Boolean assertExpression = appraisal2.Appraisal_Replacement_Cost_Value__c == property.Appraisal_Replacement_Cost_Value__c &&
+    Boolean assertExpression =
+      appraisal2.Appraisal_Replacement_Cost_Value__c ==
+      property.Appraisal_Replacement_Cost_Value__c &&
       appraisal2.No_of_Stories__c == property.No_of_Stories__c;
-    
-    System.assertEquals(appraisal2.Appraisal_Replacement_Cost_Value__c, property.Appraisal_Replacement_Cost_Value__c, 'The batch should\'ve updated the property__c.Appraisal_Replacement_Cost_Value__c as well');
-    System.assertEquals(appraisal2.No_of_Stories__c, property.No_of_Stories__c, 'The batch should\'ve updated the property__c.No_of_Stories__c as well');
+
+    System.assertEquals(
+      appraisal2.Appraisal_Replacement_Cost_Value__c,
+      property.Appraisal_Replacement_Cost_Value__c,
+      'The batch should\'ve updated the property__c.Appraisal_Replacement_Cost_Value__c as well'
+    );
+    System.assertEquals(
+      appraisal2.No_of_Stories__c,
+      property.No_of_Stories__c,
+      'The batch should\'ve updated the property__c.No_of_Stories__c as well'
+    );
   }
 }

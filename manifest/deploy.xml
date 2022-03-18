@@ -1,25 +1,24 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
-        <members>ClearBase</members>
-        <members>CAFTestingClass</members>
-        <members>CAFTestingClassTest</members>
+        <members>AppraisalMergeController</members>
+        <members>AppraisalParser</members>
+        <members>AppraisalParseBatch</members>
+        <members>AppraisalParseBatchTest</members>
         <name>ApexClass</name>
     </types>
     <types>
-        <members>deal_Document_Trigger</members>
-        <name>ApexTrigger</name>
+        <members>BridgeDataTape</members>
+        <members>TermDataTape</members>
+        <name>AuraDefinitionBundle</name>
     </types>
-    <types>
-        <members>CAFTestSetting.Bridge</members>
-        <members>CAFTestSetting.Master</members>
-        <members>CAFTestSetting.Origination</members>
-        <members>CAFTestSetting.Term</members>
-        <name>CustomMetadata</name>
-    </types>
-    <types>
-        <members>CAFTestSetting__mdt</members>
-        <name>CustomObject</name>
+     <types>
+        <members>Property__c.Appraisal_Replacement_Cost_Value__c</members>
+        <members>Property__c.No_of_Stories__c</members>
+        <members>Appraisal__c.Appraisal_Replacement_Cost_Value__c</members>
+        <members>Appraisal__c.No_of_Stories__c</members>
+        <name>CustomField</name>
     </types>
     <version>53.0</version>
 </Package>
+<!-- sfdx force:source:deploy -x manifest/deploy.xml -l RunSpecifiedTests -r AppraisalNationApiTests,AppraisalTests,ClarocityAPITests,ClearCapitalAPITests,ValuationServicesAPITests,AppraisalParseBatchTest -->

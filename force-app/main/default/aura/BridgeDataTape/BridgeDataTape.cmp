@@ -158,20 +158,6 @@
                   source="['Acquisition', 'Refinance']"
                 />
                 <c:hotColumn
-                  data="Requested_Funding_Date__c"
-                  title="Requested Funding Date"
-                  type="date"
-                  dateFormat="MM/DD/YYYY"
-                  correctFormat="true"
-                />
-                <c:hotColumn
-                  data="Extension_Expiration_Date__c"
-                  title="Extension Expiration Date"
-                  type="date"
-                  dateFormat="MM/DD/YYYY"
-                  correctFormat="true"
-                />
-                <c:hotColumn
                   data="Funding_Date__c"
                   title="Funding Date"
                   type="date"
@@ -180,9 +166,11 @@
                   readOnly="true"
                 />
                 <c:hotColumn
-                  data="Servicer_Id__c"
-                  title="ServicerID"
-                  type="text"
+                  data="Requested_Funding_Date__c"
+                  title="Requested Funding Date"
+                  type="date"
+                  dateFormat="MM/DD/YYYY"
+                  correctFormat="true"
                 />
                 <c:hotColumn
                   data="Acquisition_Price__c"
@@ -198,6 +186,12 @@
                   correctFormat="true"
                 />
                 <c:hotColumn
+                  data="Rehab_Budget__c"
+                  title="Rehab Budget"
+                  type="numeric"
+                  format="$0,0.00"
+                />
+                <c:hotColumn
                   data="Contract_Close_Date__c"
                   title="Contract Close Date"
                   type="date"
@@ -211,17 +205,78 @@
                   source="['Yes', 'No']"
                 />
                 <c:hotColumn
+                  data="BPO_Appraisal_Firm__c"
+                  title="Appraisal Firm"
+                />
+                <c:hotColumn
+                  data="Valuation_Type__c"
+                  title="Valuation Type"
+                  type="dropdown"
+                  source="['Appraisal with AS IS with ARV', 'ClearVal Exterior', 'ClearVal 2.0 (Exterior PCI)', 'ClearVal Interior', 'ClearVal 2.0 (Interior PCI)', 'Commercial', 'CoreVal+', 'Exterior Appraisal', 'Exterior Desktop Appraisal', 'Interior Appraisal', 'Interior Desktop Appraisal']"
+                />
+                <c:hotColumn
+                  data="BPO_Appraisal_Order_Date__c"
+                  title="Appraisal Order Date"
+                  type="date"
+                  dateFormat="MM/DD/YYYY"
+                  correctFormat="true"
+                />
+                <c:hotColumn
+                  data="Appraisal_Due_Date__c"
+                  title="Appraisal Due Date"
+                  type="date"
+                  dateFormat="MM/DD/YYYY"
+                  correctFormat="true"
+                />
+                <c:hotColumn
+                  data="Appraised_Value_Amount__c"
+                  title="Appraisal Value"
+                  type="numeric"
+                  format="$0,0.00"
+                />
+                <c:hotColumn
+                  data="BPO_Appraisal_Date__c"
+                  title="Appraisal Date"
+                  type="date"
+                  dateFormat="MM/DD/YYYY"
+                  correctFormat="true"
+                />
+                <c:hotColumn
+                  data="BPO_Appraisal_Fee__c"
+                  title="Appraisal Fee"
+                  type="numeric"
+                  format="$0,0.00"
+                />
+                <c:hotColumn
+                  data="Appraisal_Replacement_Cost_Value__c"
+                  title="Appraisal Replacement Cost Value"
+                  type="numeric"
+                  format="$0,0.00"
+                />
+                <c:hotColumn
+                  data="Appraisal_Sync__c"
+                  title="Appraisal Reviewed"
+                  readOnly="true"
+                />
+                <c:hotColumn
                   data="Executed_HUD__c"
                   title="Executed HUD"
                   type="dropdown"
                   source="['Yes', 'No']"
                 />
                 <c:hotColumn
-                  data="Recorded_Deed__c"
-                  title="Recorded Deed"
-                  type="dropdown"
-                  source="['Yes', 'No']"
+                  data="Interior_Access_POC__c"
+                  title="Interior Access POC"
                 />
+                <c:hotColumn
+                  data="Interior_Access_POC_Phone__c"
+                  title="Interior Access POC Phone"
+                />
+                <c:hotColumn
+                  data="Interior_Access_POC_Email__c"
+                  title="Interior Access POC Email"
+                />
+
                 <c:hotColumn
                   data="Title_Review_Order_Date__c"
                   title="Title Review Order Date"
@@ -248,59 +303,91 @@
                   format="$0,0.00"
                 />
                 <c:hotColumn
-                  data="Appraisal_Sync__c"
-                  title="Appraisal Reviewed"
-                  readOnly="true"
-                />
-
-                <c:hotColumn
-                  data="Appraised_Value_Amount__c"
-                  title="Appraisal Value"
-                  type="numeric"
-                  format="$0,0.00"
-                />
-                <c:hotColumn
-                  data="BPO_Appraisal_Order_Date__c"
-                  title="Appraisal Order Date"
+                  data="Title_Order_Date__c"
+                  title="Title Order Date"
                   type="date"
                   dateFormat="MM/DD/YYYY"
                   correctFormat="true"
                 />
                 <c:hotColumn
-                  data="Appraisal_Due_Date__c"
-                  title="Appraisal Due Date"
+                  data="Title_Received_Date__c"
+                  title="Title Received Date"
                   type="date"
                   dateFormat="MM/DD/YYYY"
                   correctFormat="true"
                 />
                 <c:hotColumn
-                  data="BPO_Appraisal_Date__c"
-                  title="Appraisal Date"
-                  type="date"
-                  dateFormat="MM/DD/YYYY"
-                  correctFormat="true"
+                  data="Title_Company_text__c"
+                  title="Title Company"
                 />
                 <c:hotColumn
-                  data="BPO_Appraisal_Fee__c"
-                  title="Appraisal Fee"
-                  type="numeric"
-                  format="$0,0.00"
+                  data="Title_Contact_Name__c"
+                  title="Title Contact Name"
                 />
                 <c:hotColumn
-                  data="Appraisal_Replacement_Cost_Value__c"
-                  title="Appraisal Replacement Cost Value"
-                  type="numeric"
-                  format="$0,0.00"
+                  data="Title_Contact_Phone__c"
+                  title="Title Contact Phone"
                 />
                 <c:hotColumn
-                  data="Valuation_Type__c"
-                  title="Valuation Type"
+                  data="Title_Contact_Email_Address__c"
+                  title="Title Contact Email"
+                />
+                <c:hotColumn
+                  data="Insurance_Company_text__c"
+                  title="Insurance Company"
+                />
+                <c:hotColumn
+                  data="Insurance_Status__c"
+                  title="Insurance Status"
                   type="dropdown"
-                  source="['Appraisal with AS IS with ARV', 'ClearVal Exterior', 'ClearVal 2.0 (Exterior PCI)', 'ClearVal Interior', 'ClearVal 2.0 (Interior PCI)', 'Commercial', 'CoreVal+', 'Exterior Appraisal', 'Exterior Desktop Appraisal', 'Interior Appraisal', 'Interior Desktop Appraisal']"
+                  source="['Requested', 'Revisions', 'Approved']"
                 />
                 <c:hotColumn
-                  data="BPO_Appraisal_Firm__c"
-                  title="Appraisal Firm"
+                  data="Insurance_Contact_Name__c"
+                  title="Insurance Contact Name"
+                />
+                <c:hotColumn
+                  data="Insurance_Contact_Number__c"
+                  title="Insurance Contact Number"
+                />
+                <c:hotColumn
+                  data="Insurance_Effective_Date__c"
+                  title="Insurance Effective Date"
+                  type="date"
+                  dateFormat="MM/DD/YYYY"
+                  correctFormat="true"
+                />
+                <c:hotColumn
+                  data="Insurance_Expiration_Date__c"
+                  title="Insurance Expiration Date"
+                  type="date"
+                  dateFormat="MM/DD/YYYY"
+                  correctFormat="true"
+                />
+                <c:hotColumn
+                  data="Flood_Coverage_Needed__c"
+                  title="Flood Coverage Needed"
+                  type="dropdown"
+                  source="['Yes', 'No']"
+                />
+                <c:hotColumn
+                  data="Funding_Shield_Cert_Status__c"
+                  title="Funding Shield Cert Status"
+                  type="dropdown"
+                  source="['Requested', 'Received']"
+                />
+                <c:hotColumn
+                  data="HUD_Settlement_Statement_Status__c"
+                  title="HUD/Settlement Statement Status"
+                  type="dropdown"
+                  source="['Requested', 'Revisions', 'Approved']"
+                />
+                <c:hotColumn
+                  data="Extension_Expiration_Date__c"
+                  title="Extension Expiration Date"
+                  type="date"
+                  dateFormat="MM/DD/YYYY"
+                  correctFormat="true"
                 />
                 <c:hotColumn
                   data="Borrower_Opinion_of_Current_Value__c"
@@ -330,18 +417,11 @@
                   allowEmpty="true"
                 />
                 <c:hotColumn
-                  data="Insurance_Status__c"
-                  title="Insurance Status"
-                  type="dropdown"
-                  source="['Requested', 'Revisions', 'Approved']"
-                />
-                <c:hotColumn
                   data="Estimated_Completed_Rehab_Costs__c"
                   title="Estimated Completed Rehab Costs"
                   type="numeric"
                   format="$0,0.00"
                 />
-
                 <c:hotColumn
                   data="Approved_Completed_Rehab_Costs__c"
                   title="Approved Completed Rehab Costs"
@@ -384,20 +464,12 @@
                   type="numeric"
                   format="0.00"
                 />
-
-                <c:hotColumn
-                  data="Rehab_Budget__c"
-                  title="Rehab Budget"
-                  type="numeric"
-                  format="$0,0.00"
-                />
                 <c:hotColumn
                   data="Total_Outstanding__c"
                   title="Total Outstanding"
                   type="numeric"
                   format="0.00"
                 />
-
                 <c:hotColumn
                   data="Total_Remaining_Holdback__c"
                   title="Total Remaining Holdback"
@@ -405,7 +477,6 @@
                   format="$0,0.00"
                   readOnly="true"
                 />
-
                 <c:hotColumn
                   data="Advance_Fee_Override__c"
                   title="Advance Fee $ Override"
@@ -419,7 +490,6 @@
                   type="numeric"
                   format="$0,0.00"
                 />
-
                 <c:hotColumn
                   data="BlackSquare_Fee__c"
                   title="Onboarding Fee"
@@ -505,36 +575,6 @@
                   correctFormat="true"
                 />
                 <c:hotColumn
-                  data="Title_Order_Date__c"
-                  title="Title Order Date"
-                  type="date"
-                  dateFormat="MM/DD/YYYY"
-                  correctFormat="true"
-                />
-                <c:hotColumn
-                  data="Title_Received_Date__c"
-                  title="Title Received Date"
-                  type="date"
-                  dateFormat="MM/DD/YYYY"
-                  correctFormat="true"
-                />
-                <c:hotColumn
-                  data="Title_Company_text__c"
-                  title="Title Company"
-                />
-                <c:hotColumn
-                  data="Title_Contact_Name__c"
-                  title="Title Contact Name"
-                />
-                <c:hotColumn
-                  data="Title_Contact_Phone__c"
-                  title="Title Contact Phone"
-                />
-                <c:hotColumn
-                data="Title_Contact_Email_Address__c"
-                title="Title Contact Email"
-              />
-                <c:hotColumn
                   data="Escrow_Company_text__c"
                   title="Escrow Company"
                 />
@@ -547,66 +587,10 @@
                   title="Escrow Contact Phone"
                 />
                 <c:hotColumn
-                  data="Insurance_Company_text__c"
-                  title="Insurance Company"
-                />
-                <c:hotColumn
-                  data="Insurance_Contact_Name__c"
-                  title="Insurance Contact Name"
-                />
-                <c:hotColumn
-                  data="Insurance_Contact_Number__c"
-                  title="Insurance Contact Number"
-                />
-                <c:hotColumn
-                  data="Insurance_Effective_Date__c"
-                  title="Insurance Effective Date"
-                  type="date"
-                  dateFormat="MM/DD/YYYY"
-                  correctFormat="true"
-                />
-                <c:hotColumn
-                  data="Insurance_Expiration_Date__c"
-                  title="Insurance Expiration Date"
-                  type="date"
-                  dateFormat="MM/DD/YYYY"
-                  correctFormat="true"
-                />
-                <c:hotColumn
-                  data="Flood_Coverage_Needed__c"
-                  title="Flood Coverage Needed"
-                  type="dropdown"
-                  source="['Yes', 'No']"
-                />
-                <c:hotColumn
-                  data="Funding_Shield_Cert_Status__c"
-                  title="Funding Shield Cert Status"
-                  type="dropdown"
-                  source="['Requested', 'Received']"
-                />
-                <c:hotColumn
-                  data="HUD_Settlement_Statement_Status__c"
-                  title="HUD/Settlement Statement Status"
-                  type="dropdown"
-                  source="['Requested', 'Revisions', 'Approved']"
-                />
-                <c:hotColumn
                   data="Certificate_of_Occupancy__c"
                   title="Certificate of Occupancy"
                   type="dropdown"
                   source="['Yes', 'No']"
-                />
-                <c:hotColumn
-                  data="Interior_Access_POC__c"
-                  title="Interior Access POC"
-                />
-                <c:hotColumn
-                  data="Interior_Access_POC_Phone__c"
-                  title="Interior Access POC Phone"
-                />
-                <c:hotColumn
-                  data="Interior_Access_POC_Email__c"
-                  title="Interior Access POC Email"
                 />
                 <c:hotColumn
                   data="Status__c"

@@ -13,7 +13,7 @@ public class AppraisalParseBatch implements Database.Batchable<sObject> {
     appraisalQuery += ' FROM Appraisal__c';
     appraisalQuery += ' WHERE Appraisal_Replacement_Cost_Value__c = null';
     appraisalQuery += ' AND Deal_Document__c != null';
-    appraisalQuery += ' AND No_of_Stories__c = null AND CreatedDate >= 2021-06-30T00:00:00-08:00 AND CreatedDate <= 2021-12-31T00:00:00-08:00 LIMIT 5000';
+    appraisalQuery += ' AND No_of_Stories__c = null';
     return Database.getQueryLocator(appraisalQuery);
   }
   public void execute(Database.BatchableContext bc, List<Appraisal__c> scope) {
@@ -37,7 +37,6 @@ public class AppraisalParseBatch implements Database.Batchable<sObject> {
         LIMIT 200
       ]
     );
-    
 
     for (Appraisal__c s : scope) {
       Appraisal__c app = s;
@@ -63,9 +62,80 @@ public class AppraisalParseBatch implements Database.Batchable<sObject> {
     Database.update(appraisals, false);
   }
 
-  public void finish(Database.BatchableContext bc) {
-    
-    
+  public void finish(Database.BatchableContext BC) {
+    String a = [
+      SELECT a.Name, a.Id
+      FROM ApexClass a
+      WHERE a.Name LIKE 'appraisalp%' AND (NOT a.Name LIKE '%test%')
+      LIMIT 1
+    ]
+    .Id;
+
+    List<AsyncApexJob> jobs = [
+      SELECT
+        Id,
+        status,
+        createddate,
+        NumberOfErrors,
+        JobItemsProcessed,
+        TotalJobItems,
+        CompletedDate
+      FROM AsyncApexJob
+      WHERE
+        ApexClassID = :a
+        AND completeddate > :Datetime.now().addMinutes(-2)
+        AND Status IN ('Aborted', 'Completed')
+      ORDER BY createddate DESC
+      LIMIT 1
+    ];
+
+    if (jobs.size() > 0) {
+      sendCompletedEmail(jobs[0]);
+    }
+  }
+
+  public static void sendCompletedEmail(AsyncApexJob job) {
+    Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
+
+    email.setToAddresses(
+      new List<String>{
+        'ldecastro@mkpartners.com',
+        'logins+cvest@mkpartners.com',
+        'integrations@cvest.com',
+        'jonathan.lay@cvest.com',
+        'bryon.harland@cvest.com'
+      }
+    );
+    OrgWideEmailAddress owea = new OrgWideEmailAddress();
+    owea = [
+      SELECT Id, Address, DisplayName
+      FROM OrgWideEmailAddress
+      WHERE DisplayName = 'Integrations User'
+    ];
+
+    String body = 'Batch ' + job.Status + '.\n';
+    body += '\nTotal Job Items: ' + job.TotalJobItems;
+    body += '\nJob Items Processed: ' + job.JobItemsProcessed;
+    body += '\nNumber of Errors: ' + job.NumberOfErrors;
+    body += '\nStatus: ' + job.Status;
+    body +=
+      '\nStarted Date: ' +
+      job.CreatedDate.format('MM/dd/yyyy HH:mm:ss', 'America/Los_Angeles');
+    body +=
+      '\nCompleted Date: ' +
+      job.CompletedDate.format('MM/dd/yyyy HH:mm:ss', 'America/Los_Angeles');
+
+    // if (job.NumberOfErrors > 0) {
+    //   body += '\n\nPlease refer to separate email with details about the error.';
+    // }
+    if (owea != null) {
+      email.setOrgWideEmailAddressId(owea.Id);
+    }
+
+    email.setPlainTextbody(body);
+    email.setSubject('Appraisal Batch ' + job.Status);
+
+    Messaging.sendEmail(new List<Messaging.SIngleEmailMessage>{ email });
   }
 
   public static Map<String, Decimal> parseXML(
@@ -145,21 +215,30 @@ public class AppraisalParseBatch implements Database.Batchable<sObject> {
       structureInformationNode != null &&
       String.isNotEmpty(
         structureInformationNode.getAttribute('GSEStoriesCount', null)
-      )
+      ) &&
+      structureInformationNode.getAttribute('GSEStoriesCount', null) != null
     ) {
       Decimal gseStories = Decimal.ValueOf(
         structureInformationNode.getAttribute('GSEStoriesCount', null)
           .replaceAll('[^0-9.]', '')
       );
       retMap.put('storiesCount', gseStories);
+    } else if (
+      structure_node_new.getAttribute('StoriesCount', null) != null &&
+      String.isNotEmpty(
+        structure_node_new.getAttribute('StoriesCount', null)
+      ) &&
+      structure_node_new.getAttribute('StoriesCount', null)
+        .replaceAll('[^0-9.]', '')
+        .isNumeric()
+    ) {
+      Decimal stories = Decimal.ValueOf(
+        structure_node_new.getAttribute('StoriesCount', null)
+          .replaceAll('[^0-9.]', '')
+      );
+      retMap.put('storiesCount', stories);
     } else {
-      if(String.isNotEmpty(structure_node_new.getAttribute('StoriesCount', null))){
-        Decimal stories = Decimal.ValueOf(
-          structure_node_new.getAttribute('StoriesCount', null)
-            .replaceAll('[^0-9.]', '')
-        );
-        retMap.put('storiesCount', stories);
-      }
+      retMap.put('storiesCount', 0);
     }
 
     return retMap;

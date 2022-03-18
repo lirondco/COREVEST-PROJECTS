@@ -308,8 +308,7 @@ private with sharing class ValuationServicesAPITests {
 
     Map<String, Object> resp = ValuationServicesAPI.getAppraisalDetail(
       queriedApps[0].Appraisal_Firm_Transaction_ID__c,
-      queriedApps[0].property__r.deal__r.recordtype.developername,
-      app.Id
+      queriedApps[0].property__r.deal__r.recordtype.developername
     );
     Test.stopTest();
   }
