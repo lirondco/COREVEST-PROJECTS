@@ -56,12 +56,12 @@
       <tr>
         <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Final Spread</td>
         <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-          <apex:outputText value="{0,number,0}%" rendered="{!!ISBLANK(panels.submissionDetails.finalSpread)}">
+          <apex:outputText value="{0,number,0.0000}%" rendered="{!!ISBLANK(panels.submissionDetails.finalSpread)}">
             <apex:param value="{!panels.submissionDetails.finalSpread*100}" />
           </apex:outputText>
         </td>
         <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-          <apex:outputText value="{0,number,0}%" rendered="{!!ISBLANK(panels.currentDetails.finalSpread)}">
+          <apex:outputText value="{0,number,0.0000}%" rendered="{!!ISBLANK(panels.currentDetails.finalSpread)}">
             <apex:param value="{!panels.currentDetails.finalSpread*100}" />
           </apex:outputText>
         </td>
@@ -120,12 +120,12 @@
       <tr>
         <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Broker Fee %</td>
         <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-          <apex:outputText value="{0,number,0}%" rendered="{!!ISBLANK(panels.submissionDetails.brokerFees)}">
+          <apex:outputText value="{0,number,0.0000}%" rendered="{!!ISBLANK(panels.submissionDetails.brokerFees)}">
             <apex:param value="{!panels.submissionDetails.brokerFees*100}" />
           </apex:outputText>
         </td>
         <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-          <apex:outputText value="{0,number,0}%" rendered="{!!ISBLANK(panels.currentDetails.brokerFees)}">
+          <apex:outputText value="{0,number,0.0000}%" rendered="{!!ISBLANK(panels.currentDetails.brokerFees)}">
             <apex:param value="{!panels.currentDetails.brokerFees*100}" />
           </apex:outputText>
         </td>
@@ -180,12 +180,12 @@
       <tr>
         <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Origination Fee %</td>
         <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-          <apex:outputText value="{0,number,0}%" rendered="{!!ISBLANK(panels.submissionDetails.originationFee)}">
+          <apex:outputText value="{0,number,0.0000}%" rendered="{!!ISBLANK(panels.submissionDetails.originationFee)}">
             <apex:param value="{!panels.submissionDetails.originationFee*100}" />
           </apex:outputText>
         </td>
         <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-          <apex:outputText value="{0,number,0}%" rendered="{!!ISBLANK(panels.currentDetails.originationFee)}">
+          <apex:outputText value="{0,number,0.0000}%" rendered="{!!ISBLANK(panels.currentDetails.originationFee)}">
             <apex:param value="{!panels.currentDetails.originationFee*100}" />
           </apex:outputText>
         </td>
@@ -198,12 +198,12 @@
       <tr>
         <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Broker YSP%</td>
         <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-          <apex:outputText value="{0,number,0}%" rendered="{!!ISBLANK(panels.submissionDetails.brokerYSP)}">
+          <apex:outputText value="{0,number,0.0000}%" rendered="{!!ISBLANK(panels.submissionDetails.brokerYSP)}">
             <apex:param value="{!panels.submissionDetails.brokerYSP*100}" />
           </apex:outputText>
         </td>
         <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-          <apex:outputText value="{0,number,0}%" rendered="{!!ISBLANK(panels.currentDetails.brokerYSP)}">
+          <apex:outputText value="{0,number,0.0000}%" rendered="{!!ISBLANK(panels.currentDetails.brokerYSP)}">
             <apex:param value="{!panels.currentDetails.brokerYSP*100}" />
           </apex:outputText>
         </td>
@@ -364,12 +364,12 @@
           <br/>Management
           <br/> Adjustment</td>
         <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-          <apex:outputText value="{0,number,0}%" rendered="{!!ISBLANK(panels.submissionDetails.propertyManagementAdjustment)}">
+          <apex:outputText value="{0,number,0.0000}%" rendered="{!!ISBLANK(panels.submissionDetails.propertyManagementAdjustment)}">
             <apex:param value="{!panels.submissionDetails.propertyManagementAdjustment*100}" />
           </apex:outputText>
         </td>
         <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-          <apex:outputText value="{0,number,0}%" rendered="{!!ISBLANK(panels.currentDetails.propertyManagementAdjustment)}">
+          <apex:outputText value="{0,number,0.0000}%" rendered="{!!ISBLANK(panels.currentDetails.propertyManagementAdjustment)}">
             <apex:param value="{!panels.currentDetails.propertyManagementAdjustment*100}" />
           </apex:outputText>
         </td>

@@ -305,6 +305,7 @@ public without sharing class ConfirmationOfTermsController {
           Comments__c,
           Deposit_Amount__c,
           Spread__c,
+          Final_Spread__c,
           Recourse__c,
           Foreign_National__c,
           Holdback_Multiplier__c,
@@ -341,6 +342,7 @@ public without sharing class ConfirmationOfTermsController {
           Deposit_Amount__c,
           Deposit_Amount_Comment__c,
           Spread__c,
+          Final_Spread__c,
           Final_Spread_Comment__c,
           Recourse__c,
           Recourse_Comment__c,
@@ -403,6 +405,7 @@ public without sharing class ConfirmationOfTermsController {
           Deposit_Amount__c,
           Deposit_Amount_Comment__c,
           Spread__c,
+          Final_Spread__c,
           Final_Spread_Comment__c,
           Recourse__c,
           Recourse_Comment__c,
@@ -544,9 +547,9 @@ public without sharing class ConfirmationOfTermsController {
       );
 
       ahc.Deposit_Amount__c = submission.depositCollected;
-      ahc.Spread__c = submission.finalSpread;
-      if (ahc.Spread__c != null) {
-        ahc.Spread__c *= 100;
+      ahc.Final_Spread__c = submission.finalSpread;
+      if (ahc.Final_Spread__c != null) {
+        ahc.Final_Spread__c *= 100;
       }
       ahc.Recourse__c = submission.recourse; // (String) submission.get('recourse');
       ahc.Foreign_National__c = submission.foreignNational; //(Boolean) submission.get('foreignNational');
@@ -630,9 +633,9 @@ public without sharing class ConfirmationOfTermsController {
         }
 
         a.Deposit_Amount__c = submission.depositCollected;
-        a.Spread__c = submission.finalSpread;
-        if (a.Spread__c != null) {
-          a.Spread__c *= 100;
+        a.Final_Spread__c = submission.finalSpread;
+        if (a.Final_Spread__c != null) {
+          a.Final_Spread__c *= 100;
         }
         a.Recourse__c = submission.recourse; // (String) submission.get('recourse');
         a.Foreign_National__c = submission.foreignNational; //(Boolean) submission.get('foreignNational');
@@ -942,8 +945,8 @@ public without sharing class ConfirmationOfTermsController {
 
     originatorHistory.Deposit_Amount__c = details.depositCollected;
 
-    originatorHistory.Spread__c = details.finalSpread; //((Decimal) details.get('finalSpread')) * 100;
-    if (originatorHistory.Spread__c != null) {
+    originatorHistory.Final_Spread__c = details.finalSpread; //((Decimal) details.get('finalSpread')) * 100;
+    if (originatorHistory.Final_Spread__c != null) {
       details.finalSpread *= 100;
     }
 
@@ -1361,9 +1364,11 @@ public without sharing class ConfirmationOfTermsController {
     public void setHistory(Approval_History__c history) {
       this.recourse = history.Recourse__c;
       this.depositCollected = history.Deposit_Amount__c;
-      this.finalSpread = history.Spread__c != null
-        ? history.Spread__c / 100
-        : null;
+      this.finalSpread = history.Final_Spread__c != null
+        ? history.Final_Spread__c / 100
+        : history.Spread__c != null
+          ? history.Spread__c / 100
+          : null;
       this.foreignNational = history.Foreign_National__c;
       this.holdback = history.Holdback_Multiplier__c;
       this.brokerFees = history.Broker_Fee__c != null
@@ -1459,9 +1464,11 @@ public without sharing class ConfirmationOfTermsController {
     public void setOriginationsHistory(Approval_History__c history) {
       this.recourse = history.Recourse__c;
       this.depositCollected = history.Deposit_Amount__c;
-      this.finalSpread = history.Spread__c != null
-        ? history.Spread__c / 100
-        : null;
+      this.finalSpread = history.Final_Spread__c != null
+        ? history.Final_Spread__c / 100
+        : history.Spread__c != null
+          ? history.Spread__c / 100
+          : null;
       this.foreignNational = history.Foreign_National__c;
       this.holdback = history.Holdback_Multiplier__c;
       this.brokerFees = history.Broker_Fee__c != null
