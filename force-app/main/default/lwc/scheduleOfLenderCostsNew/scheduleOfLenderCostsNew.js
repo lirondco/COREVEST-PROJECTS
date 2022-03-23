@@ -182,7 +182,7 @@ export default class ScheduleOfLenderCostsNew extends LightningElement {
     //console.log("indicative_rate");
     //console.log(Indicative_Rate);
 
-    if (this.deal.Interest_Rate_Type__c == "Fixed") {
+    if (this.deal.Interest_Rate_Type__c == "Amortized") {
       if (PV && Indicative_Rate) {
         // //PMT= (PV*Rate*(1+Rate)^nper)/[(1+Rate)^nper - 1]
         var rate = parseFloat(((Indicative_Rate / 12 / 100) * 365) / 360);
@@ -192,7 +192,7 @@ export default class ScheduleOfLenderCostsNew extends LightningElement {
 
         val = pmt;
       }
-    } else if (this.deal.Interest_Rate_Type__c == "Interest Only") {
+    } else if (this.deal.Interest_Rate_Type__c == "Interest Only" || this.deal.Interest_Rate_Type__c == "Partial I/O") {
       // if (PV && Indicative_Rate && this.deal.IO_Term__c) {
       //   //IPMT = pmt + (1+rate)^(nper-1)*(pv *rate - pmt)
       //   var rate = parseFloat((Indicative_Rate * 365) / (12 * 360 * 100));
