@@ -183,7 +183,8 @@ public without sharing class ApprovalHistory_lightningController {
         Deal__r.Approval_Status__c,
         Deal__r.Apex_Context__c,
         CreatedDate,
-        Resolution__c
+        Resolution__c,
+        ProcessName__c
       FROM Approval_History__c
       WHERE Deal__c = :recordId
       ORDER BY LastModifiedDate DESC
@@ -400,6 +401,7 @@ public without sharing class ApprovalHistory_lightningController {
         Deal__r.RecordType.DeveloperName,
         Parent_Status__c,
         Process_Id__c,
+        ProcessName__c,
         Process_Instance_Id__c,
         Status__c,
         Step_Item_Id__c,

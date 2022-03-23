@@ -1578,7 +1578,7 @@ Then update Awaiting_Kickoff_Call__c to false</description>
         <field>StageName</field>
         <literalValue>Term Sheet Signed/Deposit Collected</literalValue>
         <name>Update Stage to TS Signed</name>
-        <notifyAssignee>false</notifyAssignee>
+        <notifUW yAssignee>false</notifyAssignee>
         <operation>Literal</operation>
         <protected>false</protected>
         <reevaluateOnChange>false</reevaluateOnChange>

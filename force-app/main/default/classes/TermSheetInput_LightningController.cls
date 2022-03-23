@@ -337,6 +337,10 @@ public without sharing class TermSheetInput_LightningController {
     //     m.put('MissingFields', nullFields);
     // }
 
+    if (o.RecordType.DeveloperName == 'Single_Asset_Bridge_Loan' && nullFields.contains('Distinct States')) {
+      nullFields.remove(nullFields.indexOf('Distinct States'));
+    }
+
     if (
       (o.RecordType.DeveloperName == 'LOC_Loan' ||
       o.RecordType.DeveloperName.contains('Bridge')) &&

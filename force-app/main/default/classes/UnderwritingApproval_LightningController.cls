@@ -99,6 +99,10 @@ public class UnderwritingApproval_LightningController {
         requiredDocuments = bridgeRequiredDocuments;
         requiredFields = bridgeFields;
       }
+      when 'Single_Asset_Bridge_Loan' {
+        requiredDocuments = bridgeRequiredDocuments;
+        requiredFields = bridgeFields;
+      }
     }
 
     Map<String, Object> response = new Map<String, Object>();
