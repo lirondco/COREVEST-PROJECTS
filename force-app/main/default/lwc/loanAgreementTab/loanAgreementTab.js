@@ -340,6 +340,9 @@ export default class LoanAgreementTab extends LightningElement {
     const fields = [
       "Deal__r.Name",
       "Deal__r.CloseDate",
+      "Deal__r.IO_Term__c",
+      "Deal__r.Amortization_Term__c",
+      "Deal__r.Term_Loan_Type__c",
       "Name",
       "Borrower__c",
       "Closing_Date_Insurance_Reserve_Deposit__c",
@@ -419,10 +422,7 @@ export default class LoanAgreementTab extends LightningElement {
   }
 
   compileFieldPermissions() {
-    let fields = [
-      "Name",
-      "Finalized__c"
-    ];
+    let fields = ["Name", "Finalized__c"];
     compileFieldPermissions({
       sObjectName: "Loan_Version__c",
       fields: fields
