@@ -1360,6 +1360,11 @@ public without sharing class property_Helper {
     Set<Id> bothIds = new Set<Id>();
     Map<Id, String> refinanceBubble = new Map<Id, String>();
 
+    Map<String, Map<Id,Property__c>> propSnapshotMap = new Map<String, Map<Id,Property__c>>{
+      'Asset Paid Off' => new Map<Id,Property__c>(),
+      'Asset Sold' => new Map<Id,Property__c>()
+    };
+
     // Set<Id> smartyStreetIds = new Set<Id>();
     // Set<String> recordTypeIds = new Set<String>();
 
@@ -1377,6 +1382,18 @@ public without sharing class property_Helper {
         newList[i].Status__c == 'Closing')) && newList[i].Yardi_Id__c != null
       ) {
         sendToYardiCSV.add(newList[i].Id);
+      }
+
+      if(newList[i].Status__c == 'Paid Off' && newList[i].Status__c != oldList[i].Status__c){
+        Map<Id,Property__c> propMap = propSnapshotMap.get('Asset Paid Off');
+        propMap.put(newList[i].Id, newList[i]);
+        propSnapshotMap.put('Asset Paid Off', propMap);
+      }
+
+      if(oldList[i].REO_Date__c == null && newList[i].REO_Date__c != null) {
+        Map<Id,Property__c> propMap = propSnapshotMap.get('Asset Sold');
+        propMap.put(newList[i].Id, newList[i]);
+        propSnapshotMap.put('Asset Sold', propMap);
       }
 
       // for (String s : smartyStreetFields) {
@@ -1430,6 +1447,10 @@ public without sharing class property_Helper {
           newList[i].Refinance_Acquisition__c
         );
       }
+    }
+
+    if(propSnapshotMap.get('Asset Paid Off').size() > 0 || propSnapshotMap.get('Asset Sold').size() > 0){
+      PropertySnapshotHelper.createPropertySnapshot(propSnapshotMap);
     }
 
     //system.debug(recordTypeIds);

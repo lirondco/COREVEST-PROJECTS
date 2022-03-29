@@ -1,9 +1,26 @@
 public without sharing class PropertyExtensionHelper {
+  public static final String SNAPSHOT_ENTITY = 'Extension Completed';
+
   public static void afterInsert(Map<Id, Property_Extension__c> newMap) {
     Set<Id> propertyIds = new Set<Id>();
+    Map<String, Map<Id, Property_Extension__c>> forSnapshotMap = new Map<String, Map<Id, Property_Extension__c>> ();
 
     for (Property_Extension__c pE : newMap.values()) {
       propertyIds.add(pE.Property__c);
+
+      if(pE.Extension_Date__c != null) {
+        if(forSnapshotMap.containsKey(SNAPSHOT_ENTITY)) {
+          Map<Id, Property_Extension__c> propExMap = forSnapshotMap.get(SNAPSHOT_ENTITY);
+          propExMap.put(pE.Id, pE);
+          forSnapshotMap.put(SNAPSHOT_ENTITY, propExMap);
+        } else {
+          forSnapshotMap.put(SNAPSHOT_ENTITY, new Map<Id, Property_Extension__c>{pE.Id => pE});
+        }
+      }
+    }
+
+    if(forSnapshotMap.size() > 0) {
+      PropertySnapshotHelper.createPropertySnapshot(forSnapshotMap);
     }
 
     Map<Id, Property__c> propMap = getFirstPropertyExtensions(propertyIds);
@@ -30,9 +47,21 @@ public without sharing class PropertyExtensionHelper {
     Map<Id, Property_Extension__c> newMap
   ) {
     Set<Id> propertyIds = new Set<Id>();
+    Map<String, Map<Id, Property_Extension__c>> forSnapshotMap = new Map<String, Map<Id, Property_Extension__c>>();
+
     for(Id key : newMap.keySet()) {
       Property_Extension__c oldPe = oldMap.get(key);
       Property_Extension__c newPe = newMap.get(key);
+
+      if(oldPe.Extension_Date__c == null && newPe.Extension_Date__c != null) {
+        if(forSnapshotMap.containsKey(SNAPSHOT_ENTITY)) {
+          Map<Id,Property_Extension__c> propExMap = forSnapshotMap.get(SNAPSHOT_ENTITY);
+          propExMap.put(key, newPe);
+          forSnapshotMap.put(SNAPSHOT_ENTITY, propExMap);
+        } else {
+          forSnapshotMap.put(SNAPSHOT_ENTITY, new Map<Id,Property_Extension__c >{key => newPe});
+        }
+      }
 
       if(oldPe.Extension_Date__c != newPe.Extension_Date__c ||
         oldPe.Original_Asset_Maturity_Date_Formula__c != newPe.Original_Asset_Maturity_Date_Formula__c ||
@@ -40,6 +69,10 @@ public without sharing class PropertyExtensionHelper {
         propertyIds.add(newPe.Property__c);
       }
 
+    }
+
+    if(forSnapshotMap.size() > 0) {
+      PropertySnapshotHelper.createPropertySnapshot(forSnapshotMap);
     }
 
     if(propertyIds.size() > 0) {

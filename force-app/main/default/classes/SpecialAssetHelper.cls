@@ -1,18 +1,54 @@
 public without sharing class SpecialAssetHelper {
+    public static final String SNAPSHOT_ENTITY = 'Special Asset Resolved';
+    public static void afterInsert(Map<Id,Special_Asset__c> newMap) {
+        Map<String, Map<Id,Special_Asset__c>> forSnapshotMap = new Map<String, Map<Id,Special_Asset__c>>();
+
+        for(Special_Asset__c sa : newMap.values()) {
+            if(sa.Resolved_Date__c != null) {
+                if(forSnapshotMap.containsKey(SNAPSHOT_ENTITY)) {
+                    Map<Id,Special_Asset__c> saMap = forSnapshotMap.get(SNAPSHOT_ENTITY);
+                    saMap.put(sa.id, sa);
+                    forSnapshotMap.put(SNAPSHOT_ENTITY, saMap);
+                } else {
+                    forSnapshotMap.put(SNAPSHOT_ENTITY, new Map<Id, Special_Asset__c>{sa.Id => sa});
+                }
+            }
+        }
+
+        if(forSnapshotMap.size() > 0) {
+            PropertySnapshotHelper.createPropertySnapshot(forSnapshotMap);
+        }
+    }
+    
     public static void afterUpdate(Map<Id,Special_Asset__c> oldMap, Map<Id, Special_Asset__c> newMap) {
         Set<Id> propertiesToUpdate = new Set<Id>();
+        Map<String, Map<Id,Special_Asset__c>> forSnapshotMap = new Map<String, Map<Id,Special_Asset__c>>();
 
         for(Id id : newMap.keySet()) {
             Special_Asset__c o = oldMap.get(id);
             Special_Asset__c n = newMap.get(id);
 
-            if(String.isEmpty(o.Resolution_Type__c) && String.isNotEmpty(n.Resolution_Type__c) && o.Resolved_Date__c == null && n.Resolved_Date__c != null) {
-                propertiesToUpdate.add(n.Property__c);
+            if(o.Resolved_Date__c == null && n.Resolved_Date__c != null) {
+                if(String.isEmpty(o.Resolution_Type__c) && String.isNotEmpty(n.Resolution_Type__c)) {
+                    propertiesToUpdate.add(n.Property__c);
+                }
+
+                if(forSnapshotMap.containsKey(SNAPSHOT_ENTITY)) {
+                    Map<Id,Special_Asset__c> saMap = forSnapshotMap.get(SNAPSHOT_ENTITY);
+                    saMap.put(id, n);
+                    forSnapshotMap.put(SNAPSHOT_ENTITY, saMap);
+                } else {
+                    forSnapshotMap.put(SNAPSHOT_ENTITY, new Map<Id,Special_Asset__c>{id => n});
+                }
             }
         }
 
         if(propertiesToUpdate.size() > 0) {
             removeSpecialAssetFromProperties(propertiesToUpdate);
+        }
+
+        if(forSnapshotMap.size() > 0) {
+            PropertySnapshotHelper.createPropertySnapshot(forSnapshotMap);
         }
     }
 
