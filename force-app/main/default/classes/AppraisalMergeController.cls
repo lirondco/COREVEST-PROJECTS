@@ -44,6 +44,11 @@ public with sharing class AppraisalMergeController {
   public static Map<String, Schema.SObjectField> APPRAISAL_FIELD_MAP = Schema.SObjectType.Appraisal__c.fields.getMap();
   public static Map<String, Schema.SObjectField> PROPERTY_FIELD_MAP = Schema.SObjectType.Property__c.fields.getMap();
 
+  // public static Map<String, List<Sobject>> BATCH_VAL = new Map<String, List<SObject>>{
+  //   'Appraisals' => new List<SObject>(),
+  //   'Comments' => new List<SObject>()
+  // };
+
   @AuraEnabled
   public static List<List<MergeWrapper>> initMergeScreen(String recordId) {
     String queryString = compileQueryString(recordId);
@@ -166,6 +171,7 @@ public with sharing class AppraisalMergeController {
     String productType = (String) arguments.get('productType');
     if (appraisalFirm == 'Clear Capital') {
       String turnTime = (String) arguments.get('turnTime');
+      // List<Object> addOns = (List<Object>) arguments.get('addOns');
       List<String> addOns = (List<String>) arguments.get('addOns');
       String vendorComments = (String) arguments.get('vendorComments');
       submitOrderClearCapital(
@@ -202,6 +208,21 @@ public with sharing class AppraisalMergeController {
         password
       );
     } else if (appraisalFirm == 'Valuation Services AMC') {
+      String vendorComments = (String) arguments.get('vendorComments');
+      String dueDate = (String) arguments.get('dueDate');
+      Boolean rushOrder = (Boolean) arguments.get('rushOrder');
+      String password = (String) arguments.get('anPassword');
+      String username = (String) arguments.get('anUsername');
+      submitOrderValuationServices(
+        propertyId,
+        productType,
+        rushOrder,
+        dueDate,
+        vendorComments,
+        username,
+        password
+      );
+    } else if (appraisalFirm == 'US RES') {
       String vendorComments = (String) arguments.get('vendorComments');
       String dueDate = (String) arguments.get('dueDate');
       Boolean rushOrder = (Boolean) arguments.get('rushOrder');
@@ -259,7 +280,7 @@ public with sharing class AppraisalMergeController {
     Id propertyId,
     String productType,
     String turnTime,
-    // String addOns,
+    // List<Object> addOns,
     String vendorComments
   ) {
     Property__c p = [
@@ -293,6 +314,17 @@ public with sharing class AppraisalMergeController {
       // addOns,
       vendorComments
     );
+
+    // if(addOns.size() > 0) {
+    //   String addonAsString = '';
+
+    //   for(Object a : addOns) {
+    //     addonAsString += String.valueOf(a) + ';';
+    //   }
+
+    //   addonAsString = addonAsString.substringBeforeLast(';');
+    //   appraisal.Product_Type_Addons__c = addonAsString;
+    // }
 
     appraisal.Deal__c = p.Deal__c;
     appraisal.Property__c = p.Id;
@@ -482,6 +514,89 @@ public with sharing class AppraisalMergeController {
     update p;
   }
 
+  public static void submitOrderUSRES(
+    Id propertyId,
+    String productType,
+    Boolean rushOrder,
+    String dueDate,
+    String vendorComments,
+    String username,
+    String password
+  ) {
+    Property__c p = [
+      SELECT
+        id,
+        Name,
+        City__c,
+        State__c,
+        ZipCode__c,
+        County__c,
+        Property_Type__c,
+        Deal__r.RecordType.DeveloperName,
+        Number_of_Units__c,
+        Deal__r.Deal_Loan_Number__c,
+        Acquisition_Price__c,
+        Currently_Leased__c,
+        Borrower_Name__c,
+        Deal__r.Contact__r.FirstName,
+        Refinance_Acquisition__c,
+        RecordType.DeveloperName,
+        Deal__r.Contact__r.LastName,
+        Deal__r.Contact__r.Phone,
+        Deal__r.Contact__r.HomePhone,
+        Deal__r.Contact__r.MobilePhone,
+        Deal__r.Contact__r.Email,
+        Deal__r.Contact__r.MailingStreet,
+        Deal__r.Name,
+        Deal__r.Contact__r.MailingCity,
+        Deal__r.Contact__r.MailingState,
+        Deal__r.Contact__r.MailingPostalCode,
+        Interior_Access_POC__c,
+        Interior_Access_POC_Phone__c,
+        Interior_Access_POC_Email__c,
+        Asset_Id__c,
+        Deal__r.Anticipated_Closing_Date__c
+      FROM property__c
+      WHERE id = :propertyId
+      LIMIT 1
+    ];
+
+    Appraisal__c appraisal = USResAPI.submitOrder(
+      p,
+      productType,
+      vendorComments,
+      rushOrder,
+      dueDate,
+      username,
+      password
+    );
+    appraisal.Deal__c = p.Deal__c;
+    appraisal.Property__c = p.Id;
+    appraisal.Vendor_Ordered_From__c = 'US RES';
+    appraisal.Appraisal_Product_Ordered__c = productType;
+    appraisal.Status__c = 'Ordered';
+    appraisal.Delivery_Method__c = 'API';
+    appraisal.Property_Asset_Id__c = p.Asset_Id__c;
+    appraisal.Property_Address__c = p.Name;
+    appraisal.City__c = p.City__c;
+    appraisal.State__c = p.State__c;
+    appraisal.Zip__c = p.ZipCode__c;
+    appraisal.Valuation_Provider__c = 'US RES';
+    appraisal.Comments_to_Vendor__c = vendorComments;
+    insert appraisal;
+
+    update new User(
+      Id = userInfo.getUserId(),
+      US_RES_Username__c = username,
+      US_RES_Password__c = password
+    );
+
+    p.BPO_Appraisal_Firm__c = 'US RES';
+    p.BPO_Appraisal_Order_Date__c = System.today();
+    p.Valuation_Type__c = productType;
+    update p;
+  }
+
   public static void submitOrderClarocity(
     Id propertyId,
     String productType,
@@ -567,12 +682,24 @@ public with sharing class AppraisalMergeController {
     update p;
   }
 
-  // @future (callout=true)
   public static void refreshBatch(Id id) {
     checkStatus(id);
     List<Id> idList = new List<Id>{ id };
     refreshAppraisalStatus(idList);
   }
+
+  
+  // @future (callout=true)
+  // public static Map<String, List<Sobject>> refreshBatch(List<Id> ids) {
+  //   for(Id id : ids) {
+  //     checkStatus(id);
+  //   }
+  //   refreshAppraisalStatus(ids);
+  //   return BATCH_VAL;
+  //   checkStatus(id);
+  //   List<Id> idList = new List<Id>{ id };
+  //   refreshAppraisalStatus(idList);
+  // }
 
   @AuraEnabled
   public static void checkStatus(Id appraisalId) {
@@ -592,6 +719,8 @@ public with sharing class AppraisalMergeController {
       checkStatusClarocity(appraisalId);
     } else if (appraisalFirm == 'Valuation Services AMC') {
       checkStatusValuationServices(appraisalId);
+    } else if (appraisalFirm == 'US RES') {
+      checkStatusUSRES(appraisalId);
     }
   }
 
@@ -615,8 +744,7 @@ public with sharing class AppraisalMergeController {
 
     Map<String, Object> resp = ClearCapitalAPI.checkStatus(
       appraisal.Appraisal_Firm_Transaction_ID__c,
-      appraisal.Deal__r.RecordType.DeveloperName,
-      appraisalId
+      appraisal.Deal__r.RecordType.DeveloperName
     );
 
     if (String.ValueOf(resp.get('cancelledDate')) != null) {
@@ -675,7 +803,7 @@ public with sharing class AppraisalMergeController {
     appraisal.State__c = String.valueOf(resp.get('state'));
     appraisal.Zip__c = String.valueOf(resp.get('zip'));
 
-    if (appraisal.Status__c.toLowerCase() == 'complete-delivered') {
+    if (String.isNotEmpty(appraisal.Status__c) && appraisal.Status__c.toLowerCase() == 'complete-delivered') {
       //retrieveOrder(appraisalId);
       retrieveOrderClearCapital(appraisalId);
     }
@@ -750,8 +878,7 @@ public with sharing class AppraisalMergeController {
     for (Appraisal__c appraisal : queriedApps) {
       Map<String, Object> resp = AppraisalNationAPI.getAppraisalDetail(
         appraisal.Appraisal_Firm_Transaction_ID__c,
-        appraisal.property__r.deal__r.recordtype.developername,
-        appraisal.id
+        appraisal.property__r.deal__r.recordtype.developername
       );
 
       if (resp == null || resp.isEmpty()) {
@@ -797,7 +924,12 @@ public with sharing class AppraisalMergeController {
       appraisals.add(appraisal);
     }
 
-    database.update(appraisals, false);
+    // if(System.isBatch()) {
+    //   appraisals.addAll((List<Appraisal__c>)BATCH_VAL.get('Appraisals'));
+    //   BATCH_VAL.put('Appraisals', appraisals);
+    // } else {
+      database.update(appraisals, false);
+    // }
   }
 
   public static void checkStatusAppraisalNation(Id appraisalId) {
@@ -818,11 +950,9 @@ public with sharing class AppraisalMergeController {
       return;
     }
 
-
-    Map<String, Object> resp = AppraisalNationAPI.checkOrder(
+   Map<String, Object> resp = AppraisalNationAPI.checkOrder(
       appraisal.Appraisal_Firm_Transaction_ID__c,
-      appraisal.property__r.deal__r.recordtype.developername,
-      appraisal.id
+      appraisal.property__r.deal__r.recordtype.developername
     );
 
     // system.debug('--resp--');
@@ -842,8 +972,13 @@ public with sharing class AppraisalMergeController {
         appraisal.Status__c = 'Complete-Undelivered';
       }
     }
-
-    update appraisal;
+    // if(System.isBatch()) {
+    //   List<Sobject> appVal = BATCH_VAL.get('Appraisals');
+    //   appVal.add((SObject) appraisal);
+    //   BATCH_VAL.put('Appraisals', appVal);
+    // } else {
+      update appraisal;
+    // }
 
     List<Appraisal_Order_Comment__c> comments = new List<Appraisal_Order_Comment__c>();
     system.debug(resp.get('comments'));
@@ -867,10 +1002,16 @@ public with sharing class AppraisalMergeController {
 
     if (appraisal.Status__c == 'Complete-Delivered') {
     }
-
+    
     if (comments.size() > 0) {
       Database.upsert(comments, Appraisal_Order_Comment__c.Fields.Key__c);
-    }
+    } 
+    // if (comments.size() > 0 && !System.isBatch()) {
+      // Database.upsert(comments, Appraisal_Order_Comment__c.Fields.Key__c);
+    // } // else {
+    //   comments.addAll((List<Appraisal_Order_Comment__c>) BATCH_VAL.get('Comments'));
+    //   BATCH_VAL.put('Comments', comments);
+    // }
   }
 
   public static void checkStatusValuationServices(Id appraisalId) {
@@ -893,8 +1034,7 @@ public with sharing class AppraisalMergeController {
 
     Map<String, Object> resp = ValuationServicesAPI.checkOrder(
       appraisal.Appraisal_Firm_Transaction_ID__c,
-      appraisal.property__r.deal__r.recordtype.developername,
-      appraisalId
+      appraisal.property__r.deal__r.recordtype.developername
     );
 
     // system.debug('--resp--');
@@ -949,7 +1089,13 @@ public with sharing class AppraisalMergeController {
       }
     }
 
-    update appraisal;
+    // if(System.isBatch()) {
+    //   List<Sobject> appVal = BATCH_VAL.get('Appraisals');
+    //   appVal.add((SObject) appraisal);
+    //   BATCH_VAL.put('Appraisals', appVal);
+    // } else {
+      update appraisal;
+    // }
 
     List<Appraisal_Order_Comment__c> comments = new List<Appraisal_Order_Comment__c>();
     system.debug(resp.get('comments'));
@@ -973,10 +1119,133 @@ public with sharing class AppraisalMergeController {
 
     if (appraisal.Status__c == 'Complete-Delivered') {
     }
-
+    
     if (comments.size() > 0) {
       Database.upsert(comments, Appraisal_Order_Comment__c.Fields.Key__c);
     }
+    // if (comments.size() > 0 && !System.isBatch()) {
+    //   Database.upsert(comments, Appraisal_Order_Comment__c.Fields.Key__c);
+    // } else {
+    //   comments.addAll((List<Appraisal_Order_Comment__c>) BATCH_VAL.get('Comments'));
+    //   BATCH_VAL.put('Comments', comments);
+    // }
+  }
+
+  public static void checkStatusUSRES(Id appraisalId) {
+    Appraisal__c appraisal = [
+      SELECT
+        id,
+        createddate,
+        report_type__c,
+        appraisal_firm_transaction_id__c,
+        appraisal_product_ordered__c,
+        property__r.deal__r.recordtype.developername
+      FROM appraisal__c
+      WHERE Id = :appraisalId
+      ORDER BY createddate DESC
+    ];
+
+    if (String.isBlank(appraisal.Appraisal_Firm_Transaction_ID__c)) {
+      return;
+    }
+
+    Map<String, Object> resp = USResAPI.checkOrder(
+      appraisal.Appraisal_Firm_Transaction_ID__c,
+      appraisal.property__r.deal__r.recordtype.developername
+    );
+
+    // system.debug('--resp--');
+    // system.debug(JSON.serializePretty(resp));
+
+    Map<String, Object> results = (Map<String, Object>) resp.get('result');
+
+    system.debug(results);
+
+    appraisal.Status__c = (String) results.get('status');
+
+    if (
+      results.containsKey('due_amount') &&
+      results.get('due_amount') != 'N/A' &&
+      results.get('due_amount') != null
+    ) {
+      String dueAmount = String.valueOf(results.get('due_amount'));
+
+      if (!dueAmount.isNumeric()) {
+        dueAmount = dueAmount.replaceAll('[^\\d.]', '');
+      }
+      appraisal.Appraisal_Fee__c = Decimal.valueOf(dueAmount);
+    }
+    if (
+      results.containsKey('inspection_date') &&
+      results.get('inspection_date') != 'N/A' &&
+      results.get('inspection_date') != null
+    ) {
+      appraisal.Inspection_Date__c = Date.valueOf(
+        String.valueOf(results.get('inspection_date') + ' 00:00:00')
+      );
+    }
+    if (
+      results.containsKey('due_date') &&
+      results.get('due_date') != 'N/A' &&
+      results.get('due_date') != null
+    ) {
+      appraisal.Estimated_Completion_Date__c = Date.valueOf(
+        String.valueOf(results.get('due_date') + ' 00:00:00')
+      );
+    }
+
+    if (appraisal.Status__c == 'New') {
+      appraisal.Status__c = 'Ordered';
+    } else if (appraisal.Status__c == 'Completed') {
+      appraisal.Status__c = 'Complete-Delivered';
+      Map<String, String> retrieveResp = retrieveOrderUSRES(
+        appraisalId
+      );
+      if (retrieveResp != null) {
+        appraisal.Status__c = 'Complete-Undelivered';
+      }
+    }
+
+    // if(System.isBatch()) {
+    //   List<Sobject> appVal = BATCH_VAL.get('Appraisals');
+    //   appVal.add((SObject) appraisal);
+    //   BATCH_VAL.put('Appraisals', appVal);
+    // } else {
+      update appraisal;
+    // }
+
+    List<Appraisal_Order_Comment__c> comments = new List<Appraisal_Order_Comment__c>();
+    system.debug(resp.get('comments'));
+    for (Object com : (List<Object>) resp.get('comments')) {
+      Appraisal_Order_Comment__c cmt = new Appraisal_Order_Comment__c();
+      Map<String, Object> comment = (Map<String, Object>) com;
+      String commentDate = (String) comment.get('comment_date');
+      String body = (String) comment.get('comment');
+      if (String.isNotBlank(body)) {
+        //Integer lng = body.length() <= 182 ? body.length() : 182;
+
+        cmt.Key__c = (String) comment.get('comment_id');
+
+        cmt.Comment__c = body;
+        cmt.Comment_Date__c = DateTime.valueOf(commentDate);
+
+        cmt.Appraisal__c = appraisalId;
+        comments.add(cmt);
+      }
+    }
+
+    if (appraisal.Status__c == 'Complete-Delivered') {
+    }
+    
+    if (comments.size() > 0) {
+      Database.upsert(comments, Appraisal_Order_Comment__c.Fields.Key__c);
+    }
+    // if (comments.size() > 0 && !System.isBatch()) {
+    //   Database.upsert(comments, Appraisal_Order_Comment__c.Fields.Key__c);
+    // } else {
+    //   comments.addAll((List<Appraisal_Order_Comment__c>) BATCH_VAL.get('Comments'));
+    //   BATCH_VAL.put('Comments', comments);
+    // }
   }
 
   public static void checkStatusClarocity(Id appraisalId) {
@@ -999,8 +1268,7 @@ public with sharing class AppraisalMergeController {
 
     Map<String, Object> resp = ClarocityAPI.checkOrder(
       appraisal.Appraisal_Firm_Transaction_ID__c,
-      appraisal.Deal__r.RecordType.DeveloperName,
-      appraisalId
+      appraisal.Deal__r.RecordType.DeveloperName
     );
 
     appraisal.Status__c = (String) resp.get('description');
@@ -1021,14 +1289,13 @@ public with sharing class AppraisalMergeController {
       appraisal.Status__c = statusMap.get(appraisal.Status__c);
     }
 
-    update appraisal;
-
     if (appraisal.Status__c == 'Complete-Delivered') {
       ClarocityAPI.retrieveOrderFuture(
         appraisalId,
         appraisal.Deal__r.RecordType.DeveloperName
       );
     }
+    update appraisal;
   }
   /*
  @AuraEnabled
@@ -1188,6 +1455,31 @@ public with sharing class AppraisalMergeController {
     ];
 
     return ValuationServicesAPI.retrieveOrder(
+      appraisal.appraisal_firm_transaction_id__c,
+      appraisalId
+    );
+  }
+
+  public static Map<String, String> retrieveOrderUSRES(
+    Id appraisalId
+  ) {
+    Appraisal__c appraisal = [
+      SELECT
+        id,
+        createddate,
+        report_type__c,
+        appraisal_firm_transaction_id__c,
+        Property_Address__c,
+        Property__r.Deal__c,
+        appraisal_product_ordered__c,
+        Property__c,
+        Property__r.Deal_Record_Type__C
+      FROM appraisal__c
+      WHERE Id = :appraisalId
+      ORDER BY createddate DESC
+    ];
+
+    return USResAPI.retrieveOrder(
       appraisal.appraisal_firm_transaction_id__c,
       appraisalId
     );

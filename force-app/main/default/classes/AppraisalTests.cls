@@ -7,7 +7,8 @@ private class AppraisalTests {
         opp.RecordTypeId = [SELECT Id FROM RecordType WHERE DeveloperName = 'Term_Loan' and sobjecttype = 'Opportunity'].Id;
         List<Property__c> properties = Test_Helper.createProperties(opp);
         Appraisal__c appraisal = Test_Helper.createAppraisal(opp, properties[0]);
-
+        appraisal.Status__c = 'Complete-Delivered';
+        update appraisal;
         Test.startTest();
             AppraisalMergeController.initMergeScreen(opp.Id);
         Test.stopTest();
