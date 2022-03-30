@@ -228,7 +228,7 @@ public with sharing class AppraisalMergeController {
       Boolean rushOrder = (Boolean) arguments.get('rushOrder');
       String password = (String) arguments.get('anPassword');
       String username = (String) arguments.get('anUsername');
-      submitOrderValuationServices(
+      submitOrderUSRES(
         propertyId,
         productType,
         rushOrder,

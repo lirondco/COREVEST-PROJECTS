@@ -166,31 +166,34 @@ public without sharing class USResAPI {
             }
           }
         }
-      } else if (productOrdered == 'Interior Appraisal with ARV') {  // Not Used
-        switch on property.Property_Type__c {
-          when 'SFR' {
-            job_type = '1166';
-          }
-          when 'Townhome' {
-            job_type = '1166';
-          }
-          when 'Condo' {
-            job_type = '1154';
-          }
-          when '2-4 Unit' {
-            if (property.Number_of_Units__c == 2) {
-              job_type = '1174'; 
-            } else if (
-              property.Number_of_Units__c == 3 ||
-              property.Number_of_Units__c == 4
-            ) {
-              job_type = '1174';
-            } else {
-              job_type = '1174';
-            }
-          }
-        }
-      } else if (productOrdered == 'Exterior Appraisal') {
+      } 
+      // Not Used
+      // else if (productOrdered == 'Interior Appraisal with ARV') {  
+      //   switch on property.Property_Type__c {
+      //     when 'SFR' {
+      //       job_type = '1166';
+      //     }
+      //     when 'Townhome' {
+      //       job_type = '1166';
+      //     }
+      //     when 'Condo' {
+      //       job_type = '1154';
+      //     }
+      //     when '2-4 Unit' {
+      //       if (property.Number_of_Units__c == 2) {
+      //         job_type = '1174'; 
+      //       } else if (
+      //         property.Number_of_Units__c == 3 ||
+      //         property.Number_of_Units__c == 4
+      //       ) {
+      //         job_type = '1174';
+      //       } else {
+      //         job_type = '1174';
+      //       }
+      //     }
+      //   }
+      // } 
+      else if (productOrdered == 'Exterior Appraisal') {
         switch on property.Property_Type__c {
           when 'SFR' {
             job_type = '386'; // 
@@ -214,31 +217,34 @@ public without sharing class USResAPI {
             }
           }
         }
-      } else if (productOrdered == 'Exterior Appraisal with ARV') {  // Not Used
-        switch on property.Property_Type__c {
-          when 'SFR' {
-            job_type = '1175'; // 
-          }
-          when 'Townhome' {
-            job_type = '1175'; // 
-          }
-          when 'Condo' {
-            job_type = '1164'; // 
-          }
-          when '2-4 Unit' {
-            if (property.Number_of_Units__c == 2) {
-              job_type = '836';
-            } else if (
-              property.Number_of_Units__c == 3 ||
-              property.Number_of_Units__c == 4
-            ) {
-              job_type = '836';
-            } else {
-              job_type = '836';
-            }
-          }
-        }
-      } else if (productOrdered == 'Appraisal Update') {
+      } 
+      // Not Used
+      // else if (productOrdered == 'Exterior Appraisal with ARV') {
+      //   switch on property.Property_Type__c {
+      //     when 'SFR' {
+      //       job_type = '1175'; // 
+      //     }
+      //     when 'Townhome' {
+      //       job_type = '1175'; // 
+      //     }
+      //     when 'Condo' {
+      //       job_type = '1164'; // 
+      //     }
+      //     when '2-4 Unit' {
+      //       if (property.Number_of_Units__c == 2) {
+      //         job_type = '836';
+      //       } else if (
+      //         property.Number_of_Units__c == 3 ||
+      //         property.Number_of_Units__c == 4
+      //       ) {
+      //         job_type = '836';
+      //       } else {
+      //         job_type = '836';
+      //       }
+      //     }
+      //   }
+      // } 
+      else if (productOrdered == 'Appraisal Update') {
         switch on property.Property_Type__c {
           when 'SFR' {
             job_type = '323'; // Appraisal Update/Recertification FNMA 1004D
@@ -262,59 +268,65 @@ public without sharing class USResAPI {
             }
           }
         }
-      } else if (
-        productOrdered == 'CDAIR Exterior Disaster Area Inspection Report' // Not Used
-      ) {
-        switch on property.Property_Type__c {
-          when 'SFR' {
-            job_type = '18998';
-          }
-          when 'Townhome' {
-            job_type = '18998';
-          }
-          when 'Condo' {
-            job_type = '18998';
-          }
-          when '2-4 Unit' {
-            if (property.Number_of_Units__c == 2) {
-              job_type = '18998';
-            } else if (
-              property.Number_of_Units__c == 3 ||
-              property.Number_of_Units__c == 4
-            ) {
-              job_type = '18998';
-            } else {
-              job_type = '18998';
-            }
-          }
-        }
-      } else if (
-        productOrdered == 'CDAIR Interior Disaster Area Inspection Report' // Not Used
-      ) {
-        switch on property.Property_Type__c {
-          when 'SFR' {
-            job_type = '18999';
-          }
-          when 'Townhome' {
-            job_type = '18999';
-          }
-          when 'Condo' {
-            job_type = '18999';
-          }
-          when '2-4 Unit' {
-            if (property.Number_of_Units__c == 2) {
-              job_type = '18999';
-            } else if (
-              property.Number_of_Units__c == 3 ||
-              property.Number_of_Units__c == 4
-            ) {
-              job_type = '18999';
-            } else {
-              job_type = '18999';
-            }
-          }
-        }
-      } else if (
+      } 
+      // Not Used
+      // else if (
+      //   productOrdered == 'CDAIR Exterior Disaster Area Inspection Report' // Not Used
+      // ) {
+      //   switch on property.Property_Type__c {
+      //     when 'SFR' {
+      //       job_type = '18998';
+      //     }
+      //     when 'Townhome' {
+      //       job_type = '18998';
+      //     }
+      //     when 'Condo' {
+      //       job_type = '18998';
+      //     }
+      //     when '2-4 Unit' {
+      //       if (property.Number_of_Units__c == 2) {
+      //         job_type = '18998';
+      //       } else if (
+      //         property.Number_of_Units__c == 3 ||
+      //         property.Number_of_Units__c == 4
+      //       ) {
+      //         job_type = '18998';
+      //       } else {
+      //         job_type = '18998';
+      //       }
+      //     }
+      //   }
+      // } 
+      // Not Used
+      // else if (
+      //   productOrdered == 'CDAIR Interior Disaster Area Inspection Report'
+      // ) {
+      //   switch on property.Property_Type__c {
+      //     when 'SFR' {
+      //       job_type = '18999';
+      //     }
+      //     when 'Townhome' {
+      //       job_type = '18999';
+      //     }
+      //     when 'Condo' {
+      //       job_type = '18999';
+      //     }
+      //     when '2-4 Unit' {
+      //       if (property.Number_of_Units__c == 2) {
+      //         job_type = '18999';
+      //       } else if (
+      //         property.Number_of_Units__c == 3 ||
+      //         property.Number_of_Units__c == 4
+      //       ) {
+      //         job_type = '18999';
+      //       } else {
+      //         job_type = '18999';
+      //       }
+      //     }
+      //   }
+      // } 
+      
+      else if (
         productOrdered == 'Desktop Summary Appraisal'
       ) {
         switch on property.Property_Type__c {
@@ -583,7 +595,7 @@ public without sharing class USResAPI {
       String checkURI = '/getappraisaldetail';
       String checkEndpoint = baseEndpoint + checkURI;
   
-      if (String.isBlank(authToken)) {
+      if (String.isBlank(authToken) || test.isRunningTest()) {
         if (recordTypeName.contains('LOC') || recordTypeName.contains('Bridge')) {
           authToken = getAuthToken(
             apiSettings.Bridge_Username__c,

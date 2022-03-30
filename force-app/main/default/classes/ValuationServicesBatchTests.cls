@@ -1,16 +1,16 @@
 @isTest
-public with sharing class AppraisalNationSchedulableTest {
-  public static testMethod void AppraisalNationSchedulableTest() {
+public with sharing class ValuationServicesBatchTests {
+  public static testMethod void ValuationServicesSchedulableTest() {
     List<AsyncApexJob> jobsBefore = [
       SELECT Id, ApexClassID, ApexClass.Name, Status, JobType
       FROM AsyncApexJob
     ];
     System.assertEquals(0, jobsBefore.size(), 'not expecting any asyncjobs');
     Test.startTest();
-    AppraisalNationSchedulable testSchedule = new AppraisalNationSchedulable();
+    ValuationServicesScheduable testSchedule = new ValuationServicesScheduable();
     String sch = '0 0 23 * * ?';
     String jobId = system.schedule(
-      'Appraisal schedule batch test',
+      'Valuation schedule batch test',
       sch,
       testSchedule
     );
@@ -22,7 +22,7 @@ public with sharing class AppraisalNationSchedulableTest {
     ];
     System.assertEquals(1, jobsScheduled.size(), 'expecting one scheduled job');
     System.assertEquals(
-      'AppraisalNationSchedulable',
+      'ValuationServicesScheduable',
       jobsScheduled[0].ApexClass.Name,
       'expecting specific scheduled job'
     );
@@ -37,12 +37,12 @@ public with sharing class AppraisalNationSchedulableTest {
       'expecting one apex batch job'
     );
     System.assertEquals(
-      'AppraisalNationBatch',
+      'ValuationServicesBatch',
       jobsApexBatch[0].ApexClass.Name,
       'expecting specific batch job'
     );
   }
-  public static testMethod void AppraisalNationBatchTest() {
+  public static testMethod void ValuationBatchTest() {
     Account acc = Test_Helper.createAccount();
     Contact cont = Test_Helper.createContact(acc);
     Opportunity opp = Test_Helper.createOpportunity(acc, cont);
@@ -55,12 +55,12 @@ public with sharing class AppraisalNationSchedulableTest {
     update opp;
     List<Property__c> properties = Test_Helper.createProperties(opp);
     Appraisal__c appraisal = Test_Helper.createAppraisal(opp, properties[0]);
-    appraisal.Vendor_Ordered_From__c = 'Appraisal Nation';
+    appraisal.Vendor_Ordered_From__c = 'Valuation Services AMC';
     appraisal.Prevent_Auto_Refresh__c = false;
     appraisal.Appraisal_Firm_Transaction_ID__c = '30078381';
     update appraisal;
     Test.startTest();
-        AppraisalNationBatch testBatch = new AppraisalNationBatch();
+        ValuationServicesBatch testBatch = new ValuationServicesBatch();
         Database.executeBatch(testBatch);
     Test.stopTest();
   }

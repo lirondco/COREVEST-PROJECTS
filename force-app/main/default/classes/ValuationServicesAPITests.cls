@@ -424,5 +424,5 @@ private with sharing class ValuationServicesAPITests {
     AppraisalMergeController.retrieveOrderValuationServices(app.Id);
 
     Test.stopTest();
-  }
+}
 }

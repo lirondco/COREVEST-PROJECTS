@@ -306,11 +306,10 @@ public with sharing class USResAPITests {
         ORDER BY createddate DESC
       ];
   
-    //   Map<String, Object> resp = USResAPI.getAppraisalDetail(
-    //     queriedApps[0].Appraisal_Firm_Transaction_ID__c,
-    //     queriedApps[0].property__r.deal__r.recordtype.developername,
-    //     app.Id
-    //   );
+      Map<String, Object> resp = USResAPI.getAppraisalDetail(
+        queriedApps[0].Appraisal_Firm_Transaction_ID__c,
+        queriedApps[0].property__r.deal__r.recordtype.developername
+        );
       Test.stopTest();
     }
   
