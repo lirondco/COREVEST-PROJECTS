@@ -83,7 +83,7 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
     'Dec' => 12
   };
 
-  public static void postToChatter(Opportunity deal, String subjectId) {
+  public static void postToChatter(Opportunity deal, String subjectId, Boolean isGlc) {
     System.debug('postToChatter has been hit');
     ConnectApi.MessageBodyInput messageInput = new ConnectApi.MessageBodyInput();
     messageInput.messageSegments = new List<ConnectApi.MessageSegmentInput>();
@@ -93,7 +93,11 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
     messageInput.messageSegments.add(mentionSegment);
 
     ConnectApi.TextSegmentInput textSegment = new ConnectApi.TextSegmentInput();
-    textSegment.text = ' ' + deal.Name + ' has been approved.';
+    String segmentText = ' ' + deal.Name + ' has been approved.';
+    if(isGlc) {
+      segmentText += ' This Deal requires GLC Approval.';
+    }
+    textSegment.text = segmentText;
     messageInput.messageSegments.add(textSegment);
 
     ConnectApi.FeedItemInput input = new ConnectApi.FeedItemInput();
@@ -420,7 +424,7 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
           if (null != BETH_CODE && htmlBody.toLowerCase().contains(BETH_CODE)) {
             b = true;
             createAttachment(email, deal);
-            postToChatter(deal, deal.Id);
+            postToChatter(deal, deal.Id, false);
           }
 
           List<String> emailAddressesList = new List<String>();
@@ -525,8 +529,13 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
             (null != MATT_CODE && htmlBody.toLowerCase().contains(MATT_CODE))
           ) {
             b = true;
+            Boolean isGLC = false;
+            if(htmlBody.toLowerCase().contains(BRAD_CODE + ' GLC')) {
+              updateDealForGlc(deal.Id);
+              isGLC = true;
+            }
             createAttachment(email, deal);
-            postToChatter(deal, deal.Id);
+            postToChatter(deal, deal.Id, isGLC);
           }
 
           List<String> emailAddressesList = new List<String>();
@@ -947,9 +956,6 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
             o.Approved_Term_Sheet__c = i;
             o.Approved_Term_Sheet_Name__c = cv.PathOnClient;
             o.Term_Sheet_Approval_Date__c = System.now();
-            if (o.StageName == 'Initial Review' || o.StageName == 'Data Tape Receieved') {
-              o.StageName = 'Term Sheet Issued';
-            }
             dealDoc.Executive_Approval_Date__c = system.now();
             update dealDoc;
             update o;
@@ -1173,5 +1179,16 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
     email.setSubject('Deal Approval Handler Error');
 
     Messaging.sendEmail(new List<Messaging.SIngleEmailMessage>{ email });
+  }
+
+  @future
+  public static void updateDealForGlc(String dealId) {
+    Opportunity deal = new Opportunity(
+      Id = dealId,
+      GLC_Required__c = true,
+      Approval_Email_Status__c = 'Submitted to GLC'
+    );
+
+    update deal;
   }
 }
