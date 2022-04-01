@@ -3,7 +3,9 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
   // static final String handlerAddressSB = 'dealapprovalhandler@y-1743xjz0wr71vsi0mlpa94d43nex0gxmqgq50qhxn2rb8ccjpn.3i-oe9uam.cs123.apex.sandbox.salesforce.com'; // Handler Email for FULL
 
   //static final String handlerAddress = 'dealapprovalhandler@pyo7p2pzqqm356qd6r207z35fsfvn6429vh6lwamowp6ctfb5.j-l4sceas.na54.apex.salesforce.com'; // Handler Email for Production
-  static final String handlerAddress = 'dealapprovalhandler@z-21v3s1rxdsiq86g66t7hglls19pn9knj4z9ipe9qmtde06twmy.z-9t6ahmas.cs11.apex.sandbox.salesforce.com';
+  // static final String handlerAddress = 'dealapprovalhandler@z-21v3s1rxdsiq86g66t7hglls19pn9knj4z9ipe9qmtde06twmy.z-9t6ahmas.cs11.apex.sandbox.salesforce.com';
+  
+  static final String handlerAddress = retrieveEmailServiceAddress();
   static final Email_Addresses__c RYAN_SETTINGS = queryEmailAddress(
     'Ryan McBride'
   );
@@ -51,6 +53,27 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
   public static boolean performTestCoverageForBETH = false;
   public static boolean performTestCoverageForRYAN = false;
   public static boolean performTestCoverageForCHRIS = false;
+
+  public static String retrieveEmailServiceAddress() {
+    EmailServicesFunction emailFunction = [
+      SELECT Id
+      FROM EmailServicesFunction
+      WHERE FunctionName = 'dealApprovalHandler'
+    ];
+
+    EmailServicesAddress emailServicesAddress = [
+      SELECT Id, LocalPart, EmailDomainName
+      FROM EmailServicesAddress
+      WHERE FunctionId = :emailFunction.Id
+    ];
+
+    return (emailServicesAddress.LocalPart +
+    '@' +
+    emailServicesAddress.EmailDomainName);
+
+  }
+
+
 
   public static Email_Addresses__c queryEmailAddress(String name) {
     Email_Addresses__c setting = Email_Addresses__c.getInstance(name);
@@ -530,7 +553,7 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
           ) {
             b = true;
             Boolean isGLC = false;
-            if(htmlBody.toLowerCase().contains(BRAD_CODE + ' GLC')) {
+            if(htmlBody.toLowerCase().contains(BRAD_CODE + ' glc')) {
               updateDealForGlc(deal.Id);
               isGLC = true;
             }

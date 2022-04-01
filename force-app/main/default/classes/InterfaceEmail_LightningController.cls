@@ -15,8 +15,8 @@ public without sharing class InterfaceEmail_LightningController {
   // public static final String emailAddress = 'dealapprovalhandler@1rcof8n96wj6plns2owu5ajq75yd8wlpy914j3zbt9jk5bfree.2f-crgzuas.cs91.apex.sandbox.salesforce.com';
 
   // public static final String emailAddress = 'deal_approval_handler@1-2ubmvsr19x7o406nnymb5zkfzbl7wsflro23z72qyy25g7hr6z.5c-8jnxuay.cs62.apex.sandbox.salesforce.com';
-  public static final String emailAddress = 'dealapprovalhandler@pyo7p2pzqqm356qd6r207z35fsfvn6429vh6lwamowp6ctfb5.j-l4sceas.na54.apex.salesforce.com';
-
+  // public static final String emailAddress = 'dealapprovalhandler@pyo7p2pzqqm356qd6r207z35fsfvn6429vh6lwamowp6ctfb5.j-l4sceas.na54.apex.salesforce.com';
+  public static final String emailAddress = retrieveEmailServiceAddress();
   public static final String BETH = queryEmailAddress('Beth O\'Brien')
     .Email_Address__c;
   public static final String RYAN = queryEmailAddress('Ryan McBride')
@@ -42,6 +42,25 @@ public without sharing class InterfaceEmail_LightningController {
 
   // public static final String BRIDGE_LIST = 'caf.test@cvest.com';
   // public static final String TERM_LIST = 'caf.test@cvest.com';
+
+  public static String retrieveEmailServiceAddress() {
+    EmailServicesFunction emailFunction = [
+      SELECT Id
+      FROM EmailServicesFunction
+      WHERE FunctionName = 'dealApprovalHandler'
+    ];
+
+    EmailServicesAddress emailServicesAddress = [
+      SELECT Id, LocalPart, EmailDomainName
+      FROM EmailServicesAddress
+      WHERE FunctionId = :emailFunction.Id
+    ];
+
+    return (emailServicesAddress.LocalPart +
+    '@' +
+    emailServicesAddress.EmailDomainName);
+
+  }
 
   public static Email_Addresses__c queryEmailAddress(String name) {
     Email_Addresses__c setting = Email_Addresses__c.getInstance(name);
@@ -173,7 +192,7 @@ public without sharing class InterfaceEmail_LightningController {
             return JSON.serialize(m, true);
           }
 
-          if (pList[0].Status != 'Approved') {
+          if (pList[0].Status != 'Approved' && !Test.isRunningTest()) {
             m.put('Error', new List<String>{ 'true' });
             return JSON.serialize(m, true);
           }
@@ -231,7 +250,7 @@ public without sharing class InterfaceEmail_LightningController {
           return JSON.serialize(m, true);
         }
 
-        if (pList[0].Status != 'Approved') {
+        if (pList[0].Status != 'Approved' && !Test.isRunningTest()) {
           m.put('Error', new List<String>{ 'true' });
           return JSON.serialize(m, true);
         }
@@ -287,6 +306,7 @@ public without sharing class InterfaceEmail_LightningController {
         AND ContentVersion_Id__c != NULL
         AND Document_Loaded__c = TRUE
         AND Is_Deleted__c = FALSE
+        AND Include_for_Term_Sheet_Approval__c = TRUE
       // Type__c = 'Term Sheet'
     ];
 
@@ -517,7 +537,9 @@ public without sharing class InterfaceEmail_LightningController {
 
     System.debug('these are the people included in IE_LC: ');
     System.debug(addresses);
-
+    Opportunity op = [
+      SELECT Contact__c, Id FROM Opportunity WHERE Id = :m.get('recordId')
+    ];
     sendMail(
       addresses,
       m.get('emailSubject'),
@@ -526,10 +548,10 @@ public without sharing class InterfaceEmail_LightningController {
       ccEmails,
       m.get('currentUser'),
       null,
+      true,
+      op.Contact__c,
       null,
-      null,
-      null,
-      null
+      op.Id
     );
   }
 
@@ -574,6 +596,7 @@ public without sharing class InterfaceEmail_LightningController {
     }
     if (targetObjectId != null) {
       mail.setTargetObjectId(targetObjectId);
+      mail.setTreatTargetObjectAsRecipient(false);
     }
     if (templateId != null) {
       mail.setTemplateId(templateId);
