@@ -25,14 +25,8 @@ public without sharing class OpportunityMethods {
         SELECT
           Id,
           (
-            SELECT AccountId, UserId
+            SELECT AccountId, UserId,TeamMemberRole
             FROM AccountTeamMembers
-            WHERE
-              UserId IN (
-                SELECT Loss_Mitigation_Associate__c
-                FROM Opportunity
-                WHERE Id IN :dealMap.keySet()
-              )
           )
         FROM Account
         WHERE
@@ -45,7 +39,7 @@ public without sharing class OpportunityMethods {
     );
 
     List<AccountTeamMember> updatedAccTeamMembers = new List<AccountTeamMember>();
-
+    List<AccountTeamMember> forDeletion = new List<AccountTeamMember>();
     for (Opportunity o : dealMap.values()) {
       Account acctRecord = acctMap.get(o.AccountId);
       if (
@@ -62,15 +56,29 @@ public without sharing class OpportunityMethods {
       } else {
         AccountTeamMember newAtm = new AccountTeamMember();
         Boolean shouldUpdate = false;
+        Boolean userFound = false;
         for (AccountTeamMember atm : acctRecord.AccountTeamMembers) {
-          if (atm.TeamMemberRole == LOSS_MITIGATION_ROLE) {
-            shouldUpdate = false;
-            break;
-          } else {
+           if(atm.userId == o.Loss_Mitigation_Associate__c) {
+               userFound = true;
+           }
+           if (atm.UserId == o.Loss_Mitigation_Associate__c && atm.TeamMemberRole != LOSS_MITIGATION_ROLE) {
             shouldUpdate = true;
             newAtm.Id = atm.Id;
             newAtm.TeamMemberRole = LOSS_MITIGATION_ROLE;
+          } else if (atm.TeamMemberRole == LOSS_MITIGATION_ROLE && atm.UserId != o.Loss_Mitigation_Associate__c) {
+            shouldUpdate = true;
+            newAtm.UserId = o.Loss_Mitigation_Associate__c;
+            newAtm.AccountId = o.AccountId;
+            newAtm.TeamMemberRole = LOSS_MITIGATION_ROLE;
+            forDeletion.add(atm);
           }
+        }
+
+        if(!userFound){
+            shouldUpdate = true;
+            newAtm.UserId = o.Loss_Mitigation_Associate__c;
+            newAtm.AccountId = o.AccountId;
+            newAtm.TeamMemberRole = LOSS_MITIGATION_ROLE;
         }
 
         if (shouldUpdate) {
@@ -81,6 +89,10 @@ public without sharing class OpportunityMethods {
 
     if (updatedAccTeamMembers.size() > 0) {
       upsert updatedAccTeamMembers;
+    }
+
+    if(forDeletion.size() > 0) {
+      delete forDeletion;
     }
   }
 }
