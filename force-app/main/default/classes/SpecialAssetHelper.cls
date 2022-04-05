@@ -75,6 +75,7 @@ public without sharing class SpecialAssetHelper {
       for (Special_Asset__c sa : newMap.values()) {
         if (
           sa.Resolved_Date__c != null &&
+          propertyMap.containsKey(sa.Property__c) &&
           propertyMap.get(sa.Property__c).Special_Assets__r != null
         ) {
           Integer saCount = propertyMap.get(sa.Property__c)
