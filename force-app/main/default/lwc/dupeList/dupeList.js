@@ -1,13 +1,44 @@
-import { LightningElement, api } from "lwc";
+import { LightningElement, api, wire } from "lwc";
 import queryDupes from "@salesforce/apex/DuplicateCheckJobHelper.getDupeListFromDeal";
+import RECORDTYPEID from "@salesforce/schema/Opportunity.RecordTypeId";
 import query from "@salesforce/apex/lightning_Util.query";
+import { getRecord } from "lightning/uiRecordApi";
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+
+
+const _FIELDS = [RECORDTYPEID];
 
 export default class DupeList extends LightningElement {
-  @api recordId = "0065b00000pezH2AAI";
+  // @api recordId = "0065b00000pezH2AAI";
+  @api recordId;
   dupeList = [];
+  recordTypeId;
+
+  @wire(getRecord, { recordId: "$recordId", fields: _FIELDS })
+  wiredRecord({ error, data }) {
+    if (data) {
+      this.recordTypeId = data.fields.RecordTypeId.value;
+      this.queryDupes();
+
+    } else if (error) {
+      let errMessage = 'An unexpected error has occured.';
+      if (Array.isArray(error.body)) {
+        errMessage = error.body.map(e => e.message).join(', ');
+      } else if (typeof error.body.message === 'string') {
+        errMessage = error.body.message;
+      }
+      const toastEvent = new ShowToastEvent({
+        title: 'Error Loading Duplicates',
+        message: errMessage,
+        variant: 'error'
+      });
+      this.dispatchEvent(toastEvent);
+
+    }
+  }
+
   connectedCallback() {
     // if (!this.isChild) {
-    this.queryDupes();
     // }
   }
 
@@ -19,6 +50,8 @@ export default class DupeList extends LightningElement {
   queryProperties() {}
 
   async queryDupes() {
+    console.log('Record Type Id', this.recordTypeId);
+
     const dupes = await queryDupes({ dealId: this.recordId });
     console.log("---dupes--");
     console.log(dupes);
