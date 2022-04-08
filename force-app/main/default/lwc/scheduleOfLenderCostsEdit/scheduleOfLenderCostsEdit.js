@@ -15,6 +15,7 @@ export default class ScheduleOfLenderCostsEdit extends LightningElement {
   @api recordId;
   loanFees;
   loanVersion;
+  showDiscountFee = false;
 
   connectedCallback() {
     console.log(this.recordId);
@@ -54,7 +55,9 @@ export default class ScheduleOfLenderCostsEdit extends LightningElement {
       "Holdback_Reserve_Override__c",
       "Interest_Rate_Type__c",
       "Term__c",
-      "Legal_Fee__c"
+      "Legal_Fee__c",
+      "Discount_Fee__c",
+      "Discount_Fee_Number__c"
     ];
     let queryString = `SELECT Id, ${fields.join(",")}`;
     queryString += ` FROM Loan_Version__c WHERE Id = '${versionId}'`;
@@ -68,6 +71,9 @@ export default class ScheduleOfLenderCostsEdit extends LightningElement {
       loanFees.forEach((loanFee) => {
         loanFee.original = Object.assign({}, loanFee);
       });
+      if(loanVersion.Discount_Fee__c) {
+        this.showDiscountFee = true;
+      }
 
       this.loanFees = loanFees;
       console.log(loanVersion);

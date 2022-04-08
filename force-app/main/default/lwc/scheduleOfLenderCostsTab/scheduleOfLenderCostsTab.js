@@ -1,10 +1,11 @@
-import { LightningElement, api, track } from "lwc";
+import { LightningElement, api, track, wire } from "lwc";
 
 import query from "@salesforce/apex/lightning_Util.query";
 import upsert from "@salesforce/apex/lightning_Util.upsertRecords";
 import compileEmailTemplate from "@salesforce/apex/lightning_Util.compileEmailTemplate";
 import getUser from "@salesforce/apex/lightning_Util.getUser";
 import compileFieldPermissions from "@salesforce/apex/lightning_Util.compileFieldPermissions";
+import { getRecord } from 'lightning/uiRecordApi';
 
 export default class ScheduleOfLenderCostsTab extends LightningElement {
   @api recordId;
@@ -42,7 +43,16 @@ export default class ScheduleOfLenderCostsTab extends LightningElement {
   };
 
   // dealQueried = "";
-
+  // added a wire to make the tab aut-refresh when these two fields are changed
+  @wire(getRecord, { recordId: "$recordId", fields: ["Opportunity.IO_Term__c", "Opportunity.Amortization_Term__c", "Opportunity.Discount_Fee__c", "Opportunity.Final_Loan_Amount__c"] })
+  wiredDeal({ error, data }) {
+    if (data) {
+      this.connectedCallback();
+    }
+    else if (error) {
+      console.error(error.body.message);
+    }
+  }
   connectedCallback() {
     console.log("tab init");
     //this.queryOpportunity();
@@ -51,6 +61,10 @@ export default class ScheduleOfLenderCostsTab extends LightningElement {
     //this.deal = deal;
     this.queryUser();
     this.compileFieldPermissions();
+  }
+
+  refreshNew() {
+    this.connectedCallback();
   }
 
   queryRecordTypeId() {
@@ -97,7 +111,10 @@ export default class ScheduleOfLenderCostsTab extends LightningElement {
       "RecordType__c",
       "LOC_Commitment__c",
       "Current_Loan_Amount__c",
-      "Term_Loan_Type__c"
+      "Term_Loan_Type__c",
+      "Amortization_Term__c",
+      "Discount_Fee_Formula__c",
+      "Discount_Fee__c"
       //   "(SELECT Id', Name, Loan_Agreement_Name__c,  Finalized__c FROM Loan_Versions__r Order By CreatedDate ASC)",
     ];
 

@@ -99,9 +99,10 @@
         name="rateTypes"
         label="Rate Type"
         options={interestRateTypes}
-        value={deal.Interest_Rate_Type__c}
-        onchange={updateValue}
+        value={rateType}
         data-field="Interest_Rate_Type__c"
+        field-level-help="This is determined by the Amortization Term and IO Term selections made on the Details tab.  Corrections need to be made on the Details tab"
+        disabled
       ></lightning-combobox>
     </lightning-layout-item>
     <lightning-layout-item padding="around-medium" size="6"
@@ -213,16 +214,16 @@
       ></lightning-input>
     </lightning-layout-item>
     <lightning-layout-item padding="around-medium" size="6"
-    ><lightning-input
-      label="Legal Fee"
-      value={deal.Legal_Fee__c}
-      onchange={updateValue}
-      data-field="Legal_Fee__c"
-      type="number"
-      formatter="currency"
-      step="0.01"
-    ></lightning-input>
-  </lightning-layout-item>
+      ><lightning-input
+        label="Legal Fee"
+        value={deal.Legal_Fee__c}
+        onchange={updateValue}
+        data-field="Legal_Fee__c"
+        type="number"
+        formatter="currency"
+        step="0.01"
+      ></lightning-input>
+    </lightning-layout-item>
 
     <lightning-layout-item padding="around-medium" size="6"
       ><lightning-input
@@ -235,6 +236,16 @@
       ></lightning-input>
     </lightning-layout-item>
     <lightning-layout-item padding="around-medium" size="6">
+      <template if:true={deal.Discount_Fee__c}>
+        <lightning-input
+          label="Discount Fee"
+          value={deal.Discount_Fee_Formula__c}
+          type="number"
+          formatter="currency"
+          step="0.01"
+          read-only
+        ></lightning-input>
+      </template>
     </lightning-layout-item>
 
     <lightning-layout-item size="12">

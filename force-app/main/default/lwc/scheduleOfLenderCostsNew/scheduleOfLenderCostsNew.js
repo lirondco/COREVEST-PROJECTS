@@ -93,7 +93,7 @@ export default class ScheduleOfLenderCostsNew extends LightningElement {
       Net_Proceeds_to_Borrower__c: this.netProceedsBorrowerCalc(),
       Total_Uses__c: this.totalUsesCalc(),
       Holdback_Reserve_Override__c: this.deal.Holdback_Reserve_Override__c,
-      Interest_Rate_Type__c: this.deal.Interest_Rate_Type__c,
+      Interest_Rate_Type__c: this.rateType,
       Total_Annual_Tax__c: this.deal.Total_Annual_Tax__c,
       Reserve_Tax__c: this.deal.Reserve_Tax__c,
       Total_Annual_Insurance__c: this.deal.Total_Annual_Insurance__c,
@@ -137,11 +137,28 @@ export default class ScheduleOfLenderCostsNew extends LightningElement {
   get interestRateTypes() {
     const options = [
       { label: "", value: "" },
-      { label: "Fixed", value: "Fixed" },
+      { label: "Amortized", value: "Amortized" },
+      { label: "Partial I/O", value: "Partial I/O" },
       { label: "Interest Only", value: "Interest Only" }
     ];
 
     return options;
+  }
+
+  get rateType() {
+    const amTerm = this.deal.Amortization_Term__c && this.deal.Amortization_Term__c.toLowerCase();
+    const ioTerm = this.deal.IO_Term__c && this.deal.IO_Term__c.toLowerCase();
+    const baseCriteriaVal = "0 months";
+    
+    return (
+      amTerm == baseCriteriaVal && ioTerm != baseCriteriaVal
+      ? "Interest Only"
+      : amTerm != baseCriteriaVal && ioTerm == baseCriteriaVal
+      ? "Amortized"
+      : amTerm != baseCriteriaVal && ioTerm != baseCriteriaVal
+      ? "Partial I/O"
+      : ""
+    )
   }
 
   // get holdbackReserve() {
@@ -182,7 +199,7 @@ export default class ScheduleOfLenderCostsNew extends LightningElement {
     //console.log("indicative_rate");
     //console.log(Indicative_Rate);
 
-    if (this.deal.Interest_Rate_Type__c == "Fixed") {
+    if (this.rateType == "Amortized") {
       if (PV && Indicative_Rate) {
         // //PMT= (PV*Rate*(1+Rate)^nper)/[(1+Rate)^nper - 1]
         var rate = parseFloat(((Indicative_Rate / 12 / 100) * 365) / 360);
@@ -192,7 +209,7 @@ export default class ScheduleOfLenderCostsNew extends LightningElement {
 
         val = pmt;
       }
-    } else if (this.deal.Interest_Rate_Type__c == "Interest Only") {
+    } else if (this.rateType == "Interest Only" || this.rateType == "Partial I/O") {
       // if (PV && Indicative_Rate && this.deal.IO_Term__c) {
       //   //IPMT = pmt + (1+rate)^(nper-1)*(pv *rate - pmt)
       //   var rate = parseFloat((Indicative_Rate * 365) / (12 * 360 * 100));
@@ -724,6 +741,13 @@ export default class ScheduleOfLenderCostsNew extends LightningElement {
       }
     });
 
+    let discountFee = '', discountFeeNumber = 0;
+
+    if(deal.Discount_Fee__c) {
+      discountFee = deal.Discount_Fee__c;
+      discountFeeNumber = deal.Discount_Fee_Formula__c;
+    }
+
     let loanVersion = {
       Final_Loan_Amount__c: deal.Current_Loan_Amount__c,
       Deposit_Amount__c: deal.Deposit_Amount__c,
@@ -774,7 +798,9 @@ export default class ScheduleOfLenderCostsNew extends LightningElement {
       Holdback_Reserve_Override__c: deal.Holdback_Reserve_Override__c,
       Holdback_Reserve_Month_Multiplier__c:
         deal.Holdback_Reserve_Month_Multiplier__c,
-      Term__c: deal.Term_Loan_Type__c
+      Term__c: deal.Term_Loan_Type__c,
+      Discount_Fee__c: discountFee,
+      Discount_Fee_Number__c: discountFeeNumber,
     };
 
     // console.log(loanVersion);

@@ -478,11 +478,11 @@
           >
             <div style="display:{!IF(includeBrokerFee = false,'block','none')}">
               <apex:outputText value="{0, number, ##.00}">
-                <apex:param value="{!Opportunity.CAF_Upfront_Fee__c}" /></apex:outputText>% of the loan amount, due at closing
+                <apex:param value="{!Opportunity.CAF_Upfront_Fee__c}" /></apex:outputText>% of the Loan Amount, due at Closing
             </div>
             <div style="display:{!IF(includeBrokerFee = true,'inline','none')}">
               <apex:outputText value="{0, number, ##.00}">
-                <apex:param value="{!Opportunity.CAF_Upfront_Fee__c}" /></apex:outputText>% of the loan amount paid to CoreVest and
+                <apex:param value="{!Opportunity.CAF_Upfront_Fee__c}" /></apex:outputText>% of the Loan Amount paid to CoreVest and
               <apex:outputText value="{0, number, 0.00}%">
                 <apex:param value="{! Opportunity.Broker_Fees__c}"
               /></apex:outputText>
@@ -495,18 +495,28 @@
             <div style="display:{!IF(includeBrokerFee = false,'block','none')}">
               The greater of $7,500 or
               <apex:outputText value="{0, number, ##.00}">
-                <apex:param value="{!Opportunity.CAF_Upfront_Fee__c}" /></apex:outputText>% of the loan amount, due at closing
+                <apex:param value="{!Opportunity.CAF_Upfront_Fee__c}" /></apex:outputText>% of the Loan Amount, due at Closing
             </div>
             <div style="display:{!IF(includeBrokerFee = true,'block','none')}">
               The greater of $7,500 or
               <apex:outputText value="{0, number, ##.00}">
-                <apex:param value="{!Opportunity.CAF_Upfront_Fee__c}" /></apex:outputText>% of the loan amount paid to CoreVest and
+                <apex:param value="{!Opportunity.CAF_Upfront_Fee__c}" /></apex:outputText>% of the Loan Amount paid to CoreVest and
               <apex:outputText value="{0, number, 0.00}%">
                 <apex:param value="{! Opportunity.Broker_Fees__c}"
               /></apex:outputText>
               paid to the broker
             </div>
           </div>
+        </td>
+      </tr>
+      <tr style="{!IF(Opportunity.Discount_Fee__c == null, 'display: none;', 'page-break-inside: avoid;')}">
+        <td class="row-title">
+          Discount Points:
+        </td>
+        <td class="row-description">
+          <apex:outputText value="{0} of the Loan Amount, due at Closing">
+            <apex:param value="{!IF(Opportunity.Discount_Fee__c == '1 pt rate buy down / -25 BPS', '1%', '2%')}" />
+          </apex:outputText>
         </td>
       </tr>
       <tr style="page-break-inside: avoid">
@@ -1132,7 +1142,7 @@
         </p>
         <p>
           Acknowledged and agreed as of
-          <span class="signing-section">_________\d1\________</span> by:
+          <span class="signing-section">_______________________\d1\_______________________</span> by:
         </p>
         <p>SPONSOR</p>
         <p>
