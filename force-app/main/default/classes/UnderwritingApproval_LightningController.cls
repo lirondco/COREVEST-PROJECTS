@@ -273,6 +273,14 @@ public class UnderwritingApproval_LightningController {
 
     //}
 
+//CIP-2191-RS.4/4/22.Begin.
+	if (universalSetting.Request_Beekin_Rental_Data_Validation__c && PricingReviewRequest_LightningController.beekingRentalInfoCheck(recordId))
+    {
+		errorMsgs.add(
+          'Please reterieve rental estimates from Beekin on all the properties before moveing the deal to Underwriting.'
+        );    
+    }
+////CIP-2191-RS.4/4/22.End.        
     response.put('errorMsg', errorMsgs);
 
     return JSON.serialize(response);
@@ -330,7 +338,7 @@ public class UnderwritingApproval_LightningController {
       processName = 'Submit_Term_Deal_to_UW_Approval';
     } else if (
       o.RecordType.DeveloperName == 'LOC_Loan' ||
-      o.RecordType.DeveloperName.contains('Bridge')
+      o.RecordType.DeveloperName.containsIgnoreCase('bridge')
     ) {
       processName = 'Submit_Bridge_Deal_to_UW_Approval';
     }
