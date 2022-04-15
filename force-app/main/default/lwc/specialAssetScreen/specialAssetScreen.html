@@ -37,6 +37,11 @@
           </div> -->
           <div class="slds-col slds-size_1-of-2">
             <lightning-input-field
+              field-name="Special_Asset_Manager__c"
+            ></lightning-input-field>
+          </div>
+          <div class="slds-col slds-size_1-of-2">
+            <lightning-input-field
               field-name="Severity_Level__c"
             ></lightning-input-field>
           </div>
@@ -75,6 +80,17 @@
               field-name="Referred_for_FC_Date__c"
             ></lightning-input-field>
           </div>
+          <div class="slds-col slds-size_1-of-2">
+            <lightning-input-field
+              field-name="REO_Date__c"
+            ></lightning-input-field>
+          </div>
+          <div class="slds-col slds-size_1-of-2">
+            <lightning-input-field
+              field-name="REO_Sell_Date__c"
+            ></lightning-input-field>
+          </div>
+          <div class="slds-col slds-size_1-of-2"></div>
           <div class="slds-col slds-size_1-of-3">
             <lightning-input-field
               field-name="Net_Proceeds__c"
@@ -95,12 +111,8 @@
               field-name="Net_Loss_Severity_Recovery__c"
             ></lightning-output-field>
           </div>
-          <div class="slds-col slds-size_1-of-3">
-            
-          </div>
-          <div class="slds-col slds-size_1-of-3">
-
-          </div>
+          <div class="slds-col slds-size_1-of-3"></div>
+          <div class="slds-col slds-size_1-of-3"></div>
           <div class="slds-col slds-size_1-of-1">
             <lightning-input-field
               field-name="Status_Comment__c"
@@ -119,7 +131,11 @@
           </div>
           <div class="slds-col slds-size_5-of-12"></div>
           <div class="slds-col slds-size_2-of-12">
-            <lightning-button class="slds-m-top_small" label="Cancel" onclick={handleReset}></lightning-button>
+            <lightning-button
+              class="slds-m-top_small"
+              label="Cancel"
+              onclick={handleReset}
+            ></lightning-button>
             <lightning-button
               class="slds-m-top_small"
               type="submit"
