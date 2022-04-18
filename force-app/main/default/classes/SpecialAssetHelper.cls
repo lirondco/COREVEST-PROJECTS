@@ -1,6 +1,7 @@
 public without sharing class SpecialAssetHelper {
   public static final String SNAPSHOT_ENTITY = 'Special Asset Resolved';
   public static Boolean nameIsUpdated = false;
+  
   public static void afterInsert(Map<Id, Special_Asset__c> newMap) {
     Map<String, Map<Id, Special_Asset__c>> forSnapshotMap = new Map<String, Map<Id, Special_Asset__c>>();
 
@@ -21,6 +22,19 @@ public without sharing class SpecialAssetHelper {
 
     if (forSnapshotMap.size() > 0) {
       PropertySnapshotHelper.createPropertySnapshot(forSnapshotMap);
+    }
+  }
+
+  public static void beforeUpdate(
+    Map<Id,Special_Asset__c> oldMap,
+    Map<Id,Special_Asset__c> newMap
+  ) {
+    for(Special_Asset__c sa : newMap.values()) {
+      Special_Asset__c oldSa = oldMap.get(sa.id);
+      if((sa.REO_Date__c != null && oldSa.REO_date__c == null ) 
+      || (sa.REO_Sell_Date__c != null && oldSa.REO_Sell_Date__c == null)){
+        sa.Resolved_Date__c = sa.REO_Date__c != null ? sa.REO_Date__c : sa.REO_Sell_Date__c;
+      }
     }
   }
 
