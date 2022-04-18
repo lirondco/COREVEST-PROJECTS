@@ -1,335 +1,405 @@
-<aura:component implements="force:hasRecordId,force:lightningQuickActionWithoutHeader,force:hasSObjectName">
-    <aura:attribute name="recordId" type="String" />
-    <aura:attribute name="sObjectName" type="String" />
-    <aura:attribute name="propertyIds" type="String" />
-    <aura:attribute name="filterFields" type="Map" />
-    <aura:attribute name="displayBridgeIcMemoCmp" type="Boolean" default="false"/>   
-    
-    <aura:handler name="init" value="{!this}" action="{!c.init}" />
-    
-    <aura:attribute
-                    name="staticResourceName"
-                    type="String"
-                    default="AdvanceDocuments"
-                    />
-    <aura:attribute name="record" type="Map" />
-    
-    <aura:attribute name="documentType" type="String" />
-    
-    <aura:html tag="style">
-        .cuf-content { padding: 0 0rem !important; } .slds-p-around--medium {
-        padding: 0rem !important; } .slds-modal__content{ height:unset !important;
-        max-height:unset !important; } .slds-modal__container{ width: 70%
-        !important; max-width: 90% !important; }
-        .slds-button.slds-modal__close.closeIcon.slds-button_icon-bare.slds-button_icon-inverse{
-        display: none; }
-    </aura:html>
-    <aura:if isTrue="{! not(v.displayBridgeIcMemoCmp)}">
-    
+<aura:component
+  implements="force:hasRecordId,force:lightningQuickActionWithoutHeader,force:hasSObjectName"
+>
+  <aura:attribute name="recordId" type="String" />
+  <aura:attribute name="sObjectName" type="String" />
+  <aura:attribute name="dealId" type="String" />
+  <aura:attribute name="propertyIds" type="String" />
+  <aura:attribute name="filterFields" type="Map" />
+  <aura:attribute name="assignmentSetStateOptions" type="Object[]" />
+  <aura:attribute name="showAssignmentSets" type="Boolean" default="false" />
+  <aura:attribute
+    name="displayBridgeIcMemoCmp"
+    type="Boolean"
+    default="false"
+  />
+
+  <aura:handler name="init" value="{!this}" action="{!c.init}" />
+
+  <aura:attribute
+    name="staticResourceName"
+    type="String"
+    default="AdvanceDocuments"
+  />
+  <aura:attribute name="record" type="Map" />
+
+  <aura:attribute name="documentType" type="String" />
+
+  <aura:html tag="style">
+    .cuf-content { padding: 0 0rem !important; } .slds-p-around--medium {
+    padding: 0rem !important; } .slds-modal__content{ height:unset !important;
+    max-height:unset !important; } .slds-modal__container{ width: 70%
+    !important; max-width: 90% !important; }
+    .slds-button.slds-modal__close.closeIcon.slds-button_icon-bare.slds-button_icon-inverse{
+    display: none; }
+  </aura:html>
+  <aura:if isTrue="{! not(v.displayBridgeIcMemoCmp)}">
     <section
-             role="dialog"
-             tabindex="-1"
-             aria-labelledby="modal-heading-01"
-             aria-modal="true"
-             aria-describedby="modal-content-id-1"
-             class="slds-modal slds-fade-in-open"
-             >
-        <div class="slds-modal__container">
-            <header class="slds-modal__header">
-                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
-                    Loan Documents
-                </h2>
-            </header>
-            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
-                <lightning:select label="Select Document" aura:id="documentType" value="{!v.documentType}">
-                    <option value=""></option>
-                    <aura:if isTrue="{!v.sObjectName == 'Advance__c'}">
-                        <option value="{!'/apex/AdvancePrint?Id=' + v.recordId}">
-                            Print
-                        </option>
-                    </aura:if>
-                    <aura:if isTrue="{!v.sObjectName == 'Advance__c'}">
-                        <option value="Funding Memo">
-                            Funding Memo
-                        </option>
-                    </aura:if>
-                    <aura:if isTrue="{!and(v.filterFields.RecordType == 'Single_Asset_Bridge_Loan',  v.filterFields.ProductType == 'Single Asset (1-4 Unit)',or(v.filterFields.ProductSubType == 'Renovation',v.filterFields.ProductSubType == 'No Renovation'))}">
-                        <option value="{!'/apex/SABDealMemo?Id=' + v.recordId}">
-                            Deal Memo
-                        </option>
-                    </aura:if>
-                 <!--   <aura:if isTrue="{!and(v.filterFields.RecordType == 'Single_Asset_Bridge_Loan',  v.filterFields.ProductType == 'Single Asset (1-4 Unit)',or(v.filterFields.ProductSubType == 'Renovation',v.filterFields.ProductSubType == 'No Renovation'))}">
+      role="dialog"
+      tabindex="-1"
+      aria-labelledby="modal-heading-01"
+      aria-modal="true"
+      aria-describedby="modal-content-id-1"
+      class="slds-modal slds-fade-in-open"
+    >
+      <div class="slds-modal__container">
+        <header class="slds-modal__header">
+          <h2
+            id="modal-heading-01"
+            class="slds-text-heading_medium slds-hyphenate"
+          >
+            Loan Documents
+          </h2>
+        </header>
+        <div
+          class="slds-modal__content slds-p-around_medium"
+          id="modal-content-id-1"
+        >
+          <lightning:select
+            label="Select Document"
+            aura:id="documentType"
+            value="{!v.documentType}"
+          >
+            <option value=""></option>
+            <aura:if isTrue="{!v.sObjectName == 'Advance__c'}">
+              <option value="{!'/apex/AdvancePrint?Id=' + v.recordId}">
+                Print
+              </option>
+            </aura:if>
+            <aura:if isTrue="{!v.sObjectName == 'Advance__c'}">
+              <option value="Funding Memo">Funding Memo</option>
+            </aura:if>
+            <aura:if
+              isTrue="{!and(v.filterFields.RecordType == 'Single_Asset_Bridge_Loan',  v.filterFields.ProductType == 'Single Asset (1-4 Unit)',or(v.filterFields.ProductSubType == 'Renovation',v.filterFields.ProductSubType == 'No Renovation'))}"
+            >
+              <option value="{!'/apex/SABDealMemo?Id=' + v.dealId}">
+                Deal Memo
+              </option>
+              <!--   <aura:if isTrue="{!and(v.filterFields.RecordType == 'Single_Asset_Bridge_Loan',  v.filterFields.ProductType == 'Single Asset (1-4 Unit)',or(v.filterFields.ProductSubType == 'Renovation',v.filterFields.ProductSubType == 'No Renovation'))}">
                         <option value="{!'/apex/SABICMemo?Id=' + v.recordId}">
                             Funding Memo
                         </option> 
                     </aura:if> -->
-                    <!-- To display the documents in the Generate Document Tab
+              <!-- To display the documents in the Generate Document Tab
       Added a 'OR' condition to sort the documents for SAB (Renovation and No Renovation) - Trivikram-->
-                    <aura:if isTrue="{!and(v.filterFields.RecordType == 'Single_Asset_Bridge_Loan',  v.filterFields.ProductType == 'Single Asset (1-4 Unit)',or(v.filterFields.ProductSubType == 'Renovation',v.filterFields.ProductSubType == 'No Renovation'))}">
-                        <option value="docx-Guaranty_SAB_basic.docx">
-                            Guaranty SAB
-                        </option>
-                    </aura:if>
-                    <aura:if isTrue="{!and(v.filterFields.RecordType == 'Single_Asset_Bridge_Loan',  v.filterFields.ProductType == 'Single Asset (1-4 Unit)',or(v.filterFields.ProductSubType == 'Renovation',v.filterFields.ProductSubType == 'No Renovation'))}">
-                        <option value="docx-Environmental_Indemnity_SAB_basic.docx">
-                            Environmental Indemnity
-                        </option>
-                    </aura:if>
-                    <aura:if isTrue="{!and(v.filterFields.RecordType == 'Single_Asset_Bridge_Loan',  v.filterFields.ProductType == 'Single Asset (1-4 Unit)',or(v.filterFields.ProductSubType == 'Renovation',v.filterFields.ProductSubType == 'No Renovation'))}">
-                        <option value="docx-Promissory_Note_SAB_basic.docx">
-                            Secured Promissory Note
-                        </option>
-                    </aura:if>
-                        <aura:if isTrue="{!and(v.filterFields.RecordType == 'Single_Asset_Bridge_Loan',  v.filterFields.ProductType == 'Single Asset (1-4 Unit)',or(v.filterFields.ProductSubType == 'Renovation',v.filterFields.ProductSubType == 'No Renovation'))}">
-                        <option value="docx-Architects_Consent_and_Agreement_SAB_Construction.docx">
-                            Architect's Consent and Agreement - SAB (Construction)
-                        </option>
-                    
-                        <option value="docx-Completion_Guaranty_SAB_Construction.docx">
-                            Completion Guaranty - SAB (Construction)
-                        </option>
-                        <option value="docx-Contractor_Consent_and_Agreement_SAB_Construction.docx">
-                            Contractor Consent and Agreement - SAB (Construction)
-                        </option>
-                        <option value="docx-Engineers_Consent_and_Agreement_SAB_Construction.docx">
-                            Engineer's Consent and Agreement - SAB (Construction)
-                        </option>
-                        <option value="docx-Escrow_Instructions.docx">
-                            Escrow Instructions
-                        </option>
-                        <option value="docx-Loan_Agreement_SAB_Construction.docx">
-                            Loan Agreement - SAB (Construction)
-                        </option>
-                           
-                        <option value="State Level Security Instruments">
-                            State Level Security Instruments
-                        </option>
-                        <option value="Assignments">
-                            Assignments
-                        </option>
-                             </aura:if>
-                     <!--</aura:if> -->
-                    <aura:if isTrue="{!and(v.filterFields.RecordType == 'Single_Asset_Bridge_Loan',  v.filterFields.ProductType == 'Single Asset (1-4 Unit)',or(v.filterFields.ProductSubType == 'Renovation',v.filterFields.ProductSubType == 'No Renovation'))}">
-                        <option value="docx-Borrower_Action_SAB_LLC_Members.docx">
-                            Borrower Action - SAB LLC Members
-                        </option>
-                    </aura:if>
-                    <aura:if isTrue="{!and(v.filterFields.RecordType == 'Single_Asset_Bridge_Loan',  v.filterFields.ProductType == 'Single Asset (1-4 Unit)',or(v.filterFields.ProductSubType == 'Renovation',v.filterFields.ProductSubType == 'No Renovation'))}">
-                        <option value="docx-Form_Corp_Borrowing_Resolutions.docx">
-                            Borrowing Resolutions Corporate
-                        </option>
-                    </aura:if>
-                    <aura:if isTrue="{!and(v.filterFields.RecordType == 'Single_Asset_Bridge_Loan',  v.filterFields.ProductType == 'Single Asset (1-4 Unit)',or(v.filterFields.ProductSubType == 'Renovation',v.filterFields.ProductSubType == 'No Renovation'))}">
-                        <option value="docx-Form_LLC_Borrowing_Resolutions.docx">
-                            Borrowing Resolutions LLC
-                        </option>
-                    </aura:if>
-                    <aura:if isTrue="{!and(v.filterFields.RecordType == 'Single_Asset_Bridge_Loan',  v.filterFields.ProductType == 'Single Asset (1-4 Unit)',or(v.filterFields.ProductSubType == 'Renovation',v.filterFields.ProductSubType == 'No Renovation'))}">
-                        <option value="docx-Borrower_Action_SAB_Corp.docx">
-                            Borrower Action - SAB Corp
-                        </option>
-                    </aura:if>			
-                    <aura:if isTrue="{!and(v.filterFields.RecordType == 'Single_Asset_Bridge_Loan',  v.filterFields.ProductType == 'Single Asset (1-4 Unit)',or(v.filterFields.ProductSubType == 'Renovation',v.filterFields.ProductSubType == 'No Renovation'))}">
-                        <option value="docx-Borrower_Action_SAB_LLC_Managers_and_Members.docx">
-                            Borrower Action - SAB LLC Managers and Members
-                        </option>
-                    </aura:if>
-                    <aura:if isTrue="{!and(v.filterFields.RecordType == 'Single_Asset_Bridge_Loan',  v.filterFields.ProductSubType == 'No Renovation')}">
-                        <option value="docx-Loan_Agreement_SAB_basic.docx">
-                            Loan Agreement SAB Basic
-                        </option>
-                    </aura:if>
-                    <aura:if isTrue="{!and(v.filterFields.RecordType == 'Single_Asset_Bridge_Loan', v.filterFields.ProductSubType == 'No Renovation')}">
-                        <option value="docx-Broker_Disclosure_SAB_basic.docx">
-                            Broker Disclosure Basic
-                        </option>
-                    </aura:if>
-                    <aura:if isTrue="{!and(v.filterFields.RecordType == 'Single_Asset_Bridge_Loan', v.filterFields.ProductSubType != 'No Renovation')}">
-                        <option value="docx-Loan_Agreement_SAB_Advance.docx">
-                            Loan Agreement SAB Advance
-                        </option>
-                    </aura:if>           
-                    <aura:if isTrue="{!and(v.filterFields.RecordType == 'Single_Asset_Bridge_Loan', (v.filterFields.ProductSubType == 'Renovation'))}">
-                        <option value="docx-Broker_Disclosure_SAB_Advance.docx">
-                            Broker Disclosure Advance
-                        </option>
-                    </aura:if>
-                    <!-- <aura:if isTrue="{!and(v.filterFields.RecordType == 'LOC_Loan',  v.sObjectName == 'Opportunity')}">
+              <option value="docx-Guaranty_SAB_basic.docx">Guaranty SAB</option>
+              <option value="docx-Environmental_Indemnity_SAB_basic.docx">
+                Environmental Indemnity
+              </option>
+              <option value="docx-Promissory_Note_SAB_basic.docx">
+                Secured Promissory Note
+              </option>
+              <option
+                value="docx-Architects_Consent_and_Agreement_SAB_Construction.docx"
+              >
+                Architect's Consent and Agreement - SAB (Construction)
+              </option>
+
+              <option value="docx-Completion_Guaranty_SAB_Construction.docx">
+                Completion Guaranty - SAB (Construction)
+              </option>
+              <option
+                value="docx-Contractor_Consent_and_Agreement_SAB_Construction.docx"
+              >
+                Contractor Consent and Agreement - SAB (Construction)
+              </option>
+              <option
+                value="docx-Engineers_Consent_and_Agreement_SAB_Construction.docx"
+              >
+                Engineer's Consent and Agreement - SAB (Construction)
+              </option>
+              <option value="docx-Escrow_Instructions.docx">
+                Escrow Instructions
+              </option>
+              <option value="docx-Loan_Agreement_SAB_Construction.docx">
+                Loan Agreement - SAB (Construction)
+              </option>
+
+              <option value="State Level Security Instruments">
+                State Level Security Instruments
+              </option>
+              <!-- <option value="Assignments">Assignments</option> -->
+              <option value="docx-Borrower_Action_SAB_LLC_Members.docx">
+                Borrower Action - SAB LLC Members
+              </option>
+              <option value="docx-Form_Corp_Borrowing_Resolutions.docx">
+                Borrowing Resolutions Corporate
+              </option>
+              <option value="docx-Form_LLC_Borrowing_Resolutions.docx">
+                Borrowing Resolutions LLC
+              </option>
+              <option value="docx-Borrower_Action_SAB_Corp.docx">
+                Borrower Action - SAB Corp
+              </option>
+              <option
+                value="docx-Borrower_Action_SAB_LLC_Managers_and_Members.docx"
+              >
+                Borrower Action - SAB LLC Managers and Members
+              </option>
+            </aura:if>
+            <aura:if
+              isTrue="{!and(v.filterFields.RecordType == 'Single_Asset_Bridge_Loan',  v.filterFields.ProductSubType == 'No Renovation')}"
+            >
+              <option value="docx-Loan_Agreement_SAB_basic.docx">
+                Loan Agreement SAB Basic
+              </option>
+              <option value="docx-Broker_Disclosure_SAB_basic.docx">
+                Broker Disclosure Basic
+              </option>
+            </aura:if>
+            <aura:if
+              isTrue="{!and(v.filterFields.RecordType == 'Single_Asset_Bridge_Loan', v.filterFields.ProductSubType != 'No Renovation')}"
+            >
+              <option value="docx-Loan_Agreement_SAB_Advance.docx">
+                Loan Agreement SAB Advance
+              </option>
+            </aura:if>
+            <aura:if
+              isTrue="{!and(v.filterFields.RecordType == 'Single_Asset_Bridge_Loan', (v.filterFields.ProductSubType == 'Renovation'))}"
+            >
+              <option value="docx-Broker_Disclosure_SAB_Advance.docx">
+                Broker Disclosure Advance
+              </option>
+            </aura:if>
+            <!-- <aura:if isTrue="{!and(v.filterFields.RecordType == 'LOC_Loan',  v.sObjectName == 'Opportunity')}">
                         <option value="{!'/apex/BridgeICMemo?Id=' + v.recordId}">
                             Bridge IC Memo (No fill ins)
                         </option>
                     </aura:if> -->
-                    <aura:if isTrue="{!and(v.filterFields.RecordType == 'LOC_Loan',  v.sObjectName == 'Opportunity')}">
-                        <option value="Bridge IC Memo">
-                            Bridge IC Memo
-                        </option>
-                    </aura:if>
-                    <option value="docx-CoreVest_Form_Closing_Instructions_Borrower_Owned_Property.docx">
-                        Closing Instructions (Borrower Owned Property)
-                    </option>
-                    <option value="docx-Corevest_Form_Closing_Instructions_Third_Party_Acquisition.docx">
-                        Closing Instructions (Third Party Acquisition)
-                    </option>
-                    <aura:if isTrue="{!v.filterFields.RecordType == 'LOC_Loan'}">
-                        <option value="docx-CoreVest_Form_Request_for_Advance_Acquisition_with_Renovation.docx">
-                            Request for Advance (Acquisition with Renovation)
-                        </option>
-                        <option value="docx-CoreVest_Form_Request_for_Advance_Borrower_Owned_Property.docx">
-                            Request for Advance (Borrower Owned Property)
-                        </option>
-                        <option value="docx-CoreVest_Form_Request_for_Advance_Borrower_Owned_with_Renovation.docx">
-                            Request for Advance (Borrower Owned Property with Renovation)
-                        </option>
-                        <option value="docx-CoreVest_Form_Request_for_Advance_Third_Party_Acquisition.docx">
-                            Request for Advance (Third Party Acquisition)
-                        </option>
-                        <option value="docx-CoreVest_Form_Renovation_Certificate_Institutional.DOCX">
-                            Renovation Certificate (Institutional)
-                        </option>
-                        <!--To display the Post Closing Assignments -->
-                        <option value="Assignments">
-                            Assignments
-                        </option>
-                        <option value="State Level Security Instruments">
-                            State Level Security Instruments
-                        </option>
-                    </aura:if>
-                    <!-- <option value="docx-TestDoc.docx">
-                        Test Document
-                    </option> -->
-                </lightning:select>
-                
-                 <aura:if isTrue="{!v.documentType == 'State Level Security Instruments'}">
-                    <lightning:select aura:id="state" label="State">
-                        <option value=""></option>
-                        <option value="Form_of_Mortgage_Alabama.docx">Alabama</option>
-                        <option value="Form_Deed_of_Trust_Arizona.docx">Arizona</option>
-                        <option value="Form_of_Mortgage_Arkansas.DOCX">Arkansas</option>
-                        <option
-                                value="Form_Deed_of_Trust_California_Institutional_and_Entrepreneurial.docx">
-                            California
-                        </option>
-                        <option value="Form_Deed_of_Trust_Colorado.DOCX">Colorado</option>
-                        <option value="Form_of_Mortgage_Connecticut.DOCX"
-                                >Connecticut</option
-                            >
-                        <option value="Form_Mortgage_Delaware.docx">Delaware</option>
-                        <option value="Form_Deed_of_Trust_District_of_Columbia.DOCX"
-                                >District of Columbia</option
-                            >
-                        <option value="Form_of_Mortgage_Florida.DOCX">Florida</option>
-                        <option value="Form_Deed_to_Secure_Debt_Georgia.docx"
-                                >Georgia</option
-                            >
-                        <option value="Form_of_Mortgage_Hawaii.docx">Hawaii</option>
-                        <option value="Form_Deed_of_Trust_Idaho.docx">Idaho</option>
-                        <option value="Form_of_Mortgage_Illinois.docx">Illinois</option>
-                        <option value="Form_of_Mortgage_Indiana.docx">Indiana</option>
-                        <option value="Form_of_Mortgage_Kentucky.docx">Kentucky</option>
-                        <option value="Form_of_Mortgage_Louisiana.docx">Louisiana</option>
-                        <option value="Form_Maine_Mortgage.docx">Maine</option>
-                        <option value="Form_Deed_of_Trust_Maryland.docx">Maryland</option>
-                        <option value="Form_Mortgage_Massachusetts.docx"
-                                >Massachusetts</option
-                            >
-                        <option value="Form_of_Mortgage_Michigan.docx">Michigan</option>
-                        <option value="Form_Deed_of_Trust_Mississippi.docx"
-                                >Mississippi</option
-                            >
-                        <option value="Form_Deed_of_Trust_Missouri.docx">Missouri</option>
-                        <option value="Form_Mortgage_Montana.docx">Montana</option>
-                        <option
-                                value="Form_Deed_of_Trust_Nevada_Insitutional_and_Entrepreneurial.docx"
-                                >Nevada</option
-                            >
-                        <option value="Form_of_Mortgage_New_Jersey.docx">New Jersey</option>
-                        <option value="Form_Deed_of_Trust_New_Mexico.docx"
-                                >New Mexico</option
-                            >
-                        <option value="Form_of_Mortgage_New_York.DOCX">New York</option>
-                        <option value="Form_Deed_of_Trust_North_Carolina.docx"
-                                >North Carolina</option
-                            >
-                        <option
-                                value="Form_of_Mortgage_Ohio_Institutional_and_Entrepreneurial.DOCX"
-                                >Ohio</option
-                            >
-                        <option value="Form_of_Mortgage_Oklahoma.docx">Oklahoma</option>
-                        <option value="Form_Deed_of_Trust_Oregon.docx">Oregon</option>
-                        <option
-                                value="Form_of_Mortgage_Pennsylvania_Institutional_and_Entrepreneurial.DOCX"
-                                >Pennsylvania</option
-                            >
-                        <option value="Form_of_Mortgage_South_Carolina.docx"
-                                >South Carolina</option
-                            >
-                        <option value="Form_of_Deed_of_Trust_Tennessee.docx"
-                                >Tennessee</option
-                            >
-                        <option
-                                value="Form_Deed_of_Trust_Texas_Institutional_and_Entrepreneurial.DOCX"
-                                >Texas</option
-                            >
-                        <option
-                                value="Form_Deed_of_Trust_Utah_Institutional_and_Entrepreneurial.DOCX"
-                                >Utah</option
-                            >
-                        <option value="Form_Deed_of_Trust_Virginia.docx">Virginia</option>
-                        <option value="Form_Deed_of_Trust_Washington.docx"
-                                >Washington</option
-                            >
-                        <option value="Form_of_Mortgage_Wisconsin.docx">Wisconsin</option>
-                        <option value="Form_Mortgage_Wyoming.docx">Wyoming</option>
-                    </lightning:select>
-                </aura:if>
-                <aura:if isTrue="{!v.documentType == 'Assignments'}">
-                    <lightning:select aura:id="assignments" label="Select">
-                        <option value=""></option>
-                        <option value="Assignment_of_SI_from_Warehouse_Borrower_to_Blank_GS.docx">
-                            Assignment of SI from Warehouse Borrower to Blank (GS)
-                        </option>
-                        <option value="Assignment_of_SI_from_Warehouse_Borrower_to_Blank_MS.docx">
-                            Assignment of SI from Warehouse Borrower to Blank (MS)
-                        </option>
-                        <option value="Assignment_of_SI_from_Lender_to_CF_CoreVest_Purchaser_MS.docx">
-                            Assignment of SI from Lender to CF Corevest Purchaser (MS)
-                        </option>
-                        <option value="Assignment_of_SI_from_Lender_to_CF_CoreVest_Purchaser_GS.docx">
-                            Assignment of SI from Lender to CF Corevest Purchaser (GS)
-                        </option>
-                        <option value="Assignment_of_SI_from_CF_CoreVest_Purchaser_to_Warehouse_Borrower_MS.docx">
-                            Assignment of SI from CF Corevest Purchaser to Warehouse Borrower (MS)
-                        </option>
-                        <option value="Assignment_of_SI_from_CF_CoreVest_Purchaser_to_Warehouse_Borrower_GS.docx">
-                            Assignment of SI from CF Corevest Purchaser to Warehouse Borrower (GS)
-                        </option> 
-                         </lightning:select>
-                 </aura:if>
-            </div>
-            <footer class="slds-modal__footer">
-                <lightning:button label="Cancel" name="cancel" onclick="{!c.cancel}" />
-                <lightning:button
-                                  label="Generate"
-                                  name="generate"
-                                  onclick="{!c.generate}"
-                                  variant="brand"
-                                  />
-            </footer>
+            <aura:if
+              isTrue="{!and(v.filterFields.RecordType == 'LOC_Loan',  v.sObjectName == 'Opportunity')}"
+            >
+              <option value="Bridge IC Memo">Bridge IC Memo</option>
+            </aura:if>
+            <option
+              value="docx-CoreVest_Form_Closing_Instructions_Borrower_Owned_Property.docx"
+            >
+              Closing Instructions (Borrower Owned Property)
+            </option>
+            <option
+              value="docx-Corevest_Form_Closing_Instructions_Third_Party_Acquisition.docx"
+            >
+              Closing Instructions (Third Party Acquisition)
+            </option>
+            <aura:if isTrue="{!v.filterFields.RecordType == 'LOC_Loan'}">
+              <aura:if
+              isTrue="{!and(v.filterFields.ProductType == 'Credit Line',  v.sObjectName == 'Advance__c')}"
+              >
+              <option
+                value="docx-CoreVest_Form_LOC_Confirmation_of_Term_Commencement_Date_and_Other_Terms.docx"
+              >
+                LOC Confirmation of Terms
+              </option>
+            </aura:if>
+              <option
+                value="docx-CoreVest_Form_Request_for_Advance_Acquisition_with_Renovation.docx"
+              >
+                Request for Advance (Acquisition with Renovation)
+              </option>
+              <option
+                value="docx-CoreVest_Form_Request_for_Advance_Borrower_Owned_Property.docx"
+              >
+                Request for Advance (Borrower Owned Property)
+              </option>
+              <option
+                value="docx-CoreVest_Form_Request_for_Advance_Borrower_Owned_with_Renovation.docx"
+              >
+                Request for Advance (Borrower Owned Property with Renovation)
+              </option>
+              <option
+                value="docx-CoreVest_Form_Request_for_Advance_Third_Party_Acquisition.docx"
+              >
+                Request for Advance (Third Party Acquisition)
+              </option>
+              <option
+                value="docx-CoreVest_Form_Renovation_Certificate_Institutional.DOCX"
+              >
+                Renovation Certificate (Institutional)
+              </option>
+              <!--To display the Post Closing Assignments -->
+              <option value="Assignments">Assignments</option>
+              <option value="State Level Security Instruments">
+                State Level Security Instruments
+              </option>
+            </aura:if>
+            <option value="docx-TestDoc.docx">Test Document</option>
+            <option
+              value="docx-CoreVest_Form_Renovation_Certificate_Institutional.DOCX"
+            >
+              Testing Doc Name
+            </option>
+          </lightning:select>
+
+          <aura:if
+            isTrue="{!v.documentType == 'State Level Security Instruments'}"
+          >
+            <lightning:select aura:id="state" label="Select State">
+              <option value=""></option>
+
+              <option value="Form_of_Mortgage_Alabama.docx">Alabama</option>
+              <option value="Form_Deed_of_Trust_Arizona.docx">Arizona</option>
+              <option value="Form_of_Mortgage_Arkansas.DOCX">Arkansas</option>
+              <option
+                value="Form_Deed_of_Trust_California_Institutional_and_Entrepreneurial.docx"
+              >
+                California
+              </option>
+              <option value="Form_Deed_of_Trust_Colorado.DOCX">Colorado</option>
+              <option value="Form_of_Mortgage_Connecticut.DOCX">
+                Connecticut
+              </option>
+              <option value="Form_Mortgage_Delaware.docx">Delaware</option>
+              <option value="Form_Deed_of_Trust_District_of_Columbia.DOCX">
+                District of Columbia
+              </option>
+              <option value="Form_of_Mortgage_Florida.DOCX">Florida</option>
+              <option value="Form_Deed_to_Secure_Debt_Georgia.docx">
+                Georgia
+              </option>
+              <option value="Form_of_Mortgage_Hawaii.docx">Hawaii</option>
+              <option value="Form_Deed_of_Trust_Idaho.docx">Idaho</option>
+              <option value="Form_of_Mortgage_Illinois.docx">Illinois</option>
+              <option value="Form_of_Mortgage_Indiana.docx">Indiana</option>
+              <option value="Form_of_Mortgage_Kentucky.docx">Kentucky</option>
+              <option value="Form_of_Mortgage_Louisiana.docx">Louisiana</option>
+              <option value="Form_Maine_Mortgage.docx">Maine</option>
+              <option value="Form_Deed_of_Trust_Maryland.docx">Maryland</option>
+              <option value="Form_Mortgage_Massachusetts.docx">
+                Massachusetts
+              </option>
+              <option value="Form_of_Mortgage_Michigan.docx">Michigan</option>
+              <option value="Form_Deed_of_Trust_Mississippi.docx">
+                Mississippi
+              </option>
+              <option value="Form_Deed_of_Trust_Missouri.docx">Missouri</option>
+              <option value="Form_Mortgage_Montana.docx">Montana</option>
+              <option
+                value="Form_Deed_of_Trust_Nevada_Insitutional_and_Entrepreneurial.docx"
+              >
+                Nevada
+              </option>
+              <option value="Form_of_Mortgage_New_Jersey.docx">
+                New Jersey
+              </option>
+              <option value="Form_Deed_of_Trust_New_Mexico.docx">
+                New Mexico
+              </option>
+              <option value="Form_of_Mortgage_New_York.DOCX">New York</option>
+              <option value="Form_Deed_of_Trust_North_Carolina.docx">
+                North Carolina
+              </option>
+              <option
+                value="Form_of_Mortgage_Ohio_Institutional_and_Entrepreneurial.DOCX"
+              >
+                Ohio
+              </option>
+              <option value="Form_of_Mortgage_Oklahoma.docx">Oklahoma</option>
+              <option value="Form_Deed_of_Trust_Oregon.docx">Oregon</option>
+              <option
+                value="Form_of_Mortgage_Pennsylvania_Institutional_and_Entrepreneurial.DOCX"
+              >
+                Pennsylvania
+              </option>
+              <option value="Form_of_Mortgage_South_Carolina.docx">
+                South Carolina
+              </option>
+              <option value="Form_of_Deed_of_Trust_Tennessee.docx">
+                Tennessee
+              </option>
+              <option
+                value="Form_Deed_of_Trust_Texas_Institutional_and_Entrepreneurial.DOCX"
+              >
+                Texas
+              </option>
+              <option
+                value="Form_Deed_of_Trust_Utah_Institutional_and_Entrepreneurial.DOCX"
+              >
+                Utah
+              </option>
+              <option value="Form_Deed_of_Trust_Virginia.docx">Virginia</option>
+              <option value="Form_Deed_of_Trust_Washington.docx">
+                Washington
+              </option>
+              <option value="Form_of_Mortgage_Wisconsin.docx">Wisconsin</option>
+              <option value="Form_Mortgage_Wyoming.docx">Wyoming</option>
+            </lightning:select>
+          </aura:if>
+          <aura:if isTrue="{!v.documentType == 'Assignments'}" >
+            <lightning:select aura:id="assignments" label="Select Assignment" onchange="{!c.evaluateAssignment}">
+              <option value=""></option>
+              <option
+                value="Assignment_of_SI_from_Warehouse_Borrower_to_Blank_GS.docx"
+              >
+                Assignment of SI from Warehouse Borrower to Blank (GS)
+              </option>
+              <option
+                value="Assignment_of_SI_from_Warehouse_Borrower_to_Blank_MS.docx"
+              >
+                Assignment of SI from Warehouse Borrower to Blank (MS)
+              </option>
+              <option
+                value="Assignment_of_SI_from_Lender_to_CF_CoreVest_Purchaser_MS.docx"
+              >
+                Assignment of SI from Lender to CF Corevest Purchaser (MS)
+              </option>
+              <option
+                value="Assignment_of_SI_from_Lender_to_CF_CoreVest_Purchaser_GS.docx"
+              >
+                Assignment of SI from Lender to CF Corevest Purchaser (GS)
+              </option>
+              <option
+                value="Assignment_of_SI_from_CF_CoreVest_Purchaser_to_Warehouse_Borrower_MS.docx"
+              >
+                Assignment of SI from CF Corevest Purchaser to Warehouse
+                Borrower (MS)
+              </option>
+              <option
+                value="Assignment_of_SI_from_CF_CoreVest_Purchaser_to_Warehouse_Borrower_GS.docx"
+              >
+                Assignment of SI from CF Corevest Purchaser to Warehouse
+                Borrower (GS)
+              </option>
+              <option value="Assignment Sets">
+                Assignment Sets
+              </option>
+            </lightning:select>
+          </aura:if>
+          <aura:if isTrue="{!v.showAssignmentSets}">
+            <lightning:select aura:id="assignmentSets" label="Select State">
+              <option value=""></option>
+              <aura:iteration items="{!v.assignmentSetStateOptions}" var="opt">
+                <option value="{!opt.value}">{!opt.label}</option>
+              </aura:iteration>
+              <option value="TestDoc.docx">Test Document</option>
+            </lightning:select>
+          </aura:if>
         </div>
+        <footer class="slds-modal__footer">
+          <lightning:button
+            label="Cancel"
+            name="cancel"
+            onclick="{!c.cancel}"
+          />
+          <lightning:button
+            label="Generate"
+            name="generate"
+            onclick="{!c.generate}"
+            variant="brand"
+          />
+        </footer>
+      </div>
     </section>
     <c:util aura:id="util" />
-        <!--
+    <!--
     <c:AdvanceDocumentGenerator
                                 aura:id="generator"
                                 StaticResourceName="AdvanceDocuments"
                                 />
 -->
-        <c:AdvanceDocumentGenerator
-                                aura:id="generator"
-                                StaticResourceName="{!v.staticResourceName}"
-                                />
-        <aura:set attribute="else">
-            {!v.body }
-        </aura:set>
-    </aura:if>
+    <c:AdvanceDocumentGenerator
+      aura:id="generator"
+      StaticResourceName="{!v.staticResourceName}"
+    />
+    <aura:set attribute="else"> {!v.body } </aura:set>
+  </aura:if>
 </aura:component>

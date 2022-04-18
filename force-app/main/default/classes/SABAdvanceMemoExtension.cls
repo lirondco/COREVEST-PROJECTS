@@ -46,7 +46,7 @@ public with sharing class SABAdvanceMemoExtension {
 					TotalOriginationFee=0;
 					List<Property_Advance__c> propAdvances=[Select Id, Name, Property__c,Property__r.City__c,Property__r.State__c,Property__r.ZipCode__c,Property__r.Name,Property__r.BPO_Appraisal_Value__c,Property__r.Approved_Renovation_Holdback__c,
 															Property__r.Initial_Disbursement__c,Property__r.After_Repair_Value__c,Property__r.Borrower_Equity__c,Net_Funding__c,Property__r.Acquisition_Price__c,Property__r.Broker_Adv_Fee_Amnt__c,
-															Property__r.Property_Type__c,Property__r.Requested_Funding_Date__c,Property__r.Override_Initial_Disbursement__c,Property__r.Rehab_Budget__c,Property__r.Funding_Status__c,Property__r.Lender_Comments__c 
+															Property__r.Property_Type__c,Property__r.Requested_Funding_Date__c,Property__r.Override_Initial_Disbursement__c,Property__r.Rehab_Budget__c,Property__r.Funding_Status__c,Property__r.Lender_Comments__c,Property__r.Appraised_Value_Amount__c
 															from Property_Advance__c where Advance__c=:recordId limit 1];
 					if(!propAdvances.isEmpty()){
 						propAdv=propAdvances[0];
