@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Over_LOC_Commitment__c</fullName>
-    <description>Previously called &quot;Over LOC Commitment.&quot;</description>
+    <description>Previously named &quot;Over LOC Commitment&quot;.</description>
     <externalId>false</externalId>
     <formula>IF( ISPICKVAL(Revolving1__c, &apos;No&apos;), IF(Aggregate_Funding__c &gt; LOC_Commitment__c, &apos;Yes&apos;, &apos;No&apos;),
 IF((Aggregate_Funding__c - Aggregate_Payoffs__c) &gt; LOC_Commitment__c, &apos;Yes&apos; ,&apos;No&apos;))</formula>

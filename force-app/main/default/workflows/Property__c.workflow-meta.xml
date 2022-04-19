@@ -17,6 +17,7 @@
     </alerts>
     <alerts>
         <fullName>Property_created_through_the_Portal</fullName>
+        <ccEmails>corevestit@cvest.com</ccEmails>
         <description>Property created through the Portal</description>
         <protected>false</protected>
         <recipients>

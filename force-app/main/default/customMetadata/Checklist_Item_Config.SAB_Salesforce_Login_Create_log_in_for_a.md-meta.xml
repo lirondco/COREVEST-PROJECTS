@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>SAB Salesforce Login Create log in for a</label>
+    <protected>false</protected>
+    <values>
+        <field>Approver__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Checklist_Item_Name__c</field>
+        <value xsi:type="xsd:string">Salesforce Login- Create log in for admin</value>
+    </values>
+    <values>
+        <field>Checklist_Type__c</field>
+        <value xsi:type="xsd:string">Kick-Off</value>
+    </values>
+    <values>
+        <field>Document_Structure__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Is_Bulk__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>Is_Property_Level__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>Milestone__c</field>
+        <value xsi:type="xsd:string">Kick-Off</value>
+    </values>
+    <values>
+        <field>RecordType__c</field>
+        <value xsi:type="xsd:string">Single_Asset_Bridge</value>
+    </values>
+    <values>
+        <field>Responsible_Party__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Reviewer__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Type__c</field>
+        <value xsi:type="xsd:string">Action</value>
+    </values>
+    <values>
+        <field>Uploader__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Use_Historical_Uploads__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>sObject__c</field>
+        <value xsi:type="xsd:string">Opportunity</value>
+    </values>
+</CustomMetadata>

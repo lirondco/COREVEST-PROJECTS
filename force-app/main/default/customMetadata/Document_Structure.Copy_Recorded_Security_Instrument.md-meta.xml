@@ -120,7 +120,7 @@
     </values>
     <values>
         <field>Sort__c</field>
-        <value xsi:type="xsd:double">3.5</value>
+        <value xsi:type="xsd:double">3.0</value>
     </values>
     <values>
         <field>Stage_Required__c</field>

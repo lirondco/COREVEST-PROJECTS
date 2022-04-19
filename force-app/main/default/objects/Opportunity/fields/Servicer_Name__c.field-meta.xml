@@ -35,6 +35,11 @@
                 <default>false</default>
                 <label>Berkadia</label>
             </value>
+            <value>
+                <fullName>FCI</fullName>
+                <default>false</default>
+                <label>FCI</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

@@ -18,6 +18,11 @@
                 <label>0.00%</label>
             </value>
             <value>
+                <fullName>0.10%</fullName>
+                <default>false</default>
+                <label>0.10%</label>
+            </value>
+            <value>
                 <fullName>0.15%</fullName>
                 <default>false</default>
                 <label>0.15%</label>
@@ -121,6 +126,10 @@
         <valueSettings>
             <controllingFieldValue>Floating</controllingFieldValue>
             <valueName>0.00%</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Floating</controllingFieldValue>
+            <valueName>0.10%</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Floating</controllingFieldValue>

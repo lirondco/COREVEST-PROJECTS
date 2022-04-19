@@ -4,7 +4,7 @@
     <protected>false</protected>
     <values>
         <field>Approver__c</field>
-        <value xsi:type="xsd:string">LM</value>
+        <value xsi:type="xsd:string">Loan Manager</value>
     </values>
     <values>
         <field>Checklist_Item_Name__c</field>
@@ -16,7 +16,15 @@
     </values>
     <values>
         <field>Document_Structure__c</field>
-        <value xsi:type="xsd:string">Track_Record_and_Owned_Real_Estate_Sched</value>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Is_Bulk__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>Is_Property_Level__c</field>
+        <value xsi:type="xsd:boolean">false</value>
     </values>
     <values>
         <field>Milestone__c</field>
@@ -32,7 +40,7 @@
     </values>
     <values>
         <field>Reviewer__c</field>
-        <value xsi:type="xsd:string">LM</value>
+        <value xsi:type="xsd:string">Loan Manager</value>
     </values>
     <values>
         <field>Type__c</field>

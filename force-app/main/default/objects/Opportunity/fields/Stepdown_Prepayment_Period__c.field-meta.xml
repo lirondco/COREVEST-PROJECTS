@@ -12,12 +12,13 @@
     <type>Picklist</type>
     <valueSet>
         <controllingField>Term_Loan_Type__c</controllingField>
+        <restricted>true</restricted>
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>3,2,1,0,0</fullName>
+                <fullName>3,2,1</fullName>
                 <default>false</default>
-                <label>3,2,1,0,0</label>
+                <label>3,2,1</label>
             </value>
             <value>
                 <fullName>3,2,1,1,1</fullName>
@@ -25,9 +26,9 @@
                 <label>3,2,1,1,1</label>
             </value>
             <value>
-                <fullName>4,3,2,1,0</fullName>
+                <fullName>4,3,2,1</fullName>
                 <default>false</default>
-                <label>4,3,2,1,0</label>
+                <label>4,3,2,1</label>
             </value>
             <value>
                 <fullName>5,4,2,2,1</fullName>
@@ -38,11 +39,6 @@
                 <fullName>5,4,3,2,1</fullName>
                 <default>false</default>
                 <label>5,4,3,2,1</label>
-            </value>
-            <value>
-                <fullName>5,4,3,2,1,0,0</fullName>
-                <default>false</default>
-                <label>5,4,3,2,1,0,0</label>
             </value>
             <value>
                 <fullName>5,4,3,2,1,1,1</fullName>
@@ -60,9 +56,9 @@
                 <label>5,4,4,3,3,2,1</label>
             </value>
             <value>
-                <fullName>5,5,4,3,2,1,0</fullName>
+                <fullName>5,5,4,3,2,1</fullName>
                 <default>false</default>
-                <label>5,5,4,3,2,1,0</label>
+                <label>5,5,4,3,2,1</label>
             </value>
             <value>
                 <fullName>5,5,5,4,3,2,1</fullName>
@@ -80,14 +76,14 @@
                 <label>5,5,4,4,3,3,2,2,1,1</label>
             </value>
             <value>
-                <fullName>5,5,5,5,5,4,3,2,0,0</fullName>
+                <fullName>5,5,5,5,5,4,3,2</fullName>
                 <default>false</default>
-                <label>5,5,5,5,5,4,3,2,0,0</label>
+                <label>5,5,5,5,5,4,3,2</label>
             </value>
             <value>
-                <fullName>5,5,5,5,5,5,4,3,2,0</fullName>
+                <fullName>5,5,5,5,5,5,4,3,2</fullName>
                 <default>false</default>
-                <label>5,5,5,5,5,5,4,3,2,0</label>
+                <label>5,5,5,5,5,5,4,3,2</label>
             </value>
             <value>
                 <fullName>5,5,5,5,5,4,3,2,1,1</fullName>
@@ -114,10 +110,54 @@
                 <default>false</default>
                 <label>N/A</label>
             </value>
+            <value>
+                <fullName>3%(12),2%(12),1%(12)</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>3%(12),2%(12),1%(12)</label>
+            </value>
+            <value>
+                <fullName>3,2,1,1,1 (0 Months)</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>3,2,1,1,1 (0 Months)</label>
+            </value>
+            <value>
+                <fullName>3,3,1,1,1</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>3,3,1,1,1</label>
+            </value>
+            <value>
+                <fullName>5,4,3,2,1 (0 Months)</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>5,4,3,2,1 (0 Months)</label>
+            </value>
+            <value>
+                <fullName>5,5,4,4,3,3,2,2,1,1 (0 Months)</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>5,5,4,4,3,3,2,2,1,1 (0 Months)</label>
+            </value>
+            <value>
+                <fullName>5,5,5,4,3,2,1 (0 Months)</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>5,5,5,4,3,2,1 (0 Months)</label>
+            </value>
+            <value>
+                <fullName>7,6,5,4,3,2,1 (0 Months)</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>7,6,5,4,3,2,1 (0 Months)</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>5 Year</controllingFieldValue>
-            <valueName>3,2,1,0,0</valueName>
+            <controllingFieldValue>30 Year</controllingFieldValue>
+            <controllingFieldValue>3 Year</controllingFieldValue>
+            <valueName>3,2,1</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>5 Year</controllingFieldValue>
@@ -125,7 +165,8 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>5 Year</controllingFieldValue>
-            <valueName>4,3,2,1,0</valueName>
+            <controllingFieldValue>30 Year</controllingFieldValue>
+            <valueName>4,3,2,1</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>5 Year</controllingFieldValue>
@@ -134,17 +175,22 @@
         <valueSettings>
             <controllingFieldValue>5 Year</controllingFieldValue>
             <controllingFieldValue>30 Year</controllingFieldValue>
+            <controllingFieldValue>7 Year</controllingFieldValue>
             <valueName>5,4,3,2,1</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>5 Year</controllingFieldValue>
+            <controllingFieldValue>30 Year</controllingFieldValue>
             <controllingFieldValue>10 Year</controllingFieldValue>
+            <controllingFieldValue>3 Year</controllingFieldValue>
             <controllingFieldValue>7 Year</controllingFieldValue>
             <valueName>Other</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>5 Year</controllingFieldValue>
+            <controllingFieldValue>30 Year</controllingFieldValue>
             <controllingFieldValue>10 Year</controllingFieldValue>
+            <controllingFieldValue>3 Year</controllingFieldValue>
             <controllingFieldValue>7 Year</controllingFieldValue>
             <valueName>N/A</valueName>
         </valueSettings>
@@ -154,11 +200,11 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>10 Year</controllingFieldValue>
-            <valueName>5,5,5,5,5,4,3,2,0,0</valueName>
+            <valueName>5,5,5,5,5,4,3,2</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>10 Year</controllingFieldValue>
-            <valueName>5,5,5,5,5,5,4,3,2,0</valueName>
+            <valueName>5,5,5,5,5,5,4,3,2</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>10 Year</controllingFieldValue>
@@ -174,10 +220,6 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>7 Year</controllingFieldValue>
-            <valueName>5,4,3,2,1,0,0</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>7 Year</controllingFieldValue>
             <valueName>5,4,3,2,1,1,1</valueName>
         </valueSettings>
         <valueSettings>
@@ -190,7 +232,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>7 Year</controllingFieldValue>
-            <valueName>5,5,4,3,2,1,0</valueName>
+            <valueName>5,5,4,3,2,1</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>7 Year</controllingFieldValue>

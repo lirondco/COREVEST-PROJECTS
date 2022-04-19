@@ -38,26 +38,27 @@
             </value>
         </valueSetDefinition>
         <valueSettings>
-            <controllingFieldValue>Fixed Rate Long Term Loan</controllingFieldValue>
-            <controllingFieldValue>Fixed Rate Short Term Loan</controllingFieldValue>
+            <controllingFieldValue>Short Term Rental</controllingFieldValue>
+            <controllingFieldValue>Long Term Rental</controllingFieldValue>
             <valueName>5 Year</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Fixed Rate Long Term Loan</controllingFieldValue>
-            <controllingFieldValue>Fixed Rate Short Term Loan</controllingFieldValue>
+            <controllingFieldValue>Short Term Rental</controllingFieldValue>
+            <controllingFieldValue>Long Term Rental</controllingFieldValue>
             <valueName>7 Year</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Fixed Rate Long Term Loan</controllingFieldValue>
-            <controllingFieldValue>Fixed Rate Short Term Loan</controllingFieldValue>
+            <controllingFieldValue>Short Term Rental</controllingFieldValue>
+            <controllingFieldValue>Long Term Rental</controllingFieldValue>
             <valueName>10 Year</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Fixed Rate Long Term Loan</controllingFieldValue>
+            <controllingFieldValue>Short Term Rental</controllingFieldValue>
+            <controllingFieldValue>Long Term Rental</controllingFieldValue>
             <valueName>30 Year</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Floating Rate Term Loan</controllingFieldValue>
+            <controllingFieldValue>Long Term Rental</controllingFieldValue>
             <valueName>3 Year</valueName>
         </valueSettings>
     </valueSet>

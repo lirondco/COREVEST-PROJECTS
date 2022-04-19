@@ -2,7 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Rate_Lock_Picklist__c</fullName>
     <externalId>false</externalId>
-    <label>Rate Locked Status</label>
+    <label>Rate Lock Type</label>
     <required>false</required>
     <trackFeedHistory>false</trackFeedHistory>
     <trackHistory>false</trackHistory>
@@ -17,9 +17,9 @@
                 <label>Early Rate Locked</label>
             </value>
             <value>
-                <fullName>Rate Locked</fullName>
+                <fullName>Standard Rate Locked</fullName>
                 <default>false</default>
-                <label>Rate Locked</label>
+                <label>Standard Rate Locked</label>
             </value>
         </valueSetDefinition>
     </valueSet>

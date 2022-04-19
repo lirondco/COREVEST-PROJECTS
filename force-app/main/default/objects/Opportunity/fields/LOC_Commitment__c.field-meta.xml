@@ -2,8 +2,8 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>LOC_Commitment__c</fullName>
     <businessStatus>Active</businessStatus>
-    <description>Line of Credit Commitment. Previously called &quot;LOC Commitment.&quot;
-Bridge Use - This is the maximum loan amount</description>
+    <description>Line of Credit Commitment
+Bridge Use - This is the maximum loan amount. Previously called &quot;LOC Commitment.&quot;</description>
     <externalId>false</externalId>
     <label>Loan Commitment</label>
     <precision>18</precision>

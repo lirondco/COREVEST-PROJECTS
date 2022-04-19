@@ -5,19 +5,20 @@
     <description>This will prevent a user from moving the stage of a Deal backwards</description>
     <errorConditionFormula>AND(
 NOT($Profile.Name == &apos;System Administrator&apos;),
-NOT($Profile.Name == &apos;Origination Manager&apos;),
 CASE(StageName,
 &quot;Initial Review&quot;,1,
-&quot;Data Tape Recevied&quot;,2,
-&quot;Term Sheet Issued&quot;,3,
-&quot;Term Sheet Signed/Deposit Collected&quot;,4,
-0)
+&quot;Data Tape Received&quot;,2,
+&quot;Issue Term Sheet/Order Appraisal&quot;,3,
+&quot;Term Sheet Issued&quot;,4,
+&quot;Term Sheet Signed/Deposit Collected&quot;,5,
+6)
 &lt;
 CASE(PRIORVALUE(StageName),
 &quot;Initial Review&quot;,1,
-&quot;Data Tape Recevied&quot;,2,
-&quot;Term Sheet Issued&quot;,3,
-&quot;Term Sheet Signed/Deposit Collected&quot;,4,
-0))</errorConditionFormula>
-    <errorMessage>The Stage of the Deal cannot be moved backwards.  If this is a special case, please request this through your manager or Salesforce Administrator</errorMessage>
+&quot;Data Tape Received&quot;,2,
+&quot;Issue Term Sheet/Order Appraisal&quot;,3,
+&quot;Term Sheet Issued&quot;,4,
+&quot;Term Sheet Signed/Deposit Collected&quot;,5,
+6))</errorConditionFormula>
+    <errorMessage>The Stage of the Deal cannot be moved backwards.  If this is a special case, please request this to Salesforce Administrator</errorMessage>
 </ValidationRule>

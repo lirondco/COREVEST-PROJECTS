@@ -12,7 +12,7 @@
             <sorted>false</sorted>
             <value>
                 <fullName>Purchase</fullName>
-                <default>true</default>
+                <default>false</default>
                 <label>Purchase</label>
             </value>
             <value>
@@ -24,11 +24,6 @@
                 <fullName>Refinance/Purchase</fullName>
                 <default>false</default>
                 <label>Refinance/Purchase</label>
-            </value>
-            <value>
-                <fullName>Cash Out Refi</fullName>
-                <default>false</default>
-                <label>Cash Out Refi</label>
             </value>
         </valueSetDefinition>
     </valueSet>

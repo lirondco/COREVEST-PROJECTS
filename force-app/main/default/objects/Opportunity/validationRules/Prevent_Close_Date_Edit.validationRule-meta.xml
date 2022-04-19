@@ -16,9 +16,7 @@
  OR(
   $Profile.Name= &apos;Origination Manager&apos;,
   $Profile.Name= &apos;Relationship Manager&apos;,
-  $Profile.Name= &apos;Sales Analyst&apos;,
-  $Profile.Name= &apos;Sales Analyst Term Operations Hybrid&apos;,
-  $Profile.Name= &apos;Sales Analyst Bridge Operations Hybrid&apos;
+  $Profile.Name= &apos;Sales Analyst&apos;
  )
 )</errorConditionFormula>
     <errorMessage>The Close Date or Anticipated Closing Date can only be changed by an Operations Team Member in this Stage</errorMessage>

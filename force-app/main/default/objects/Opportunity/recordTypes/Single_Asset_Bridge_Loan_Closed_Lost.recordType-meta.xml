@@ -387,11 +387,15 @@
     <picklistValues>
         <picklist>Broker_Fee_Paid_By_Whom__c</picklist>
         <values>
-            <fullName>Corevest</fullName>
+            <fullName>CoreVest</fullName>
             <default>false</default>
         </values>
         <values>
             <fullName>Escrow</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>N%2FA</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -1557,6 +1561,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Bobby Ash Sourced</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Boris Zhuravel Sourced</fullName>
             <default>false</default>
         </values>
@@ -2040,10 +2048,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>In Process of Withdrawal%2FRejection</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Insufficient Income</fullName>
             <default>false</default>
         </values>
@@ -2064,7 +2068,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Other %E2%80%93 See Deal Notes</fullName>
+            <fullName>Other - See Deal Notes</fullName>
             <default>false</default>
         </values>
         <values>
@@ -2097,6 +2101,17 @@
         </values>
         <values>
             <fullName>Won through another broker</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Discount_Fee__c</picklist>
+        <values>
+            <fullName>1 pt rate buy down %2F -25 BPS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2 pt rate buy down %2F -50 BPS</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -2352,6 +2367,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Borrower unresponsive</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Does not meet occupancy</fullName>
             <default>false</default>
         </values>
@@ -2385,21 +2404,6 @@
         </values>
     </picklistValues>
     <picklistValues>
-        <picklist>IC_Approval__c</picklist>
-        <values>
-            <fullName>Approved</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Pending</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Rejected</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
         <picklist>IO_Term__c</picklist>
         <values>
             <fullName>0 months</fullName>
@@ -2422,6 +2426,10 @@
         <picklist>Index_Floor__c</picklist>
         <values>
             <fullName>0%2E00%25</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>0%2E10%25</fullName>
             <default>false</default>
         </values>
         <values>
@@ -2504,19 +2512,19 @@
     <picklistValues>
         <picklist>Index__c</picklist>
         <values>
-            <fullName>1M SOFR</fullName>
+            <fullName>1M Term SOFR</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>1Y SOFR</fullName>
+            <fullName>1Y Term SOFR</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>3M SOFR</fullName>
+            <fullName>3M Term SOFR</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>6M SOFR</fullName>
+            <fullName>6M Term SOFR</fullName>
             <default>false</default>
         </values>
         <values>
@@ -3018,7 +3026,23 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Conversion to Multifamily</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Fix and Flip</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Multifamily GUC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Multifamily Heavy Lift</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Multifamily Lease-Up%2FNo Rehab</fullName>
             <default>false</default>
         </values>
         <values>
@@ -3083,7 +3107,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Rate Locked</fullName>
+            <fullName>Standard Rate Locked</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -3224,6 +3248,10 @@
         <picklist>Requested_Index_Floor__c</picklist>
         <values>
             <fullName>0%2E00%25</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>0%2E10%25</fullName>
             <default>false</default>
         </values>
         <values>
@@ -3423,7 +3451,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>5%2C5%2C5%2C5%2C5%2C4%2C3%2C2%2C0%2C0</fullName>
+            <fullName>5%2C5%2C5%2C5%2C5%2C4%2C3%2C2</fullName>
             <default>false</default>
         </values>
         <values>

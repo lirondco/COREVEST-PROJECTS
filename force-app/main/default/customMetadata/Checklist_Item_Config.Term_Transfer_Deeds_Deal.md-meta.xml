@@ -19,6 +19,10 @@
         <value xsi:type="xsd:string">Term_Transfer_Deeds_Deal</value>
     </values>
     <values>
+        <field>Is_Bulk__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
         <field>Is_Property_Level__c</field>
         <value xsi:type="xsd:boolean">false</value>
     </values>

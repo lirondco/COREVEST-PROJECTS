@@ -50,6 +50,10 @@
             <recipient>bryon.harland@cvest.com</recipient>
             <type>user</type>
         </recipients>
+        <recipients>
+            <recipient>dan.federico@cvest.com</recipient>
+            <type>user</type>
+        </recipients>
         <senderType>CurrentUser</senderType>
         <template>Submit_to_UW_Approval_Email_Templates/A_Deal_has_been_submitted_for_UW_Approval</template>
     </alerts>
@@ -154,6 +158,10 @@
         </recipients>
         <recipients>
             <recipient>bryon.harland@cvest.com</recipient>
+            <type>user</type>
+        </recipients>
+        <recipients>
+            <recipient>dan.federico@cvest.com</recipient>
             <type>user</type>
         </recipients>
         <senderType>CurrentUser</senderType>
@@ -401,6 +409,10 @@
             <recipient>bryon.harland@cvest.com</recipient>
             <type>user</type>
         </recipients>
+        <recipients>
+            <recipient>dan.federico@cvest.com</recipient>
+            <type>user</type>
+        </recipients>
         <senderType>CurrentUser</senderType>
         <template>Submit_to_UW_Approval_Email_Templates/UW_Approval_Email</template>
     </alerts>
@@ -533,6 +545,7 @@
         <fullName>Expense_Deposit_Line_of_Credit</fullName>
         <ccEmails>cafaccounting@cvest.com</ccEmails>
         <ccEmails>Paul.Basmajian@cvest.com</ccEmails>
+        <ccEmails>alexander.acevedo@cvest.com</ccEmails>
         <description>Expense Deposit – Line of Credit</description>
         <protected>false</protected>
         <recipients>
@@ -547,126 +560,6 @@
         <template>LOC_Templates/Expense_Deposit_Line_of_Credit</template>
     </alerts>
     <alerts>
-        <fullName>IC_Approved_Alert</fullName>
-        <ccEmails>icapprovalhandler@k-wn74jpiey1q7dxwd9dzqamgam1zz6qekbighhgv7m5rguvzjw.78-4apseaa.cs213.apex.sandbox.salesforce.com</ccEmails>
-        <description>IC Approved Alert</description>
-        <protected>false</protected>
-        <recipients>
-            <recipient>Term_IC_Approval</recipient>
-            <type>group</type>
-        </recipients>
-        <recipients>
-            <recipient>Closer</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
-            <recipient>Co-Originator</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
-            <recipient>Loan Manager</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
-            <recipient>Loss Mitigation Associate</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
-            <recipient>Originator</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
-            <recipient>Sales Analyst</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
-            <recipient>Sales Manager</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
-            <recipient>Underwriter</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
-            <type>owner</type>
-        </recipients>
-        <recipients>
-            <recipient>libby.burgeson@cvest.com</recipient>
-            <type>user</type>
-        </recipients>
-        <recipients>
-            <recipient>micaela.lumpkin@cvest.com</recipient>
-            <type>user</type>
-        </recipients>
-        <recipients>
-            <recipient>saritha.bhumani@cvest.com</recipient>
-            <type>user</type>
-        </recipients>
-        <senderAddress>caf-apps@cvest.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>Ic_Memo_Approval_Emails/IC_Approval_Email</template>
-    </alerts>
-    <alerts>
-        <fullName>IC_Rejected_Alert</fullName>
-        <ccEmails>icapprovalhandler@k-wn74jpiey1q7dxwd9dzqamgam1zz6qekbighhgv7m5rguvzjw.78-4apseaa.cs213.apex.sandbox.salesforce.com</ccEmails>
-        <description>IC Rejected Alert</description>
-        <protected>false</protected>
-        <recipients>
-            <recipient>Term_IC_Approval</recipient>
-            <type>group</type>
-        </recipients>
-        <recipients>
-            <recipient>Closer</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
-            <recipient>Co-Originator</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
-            <recipient>Loan Manager</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
-            <recipient>Loss Mitigation Associate</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
-            <recipient>Originator</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
-            <recipient>Sales Analyst</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
-            <recipient>Sales Manager</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
-            <recipient>Underwriter</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
-            <type>owner</type>
-        </recipients>
-        <recipients>
-            <recipient>libby.burgeson@cvest.com</recipient>
-            <type>user</type>
-        </recipients>
-        <recipients>
-            <recipient>micaela.lumpkin@cvest.com</recipient>
-            <type>user</type>
-        </recipients>
-        <recipients>
-            <recipient>saritha.bhumani@cvest.com</recipient>
-            <type>user</type>
-        </recipients>
-        <senderAddress>caf-apps@cvest.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>Ic_Memo_Approval_Emails/IC_Rejected_Email</template>
-    </alerts>
-    <alerts>
         <fullName>LOC_Underwriting_Email_Alert</fullName>
         <ccEmails>submissions@colonyamericanfinance.com</ccEmails>
         <ccEmails>caf-apps@cvest.com</ccEmails>
@@ -674,6 +567,10 @@
         <protected>false</protected>
         <recipients>
             <recipient>brad.chmura@cvest.com</recipient>
+            <type>user</type>
+        </recipients>
+        <recipients>
+            <recipient>dan.federico@cvest.com</recipient>
             <type>user</type>
         </recipients>
         <senderType>CurrentUser</senderType>
@@ -802,6 +699,86 @@
         <template>Pricing_Approval_Email_Templates/Pricing_Rejected_Email</template>
     </alerts>
     <alerts>
+        <fullName>Repricing_Approval_Alert_Term</fullName>
+        <description>Repricing Approval Alert Term</description>
+        <protected>false</protected>
+        <recipients>
+            <recipient>TermPricingRequests</recipient>
+            <type>group</type>
+        </recipients>
+        <recipients>
+            <recipient>Closer</recipient>
+            <type>opportunityTeam</type>
+        </recipients>
+        <recipients>
+            <recipient>Sales Analyst</recipient>
+            <type>opportunityTeam</type>
+        </recipients>
+        <recipients>
+            <recipient>Underwriter</recipient>
+            <type>opportunityTeam</type>
+        </recipients>
+        <recipients>
+            <type>owner</type>
+        </recipients>
+        <recipients>
+            <recipient>behnam.hoss@cvest.com</recipient>
+            <type>user</type>
+        </recipients>
+        <recipients>
+            <recipient>bryon.harland@cvest.com</recipient>
+            <type>user</type>
+        </recipients>
+        <recipients>
+            <recipient>libby.burgeson@cvest.com</recipient>
+            <type>user</type>
+        </recipients>
+        <recipients>
+            <recipient>lisha.mcdaniel@cvest.com</recipient>
+            <type>user</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>Pricing_Approval_Email_Templates/Pricing_Approval_Email</template>
+    </alerts>
+    <alerts>
+        <fullName>Repricing_Rejected_Alert_Term</fullName>
+        <description>Repricing Rejected Alert Term</description>
+        <protected>false</protected>
+        <recipients>
+            <recipient>TermPricingRequests</recipient>
+            <type>group</type>
+        </recipients>
+        <recipients>
+            <recipient>Closer</recipient>
+            <type>opportunityTeam</type>
+        </recipients>
+        <recipients>
+            <recipient>Sales Analyst</recipient>
+            <type>opportunityTeam</type>
+        </recipients>
+        <recipients>
+            <recipient>Underwriter</recipient>
+            <type>opportunityTeam</type>
+        </recipients>
+        <recipients>
+            <type>owner</type>
+        </recipients>
+        <recipients>
+            <recipient>behnam.hoss@cvest.com</recipient>
+            <type>user</type>
+        </recipients>
+        <recipients>
+            <recipient>bryon.harland@cvest.com</recipient>
+            <type>user</type>
+        </recipients>
+        <recipients>
+            <recipient>libby.burgeson@cvest.com</recipient>
+            <type>user</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>Pricing_Approval_Email_Templates/Pricing_Rejected_Email</template>
+    </alerts>
+    <alerts>
         <fullName>SAB_Deal_enters_Loan_Processing</fullName>
         <description>SAB Deal enters Loan Processing</description>
         <protected>false</protected>
@@ -841,8 +818,8 @@
         <senderType>CurrentUser</senderType>
         <template>Process_Builder_Emails/Pending_GLC_Approval</template>
     </alerts>
-    <!-- <alerts>
-        <fullName>_Processing_to_UW</fullName>
+    <alerts>
+        <fullName>Stage_Loan_Processing_to_UW</fullName>
         <description>Stage - Loan Processing to UW</description>
         <protected>false</protected>
         <recipients>
@@ -857,127 +834,7 @@
             <type>userLookup</type>
         </recipients>
         <senderType>CurrentUser</senderType>
-        <template>unfiled$public/Stage_Loan_Processing_to_UW</template>
-    </alerts> -->
-    <alerts>
-        <fullName>Sub_IC_Approved_Alert</fullName>
-        <ccEmails>icapprovalhandler@k-wn74jpiey1q7dxwd9dzqamgam1zz6qekbighhgv7m5rguvzjw.78-4apseaa.cs213.apex.sandbox.salesforce.com</ccEmails>
-        <description>Sub IC Approved Alert</description>
-        <protected>false</protected>
-        <recipients>
-            <recipient>Term_Sub_IC</recipient>
-            <type>group</type>
-        </recipients>
-        <recipients>
-            <recipient>Closer</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
-            <recipient>Co-Originator</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
-            <recipient>Loan Manager</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
-            <recipient>Loss Mitigation Associate</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
-            <recipient>Originator</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
-            <recipient>Sales Analyst</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
-            <recipient>Sales Manager</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
-            <recipient>Underwriter</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
-            <type>owner</type>
-        </recipients>
-        <recipients>
-            <recipient>libby.burgeson@cvest.com</recipient>
-            <type>user</type>
-        </recipients>
-        <recipients>
-            <recipient>micaela.lumpkin@cvest.com</recipient>
-            <type>user</type>
-        </recipients>
-        <recipients>
-            <recipient>saritha.bhumani@cvest.com</recipient>
-            <type>user</type>
-        </recipients>
-        <senderAddress>caf-apps@cvest.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>Ic_Memo_Approval_Emails/IC_Approval_Email</template>
-    </alerts>
-    <alerts>
-        <fullName>Sub_IC_Rejected_Alert</fullName>
-        <ccEmails>icapprovalhandler@k-wn74jpiey1q7dxwd9dzqamgam1zz6qekbighhgv7m5rguvzjw.78-4apseaa.cs213.apex.sandbox.salesforce.com</ccEmails>
-        <description>Sub IC Rejected Alert</description>
-        <protected>false</protected>
-        <recipients>
-            <recipient>Term_Sub_IC</recipient>
-            <type>group</type>
-        </recipients>
-        <recipients>
-            <recipient>Closer</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
-            <recipient>Co-Originator</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
-            <recipient>Loan Manager</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
-            <recipient>Loss Mitigation Associate</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
-            <recipient>Originator</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
-            <recipient>Sales Analyst</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
-            <recipient>Sales Manager</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
-            <recipient>Underwriter</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
-            <type>owner</type>
-        </recipients>
-        <recipients>
-            <recipient>libby.burgeson@cvest.com</recipient>
-            <type>user</type>
-        </recipients>
-        <recipients>
-            <recipient>micaela.lumpkin@cvest.com</recipient>
-            <type>user</type>
-        </recipients>
-        <recipients>
-            <recipient>saritha.bhumani@cvest.com</recipient>
-            <type>user</type>
-        </recipients>
-        <senderAddress>caf-apps@cvest.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>Ic_Memo_Approval_Emails/IC_Rejected_Email</template>
+        <template>Process_Builder_Emails/Stage_Loan_Processing_to_UW</template>
     </alerts>
     <alerts>
         <fullName>Term_Confirmation_of_Terms</fullName>
@@ -1034,6 +891,10 @@
             <type>user</type>
         </recipients>
         <recipients>
+            <recipient>dan.federico@cvest.com</recipient>
+            <type>user</type>
+        </recipients>
+        <recipients>
             <recipient>micaela.lumpkin@cvest.com</recipient>
             <type>user</type>
         </recipients>
@@ -1056,6 +917,7 @@
         <ccEmails>cafcsteam@cvest.com</ccEmails>
         <ccEmails>Paul.Basmajian@cvest.com</ccEmails>
         <ccEmails>cafbridgepostclosing@cvest.com</ccEmails>
+        <ccEmails>alexander.acevedo@cvest.com</ccEmails>
         <description>UCC1 Filing Request</description>
         <protected>false</protected>
         <recipients>
@@ -1096,14 +958,10 @@
             <recipient>bryon.harland@cvest.com</recipient>
             <type>user</type>
         </recipients>
-        <!-- <recipients>
-            <recipient>jonetta.hobbs@cvest.com</recipient>
+        <recipients>
+            <recipient>dan.federico@cvest.com</recipient>
             <type>user</type>
-        </recipients> -->
-        <!-- <recipients>
-            <recipient>mavi.lenon@cvest.com</recipient>
-            <type>user</type>
-        </recipients> -->
+        </recipients>
         <recipients>
             <recipient>micaela.lumpkin@cvest.com</recipient>
             <type>user</type>
@@ -1322,36 +1180,6 @@
         <reevaluateOnChange>false</reevaluateOnChange>
     </fieldUpdates>
     <fieldUpdates>
-        <fullName>IC_Approval_Date_Update</fullName>
-        <field>IC_Approval_Date__c</field>
-        <formula>Today()</formula>
-        <name>IC Approval Date Update</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>Formula</operation>
-        <protected>false</protected>
-        <reevaluateOnChange>false</reevaluateOnChange>
-    </fieldUpdates>
-    <fieldUpdates>
-        <fullName>IC_Approval_Field_Rejected</fullName>
-        <field>IC_Approval__c</field>
-        <literalValue>Rejected</literalValue>
-        <name>IC Approval Field Rejected</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>Literal</operation>
-        <protected>false</protected>
-        <reevaluateOnChange>false</reevaluateOnChange>
-    </fieldUpdates>
-    <fieldUpdates>
-        <fullName>IC_Approval_Field_Update</fullName>
-        <field>IC_Approval__c</field>
-        <literalValue>Approved</literalValue>
-        <name>IC Approval Field Update</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>Literal</operation>
-        <protected>false</protected>
-        <reevaluateOnChange>false</reevaluateOnChange>
-    </fieldUpdates>
-    <fieldUpdates>
         <fullName>In_Process_of_Withdrawn_to_FALSE</fullName>
         <description>Sets the In Process of Withdrawn or Rejected field to FALSE</description>
         <field>In_Process_of_Withdrawn_or_Rejected__c</field>
@@ -1391,16 +1219,6 @@
         <operation>Literal</operation>
         <protected>false</protected>
         <reevaluateOnChange>true</reevaluateOnChange>
-    </fieldUpdates>
-    <fieldUpdates>
-        <fullName>Stage_Change_to_Approved_By_Committee</fullName>
-        <field>StageName</field>
-        <literalValue>Approved by Committee</literalValue>
-        <name>Stage Change to Approved By Committee</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>Literal</operation>
-        <protected>false</protected>
-        <reevaluateOnChange>false</reevaluateOnChange>
     </fieldUpdates>
     <fieldUpdates>
         <fullName>Stage_to_Issue_Term_Sheet</fullName>
@@ -1578,7 +1396,7 @@ Then update Awaiting_Kickoff_Call__c to false</description>
         <field>StageName</field>
         <literalValue>Term Sheet Signed/Deposit Collected</literalValue>
         <name>Update Stage to TS Signed</name>
-        <notifUW yAssignee>false</notifyAssignee>
+        <notifyAssignee>false</notifyAssignee>
         <operation>Literal</operation>
         <protected>false</protected>
         <reevaluateOnChange>false</reevaluateOnChange>
@@ -2020,7 +1838,7 @@ Based on Total Property field on Deal.</description>
         <criteriaItems>
             <field>Opportunity.StageName</field>
             <operation>notEqual</operation>
-            <value>UW Hold</value>
+            <value>UW Hold,Processing Hold</value>
         </criteriaItems>
         <criteriaItems>
             <field>Opportunity.In_Process_of_Withdrawn_or_Rejected__c</field>
@@ -2101,7 +1919,7 @@ Based on Total Property field on Deal.</description>
             <name>Update_to_Stage_to_Closed_Won</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>false</active>
+        <active>true</active>
         <criteriaItems>
             <field>Opportunity.Type</field>
             <operation>equals</operation>
@@ -2126,7 +1944,7 @@ Based on Total Property field on Deal.</description>
             <name>Update_Deal_Stage_to_Withdrawn</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>false</active>
+        <active>true</active>
         <criteriaItems>
             <field>Opportunity.Type</field>
             <operation>equals</operation>

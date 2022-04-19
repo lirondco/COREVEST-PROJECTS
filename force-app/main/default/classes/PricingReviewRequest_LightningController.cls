@@ -100,7 +100,7 @@ public without sharing class PricingReviewRequest_LightningController {
   public static String validateRecord(Id recordId) {
     Settings__mdt universalSetting = lightning_Controller.queryUniversalSettings();
 
-    String qs = 'SELECT GLC_Approved__c,RecordType.DeveloperName,OwnerId,Name,Fee__c,Exit_Fee__c,Max_Advance_Fee__c,StageName,LOC_Loan_Type__c,LOC_Program_Type__c,Type,Broker_Fees__c, YSP_perc__c, Deal_Intro_Sub_Source__c,Account.Number_of_Contacts__c,Current_Approval_Process__c,Swap_Rate__c,Spread_BPS__c,CAF_YSP__c,';
+    String qs = 'SELECT GLC_Required__c,GLC_Approved__c,RecordType.DeveloperName,OwnerId,Name,Fee__c,Exit_Fee__c,Max_Advance_Fee__c,StageName,LOC_Loan_Type__c,LOC_Program_Type__c,Type,Broker_Fees__c, YSP_perc__c, Deal_Intro_Sub_Source__c,Account.Number_of_Contacts__c,Current_Approval_Process__c,Swap_Rate__c,Spread_BPS__c,CAF_YSP__c,';
 
     for (String field : termFields.keySet()) {
       if (!qs.contains(field + ',')) {
@@ -187,7 +187,11 @@ public without sharing class PricingReviewRequest_LightningController {
    }*/
     system.debug('--ri--');
     system.debug(ri);
-    if (!ri.isDisplayGLC) {
+    // if (!ri.isDisplayGLC && o.GLC_Required__c && !o.GLC_Approved__c) {
+    //   ri.isDisplayGLC = true;
+    // } 
+    
+    if(!ri.isDisplayGLC) {
       termRequiredDocuments.remove('Greenlight Deck');
     }
 
@@ -333,12 +337,12 @@ public without sharing class PricingReviewRequest_LightningController {
     }
 
 //CIP-2191-RS.4/4/22.Begin.
-	if (universalSetting.Request_Beekin_Rental_Data_Validation__c && beekingRentalInfoCheck(recordId))
-    {
-		ri.otherMessage.add(
-          'Please reterieve rental estimates from Beekin on all the properties before moveing the deal to Underwriting.'
-        );        
-    }
+	// if (universalSetting.Request_Beekin_Rental_Data_Validation__c && beekingRentalInfoCheck(recordId))
+  //   {
+	// 	ri.otherMessage.add(
+  //         'Please reterieve rental estimates from Beekin on all the properties before moveing the deal to Underwriting.'
+  //       );        
+  //   }
 ////CIP-2191-RS.4/4/22.End.      
 
     System.debug(ri);
@@ -346,20 +350,20 @@ public without sharing class PricingReviewRequest_LightningController {
   }
 
 //CIP-2191-RS.4/4/22.Cannot change the deal stage if there is a property with no rental data.Begin.
-@AuraEnabled
-public static Boolean beekingRentalInfoCheck(Id recId) {
-          List<property__c> issue_properties = [select id   FROM Property__c WHERE Deal__r.StageName IN ('Data Tape Received' , 'Term Sheet Issued' , 'Term Sheet Signed/Deposit Collected' 
-                                                                        , 'Submitted to Underwriting' , 'Underwriting' , 'UW Hold' , 'Approved by Committee')
-                                                AND Property__c.Deal__c = :recId AND Status__c NOT IN ('Inactive','Cancelled','Rescinded')
-                                                AND Property__c.ZipCode__c != null AND 
-                                                Property__c.Property_Type__c IN ('SFR' , 'Condo','Townhome','2-4 Unit','Multifamily')
-                                                AND Property__c.Is_Parent__c = False AND deal__r.RecordType__c = 'Term' and (Estimated_Rent__c = Null Or Estimated_Min_Rent__c= Null Or Estimated_Max_Rent__c= Null) Limit 1];
-        if (issue_properties.size() > 0)  
-        {
-         return True;
-        }
-      return False;
-  }
+// @AuraEnabled
+// public static Boolean beekingRentalInfoCheck(Id recId) {
+//           List<property__c> issue_properties = [select id   FROM Property__c WHERE Deal__r.StageName IN ('Data Tape Received' , 'Term Sheet Issued' , 'Term Sheet Signed/Deposit Collected' 
+//                                                                         , 'Submitted to Underwriting' , 'Underwriting' , 'UW Hold' , 'Approved by Committee')
+//                                                 AND Property__c.Deal__c = :recId AND Status__c NOT IN ('Inactive','Cancelled','Rescinded')
+//                                                 AND Property__c.ZipCode__c != null AND 
+//                                                 Property__c.Property_Type__c IN ('SFR' , 'Condo','Townhome','2-4 Unit','Multifamily')
+//                                                 AND Property__c.Is_Parent__c = False AND deal__r.RecordType__c = 'Term' and (Estimated_Rent__c = Null Or Estimated_Min_Rent__c= Null Or Estimated_Max_Rent__c= Null) Limit 1];
+//         if (issue_properties.size() > 0)  
+//         {
+//          return True;
+//         }
+//       return False;
+//   }
 //CIP-2191-RS.4/4/22.Cannot change the deal stage if there is a property with no rental data.End.      
     
   @AuraEnabled
@@ -643,7 +647,7 @@ public static Boolean beekingRentalInfoCheck(Id recId) {
       }
       return 'The record has been submitted for review.';
     } catch (Exception e) {
-      System.debug(e.getMessage() + ' на рядку номер ' + e.getLineNumber());
+      System.debug(e.getMessage());
       return e.getMessage();
     }
   }

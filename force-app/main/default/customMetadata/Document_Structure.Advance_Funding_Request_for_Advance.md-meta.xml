@@ -144,11 +144,11 @@
     </values>
     <values>
         <field>Vendor_Access__c</field>
-        <value xsi:type="xsd:boolean">false</value>
+        <value xsi:type="xsd:boolean">true</value>
     </values>
     <values>
         <field>Vendor_Type_Access__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">Servicer</value>
     </values>
     <values>
         <field>sObject__c</field>

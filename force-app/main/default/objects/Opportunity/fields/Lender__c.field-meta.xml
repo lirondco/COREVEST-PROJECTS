@@ -12,11 +12,6 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>CoreVest American Finance Lender LLC, a Delaware limited liability company</fullName>
-                <default>true</default>
-                <label>CoreVest American Finance Lender LLC, a Delaware limited liability company</label>
-            </value>
-            <value>
                 <fullName>5 Arch Funding</fullName>
                 <default>false</default>
                 <label>5 Arch Funding</label>
@@ -32,6 +27,11 @@
                 <label>A&amp;S Capital</label>
             </value>
             <value>
+                <fullName>Asset Based Lending</fullName>
+                <default>false</default>
+                <label>Asset Based Lending</label>
+            </value>
+            <value>
                 <fullName>Bellevue</fullName>
                 <default>false</default>
                 <label>Bellevue</label>
@@ -45,6 +45,21 @@
                 <fullName>CAF Bridge Lending</fullName>
                 <default>false</default>
                 <label>CAF Bridge Lending</label>
+            </value>
+            <value>
+                <fullName>CoreVest American Finance Lender LLC, a Delaware limited liability company</fullName>
+                <default>true</default>
+                <label>CoreVest American Finance Lender LLC, a Delaware limited liability company</label>
+            </value>
+            <value>
+                <fullName>Dominion Group</fullName>
+                <default>false</default>
+                <label>Dominion Group</label>
+            </value>
+            <value>
+                <fullName>Great Lakes Financing</fullName>
+                <default>false</default>
+                <label>Great Lakes Financing</label>
             </value>
             <value>
                 <fullName>iFundCities</fullName>
@@ -65,6 +80,11 @@
                 <fullName>Patch of Land Lending</fullName>
                 <default>false</default>
                 <label>Patch of Land Lending</label>
+            </value>
+            <value>
+                <fullName>Revolution Realty Capital LLC</fullName>
+                <default>false</default>
+                <label>Revolution Realty Capital LLC</label>
             </value>
             <value>
                 <fullName>Riverbend Lending</fullName>

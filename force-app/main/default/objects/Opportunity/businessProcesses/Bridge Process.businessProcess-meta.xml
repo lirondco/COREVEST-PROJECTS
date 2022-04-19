@@ -32,7 +32,15 @@
         <default>false</default>
     </values>
     <values>
+        <fullName>Processing Hold</fullName>
+        <default>false</default>
+    </values>
+    <values>
         <fullName>Rejected</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Sold</fullName>
         <default>false</default>
     </values>
     <values>

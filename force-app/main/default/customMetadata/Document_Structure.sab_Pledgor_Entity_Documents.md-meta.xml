@@ -40,7 +40,7 @@
     </values>
     <values>
         <field>Display_In_Internal_Picklist__c</field>
-        <value xsi:type="xsd:boolean">true</value>
+        <value xsi:type="xsd:boolean">false</value>
     </values>
     <values>
         <field>Display_In_Portal_Picklist__c</field>

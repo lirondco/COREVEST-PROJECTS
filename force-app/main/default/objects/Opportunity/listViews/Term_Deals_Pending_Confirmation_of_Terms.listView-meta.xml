@@ -6,6 +6,7 @@
     <columns>Loan_Size__c</columns>
     <columns>Submission_Date__c</columns>
     <columns>OPPORTUNITY.CLOSE_DATE</columns>
+    <columns>OPPORTUNITY.STAGE_NAME</columns>
     <columns>Anticipated_Closing_Date__c</columns>
     <columns>Owner_Name__c</columns>
     <columns>Contact__c</columns>
@@ -19,6 +20,11 @@
         <field>Current_Approval_Process__c</field>
         <operation>equals</operation>
         <value>Confirmation of Terms</value>
+    </filters>
+    <filters>
+        <field>ACCOUNT.NAME</field>
+        <operation>notContain</operation>
+        <value>Test</value>
     </filters>
     <label>Term Deals-Pending Confirmation of Terms</label>
 </ListView>

@@ -16,7 +16,15 @@
     </values>
     <values>
         <field>Document_Structure__c</field>
-        <value xsi:type="xsd:string">Lien_Searches_Guarantor_Sponsor</value>
+        <value xsi:type="xsd:string">Lien_Litigation_UCC_BK_Searches</value>
+    </values>
+    <values>
+        <field>Is_Bulk__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>Is_Property_Level__c</field>
+        <value xsi:type="xsd:boolean">false</value>
     </values>
     <values>
         <field>Milestone__c</field>

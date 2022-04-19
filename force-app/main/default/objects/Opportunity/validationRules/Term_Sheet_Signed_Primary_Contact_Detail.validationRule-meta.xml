@@ -2,24 +2,24 @@
 <ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Term_Sheet_Signed_Primary_Contact_Detail</fullName>
     <active>true</active>
-    <description>Contact First Name, Last Name, Email Address, Phone, Address required</description>
-    <errorConditionFormula>AND( 
- $Profile.Name &lt;&gt; &quot;System Administrator&quot;,
- $Profile.Name &lt;&gt; &quot;Integrations&quot;,
- OR( 
-  ISBLANK(Contact__r.MailingStreet),
-  ISBLANK(Contact__r.MailingCity),
-  ISBLANK(Contact__r.MailingPostalCode),
-  ISBLANK(Contact__r.Email),
-  ISBLANK(Contact__r.Phone)
- ),
- OR(
-  ISPICKVAL( StageName , &quot;Submitted to Underwriting&quot;) ,
-  ISPICKVAL( StageName , &quot;Loan Processing&quot;) ,
-  ISPICKVAL( StageName , &quot;Underwriting&quot;) ,
-  ISPICKVAL( StageName , &quot;UW Hold&quot;) ,
-  ISPICKVAL( StageName , &quot;Approved by Committee&quot;) 
- )
+    <description>The Deal&apos;s Primary Contact can&apos;t be missing any of the following fields: Address, Business Phone, or Email.</description>
+    <errorConditionFormula>AND(
+$Profile.Name &lt;&gt; &quot;System Administrator&quot;,
+$Profile.Name &lt;&gt; &quot;Integrations&quot;,
+OR(
+ISBLANK(Contact__r.MailingStreet),
+ISBLANK(Contact__r.MailingCity),
+ISBLANK(Contact__r.MailingPostalCode),
+ISBLANK(Contact__r.Email),
+ISBLANK(Contact__r.Phone)
+),
+OR(
+ISPICKVAL( StageName , &quot;Submitted to Underwriting&quot;) ,
+ISPICKVAL( StageName , &quot;Loan Processing&quot;) ,
+ISPICKVAL( StageName , &quot;Underwriting&quot;) ,
+ISPICKVAL( StageName , &quot;UW Hold&quot;) ,
+ISPICKVAL( StageName , &quot;Approved by Committee&quot;)
+)
 )</errorConditionFormula>
     <errorMessage>The Deal&apos;s Primary Contact is missing one or more of the following fields: Address, Business Phone, or Email. Please complete these fields before making this change.</errorMessage>
 </ValidationRule>

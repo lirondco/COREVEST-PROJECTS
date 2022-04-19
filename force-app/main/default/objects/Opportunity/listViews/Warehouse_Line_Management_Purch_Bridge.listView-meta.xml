@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Warehouse_Line_Management_Purch_Bridge</fullName>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>Deal_Loan_Number__c</columns>
+    <columns>Approved_Third_Party_Originators__c</columns>
+    <columns>Warehouse_Line__c</columns>
+    <columns>Warehouse_Line_Debt__c</columns>
+    <columns>Warehoused__c</columns>
+    <columns>OPPORTUNITY.STAGE_NAME</columns>
+    <columns>OPPORTUNITY.CLOSE_DATE</columns>
+    <columns>Purchase_Date__c</columns>
+    <columns>LOC_Loan_Type__c</columns>
+    <columns>Product_Sub_Type__c</columns>
+    <columns>LOC_Commitment__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>OPPORTUNITY.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Opportunity.Acquired_Bridge_Loan_Active</value>
+    </filters>
+    <filters>
+        <field>OPPORTUNITY.STAGE_NAME</field>
+        <operation>equals</operation>
+        <value>Closed Won</value>
+    </filters>
+    <label>Warehouse Line Management - Purch Bridge</label>
+</ListView>

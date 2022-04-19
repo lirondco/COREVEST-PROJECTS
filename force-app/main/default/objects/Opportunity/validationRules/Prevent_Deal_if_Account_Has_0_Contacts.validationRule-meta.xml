@@ -4,6 +4,8 @@
     <active>true</active>
     <description>Prevents deal creation if an account has 0 contacts.</description>
     <errorConditionFormula>AND(
+NOT ( $Profile.Name= &quot;System Administrator&quot; ),
+NOT ( $Profile.Name= &quot;Integration&quot; ),
 ISNEW(),
  Account.Number_of_Contacts__c = 0,
    RecordType.Name &lt;&gt; &quot;Investor DSCR - Active&quot;,

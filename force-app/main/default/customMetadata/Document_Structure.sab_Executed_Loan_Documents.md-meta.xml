@@ -8,7 +8,7 @@
     </values>
     <values>
         <field>Additional_C2C_Filtering__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">SAB</value>
     </values>
     <values>
         <field>Borrower_Access__c</field>
@@ -24,11 +24,11 @@
     </values>
     <values>
         <field>C2C_Sort__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:double">2.0</value>
     </values>
     <values>
         <field>Clear_To_Close_Setting__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">Closing_Documents_Requirements_sab</value>
     </values>
     <values>
         <field>Confidential__c</field>
@@ -40,11 +40,11 @@
     </values>
     <values>
         <field>Display_In_Internal_Picklist__c</field>
-        <value xsi:type="xsd:boolean">false</value>
+        <value xsi:type="xsd:boolean">true</value>
     </values>
     <values>
         <field>Display_In_Portal_Picklist__c</field>
-        <value xsi:type="xsd:boolean">false</value>
+        <value xsi:type="xsd:boolean">true</value>
     </values>
     <values>
         <field>Document_Type__c</field>
@@ -112,7 +112,7 @@
     </values>
     <values>
         <field>Required__c</field>
-        <value xsi:type="xsd:boolean">false</value>
+        <value xsi:type="xsd:boolean">true</value>
     </values>
     <values>
         <field>Required_for_Onboarding__c</field>

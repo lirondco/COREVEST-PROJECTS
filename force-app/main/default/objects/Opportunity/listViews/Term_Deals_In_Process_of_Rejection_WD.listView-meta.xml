@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Term_Deals_In_Process_of_Rejection_WD</fullName>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>Current_Loan_Amount__c</columns>
+    <columns>Anticipated_Closing_Date__c</columns>
+    <columns>OPPORTUNITY.CLOSE_DATE</columns>
+    <columns>OPPORTUNITY.STAGE_NAME</columns>
+    <columns>Deal_Lost_Reason__c</columns>
+    <columns>Days_In_UW_Hold__c</columns>
+    <columns>Owner_Name__c</columns>
+    <columns>Underwriter__c</columns>
+    <columns>Loan_Coordinator__c</columns>
+    <columns>Closer__c</columns>
+    <columns>In_Process_of_Withdrawn_or_Rejected__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>OPPORTUNITY.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Opportunity.Term_Loan</value>
+    </filters>
+    <filters>
+        <field>In_Process_of_Withdrawn_or_Rejected__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <label>Term Deals In Process of Rejection/WD</label>
+</ListView>

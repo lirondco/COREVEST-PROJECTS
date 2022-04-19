@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DSCR_Loans_without_Yardi_ID</fullName>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>Borrower_Entity__c</columns>
+    <columns>Approved_Third_Party_Originators__c</columns>
+    <columns>Final_Loan_Amount__c</columns>
+    <columns>OPPORTUNITY.CLOSE_DATE</columns>
+    <columns>Purchase_Date__c</columns>
+    <columns>Deal_Code__c</columns>
+    <columns>Yardi_ID__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>OPPORTUNITY.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Opportunity.Investor_DSCR_Active</value>
+    </filters>
+    <filters>
+        <field>Yardi_ID__c</field>
+        <operation>equals</operation>
+    </filters>
+    <label>DSCR Loans without Yardi ID</label>
+</ListView>

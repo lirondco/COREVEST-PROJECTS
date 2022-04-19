@@ -19,6 +19,14 @@
         <value xsi:nil="true"/>
     </values>
     <values>
+        <field>Is_Bulk__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>Is_Property_Level__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
         <field>Milestone__c</field>
         <value xsi:type="xsd:string">In Processing</value>
     </values>
@@ -28,7 +36,7 @@
     </values>
     <values>
         <field>Responsible_Party__c</field>
-        <value xsi:type="xsd:string">Template</value>
+        <value xsi:type="xsd:string">Email Template</value>
     </values>
     <values>
         <field>Reviewer__c</field>

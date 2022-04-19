@@ -16,7 +16,15 @@
     </values>
     <values>
         <field>Document_Structure__c</field>
-        <value xsi:type="xsd:string">Pledgor_Guaranty</value>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Is_Bulk__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>Is_Property_Level__c</field>
+        <value xsi:type="xsd:boolean">false</value>
     </values>
     <values>
         <field>Milestone__c</field>

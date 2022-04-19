@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>My_Open_Bridge_Deals</fullName>
+    <columns>Deal_Loan_Number__c</columns>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>OPPORTUNITY.CLOSE_DATE</columns>
+    <columns>LOC_Loan_Type__c</columns>
+    <columns>LOC_Commitment__c</columns>
+    <columns>Revolving1__c</columns>
+    <columns>Maturity_Date_Calculation_Type__c</columns>
+    <columns>Rate__c</columns>
+    <columns>Fee__c</columns>
+    <columns>CAF_Upfront_Fee__c</columns>
+    <columns>Exit_Fee__c</columns>
+    <columns>LTV__c</columns>
+    <columns>LTC__c</columns>
+    <columns>of_Pending_Properties__c</columns>
+    <filterScope>SalesTeam</filterScope>
+    <filters>
+        <field>OPPORTUNITY.STAGE_NAME</field>
+        <operation>equals</operation>
+        <value>Initial Review,Data Tape Received,Issue Term Sheet/Order Appraisal,Term Sheet Issued,Term Sheet Signed/Deposit Collected,Submitted to Underwriting,Loan Processing,Underwriting,Approved by Committee</value>
+    </filters>
+    <filters>
+        <field>OPPORTUNITY.TYPE</field>
+        <operation>equals</operation>
+        <value>Bridge Loan,SAB Loan</value>
+    </filters>
+    <label>My Open Bridge Deals</label>
+</ListView>

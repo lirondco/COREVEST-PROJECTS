@@ -79,6 +79,11 @@
                 <label>BiggerPockets Conference</label>
             </value>
             <value>
+                <fullName>Bobby Ash Sourced</fullName>
+                <default>false</default>
+                <label>Bobby Ash Sourced</label>
+            </value>
+            <value>
                 <fullName>Boris Zhuravel Sourced</fullName>
                 <default>false</default>
                 <label>Boris Zhuravel Sourced</label>
@@ -197,6 +202,11 @@
                 <fullName>Dennis Spivey Sourced</fullName>
                 <default>false</default>
                 <label>Dennis Spivey Sourced</label>
+            </value>
+            <value>
+                <fullName>Dominion Group</fullName>
+                <default>false</default>
+                <label>Dominion Group</label>
             </value>
             <value>
                 <fullName>Employee</fullName>
@@ -512,6 +522,11 @@
                 <fullName>Rent Range</fullName>
                 <default>false</default>
                 <label>Rent Range</label>
+            </value>
+            <value>
+                <fullName>Revolution Realty Capital</fullName>
+                <default>false</default>
+                <label>Revolution Realty Capital</label>
             </value>
             <value>
                 <fullName>River Rock</fullName>
@@ -916,6 +931,10 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Imported List</controllingFieldValue>
+            <valueName>Dominion Group</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Imported List</controllingFieldValue>
             <valueName>Fidelis</valueName>
         </valueSettings>
         <valueSettings>
@@ -937,6 +956,10 @@
         <valueSettings>
             <controllingFieldValue>Imported List</controllingFieldValue>
             <valueName>Rent Range</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Imported List</controllingFieldValue>
+            <valueName>Revolution Realty Capital</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Imported List</controllingFieldValue>
@@ -1005,6 +1028,10 @@
         <valueSettings>
             <controllingFieldValue>Non-Database</controllingFieldValue>
             <valueName>Anthony Elgort Sourced</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Non-Database</controllingFieldValue>
+            <valueName>Bobby Ash Sourced</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Non-Database</controllingFieldValue>

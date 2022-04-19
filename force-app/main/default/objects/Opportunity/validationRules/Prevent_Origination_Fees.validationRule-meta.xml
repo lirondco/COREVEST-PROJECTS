@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Prevent_Origination_Fees</fullName>
+    <active>true</active>
+    <description>Origination Fee % cannot be less then 1% for 30 years Team Loan</description>
+    <errorConditionFormula>IF(AND(ISPICKVAL(Type,&quot;Term Loan&quot;), ISCHANGED(CAF_Upfront_Fee__c)),
+IF(AND(ISPICKVAL(Term_Loan_Type__c, &quot;30 Year&quot;), CAF_Upfront_Fee__c&lt;0.0125),
+TRUE,
+IF(AND(NOT(ISPICKVAL(Term_Loan_Type__c, &quot;30 Year&quot;)), CAF_Upfront_Fee__c&lt;0.01),
+TRUE,
+FALSE)
+),
+FALSE)</errorConditionFormula>
+    <errorDisplayField>CAF_Upfront_Fee__c</errorDisplayField>
+    <errorMessage>Origination Fee % cannot be less then 1.25% for 30 Year or 1% for 5, 7 and 10 Year Team Loans</errorMessage>
+</ValidationRule>

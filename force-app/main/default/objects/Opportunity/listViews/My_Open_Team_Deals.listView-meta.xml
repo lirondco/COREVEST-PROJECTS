@@ -15,7 +15,7 @@
     <filters>
         <field>OPPORTUNITY.STAGE_NAME</field>
         <operation>equals</operation>
-        <value>Initial Review,Data Tape Received,Term Sheet Issued,Term Sheet Signed/Deposit Collected,Submitted to Underwriting,Loan Processing,Underwriting,Approved by Committee,UW Hold</value>
+        <value>Initial Review,Data Tape Received,Term Sheet Issued,Term Sheet Signed/Deposit Collected,Submitted to Underwriting,Loan Processing,Processing Hold,Underwriting,UW Hold,Approved by Committee</value>
     </filters>
     <label>My Open Team Deals</label>
 </ListView>

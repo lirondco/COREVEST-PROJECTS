@@ -4,7 +4,7 @@
     <businessStatus>Active</businessStatus>
     <description>Bridge Use</description>
     <externalId>false</externalId>
-    <label>Interest Reserves</label>
+    <label>Original Interest Reserves</label>
     <precision>18</precision>
     <required>false</required>
     <scale>2</scale>

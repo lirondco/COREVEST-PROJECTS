@@ -4,7 +4,7 @@
     <businessStatus>Active</businessStatus>
     <description>When a deal is marked as Lost (Cancelled, Withdrawn, or Rejected).  A lost reason is needed.</description>
     <externalId>false</externalId>
-    <inlineHelpText>Select a Deal Lost/Hold Reason, if a deal is moved to UW Hold, Withdrawn, or Rejected.</inlineHelpText>
+    <inlineHelpText>Select a Deal Lost Reason, if a deal is moved to Cancelled, Withdrawn, or Rejected.</inlineHelpText>
     <label>Deal Lost/Hold Reason</label>
     <required>false</required>
     <securityClassification>Internal</securityClassification>
@@ -86,11 +86,6 @@
                 <label>Failed to Qualify</label>
             </value>
             <value>
-                <fullName>In Process of Withdrawal/Rejection</fullName>
-                <default>false</default>
-                <label>In Process of Withdrawal/Rejection</label>
-            </value>
-            <value>
                 <fullName>Insufficient Income</fullName>
                 <default>false</default>
                 <label>Insufficient Income</label>
@@ -116,9 +111,9 @@
                 <label>Money Laundering</label>
             </value>
             <value>
-                <fullName>Other – See Deal Notes</fullName>
+                <fullName>Other - See Deal Notes</fullName>
                 <default>false</default>
-                <label>Other – See Deal Notes</label>
+                <label>Other - See Deal Notes</label>
             </value>
             <value>
                 <fullName>Pending Financial Documents/Tax Returns</fullName>
@@ -183,6 +178,12 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Rejected</controllingFieldValue>
+            <controllingFieldValue>UW Hold</controllingFieldValue>
+            <controllingFieldValue>Withdrawn</controllingFieldValue>
+            <valueName>Economic Downturn</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Rejected</controllingFieldValue>
             <controllingFieldValue>Withdrawn</controllingFieldValue>
             <valueName>Insufficient Income</valueName>
         </valueSettings>
@@ -203,6 +204,13 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Rejected</controllingFieldValue>
+            <controllingFieldValue>UW Hold</controllingFieldValue>
+            <controllingFieldValue>Withdrawn</controllingFieldValue>
+            <controllingFieldValue>Processing Hold</controllingFieldValue>
+            <valueName>Other - See Deal Notes</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Rejected</controllingFieldValue>
             <controllingFieldValue>Withdrawn</controllingFieldValue>
             <valueName>Terms Not Accepted</valueName>
         </valueSettings>
@@ -217,27 +225,18 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>UW Hold</controllingFieldValue>
+            <controllingFieldValue>Processing Hold</controllingFieldValue>
             <valueName>Borrower does not meet requirements</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>UW Hold</controllingFieldValue>
+            <controllingFieldValue>Withdrawn</controllingFieldValue>
+            <controllingFieldValue>Processing Hold</controllingFieldValue>
             <valueName>Borrower Unresponsive</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>UW Hold</controllingFieldValue>
             <valueName>Does not meet occupancy</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>UW Hold</controllingFieldValue>
-            <valueName>Economic Downturn</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>UW Hold</controllingFieldValue>
-            <valueName>In Process of Withdrawal/Rejection</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>UW Hold</controllingFieldValue>
-            <valueName>Other – See Deal Notes</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>UW Hold</controllingFieldValue>
@@ -257,6 +256,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>UW Hold</controllingFieldValue>
+            <controllingFieldValue>Withdrawn</controllingFieldValue>
             <valueName>Split Up Deal</valueName>
         </valueSettings>
         <valueSettings>

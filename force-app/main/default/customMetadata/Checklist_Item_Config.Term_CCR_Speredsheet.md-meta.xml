@@ -8,7 +8,7 @@
     </values>
     <values>
         <field>Checklist_Item_Name__c</field>
-        <value xsi:type="xsd:string">CC&amp;R Speadsheet</value>
+        <value xsi:type="xsd:string">CC&amp;R Spreadsheet</value>
     </values>
     <values>
         <field>Checklist_Type__c</field>
@@ -17,6 +17,14 @@
     <values>
         <field>Document_Structure__c</field>
         <value xsi:type="xsd:string">Term_CC_R_Speadsheet</value>
+    </values>
+    <values>
+        <field>Is_Bulk__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>Is_Property_Level__c</field>
+        <value xsi:type="xsd:boolean">false</value>
     </values>
     <values>
         <field>Milestone__c</field>

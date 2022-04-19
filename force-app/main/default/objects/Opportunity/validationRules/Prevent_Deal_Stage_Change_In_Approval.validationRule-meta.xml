@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Prevent_Deal_Stage_Change_In_Approval</fullName>
+    <active>true</active>
+    <description>Prevent deal stage change to Withdraw or Rejected if the Current_Approval_Process__c is not null</description>
+    <errorConditionFormula>AND(
+NOT(ISPICKVAL(Current_Approval_Process__c,&quot;&quot;)),
+OR(
+ISPICKVAL(StageName, &quot;Withdrawn&quot;),
+ISPICKVAL(StageName, &quot;Rejected&quot;)
+)
+)</errorConditionFormula>
+    <errorMessage>”This Deal is currently pending approval. Please have it rejected or recalled before moving to Withdrawn or Rejected.”</errorMessage>
+</ValidationRule>

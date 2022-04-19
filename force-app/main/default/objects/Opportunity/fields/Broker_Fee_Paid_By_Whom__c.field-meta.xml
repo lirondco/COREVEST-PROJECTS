@@ -12,14 +12,19 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>Corevest</fullName>
+                <fullName>CoreVest</fullName>
                 <default>false</default>
-                <label>Corevest</label>
+                <label>CoreVest</label>
             </value>
             <value>
                 <fullName>Escrow</fullName>
                 <default>false</default>
                 <label>Escrow</label>
+            </value>
+            <value>
+                <fullName>N/A</fullName>
+                <default>false</default>
+                <label>N/A</label>
             </value>
         </valueSetDefinition>
     </valueSet>

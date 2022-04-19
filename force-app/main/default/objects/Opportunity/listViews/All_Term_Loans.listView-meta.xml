@@ -15,20 +15,5 @@
     <columns>Total_Properties__c</columns>
     <columns>Total_Units__c</columns>
     <filterScope>Everything</filterScope>
-    <filters>
-        <field>OPPORTUNITY.RECORDTYPE</field>
-        <operation>equals</operation>
-        <value>Opportunity.Single_Asset_Loan,Opportunity.Single_Rental_Loan_Closed_Lost,Opportunity.Term_Loan,Opportunity.Term_Loan_Closed_Lost</value>
-    </filters>
-    <filters>
-        <field>OPPORTUNITY.CREATED_DATE</field>
-        <operation>greaterThan</operation>
-        <value>7/1/2019 12:00 AM</value>
-    </filters>
-    <filters>
-        <field>OPPORTUNITY.CREATED_DATE</field>
-        <operation>lessOrEqual</operation>
-        <value>7/30/2019 12:00 AM</value>
-    </filters>
     <label>All Term Loans</label>
 </ListView>

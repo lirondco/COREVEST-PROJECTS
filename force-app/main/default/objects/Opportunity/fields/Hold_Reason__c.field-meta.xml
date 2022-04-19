@@ -11,6 +11,7 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
+        <controllingField>StageName</controllingField>
         <restricted>true</restricted>
         <valueSetDefinition>
             <sorted>false</sorted>
@@ -23,6 +24,11 @@
                 <fullName>Borrower does not meet requirements</fullName>
                 <default>false</default>
                 <label>Borrower does not meet requirements</label>
+            </value>
+            <value>
+                <fullName>Borrower unresponsive</fullName>
+                <default>false</default>
+                <label>Borrower unresponsive</label>
             </value>
             <value>
                 <fullName>Does not meet occupancy</fullName>
@@ -68,12 +74,6 @@
                 <fullName>Split Up Deal</fullName>
                 <default>false</default>
                 <label>Split Up Deal</label>
-            </value>
-            <value>
-                <fullName>Borrower unresponsive</fullName>
-                <default>false</default>
-                <isActive>false</isActive>
-                <label>Borrower unresponsive</label>
             </value>
         </valueSetDefinition>
     </valueSet>

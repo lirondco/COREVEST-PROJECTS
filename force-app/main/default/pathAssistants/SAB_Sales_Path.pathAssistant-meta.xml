@@ -5,11 +5,23 @@
     <fieldName>StageName</fieldName>
     <masterLabel>SAB Sales Path</masterLabel>
     <pathAssistantSteps>
-        <fieldNames>Appraisal_Ordered__c</fieldNames>
-        <fieldNames>Background_Check_Completed__c</fieldNames>
-        <fieldNames>Credit_Check_Completed__c</fieldNames>
-        <info>&lt;p&gt;At this Stage, you should have the below completed&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Appraisal should be ordered and paid for by the Borrower&lt;/li&gt;&lt;li&gt;Background Check &amp;amp; Credit Check have been completed&lt;/li&gt;&lt;/ul&gt;</info>
-        <picklistValueName>Issue Term Sheet/Order Appraisal</picklistValueName>
+        <fieldNames>Loan_Effective_Date__c</fieldNames>
+        <info>&lt;p&gt;Required Fields:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;LOC Commitment&lt;/li&gt;&lt;li&gt;Close Date&lt;/li&gt;&lt;li&gt;Current Close Date&lt;/li&gt;&lt;li&gt;Date Closing Doc Received&lt;/li&gt;&lt;li&gt;Legal Fee&lt;/li&gt;&lt;li&gt;Origination Fee Paid Date&lt;/li&gt;&lt;li&gt;Date of Cert of Good Standing&lt;/li&gt;&lt;li&gt;Date of Entity Search&lt;/li&gt;&lt;li&gt;Entity Search Fee&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</info>
+        <picklistValueName>Approved by Committee</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <fieldNames>Origination_Fee_Paid_Date__c</fieldNames>
+        <fieldNames>Date_of_Individual_Search__c</fieldNames>
+        <fieldNames>Underwriting_File_Complete_Date__c</fieldNames>
+        <!-- <fieldNames>Anticipated_IC_Approval__c</fieldNames>
+        <fieldNames>IC_Approval_Date__c</fieldNames> -->
+        <info>&lt;p&gt;Required Fields:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Max Advance Fee&lt;/li&gt;&lt;li&gt;Renovation Funding&lt;/li&gt;&lt;li&gt;Extension Fee&lt;/li&gt;&lt;li&gt;Exit Fee&lt;/li&gt;&lt;li&gt;Interest Rate&lt;/li&gt;&lt;li&gt;Interest Rate Type&lt;/li&gt;&lt;li&gt;Revolving&lt;/li&gt;&lt;li&gt;Deposit Amount&lt;/li&gt;&lt;li&gt;Deposit Collected Date&lt;/li&gt;&lt;li&gt;Date of Individual Search&lt;/li&gt;&lt;li&gt;Full Util Coverage&lt;/li&gt;&lt;li&gt;Underwriting Extension&lt;/li&gt;&lt;li&gt;Origination Fee&lt;/li&gt;&lt;li&gt;Underwriting File Complete Date&lt;/li&gt;&lt;li&gt;New Loan Crossed to Prior&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</info>
+        <picklistValueName>Underwriting</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <fieldNames>StageName</fieldNames>
+        <fieldNames>Deal_Lost_Reason__c</fieldNames>
+        <picklistValueName>Withdrawn</picklistValueName>
     </pathAssistantSteps>
     <recordTypeName>Single_Asset_Bridge_Loan</recordTypeName>
 </PathAssistant>

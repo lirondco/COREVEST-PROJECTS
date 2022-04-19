@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ListView xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Warehouse_Line_Management</fullName>
-    <booleanFilter>1 AND ((2 AND 3) OR (4 AND 5))</booleanFilter>
+    <booleanFilter>1 AND ((2 AND 3) OR (4 AND (5 OR 6)))</booleanFilter>
     <columns>OPPORTUNITY.NAME</columns>
     <columns>Deal_Loan_Number__c</columns>
     <columns>ACCOUNT.NAME</columns>
@@ -10,6 +10,7 @@
     <columns>Warehoused__c</columns>
     <columns>OPPORTUNITY.STAGE_NAME</columns>
     <columns>OPPORTUNITY.CLOSE_DATE</columns>
+    <columns>Anticipated_Closing_Date__c</columns>
     <columns>Current_Loan_Amount__c</columns>
     <filterScope>Everything</filterScope>
     <filters>
@@ -37,5 +38,10 @@
         <operation>equals</operation>
         <value>NEXT_N_DAYS:30</value>
     </filters>
-    <label>Warehouse Line Management</label>
+    <filters>
+        <field>Anticipated_Closing_Date__c</field>
+        <operation>equals</operation>
+        <value>LAST_N_DAYS:30</value>
+    </filters>
+    <label>Warehouse Line Management - Term</label>
 </ListView>

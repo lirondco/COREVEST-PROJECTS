@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Approved_by_Committee_Loan_Comm_Required</fullName>
+    <active>true</active>
+    <description>Requires the Loan Commitment field to be completed before moving the stage to Approved by Committee</description>
+    <errorConditionFormula>AND(
+ISPICKVAL(  StageName , &quot;Approved by Committee&quot;),
+ISBLANK( LOC_Commitment__c ),
+OR(
+Record_Type_Name__c = &quot;Single_Asset_Bridge_Loan&quot;,
+Record_Type_Name__c = &quot;LOC_Loan&quot;
+)
+)</errorConditionFormula>
+    <errorDisplayField>LOC_Commitment__c</errorDisplayField>
+    <errorMessage>Loan Commitment must be entered before updating the stage.</errorMessage>
+</ValidationRule>

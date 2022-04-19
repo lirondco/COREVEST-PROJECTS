@@ -24,11 +24,11 @@
     </values>
     <values>
         <field>C2C_Sort__c</field>
-        <value xsi:type="xsd:double">13.0</value>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>Clear_To_Close_Setting__c</field>
-        <value xsi:type="xsd:string">DS_Funding_Package</value>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>Confidential__c</field>
@@ -40,7 +40,7 @@
     </values>
     <values>
         <field>Display_In_Internal_Picklist__c</field>
-        <value xsi:type="xsd:boolean">true</value>
+        <value xsi:type="xsd:boolean">false</value>
     </values>
     <values>
         <field>Display_In_Portal_Picklist__c</field>
@@ -68,11 +68,11 @@
     </values>
     <values>
         <field>Post_Close_Setting__c</field>
-        <value xsi:type="xsd:string">Term_OnBoarding</value>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>Post_Closing_Criteria__c</field>
-        <value xsi:type="xsd:string">ISCHANGED(StageName)|StageName-=-Approved by Committee</value>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>Post_Closing_Item_Per_County__c</field>
@@ -84,15 +84,15 @@
     </values>
     <values>
         <field>Post_Closing_Sort__c</field>
-        <value xsi:type="xsd:double">12.0</value>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>Post_Closing_Trigger__c</field>
-        <value xsi:type="xsd:string">afterUpdate</value>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>Post_Closing_sObjectType__c</field>
-        <value xsi:type="xsd:string">Opportunity</value>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>Private__c</field>
@@ -120,7 +120,7 @@
     </values>
     <values>
         <field>Sort__c</field>
-        <value xsi:type="xsd:double">13.4</value>
+        <value xsi:type="xsd:double">13.61</value>
     </values>
     <values>
         <field>Stage_Required__c</field>

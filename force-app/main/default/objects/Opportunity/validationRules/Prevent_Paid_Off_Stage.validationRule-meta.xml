@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Prevent_Paid_Off_Stage</fullName>
-    <active>false</active>
+    <active>true</active>
     <description>Prevents all users form choosing &quot;Paid Off&quot; as the Deal Stage.</description>
-    <errorConditionFormula>AND(ISCHANGED(  StageName  ), ISPICKVAL(StageName  , &quot;Paid Off&quot;) ,
-NOT(
-OR($Profile.Name = &quot;Integration&quot;,$Profile.Name = &quot;System Administrator&quot;)
-
-)
-
+    <errorConditionFormula>AND(
+ ISCHANGED( StageName ), 
+ OR(
+  ISPICKVAL(StageName  , &quot;Paid Off&quot;) ,
+  ISPICKVAL(StageName  , &quot;Sold&quot;) 
+ ),
+ NOT(
+ OR(
+  $Profile.Name = &quot;Integration&quot;,
+  $Profile.Name = &quot;System Administrator&quot;
+  )
+ )
 )</errorConditionFormula>
     <errorDisplayField>StageName</errorDisplayField>
-    <errorMessage>&quot;Paid Off&quot; is not a valid Stage selection</errorMessage>
+    <errorMessage>You have selected an invalid Stage</errorMessage>
 </ValidationRule>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>TermSheetInput_LightningController</members>
+        <members>UnderwritingApproval_LightningController</members>
+        <members>PricingReviewRequest_LightningController</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>Document_Structure.Completed_Bridge_Project_Sizing_sab</members>
+        <name>CustomMetadata</name>
+    </types>
+    <version>53.0</version>
+</Package>
+
+<!-- sfdx force:source:deploy -x manifest/deploy.xml  -l RunSpecifiedTests -r TermSheetInput_LightningControllerTest,UnderwritingApprovalTests,PricingReviewRequest_Tests-->

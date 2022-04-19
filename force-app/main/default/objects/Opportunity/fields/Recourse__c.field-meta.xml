@@ -2,6 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Recourse__c</fullName>
     <businessStatus>Active</businessStatus>
+    <defaultValue>CASE( $RecordType.DeveloperName , &quot;Single_Asset_Bridge_Loan&quot;, &quot;Recourse&quot;, &quot; &quot; )</defaultValue>
     <externalId>false</externalId>
     <label>Recourse</label>
     <required>false</required>
@@ -10,6 +11,7 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
+        <restricted>true</restricted>
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
@@ -21,6 +23,36 @@
                 <fullName>Non-Recourse</fullName>
                 <default>false</default>
                 <label>Non-Recourse</label>
+            </value>
+            <value>
+                <fullName>Limited - Bad Boy</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Limited - Bad Boy</label>
+            </value>
+            <value>
+                <fullName>No</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>No</label>
+            </value>
+            <value>
+                <fullName>Non-Recourse (No Cash Management)</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Non-Recourse (No Cash Management)</label>
+            </value>
+            <value>
+                <fullName>Non-Recourse (Springing Cash Management)</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Non-Recourse (Springing Cash Management)</label>
+            </value>
+            <value>
+                <fullName>Yes</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Yes</label>
             </value>
         </valueSetDefinition>
     </valueSet>

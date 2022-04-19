@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Prevent_Record_Type_Change</fullName>
+    <active>true</active>
+    <description>Prevent Users from changing the Record Types of Deals</description>
+    <errorConditionFormula>AND(
+ NOT ( $Profile.Name= &quot;System Administrator&quot;),
+ ISCHANGED( RecordTypeId ),
+ PRIORVALUE( RecordType__c ) = &apos;Term&apos;,
+ RecordType__c != &apos;Term&apos;
+)</errorConditionFormula>
+    <errorMessage>The Record Type of this Deal cannot be updated</errorMessage>
+</ValidationRule>

@@ -16,7 +16,15 @@
     </values>
     <values>
         <field>Document_Structure__c</field>
-        <value xsi:type="xsd:string">sab_Executed_Loan_Agreement</value>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Is_Bulk__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>Is_Property_Level__c</field>
+        <value xsi:type="xsd:boolean">false</value>
     </values>
     <values>
         <field>Milestone__c</field>
@@ -32,7 +40,7 @@
     </values>
     <values>
         <field>Reviewer__c</field>
-        <value xsi:type="xsd:string">Legal</value>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>Type__c</field>
@@ -40,7 +48,7 @@
     </values>
     <values>
         <field>Uploader__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">Legal</value>
     </values>
     <values>
         <field>Use_Historical_Uploads__c</field>

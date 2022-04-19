@@ -13,6 +13,7 @@
     <columns>Owner_Name__c</columns>
     <columns>Closer__c</columns>
     <columns>Underwriter__c</columns>
+    <columns>of_Pending_Properties__c</columns>
     <filterScope>Everything</filterScope>
     <filters>
         <field>OPPORTUNITY.RECORDTYPE</field>

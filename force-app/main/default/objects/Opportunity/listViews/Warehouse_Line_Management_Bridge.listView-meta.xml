@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ListView xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Warehouse_Line_Management_Bridge</fullName>
+    <booleanFilter>1 AND ((2 AND 3) OR 4)</booleanFilter>
     <columns>OPPORTUNITY.NAME</columns>
     <columns>Deal_Loan_Number__c</columns>
     <columns>ACCOUNT.NAME</columns>
-    <columns>Securitization__c</columns>
+    <columns>Warehouse_Line__c</columns>
+    <columns>Warehouse_Line_Debt__c</columns>
+    <columns>Warehoused__c</columns>
     <columns>OPPORTUNITY.STAGE_NAME</columns>
     <columns>OPPORTUNITY.CLOSE_DATE</columns>
-    <columns>Final_Loan_Amount__c</columns>
+    <columns>LOC_Loan_Type__c</columns>
+    <columns>Product_Sub_Type__c</columns>
+    <columns>LOC_Commitment__c</columns>
     <filterScope>Everything</filterScope>
     <filters>
         <field>OPPORTUNITY.RECORDTYPE</field>
         <operation>equals</operation>
-        <value>Opportunity.Term_Loan</value>
+        <value>Opportunity.LOC_Loan</value>
     </filters>
     <filters>
         <field>OPPORTUNITY.STAGE_NAME</field>
@@ -22,10 +27,12 @@
     <filters>
         <field>OPPORTUNITY.CLOSE_DATE</field>
         <operation>equals</operation>
-        <value>LAST_N_DAYS:190</value>
+        <value>LAST_90_DAYS</value>
+    </filters>
+    <filters>
+        <field>OPPORTUNITY.STAGE_NAME</field>
+        <operation>equals</operation>
+        <value>Loan Processing,Underwriting,Approved by Committee</value>
     </filters>
     <label>Warehouse Line Management - Bridge</label>
-    <sharedTo>
-        <role>Capital_Markets</role>
-    </sharedTo>
 </ListView>

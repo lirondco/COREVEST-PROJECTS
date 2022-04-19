@@ -4,7 +4,7 @@
     <protected>false</protected>
     <values>
         <field>Approver__c</field>
-        <value xsi:type="xsd:string">UW</value>
+        <value xsi:type="xsd:string">Underwriter</value>
     </values>
     <values>
         <field>Checklist_Item_Name__c</field>
@@ -16,7 +16,15 @@
     </values>
     <values>
         <field>Document_Structure__c</field>
-        <value xsi:type="xsd:string">Bridge_Financials_Personal_Tax_Returns</value>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Is_Bulk__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>Is_Property_Level__c</field>
+        <value xsi:type="xsd:boolean">false</value>
     </values>
     <values>
         <field>Milestone__c</field>

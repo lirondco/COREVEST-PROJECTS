@@ -4,7 +4,7 @@
     <protected>false</protected>
     <values>
         <field>Alchemy_Portal_Dev_URL__c</field>
-        <value xsi:type="xsd:string">https://coreveststaging-api.alchemylms.com</value>
+        <value xsi:type="xsd:string">https://coreveststaging-api.alchemylms.com/</value>
     </values>
     <values>
         <field>Alchemy_Production_URL__c</field>
@@ -40,11 +40,11 @@
     </values>
     <values>
         <field>Bridge_Sec_Diligence_Review_Email_CC__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">bryon.harland@cvest.com</value>
     </values>
     <values>
         <field>Bridge_Sec_Diligence_Review_Email_To__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">bryon.harland@cvest.com</value>
     </values>
     <values>
         <field>Construction_Manager_Acquired_Loans__c</field>
@@ -52,7 +52,7 @@
     </values>
     <values>
         <field>Construction_Manager_CV_Originated__c</field>
-        <value xsi:type="xsd:string">0050a00000L854aAAB</value>
+        <value xsi:type="xsd:string">0050a00000L852oAAB</value>
     </values>
     <values>
         <field>Disable_Advance_Trigger__c</field>
@@ -87,6 +87,10 @@
         <value xsi:type="xsd:boolean">false</value>
     </values>
     <values>
+        <field>Disable_Swap_Rate_Update__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
         <field>Duplicate_Property_Alert_Email__c</field>
         <value xsi:type="xsd:string">Jonathan.Lay@cvest.com;bryon.harland@cvest.com;Dan.Federico@cvest.com;Brad.Chmura@cvest.com</value>
     </values>
@@ -100,7 +104,7 @@
     </values>
     <values>
         <field>Enable_CoreLogic_API_Response_Logging__c</field>
-        <value xsi:type="xsd:boolean">true</value>
+        <value xsi:type="xsd:boolean">false</value>
     </values>
     <values>
         <field>Enable_Data_Tape_Change_Email__c</field>
@@ -136,7 +140,7 @@
     </values>
     <values>
         <field>Require_AVM_Sync_on_Pricing__c</field>
-        <value xsi:type="xsd:boolean">false</value>
+        <value xsi:type="xsd:boolean">true</value>
     </values>
     <values>
         <field>Require_AVM_Sync_on_UW_Submission__c</field>
@@ -148,11 +152,11 @@
     </values>
     <values>
         <field>Require_Address_Valid_on_Pricing__c</field>
-        <value xsi:type="xsd:boolean">false</value>
+        <value xsi:type="xsd:boolean">true</value>
     </values>
     <values>
         <field>Require_X_Author_Validation_on_Pricing__c</field>
-        <value xsi:type="xsd:boolean">false</value>
+        <value xsi:type="xsd:boolean">true</value>
     </values>
     <values>
         <field>Require_X_Author_Validation_on_UW_Submis__c</field>
@@ -168,7 +172,7 @@
     </values>
     <values>
         <field>Send_Email_for_Bridge_Securitization_Rev__c</field>
-        <value xsi:type="xsd:boolean">false</value>
+        <value xsi:type="xsd:boolean">true</value>
     </values>
     <values>
         <field>Validated_Address_Threshold__c</field>
@@ -181,6 +185,10 @@
     <values>
         <field>Yardi_Interface_Entity__c</field>
         <value xsi:type="xsd:string">CoreVest Loan Interface</value>
+    </values>
+    <values>
+        <field>Yardi_Interface_License_Long__c</field>
+        <value xsi:type="xsd:string">MIIBEAYJKwYBBAGCN1gDoIIBATCB/gYKKwYBBAGCN1gDAaCB7zCB7AIDAgABAgJoAQICAIAEAAQQzhEWqkdnFLc52mo5Fj0SiwSByKWbrHWWNpYruAm/OaOaJ2/EQd2t2fHQyKiCUyWdQpci/bAH1B6KhpjwTAfJPMVwot4Y7cMisnawcbBPqJyqcytHJ0pIxLmQlbGohLupESGsUDbET3vmJdSrrKF904JfvNHtNFeuRxA0htRszRslQ3qrtRtDiy7/jLCkikuUFJmowM1Nf9kYvdgPSuYy0IZ+9qFtibLSzwYDb0s9zMeJrYp+ZLv7IdaT1EYp1vaUD6HDjDIi3ChbXCmTvF5I73MuG40kiD6VgjbC</value>
     </values>
     <values>
         <field>Yardi_Interface_License__c</field>

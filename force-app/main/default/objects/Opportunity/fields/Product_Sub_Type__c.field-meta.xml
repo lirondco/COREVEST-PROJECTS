@@ -69,19 +69,14 @@
                 <label>Land Development</label>
             </value>
             <value>
-                <fullName>Fixed Rate Long Term Loan</fullName>
+                <fullName>Long Term Rental</fullName>
                 <default>false</default>
-                <label>Fixed Rate Long Term Loan</label>
+                <label>Long Term Rental</label>
             </value>
             <value>
-                <fullName>Fixed Rate Short Term Loan</fullName>
+                <fullName>Short Term Rental</fullName>
                 <default>false</default>
-                <label>Fixed Rate Short Term Loan</label>
-            </value>
-            <value>
-                <fullName>Floating Rate Term Loan</fullName>
-                <default>false</default>
-                <label>Floating Rate Term Loan</label>
+                <label>Short Term Rental</label>
             </value>
         </valueSetDefinition>
         <valueSettings>
@@ -130,15 +125,11 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Term Loan</controllingFieldValue>
-            <valueName>Fixed Rate Long Term Loan</valueName>
+            <valueName>Long Term Rental</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Term Loan</controllingFieldValue>
-            <valueName>Fixed Rate Short Term Loan</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Term Loan</controllingFieldValue>
-            <valueName>Floating Rate Term Loan</valueName>
+            <valueName>Short Term Rental</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>

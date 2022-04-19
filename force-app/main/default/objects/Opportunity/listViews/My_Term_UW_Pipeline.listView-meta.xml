@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>My_Term_UW_Pipeline</fullName>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>Deal_Loan_Number__c</columns>
+    <columns>OPPORTUNITY.STAGE_NAME</columns>
+    <columns>Anticipated_Closing_Date__c</columns>
+    <columns>Current_Loan_Amount__c</columns>
+    <columns>CORE.USERS.FULL_NAME</columns>
+    <columns>Loan_Coordinator__c</columns>
+    <columns>Underwriter__c</columns>
+    <columns>Closer__c</columns>
+    <columns>OPPORTUNITY.NEXT_STEP</columns>
+    <filterScope>SalesTeam</filterScope>
+    <filters>
+        <field>OPPORTUNITY.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Opportunity.Term_Loan</value>
+    </filters>
+    <filters>
+        <field>OPPORTUNITY.STAGE_NAME</field>
+        <operation>equals</operation>
+        <value>Loan Processing,Underwriting,Approved by Committee,UW Hold</value>
+    </filters>
+    <label>My Term UW Pipeline</label>
+</ListView>

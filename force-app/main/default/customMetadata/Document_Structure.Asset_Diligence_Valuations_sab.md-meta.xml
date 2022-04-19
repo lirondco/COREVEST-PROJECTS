@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <label>Asset Diligence-Valuations</label>
+    <label>Asset_Diligence_Valuations_sab</label>
     <protected>false</protected>
     <values>
         <field>Additional_Borrower_Checklist_Filtering__c</field>
@@ -148,7 +148,7 @@
     </values>
     <values>
         <field>Vendor_Type_Access__c</field>
-        <value xsi:type="xsd:string">Valuation;Title and Escrow;Legal Counsel;Diligence Review</value>
+        <value xsi:type="xsd:string">Servicer</value>
     </values>
     <values>
         <field>sObject__c</field>

@@ -42,12 +42,82 @@
         <description>Lender Approval Request Submitted</description>
         <protected>false</protected>
         <recipients>
-            <recipient>marc.heenan@cvest.com</recipient>
+            <recipient>bryon.harland@cvest.com</recipient>
             <type>user</type>
         </recipients>
         <senderType>CurrentUser</senderType>
         <template>Lender_Partnerships_Account_Approvals/Lender_Approval_Request</template>
     </alerts>
+    <fieldUpdates>
+        <fullName>Account_Status_Active</fullName>
+        <field>Account_Status__c</field>
+        <literalValue>Active</literalValue>
+        <name>Account Status - Active</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Account_Status_Approved</fullName>
+        <field>Account_Status__c</field>
+        <literalValue>Approved</literalValue>
+        <name>Account Status - Approved</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Account_Status_Declined</fullName>
+        <field>Account_Status__c</field>
+        <literalValue>Declined</literalValue>
+        <name>Account Status-Declined</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Account_Status_Diligence_Review</fullName>
+        <field>Account_Status__c</field>
+        <literalValue>Diligence Review</literalValue>
+        <name>Account Status - Diligence Review</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Account_Status_Legal_Review</fullName>
+        <field>Account_Status__c</field>
+        <literalValue>Legal Review</literalValue>
+        <name>Account Status - Legal Review</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Approval_Status_Approved</fullName>
+        <field>Approval_Status__c</field>
+        <literalValue>Approved</literalValue>
+        <name>Approval Status-Approved</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Approval_Status_Declined</fullName>
+        <field>Approval_Status__c</field>
+        <literalValue>Declined</literalValue>
+        <name>Approval Status-Declined</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
     <fieldUpdates>
         <fullName>Remove_Phone</fullName>
         <description>Remove Account Phone number when a Borrower or Non-Borrower Account is created and updated.</description>

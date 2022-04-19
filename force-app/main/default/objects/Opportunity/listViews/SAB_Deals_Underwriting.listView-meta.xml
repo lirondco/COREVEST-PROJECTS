@@ -9,6 +9,8 @@
     <columns>Underwriter__c</columns>
     <columns>Owner_Name__c</columns>
     <columns>OPPORTUNITY.CLOSE_DATE</columns>
+    <columns>LOC_Loan_Type__c</columns>
+    <columns>Product_Sub_Type__c</columns>
     <filterScope>Everything</filterScope>
     <filters>
         <field>OPPORTUNITY.RECORDTYPE</field>

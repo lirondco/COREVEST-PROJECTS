@@ -14,24 +14,24 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>1M SOFR</fullName>
+                <fullName>1M Term SOFR</fullName>
                 <default>false</default>
-                <label>1M SOFR</label>
+                <label>1M Term SOFR</label>
             </value>
             <value>
-                <fullName>3M SOFR</fullName>
+                <fullName>3M Term SOFR</fullName>
                 <default>false</default>
-                <label>3M SOFR</label>
+                <label>3M Term SOFR</label>
             </value>
             <value>
-                <fullName>6M SOFR</fullName>
+                <fullName>6M Term SOFR</fullName>
                 <default>false</default>
-                <label>6M SOFR</label>
+                <label>6M Term SOFR</label>
             </value>
             <value>
-                <fullName>1Y SOFR</fullName>
+                <fullName>1Y Term SOFR</fullName>
                 <default>false</default>
-                <label>1Y SOFR</label>
+                <label>1Y Term SOFR</label>
             </value>
             <value>
                 <fullName>OTHER</fullName>
@@ -65,19 +65,19 @@
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>Floating</controllingFieldValue>
-            <valueName>1M SOFR</valueName>
+            <valueName>1M Term SOFR</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Floating</controllingFieldValue>
-            <valueName>3M SOFR</valueName>
+            <valueName>3M Term SOFR</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Floating</controllingFieldValue>
-            <valueName>6M SOFR</valueName>
+            <valueName>6M Term SOFR</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Floating</controllingFieldValue>
-            <valueName>1Y SOFR</valueName>
+            <valueName>1Y Term SOFR</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Floating</controllingFieldValue>

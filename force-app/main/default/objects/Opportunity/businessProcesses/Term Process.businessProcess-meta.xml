@@ -28,6 +28,10 @@
         <default>false</default>
     </values>
     <values>
+        <fullName>Sold</fullName>
+        <default>false</default>
+    </values>
+    <values>
         <fullName>Submitted to Underwriting</fullName>
         <default>false</default>
     </values>

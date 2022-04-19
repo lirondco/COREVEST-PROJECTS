@@ -23,7 +23,10 @@
     </filters>
     <label>Bridge Deals Assigned To Me</label>
     <sharedTo>
+        <group>Originations</group>
         <role>Bridge</role>
         <role>Bridge_Manager</role>
+        <role>Loan_Management</role>
+        <role>Loan_Management_Manager</role>
     </sharedTo>
 </ListView>

@@ -148,7 +148,7 @@
     </values>
     <values>
         <field>Vendor_Type_Access__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">Valuation;Engineering</value>
     </values>
     <values>
         <field>sObject__c</field>

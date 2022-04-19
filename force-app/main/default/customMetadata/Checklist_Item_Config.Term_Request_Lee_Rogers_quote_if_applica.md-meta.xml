@@ -19,6 +19,14 @@
         <value xsi:nil="true"/>
     </values>
     <values>
+        <field>Is_Bulk__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>Is_Property_Level__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
         <field>Milestone__c</field>
         <value xsi:type="xsd:string">In Closing</value>
     </values>
@@ -40,7 +48,7 @@
     </values>
     <values>
         <field>Uploader__c</field>
-        <value xsi:type="xsd:string">LM</value>
+        <value xsi:type="xsd:string">Loan Manager</value>
     </values>
     <values>
         <field>Use_Historical_Uploads__c</field>

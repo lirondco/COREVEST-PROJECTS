@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DSCR_Compact_Layout</fullName>
+    <fields>Name</fields>
+    <fields>Type</fields>
+    <fields>Deal_Code__c</fields>
+    <fields>CloseDate</fields>
+    <fields>OwnerId</fields>
+    <fields>StageName</fields>
+    <fields>Lender__c</fields>
+    <label>DSCR Compact Layout</label>
+</CompactLayout>

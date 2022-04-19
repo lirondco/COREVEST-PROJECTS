@@ -13,6 +13,7 @@
     <type>Picklist</type>
     <valueSet>
         <controllingField>Term_Loan_Type__c</controllingField>
+        <restricted>true</restricted>
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
@@ -170,13 +171,394 @@
                 <default>false</default>
                 <label>120 Months</label>
             </value>
+            <value>
+                <fullName>0</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>0</label>
+            </value>
+            <value>
+                <fullName>1</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>1</label>
+            </value>
+            <value>
+                <fullName>1 Months</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>1 Months</label>
+            </value>
+            <value>
+                <fullName>102</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>102</label>
+            </value>
+            <value>
+                <fullName>106 Months</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>106 Months</label>
+            </value>
+            <value>
+                <fullName>108</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>108</label>
+            </value>
+            <value>
+                <fullName>109 Months</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>109 Months</label>
+            </value>
+            <value>
+                <fullName>112</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>112</label>
+            </value>
+            <value>
+                <fullName>114</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>114</label>
+            </value>
+            <value>
+                <fullName>117</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>117</label>
+            </value>
+            <value>
+                <fullName>12 Months</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>12 Months</label>
+            </value>
+            <value>
+                <fullName>120</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>120</label>
+            </value>
+            <value>
+                <fullName>18 Months</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>18 Months</label>
+            </value>
+            <value>
+                <fullName>2 Months</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>2 Months</label>
+            </value>
+            <value>
+                <fullName>22</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>22</label>
+            </value>
+            <value>
+                <fullName>22 Months</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>22 Months</label>
+            </value>
+            <value>
+                <fullName>28</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>28</label>
+            </value>
+            <value>
+                <fullName>28 Months</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>28 Months</label>
+            </value>
+            <value>
+                <fullName>3 Months</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>3 Months</label>
+            </value>
+            <value>
+                <fullName>3,2,1,1,1</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>3,2,1,1,1</label>
+            </value>
+            <value>
+                <fullName>3,3,1,1,1 Prepay</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>3,3,1,1,1 Prepay</label>
+            </value>
+            <value>
+                <fullName>34</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>34</label>
+            </value>
+            <value>
+                <fullName>35</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>35</label>
+            </value>
+            <value>
+                <fullName>35 Months</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>35 Months</label>
+            </value>
+            <value>
+                <fullName>36</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>36</label>
+            </value>
+            <value>
+                <fullName>40 Months</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>40 Months</label>
+            </value>
+            <value>
+                <fullName>42</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>42</label>
+            </value>
+            <value>
+                <fullName>46</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>46</label>
+            </value>
+            <value>
+                <fullName>46 Months</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>46 Months</label>
+            </value>
+            <value>
+                <fullName>47</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>47</label>
+            </value>
+            <value>
+                <fullName>47 Months</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>47 Months</label>
+            </value>
+            <value>
+                <fullName>48</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>48</label>
+            </value>
+            <value>
+                <fullName>49 Months</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>49 Months</label>
+            </value>
+            <value>
+                <fullName>5 yr declining</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>5 yr declining</label>
+            </value>
+            <value>
+                <fullName>5% in year 1 and 2, 4% in year 3 and 4, 3% in year 5 and 6, 2% in year 7 and 8, 1% in year 9 and 10, 0% after 114 Months</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>5% in year 1 and 2, 4% in year 3 and 4, 3% in year 5 and 6, 2% in year 7 and 8, 1% in year 9 and 10, 0% after 114 Months</label>
+            </value>
+            <value>
+                <fullName>5%X5, 4%, 3, 2, 1, 0</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>5%X5, 4%, 3, 2, 1, 0</label>
+            </value>
+            <value>
+                <fullName>5-4-3-2-1</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>5-4-3-2-1</label>
+            </value>
+            <value>
+                <fullName>52</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>52</label>
+            </value>
+            <value>
+                <fullName>53</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>53</label>
+            </value>
+            <value>
+                <fullName>54</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>54</label>
+            </value>
+            <value>
+                <fullName>54 (w/ 5% Prepay Flexibility)</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>54 (w/ 5% Prepay Flexibility)</label>
+            </value>
+            <value>
+                <fullName>54 with 5% Selloff</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>54 with 5% Selloff</label>
+            </value>
+            <value>
+                <fullName>54321</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>54321</label>
+            </value>
+            <value>
+                <fullName>5554321</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>5554321</label>
+            </value>
+            <value>
+                <fullName>56</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>56</label>
+            </value>
+            <value>
+                <fullName>57</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>57</label>
+            </value>
+            <value>
+                <fullName>5X5, 4, 3, 2, 0,0</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>5X5, 4, 3, 2, 0,0</label>
+            </value>
+            <value>
+                <fullName>6 Months</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>6 Months</label>
+            </value>
+            <value>
+                <fullName>60</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>60</label>
+            </value>
+            <value>
+                <fullName>82 Months</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>82 Months</label>
+            </value>
+            <value>
+                <fullName>84</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>84</label>
+            </value>
+            <value>
+                <fullName>9-8-7-6-5-4-3-2-1</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>9-8-7-6-5-4-3-2-1</label>
+            </value>
+            <value>
+                <fullName>Date of Maturity</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Date of Maturity</label>
+            </value>
+            <value>
+                <fullName>None</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>None</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Other</label>
+            </value>
+            <value>
+                <fullName>Step Down (10,9,8,7,6,5,4,3,2,1)</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Step Down (10,9,8,7,6,5,4,3,2,1)</label>
+            </value>
+            <value>
+                <fullName>Step Down (3,2,1)</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Step Down (3,2,1)</label>
+            </value>
+            <value>
+                <fullName>Step Down (4,3,2,1)</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Step Down (4,3,2,1)</label>
+            </value>
+            <value>
+                <fullName>Step Down (5,4,3,2,1)</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Step Down (5,4,3,2,1)</label>
+            </value>
+            <value>
+                <fullName>Step Down (5,5,5,4,3,2,1)</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Step Down (5,5,5,4,3,2,1)</label>
+            </value>
+            <value>
+                <fullName>Step Down (5,5,5,5,5,5,4,3,2,1)</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Step Down (5,5,5,5,5,5,4,3,2,1)</label>
+            </value>
+            <value>
+                <fullName>Step Down (7,6,5,4,3,2,1)</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Step Down (7,6,5,4,3,2,1)</label>
+            </value>
+            <value>
+                <fullName>Yield Maintenance</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Yield Maintenance</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>5 Year</controllingFieldValue>
+            <controllingFieldValue>3 Year</controllingFieldValue>
             <valueName>34 Months</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>5 Year</controllingFieldValue>
+            <controllingFieldValue>30 Year</controllingFieldValue>
+            <controllingFieldValue>3 Year</controllingFieldValue>
             <valueName>36 Months</valueName>
         </valueSettings>
         <valueSettings>
@@ -185,6 +567,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>5 Year</controllingFieldValue>
+            <controllingFieldValue>30 Year</controllingFieldValue>
             <valueName>48 Months</valueName>
         </valueSettings>
         <valueSettings>
@@ -278,18 +661,22 @@
             <valueName>114 Months</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>30 Year</controllingFieldValue>
             <controllingFieldValue>10 Year</controllingFieldValue>
             <valueName>115 Months</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>30 Year</controllingFieldValue>
             <controllingFieldValue>10 Year</controllingFieldValue>
             <valueName>116 Months</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>30 Year</controllingFieldValue>
             <controllingFieldValue>10 Year</controllingFieldValue>
             <valueName>117 Months</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>30 Year</controllingFieldValue>
             <controllingFieldValue>10 Year</controllingFieldValue>
             <valueName>120 Months</valueName>
         </valueSettings>
