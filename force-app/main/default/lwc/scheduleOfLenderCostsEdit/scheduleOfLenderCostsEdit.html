@@ -141,6 +141,11 @@
         ></lightning-output-field>
       </lightning-layout-item>
       <lightning-layout-item padding="around-medium" size="6">
+        <template if:true={showDiscountFee}>
+        <lightning-output-field
+          field-name="Discount_Fee_Number__c"
+        ></lightning-output-field>
+      </template>
       </lightning-layout-item>
 
       <lightning-layout-item size="12">

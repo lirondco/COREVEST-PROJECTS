@@ -214,16 +214,16 @@
       ></lightning-input>
     </lightning-layout-item>
     <lightning-layout-item padding="around-medium" size="6"
-    ><lightning-input
-      label="Legal Fee"
-      value={deal.Legal_Fee__c}
-      onchange={updateValue}
-      data-field="Legal_Fee__c"
-      type="number"
-      formatter="currency"
-      step="0.01"
-    ></lightning-input>
-  </lightning-layout-item>
+      ><lightning-input
+        label="Legal Fee"
+        value={deal.Legal_Fee__c}
+        onchange={updateValue}
+        data-field="Legal_Fee__c"
+        type="number"
+        formatter="currency"
+        step="0.01"
+      ></lightning-input>
+    </lightning-layout-item>
 
     <lightning-layout-item padding="around-medium" size="6"
       ><lightning-input
@@ -236,8 +236,29 @@
       ></lightning-input>
     </lightning-layout-item>
     <lightning-layout-item padding="around-medium" size="6">
+      <template if:true={showDiscountFeeField}>
+        <lightning-combobox
+          label="Discount Fee %"
+          value={deal.Discount_Fee__c}
+          options={discountFeeOptions}
+          onchange={updateValue}
+          data-field="Discount_Fee__c"
+        ></lightning-combobox>
+      </template>
     </lightning-layout-item>
-
+    <lightning-layout-item padding="around-medium" size="6">
+      <template if:true={showDiscountFeeField}>
+        <lightning-input
+          label="Discount Fee"
+          value={discountFeeVal}
+          type="number"
+          formatter="currency"
+          step="0.01"
+          read-only
+        ></lightning-input>
+      </template>
+    </lightning-layout-item>
+    
     <lightning-layout-item size="12">
       <!-- <div class="slds-section slds-is-open"> -->
       <h3 class="slds-section-title--divider">

@@ -9,6 +9,8 @@ import {
 
 import calcMessage from "@salesforce/messageChannel/ScheduleLoanAgreementMessage__c";
 import Interest_Rate_Type__c from "@salesforce/schema/Loan_Version__ChangeEvent.Interest_Rate_Type__c";
+import DISCOUNT_FEE_FIELD from "@salesforce/schema/Opportunity.Discount_Fee__c";
+import { getPicklistValues } from "lightning/uiObjectInfoApi";
 
 export default class ScheduleOfLenderCostsNew extends LightningElement {
   @api deal;
@@ -16,10 +18,16 @@ export default class ScheduleOfLenderCostsNew extends LightningElement {
   @api recordId;
   @api val1234 = 456;
   subscription = null;
+  discountFeeValLocal;
 
   calculatedFields = {};
   loanFees = [];
+  discountFeeOptions = [];
   //@api loanVersion = {};
+
+  get dealRecId() {
+    return this.deal.RecordTypeId;
+  }
 
   @wire(MessageContext)
   messageContext;
@@ -28,8 +36,35 @@ export default class ScheduleOfLenderCostsNew extends LightningElement {
     super();
   }
 
+  @wire(getPicklistValues, { recordTypeId: "$dealRecId", fieldApiName: DISCOUNT_FEE_FIELD })
+  wireValues({ error, data }){
+    if (data) {
+      console.log(data);
+      const opts = [];
+      data.values.forEach(el => {
+        opts.push({
+          label: el.label,
+          value: el.value
+        })
+      });
+
+      this.discountFeeOptions = opts;
+    }
+    else if (error) {
+      console.error(error.body.message);
+    }
+  }
+
   connectedCallback() {
     console.log("init of new");
+    
+    this.updateCalculatedFields();
+
+    this.subscribeMessageChannel();
+  }
+
+  @api
+  refreshPage() {
     this.updateCalculatedFields();
 
     this.subscribeMessageChannel();
@@ -108,6 +143,8 @@ export default class ScheduleOfLenderCostsNew extends LightningElement {
         .Holdback_Reserve_Month_Multiplier__c,
       Installment_Comment__c: this.deal.Installment_Comment__c
     };
+
+    this.discountFeeVal = this.discountFeeCalculation();
     //console.log("--updating--");
     //console.log(`scheduleData-${this.recordId}`);
 
@@ -741,6 +778,12 @@ export default class ScheduleOfLenderCostsNew extends LightningElement {
       }
     });
 
+    let discountFee = '', discountFeeNumber = 0;
+
+    if(deal.Discount_Fee__c) {
+      discountFee = deal.Discount_Fee__c;
+    }
+
     let loanVersion = {
       Final_Loan_Amount__c: deal.Current_Loan_Amount__c,
       Deposit_Amount__c: deal.Deposit_Amount__c,
@@ -791,11 +834,36 @@ export default class ScheduleOfLenderCostsNew extends LightningElement {
       Holdback_Reserve_Override__c: deal.Holdback_Reserve_Override__c,
       Holdback_Reserve_Month_Multiplier__c:
         deal.Holdback_Reserve_Month_Multiplier__c,
-      Term__c: deal.Term_Loan_Type__c
+      Term__c: deal.Term_Loan_Type__c,
+      Discount_Fee__c: discountFee,
+      Discount_Fee_Number__c: this.discountFeeVal,
     };
 
     // console.log(loanVersion);
 
     return loanVersion;
+  }
+  
+  discountFeeCalculation() {
+    if (!this.showDiscountFeeField || !this.deal.Discount_Fee__c) {
+      return 0;
+    }
+
+    const discFee = this.deal.Discount_Fee__c.replace(/[^0-9.]/g,'|').split('|')[0];
+    const discFeePct = parseFloat(discFee) / 100;
+    return discFeePct * this.deal.Current_Loan_Amount__c;
+    
+  }
+
+  get discountFeeVal() {
+    return this.discountFeeValLocal;
+  }
+
+  set discountFeeVal(val) {
+    this.discountFeeValLocal = val;
+  }
+
+  get showDiscountFeeField() {
+    return this.deal.Term_Loan_Type__c == "30 Year";
   }
 }
