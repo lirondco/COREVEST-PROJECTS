@@ -1,7 +1,7 @@
 public without sharing class SpecialAssetHelper {
   public static final String SNAPSHOT_ENTITY = 'Special Asset Resolved';
   public static Boolean nameIsUpdated = false;
-  
+
   public static void afterInsert(Map<Id, Special_Asset__c> newMap) {
     Map<String, Map<Id, Special_Asset__c>> forSnapshotMap = new Map<String, Map<Id, Special_Asset__c>>();
 
@@ -26,14 +26,55 @@ public without sharing class SpecialAssetHelper {
   }
 
   public static void beforeUpdate(
-    Map<Id,Special_Asset__c> oldMap,
-    Map<Id,Special_Asset__c> newMap
+    Map<Id, Special_Asset__c> oldMap,
+    Map<Id, Special_Asset__c> newMap
   ) {
-    for(Special_Asset__c sa : newMap.values()) {
+    Set<Id> propIds = new Set<Id>();
+    for (Special_Asset__c sa : newMap.values()) {
       Special_Asset__c oldSa = oldMap.get(sa.id);
-      if((sa.REO_Date__c != null && oldSa.REO_date__c == null ) 
-      || (sa.REO_Sell_Date__c != null && oldSa.REO_Sell_Date__c == null)){
-        sa.Resolved_Date__c = sa.REO_Date__c != null ? sa.REO_Date__c : sa.REO_Sell_Date__c;
+      if (
+        (sa.REO_Date__c != null && oldSa.REO_date__c == null) ||
+        (sa.REO_Sell_Date__c != null &&
+        oldSa.REO_Sell_Date__c == null)
+      ) {
+        sa.Resolved_Date__c = sa.REO_Date__c != null
+          ? sa.REO_Date__c
+          : sa.REO_Sell_Date__c;
+        if (sa.REO_Sell_Date__c != null) {
+          propIds.add(sa.Property__c);
+        }
+      }
+    }
+
+    if (propIds.size() > 0) {
+      Map<Id, Property__c> propMap = new Map<Id, Property__c>(
+        [
+          SELECT
+            Id,
+            (
+              SELECT REO_Date__c
+              FROM Special_Assets__r
+              WHERE REO_Date__c != NULL
+              ORDER BY SystemModStamp DESC
+              LIMIT 1
+            )
+          FROM Property__c
+          WHERE Id IN :propIds
+        ]
+      );
+
+      if (propMap.size() > 0) {
+        for (Special_Asset__c sa : newMap.values()) {
+          if (
+            propMap.containsKey(sa.Property__c) &&
+            propMap.get(sa.Property__c).Special_Assets__r != null &&
+            propMap.get(sa.Property__c).Special_Assets__r.size() > 0
+          ) {
+            sa.Days_to_Resolve_REO_to_REO_Sold__c = sa.REO_Sell_Date__c.daysBetween(propMap.get(sa.Property__c)
+            .Special_Assets__r[0]
+            .REO_Date__c);
+          }
+        }
       }
     }
   }
@@ -44,10 +85,15 @@ public without sharing class SpecialAssetHelper {
   ) {
     Set<Id> propertiesToUpdate = new Set<Id>();
     Map<String, Map<Id, Special_Asset__c>> forSnapshotMap = new Map<String, Map<Id, Special_Asset__c>>();
+    Map<Id, Special_Asset__c> forForeclosure = new Map<Id, Special_Asset__c>();
 
     for (Id id : newMap.keySet()) {
       Special_Asset__c o = oldMap.get(id);
       Special_Asset__c n = newMap.get(id);
+
+      if (n.REO_Date__c != o.REO_Date__c) {
+        forForeclosure.put(id, n);
+      }
 
       if (o.Resolved_Date__c == null && n.Resolved_Date__c != null) {
         if (String.isNotEmpty(n.Resolution_Type__c)) {
@@ -65,6 +111,10 @@ public without sharing class SpecialAssetHelper {
           );
         }
       }
+    }
+
+    if(forForeclosure.size() > 0) {
+      updateForeclosureRecords(forForeclosure);
     }
 
     if (propertiesToUpdate.size() > 0) {
@@ -118,5 +168,22 @@ public without sharing class SpecialAssetHelper {
     }
 
     update properties;
+  }
+
+  public static void updateForeclosureRecords(Map<Id, Special_Asset__c> saMap) {
+    List<Foreclosure__c> relatedForclosures = [
+      SELECT Id, REO_Date__c, Special_Asset__c
+      FROM Foreclosure__c
+      WHERE Special_Asset__c IN :saMap.keySet()
+      FOR UPDATE
+    ];
+
+    if (relatedForclosures.size() > 0) {
+      for (Foreclosure__c foreclosure : relatedForclosures) {
+        foreclosure.REO_Date__c = saMap.get(foreclosure.Special_Asset__c).REO_Date__c;
+      }
+      update relatedForclosures;
+    }
+
   }
 }

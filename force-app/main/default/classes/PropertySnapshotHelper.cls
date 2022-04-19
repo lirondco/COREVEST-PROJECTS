@@ -22,7 +22,14 @@ public without sharing class PropertySnapshotHelper {
   private static final Map<String, String> SNAPSHOT_TO_SPEC_ASSET_RESOLVED = new Map<String, String>{
     'Start_Date__c' => 'CreatedDate',
     'Resolved_Date__c' => 'Resolved_Date__c',
-    'Days_To_Resolve__c' => 'Days_To_Resolve__c'
+    'Days_To_Resolve__c' => 'Days_To_Resolve__c',
+    'REO_Sell_Date__c' => 'REO_Sell_Date__c',
+    'REO_Date__c' => 'REO_Date__c',
+    'Vintage_Year__c' => 'Vintage_Year__c',
+    'Realized_Loss_Severity__c' => 'Realized_Loss_Severity__c',
+    'Total_Broker_Commissions_Fees_Paid__c' => 'Total_Broker_Commissions_Fees_Paid__c',
+    'Maturity_Default_Transfer__c' => 'Maturity_Default_Transfer__c',
+    'Days_to_Resolve_REO_to_REO_Sold__c' => 'Days_to_Resolve_REO_to_REO_Sold__c'
   };
 
   private static final Map<String, String> SNAPSHOT_TO_EXT_COMPLETED = new Map<String, String>{
