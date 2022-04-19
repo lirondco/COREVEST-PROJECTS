@@ -19,6 +19,7 @@ public without sharing class AdvanceClearToFundController {
       SELECT
         Id,
         Deal__c,
+        Deal__r.Record_Type_Name__c,
         Closing_Funds_Checklist__c,
         Closing_Funds_Checklist_Date__c,
         Closing_Funds_Checklist_Comments__c,
@@ -44,6 +45,14 @@ public without sharing class AdvanceClearToFundController {
       LIMIT 1
     ];
 
+    if(advance.Deal__r.Record_Type_Name__c == 'Single_Asset_Bridge_Loan') {
+      List<String> newDocstructures = new List<String>();
+      for(String ds : docStructures) {
+        newDocstructures.add(ds + '_sab');
+      }
+      docStructures = newDocstructures;
+    }
+
     Map<String, Map<String, Object>> response = new Map<String, Map<String, Object>>();
 
     Map<String, String> docStringMap = new Map<String, String>();
@@ -56,6 +65,7 @@ public without sharing class AdvanceClearToFundController {
         docStructure.Folder_Structure_String__c +
         '|' +
         docStructure.Document_Type__c;
+
       docStringMap.put(docString, docStructure.DeveloperName);
 
       response.put(docString, new Map<String, Object>());
@@ -128,7 +138,7 @@ public without sharing class AdvanceClearToFundController {
     Map<String, Map<String, Object>> finalResponse = new Map<String, Map<String, Object>>();
 
     for (String docString : response.keySet()) {
-      String devName = docStringMap.get(docString);
+      String devName = docStringMap.get(docString).replace('_sab', '');
       finalResponse.put(devName, response.get(docString));
 
       List<Deal_Document__c> dealDocs = (List<Deal_Document__c>) (finalResponse.get(
