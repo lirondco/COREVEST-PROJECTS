@@ -23,6 +23,7 @@ export default class SpecialAssetScreen extends LightningElement {
   @track specialAssetId;
   // @track specialAssetFields = [SEVERITY_FIELD, FOLLOWUP_FIELD, RESOLUTION_FIELD, LITIGATION_FIELD, ESTIMATEDRECOVERYDATE_FIELD, RESOLVEDDATE_FIELD, 
   //   REASON_FIELD, SAMANAGER_FIELD, STATUS_FIELD, STRAGTEGY_FIELD, MILESTONES_FIELD];
+  autoDateLocal;
 
   @wire(getRecord, { recordId: '$recordId', fields })  
   wiredProperty(value) {
@@ -33,6 +34,10 @@ export default class SpecialAssetScreen extends LightningElement {
     } else if (value.error) {
       console.log("ERROR: ", value.error)
     }
+  }
+
+  handleChange(event) {
+    this.autoDate = event.detail.value;
   }
 
   handleReset(event) {
@@ -53,6 +58,14 @@ export default class SpecialAssetScreen extends LightningElement {
       variant: "success",
     });
     this.dispatchEvent(event);
+  }
+
+  get autoDate() {
+    return this.autoDateLocal;
+  }
+
+  set autoDate(val) {
+    this.autoDateLocal = val;
   }
   
   // querySpecialAsset() {

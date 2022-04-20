@@ -25,7 +25,6 @@ public without sharing class PropertySnapshotHelper {
     'Days_To_Resolve__c' => 'Days_To_Resolve__c',
     'REO_Sell_Date__c' => 'REO_Sell_Date__c',
     'REO_Date__c' => 'REO_Date__c',
-    'Vintage_Year__c' => 'Vintage_Year__c',
     'Realized_Loss_Severity__c' => 'Realized_Loss_Severity__c',
     'Total_Broker_Commissions_Fees_Paid__c' => 'Total_Broker_Commissions_Fees_Paid__c',
     'Maturity_Default_Transfer__c' => 'Maturity_Default_Transfer__c',
@@ -54,7 +53,8 @@ public without sharing class PropertySnapshotHelper {
   private static final Map<String, Map<String, String>> FIELD_MAPPING_BY_EVENT = new Map<String, Map<String, String>>{
     PROP_EVENT_NAME_PAID => SNAPSHOT_TO_PROP_MAP_ASSETPAIDOFF,
     PROP_EXT_EVENT_NAME => SNAPSHOT_TO_EXT_COMPLETED,
-    SPEC_ASSET_EVENT_NAME => SNAPSHOT_TO_SPEC_ASSET_RESOLVED
+    SPEC_ASSET_EVENT_NAME => SNAPSHOT_TO_SPEC_ASSET_RESOLVED,
+    PROP_EVENT_NAME_SOLD => SNAPSHOT_TO_PROP_MAP_ASSETPAIDOFF
   };
 
   private static final Map<String, Schema.SObjectField> PROPERTY_FIELD_MAP = Schema.SObjectType.Property__c.fields.getMap();
@@ -121,6 +121,10 @@ public without sharing class PropertySnapshotHelper {
 
       Map<String, String> fieldMapping = FIELD_MAPPING_BY_EVENT.get(key);
 
+      if(fieldMapping == null || fieldMapping.size() < 1) {
+        continue;
+      }
+
       for (sObject obj : eventTypeMap.get(key).values()) {
         if(PROP_EXT_EVENT_NAME == key) {
             propSnapshot.Property_Extension__c = (Id) obj.get('Id');
@@ -132,7 +136,7 @@ public without sharing class PropertySnapshotHelper {
             propSnapshot.Property__c = (Id) obj.get('Id');
         }
         for (String fld : fieldMapping.keySet()) {
-          Schema.SObjectField field = SNAPSHOT_FIELDMAP.get(fld);   
+          Schema.SObjectField field = SNAPSHOT_FIELDMAP.get(fld);
           if(field != null) {
             if(fieldMapping.get(fld) == 'CreatedDate') {
                 propSnapshot.put(field, date.valueOf((DateTime) obj.get('CreatedDate')));

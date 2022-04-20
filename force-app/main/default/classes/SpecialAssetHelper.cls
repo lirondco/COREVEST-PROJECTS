@@ -66,13 +66,13 @@ public without sharing class SpecialAssetHelper {
       if (propMap.size() > 0) {
         for (Special_Asset__c sa : newMap.values()) {
           if (
-            propMap.containsKey(sa.Property__c) &&
+          propMap.containsKey(sa.Property__c) &&
             propMap.get(sa.Property__c).Special_Assets__r != null &&
             propMap.get(sa.Property__c).Special_Assets__r.size() > 0
           ) {
-            sa.Days_to_Resolve_REO_to_REO_Sold__c = sa.REO_Sell_Date__c.daysBetween(propMap.get(sa.Property__c)
+            sa.Days_to_Resolve_REO_to_REO_Sold__c = propMap.get(sa.Property__c)
             .Special_Assets__r[0]
-            .REO_Date__c);
+            .REO_Date__c.daysBetween(sa.REO_Sell_Date__c);
           }
         }
       }
@@ -178,11 +178,19 @@ public without sharing class SpecialAssetHelper {
       FOR UPDATE
     ];
 
+    List<Foreclosure__c> toUpdate = new List<Foreclosure__c>();
+
     if (relatedForclosures.size() > 0) {
       for (Foreclosure__c foreclosure : relatedForclosures) {
+        if(foreclosure.REO_Date__c != saMap.get(foreclosure.Special_Asset__c).REO_Date__c) {
         foreclosure.REO_Date__c = saMap.get(foreclosure.Special_Asset__c).REO_Date__c;
+        toUpdate.add(foreclosure);
+        }
       }
-      update relatedForclosures;
+      if(toUpdate.size() > 0) {
+        update toUpdate;
+
+      }
     }
 
   }

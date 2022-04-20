@@ -56,9 +56,19 @@
             ></lightning-input-field>
           </div>
           <div class="slds-col slds-size_1-of-2">
-            <lightning-input-field
-              field-name="Resolved_Date__c"
-            ></lightning-input-field>
+            <template if:false={autoDate}>
+              <lightning-input-field
+                field-name="Resolved_Date__c"
+              ></lightning-input-field>
+            </template>
+            <template if:true={autoDate}>
+              <lightning-input
+                type="date"
+                label="Resolved Date"
+                value={autoDate}
+                disabled
+              ></lightning-input>
+            </template>
           </div>
           <div class="slds-col slds-size_1-of-2">
             <lightning-input-field
@@ -83,11 +93,13 @@
           <div class="slds-col slds-size_1-of-2">
             <lightning-input-field
               field-name="REO_Date__c"
+              onchange={handleChange}
             ></lightning-input-field>
           </div>
           <div class="slds-col slds-size_1-of-2">
             <lightning-input-field
               field-name="REO_Sell_Date__c"
+              onchange={handleChange}
             ></lightning-input-field>
           </div>
           <div class="slds-col slds-size_1-of-2">
@@ -130,12 +142,8 @@
               field-name="Net_Loss_Severity_Recovery__c"
             ></lightning-output-field>
           </div>
-          <div class="slds-col slds-size_1-of-3">
-            
-          </div>
-          <div class="slds-col slds-size_1-of-3">
-
-          </div>
+          <div class="slds-col slds-size_1-of-3"></div>
+          <div class="slds-col slds-size_1-of-3"></div>
           <div class="slds-col slds-size_1-of-1">
             <lightning-input-field
               field-name="Status_Comment__c"
@@ -154,7 +162,11 @@
           </div>
           <div class="slds-col slds-size_5-of-12"></div>
           <div class="slds-col slds-size_2-of-12">
-            <lightning-button class="slds-m-top_small" label="Cancel" onclick={handleReset}></lightning-button>
+            <lightning-button
+              class="slds-m-top_small"
+              label="Cancel"
+              onclick={handleReset}
+            ></lightning-button>
             <lightning-button
               class="slds-m-top_small"
               type="submit"
