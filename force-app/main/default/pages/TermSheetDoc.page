@@ -482,6 +482,16 @@
               </div>
             </td>
           </tr>
+          <tr style="{!IF(Opportunity.Discount_Fee__c == null, 'display: none;', 'page-break-inside: avoid;')}">
+            <td class="row-title">
+              Discount Points:
+            </td>
+            <td class="row-description">
+              <apex:outputText value="{0} of the Loan Amount, due at Closing">
+                <apex:param value="{!IF(Opportunity.Discount_Fee__c == '1 pt rate buy down / -25 BPS', '1%', '2%')}" />
+              </apex:outputText>
+            </td>
+          </tr>
           <tr
             style="{!IF(Opportunity.Loan_Size__c < 1000000, 'page-break-inside:avoid;', 'display:none;')}"
           >
@@ -1192,7 +1202,7 @@
               </tr>
             </table>
           </p>
-          <p>Acknowledged and agreed as of ____________________ by:</p>
+          <p>Acknowledged and agreed as of ___________________________________________ by:</p>
           <p>SPONSOR</p>
           <p>____________________</p>
           <p>

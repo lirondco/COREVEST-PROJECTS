@@ -1,22 +1,21 @@
-<apex:page standardController="Opportunity" extensions="TermSheetPDF_Controller" contentType="application/x-unknown"
-           cache="true">
-    
-    
+<apex:page standardController="Opportunity" extensions="TermSheetPDF_Controller" contentType="application/x-unknown" cache="true">
+
+
     <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='<a target="_blank" href="http://www.w3.org/TR/REC-html40" rel="nofollow">http://www.w3.org/TR/REC-html40</a>'>
-        
-        <head>
-            <style type="text/css">
-                p.MsoHeader,
-                li.MsoHeader,
-                div.MsoHeader {
+
+    <head>
+        <style type="text/css">
+            p.MsoHeader,
+            li.MsoHeader,
+            div.MsoHeader {
                 margin: 0in;
                 margin-top: .0001pt;
                 mso-pagination: widow-orphan;
                 tab-stops: center 3.0in right 6.0in;
-                
-                }
-                
-                @page Section1 {
+
+            }
+
+            @page Section1 {
                 size: 8.5in 11.0in;
                 /* margin:0.5in 0.5in 0.5in 0.5in; */
                 margin: .5in 1in 1in 1in;
@@ -25,29 +24,29 @@
                 mso-footer: f1;
                 mso-footer-margin: 0.5in;
                 mso-paper-source: 0;
-                }
-                
-                .lineClose {
+            }
+
+            .lineClose {
                 text-align: center;
-                }
-                
-                div.Section1 {
+            }
+
+            div.Section1 {
                 page: Section1;
-                }
-                
-                /*Below is the style to prevent the repetition of header and Footer.. Cheers!!! */
-                
-                table#hrdftrtbl {
+            }
+
+            /*Below is the style to prevent the repetition of header and Footer.. Cheers!!! */
+
+            table#hrdftrtbl {
                 margin: 0in 0in 0in 9in;
-                }
-                
-                @page {
+            }
+
+            @page {
                 @bottom-right {
-                content: element(footer);
+                    content: element(footer);
                 }
-                }
-                
-                div.header {
+            }
+
+            div.header {
                 /* text-align: left; */
                 /* background: url("{! $Resource.corevestLogo }") no-repeat; */
                 /* width: 320px;
@@ -56,64 +55,64 @@
                 padding: 10px;
                 position: running(header);
                 display: block;
-                }
-                
-                .pagenumber:before {
+            }
+
+            .pagenumber:before {
                 content: counter(page);
-                }
-                
-                .pagecount:before {
+            }
+
+            .pagecount:before {
                 content: counter(pages);
-                }
-                
-                .pagebreak {
+            }
+
+            .pagebreak {
                 page-break-before: always;
-                }
-                
-                div.footer {
+            }
+
+            div.footer {
                 display: block;
                 padding: 5px;
                 position: running(footer);
                 text-align: center;
                 font-family: Times;
-                }
-                
-                div.spinitials {
+            }
+
+            div.spinitials {
                 display: block;
                 padding: 5px;
                 position: running(footer);
                 text-align: right;
                 font-family: Times;
-                }
-                
-                .pagenumber:before {
+            }
+
+            .pagenumber:before {
                 content: counter(page);
-                }
-                
-                .pagecount:before {
+            }
+
+            .pagecount:before {
                 content: counter(pages);
-                }
-                
-                .avoid-pagebreak {
+            }
+
+            .avoid-pagebreak {
                 page-break-inside: avoid;
-                }
-                
-                .paragraph-title {
+            }
+
+            .paragraph-title {
                 text-align: center;
                 font-family: Times;
                 font-size: 11pt;
                 font-weight: bold;
                 text-decoration: underline;
-                }
-                
-                .paragraph {
+            }
+
+            .paragraph {
                 font-family: Times;
                 font-size: 11pt;
                 line-height: 1.3;
                 text-align: justify;
                 text-indent: 40px;
-                }
-                
+            }
+
             .row-title {
                 font-family: Times;
                 font-size: 11pt;
@@ -134,809 +133,1112 @@
                 margin-bottom: 25px;
                 border: solid 2px #ffffff;
             }
-                
-                
-                .limitor-list {
+
+
+            .limitor-list {
                 list-style-type: none;
-                }
-                
-                .sigsection {
+            }
+
+            .sigsection {
                 page-break-inside: avoid;
-                }
-                
-                .signing-section {
+            }
+
+            .signing-section {
                 text-decoration: underline;
                 color: white;
                 border-bottom-style: solid;
                 border-bottom-width: 1px;
                 border-color: black;
-                }
-                
-            </style>
-        </head>
-        <body>
-            <div class="Section1">
-                <div class="header">
-                    <div>
-                        <apex:image url="https://cvest.my.salesforce.com/servlet/servlet.ImageServer?id=0150a000001fqte&oid=00Dj0000000L4sC" />
-                    </div>
-                </div>
-                <div class="footer">
-                    <div></div>
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="Section1">
+            <div class="header">
+                <div>
+                    <apex:image url="https://cvest.my.salesforce.com/servlet/servlet.ImageServer?id=0150a000001fqte&oid=00Dj0000000L4sC" />
                 </div>
             </div>
-            <div class="content">
-                <p style="font-family: Times; font-size: 11pt; line-height: 1.3;  page-break-inside:avoid;">
-                    <!-- <apex:outputText value="{!TEXT(MONTH(Opportunity.Term_Sheet_Issued__c)) & '/' & TEXT(DAY(Opportunity.Term_Sheet_Issued__c)) & '/' & TEXT(YEAR(Opportunity.Term_Sheet_Issued__c))}" /> -->
-                    <apex:outputText value=" {0,date, MMMM d',' yyyy}">
-                        <apex:param value="{! DATE(todayYear, todayMonth, todayDay)}" /></apex:outputText>
-                </p>
-                <p style="font-family: Times; font-size: 11pt; line-height: 1.3;  page-break-inside:avoid;">
-                    
-                    <apex:outputField value="{!Opportunity.Account.BillingStreet}" />
+            <div class="footer">
+                <div></div>
+            </div>
+        </div>
+        <div class="content">
+            <p style="font-family: Times; font-size: 11pt; line-height: 1.3;  page-break-inside:avoid;">
+                <!-- <apex:outputText value="{!TEXT(MONTH(Opportunity.Term_Sheet_Issued__c)) & '/' & TEXT(DAY(Opportunity.Term_Sheet_Issued__c)) & '/' & TEXT(YEAR(Opportunity.Term_Sheet_Issued__c))}" /> -->
+                <apex:outputText value=" {0,date, MMMM d',' yyyy}">
+                    <apex:param value="{! DATE(todayYear, todayMonth, todayDay)}" /></apex:outputText>
+            </p>
+            <p style="font-family: Times; font-size: 11pt; line-height: 1.3;  page-break-inside:avoid;">
+
+                <apex:outputField value="{!Opportunity.Account.BillingStreet}" />
+                <br />
+                <apex:outputText value="{!Opportunity.Account.BillingCity}, " />
+                <apex:outputText value="{!Opportunity.Account.Billing_State_Code__c} " rendered="{!NOT (ISBLANK(Opportunity.Account.BillingState))}"
+                />
+                <apex:outputText value="{!Opportunity.Account.BillingPostalCode}" />
+                <br />
+
+                <span style="{!IF(NOT(Opportunity.Account.BillingCountry == 'United States'), 'page-break-inside:avoid;', 'display:none;')}">
+                    <apex:outputText value="{!Opportunity.Account.BillingCountry}" rendered="{!NOT(Opportunity.Account.BillingCountry == 'United States')}"
+                    />
                     <br />
-                    <apex:outputText value="{!Opportunity.Account.BillingCity}, " />
-                    <apex:outputText value="{!Opportunity.Account.Billing_State_Code__c} " rendered="{!NOT (ISBLANK(Opportunity.Account.BillingState))}"
-                                     />
-                    <apex:outputText value="{!Opportunity.Account.BillingPostalCode}" />
-                    <br />
-                    
-                    <span style="{!IF(NOT(Opportunity.Account.BillingCountry == 'United States'), 'page-break-inside:avoid;', 'display:none;')}">
-                        <apex:outputText value="{!Opportunity.Account.BillingCountry}" rendered="{!NOT(Opportunity.Account.BillingCountry == 'United States')}"
-                                         />
-                        <br />
-                    </span>
-                    <apex:outputText value="{!'Attention: ' & Opportunity.Primary_Contact__c } " /> ("
-                    <strong>Sponsor Name</strong>")
-                </p>
+                </span>
+                <apex:outputText value="{!'Attention: ' & Opportunity.Primary_Contact__c } " /> ("
+                <strong>Sponsor Name</strong>")
+            </p>
 
-                <p style="font-family: Times; font-size: 11pt; line-height: 1.3;  page-break-inside:avoid;">
-                    <apex:outputText value=" ${0,number} Loan Proposal to finance the acquisition an existing [TBD #]-unit multifamily property located {1} ">
-                        <apex:param value="{!Opportunity.Loan_Size__c}" />
-                        <apex:param value="{!IF(Opportunity.Number_of_Properties__c != null && Opportunity.Number_of_Properties__c > 1, 'in ' + allProperties[0].City__c + ', ' + allProperties[0].State__c, 'at ' + allProperties[0].Name + ' ' + allProperties[0].City__c + ', ' + allProperties[0].State__c)}" />
-                    </apex:outputText>(<strong>"Property"</strong>)
-                    
-                </p>
-                
-  
-                
-                <p style="font-family: Times; font-size: 11pt; line-height: 1.3;  page-break-inside:avoid;">
-                    <apex:outputText value="{! 'Dear ' & Opportunity.Contact__r.FirstName}" />:
-                </p>
-                
-                <p class="paragraph">
-CoreVest American Finance Lender LLC or an affiliated entity (<strong>"Lender"</strong>) is pleased to present this summary proposal to provide a secured loan to finance the acquisition/refinancing of the Property of an existing [TBD]-unit multifamily rental project (the <strong>"Improvements"</strong>).  As further set forth below, this proposal is for discussion purposes only and is neither an expressed nor implied commitment to provide any financing or to provide or purchase any loans or securities in connection with the transactions contemplated hereby.                 </p>
+            <p style="font-family: Times; font-size: 11pt; line-height: 1.3;  page-break-inside:avoid;">
+                <apex:outputText value=" ${0,number} Loan Proposal to finance the acquisition an existing [TBD #]-unit multifamily property located {1} ">
+                    <apex:param value="{!Opportunity.Loan_Size__c}" />
+                    <apex:param value="{!IF(Opportunity.Number_of_Properties__c != null && Opportunity.Number_of_Properties__c > 1, 'in ' + allProperties[0].City__c + ', ' + allProperties[0].State__c, 'at ' + allProperties[0].Name + ' ' + allProperties[0].City__c + ', ' + allProperties[0].State__c)}"
+                    />
+                </apex:outputText>(
+                <strong>"Property"</strong>)
+            </p>
 
 
-                                <table style="table-layout: fixed; width:95vw;" cellspacing="0">
-                    <colgroup>
-                        <col class="short" />
-                        <col class="long" />
-                    </colgroup>
 
-                    <tr style="page-break-inside:avoid;">
-                        <td class="row-title">
+            <p style="font-family: Times; font-size: 11pt; line-height: 1.3;  page-break-inside:avoid;">
+                <apex:outputText value="{! 'Dear ' & Opportunity.Contact__r.FirstName}" />:
+            </p>
+
+            <p class="paragraph">
+                CoreVest American Finance Lender LLC or an affiliated entity (
+                <strong>"Lender"</strong>) is pleased to present this summary proposal to provide a secured loan to finance the acquisition/refinancing
+                of the Property of an existing [TBD]-unit multifamily rental project (the
+                <strong>"Improvements"</strong>). As further set forth below, this proposal is for discussion purposes only and is
+                neither an expressed nor implied commitment to provide any financing or to provide or purchase any loans
+                or securities in connection with the transactions contemplated hereby. </p>
+
+
+            <table style="table-layout: fixed; width:95vw;" cellspacing="0">
+                <colgroup>
+                    <col class="short" />
+                    <col class="long" />
+                </colgroup>
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
                         Borrower:
-                        </td>
-                         <td class="row-description">
-                         A bankruptcy-remote, single-purpose limited liability company (LLC) acceptable to Lender.  The LLC will include Sponsor Name (<strong><apex:outputText value="{!Opportunity.Borrower_Entity__r.Name}"/></strong>) or an affiliate of Sponsor approved by Lender as an equity owner and as managing member or manager.  Lender reserves the right to approve any other equity owners and/or managers in the LLC prior to closing, and no transfers, pledges or assignments of direct or indirect equity interests shall be permitted except as noted in the below Section entitled "No Transfers". 
-                         </td>
-                        </tr>
-                        
-                       <tr style="page-break-inside:avoid;">
-                        <td class="row-title">
-                        Guarantor:  
-                        </td>
-                         <td class="row-description">
-                         The undersigned "Sponsor" and/or such individuals or entities acceptable to Lender following due diligence, on a joint and several basis.
-                         </td>
-                        
-                        </tr>
-                        
-                        <tr style="page-break-inside:avoid;">
-                        <td class="row-title">
-                        Pledgor:    
-                        </td>
-                         <td class="row-description">
-                         A bankruptcy remote, Delaware limited liability company, acceptable to Lender following due diligence, which shall be the sole member of Borrower. [REPLACE WITH "NOT REQUIRED" IF NO EQUITY PLEDGE (FOR LOANS $10MILLION AND UNDER]
-                         </td>
-                        </tr>
-                        
-                        <tr style="page-break-inside:avoid;">
-                        <td class="row-title">
-                        Net Worth and 
-                        Liquidity
-                        Requirement:    
-                        </td>
-                         <td class="row-description">
-                         Prior to Loan closing the Guarantor(s) shall evidence, on a combined basis if more than one Guarantor, a minimum net worth of 100% of the Maximum Loan Amount and minimum aggregate liquidity of 10% of the Maximum Loan Amount based on readily marketable securities and bank accounts within the United States of America.  Following Loan closing these requirements must be maintained at all times and shall be tested quarterly based on unaudited compiled financial statements with supporting current bank/brokerage account statements.
-                         </td>
-                        </tr>
-                        
-                        <tr style="page-break-inside:avoid;">
-                        <td class="row-title">
-                        Property:   
-                        </td>
-                         <td class="row-description">
-An existing multifamily property located at the above address that is improved with a [TBD] net square foot project comprised of [TBD]-residential units (each, a <strong>"Residential Unit"</strong>), the "Improvements").  The Improvements include [TBD], 1BD/1BA units, [TBD] 2BD/1BA units, [TBD] 2BD/1.5BA units and [TBD] 3BD/2BA units. No Property may at any time be occupied by Borrower, Guarantor or any interest owner, or affiliate or relative thereof.                         </td>
-                        </tr>
-                        
-                        <tr style="page-break-inside:avoid;">
-                        <td class="row-title">
-                        Loan Purpose:   
-                        </td>
-                         <td class="row-description">
-Refinancing or acquisition of the Property. 
-                         </td>
-                        </tr>
-                        
-                        <tr style="page-break-inside:avoid;">
-                        <td class="row-title">
-                        Zoning: 
-                        </td>
-                         <td class="row-description">
-Prior to Loan closing, Lender shall have received and approved of a zoning report obtained by Lender during the due diligence period together with any governmental approvals and/or permits, if applicable, and evidencing the Property is zoned multifamily for the number of Residential Units within the existing Improvements.                         </td>
-                        </tr>
-                        
-                        <tr style="page-break-inside:avoid;">
-                        <td class="row-title">
-                        Closing:    
-                        </td>
-                         <td class="row-description">
-Anticipated to be (45) days from the execution of this Loan Proposal (provided timely delivery of Due Diligence).
-                        
-                         </td>
-                        </tr>
-                        
-                        <tr style="page-break-inside:avoid;">
-                        <td class="row-title">
-                        Maximum Loan
-                        Amount/ Advances:
-                        </td>
-                         <td class="row-description">
-<p>Maximum Loan Amount of $[TBD], subject to confirmation and determined by Lender as follows: the Maximum Allocated Loan Amount will be the lesser of: (a) [XX.X]% of the "As-Stabilized" market value of the Property as determined by Lender based on an appraisal of the Property prepared by an appraiser selected by Lender and in form and scope acceptable to Lender (<strong>"As-Stabilized Value"</strong>) and (b) [XX.X]% of an amount equal to (i) the Third Party Purchase price paid for the Property as determined by Lender plus (ii) the total project costs that may have been incurred and paid for by Borrower prior to Loan closing to the extent verified as such by Lender which may be either credited to Borrower's [Initial] Equity Contribution or reimbursed to Borrower as part of the Initial Advance (discussed below) plus (iii) and operating expenses in the amounts set forth in the operating budget and the Interest Allocation (discussed below) and as more fully described in the loan documents. As used herein, <strong>"Third Party Purchase Price"</strong> means the purchase price paid by Borrower or an affiliate of Borrower or Sponsor for the Property to a third-party seller who is not related to or affiliated with Borrower or Sponsor pursuant to a written purchase and sale agreement. </p><p>
-The initial advance to be disbursed on the Closing Date for financing the acquisition or refinancing of the Property which may include reimbursement of any project costs incurred and paid for in full by Borrower prior to Loan closing to the extent such paid project costs are verified as such by Lender prior to Loan closing and have not been credited to Borrower's [Initial] Equity Contribution (the <strong>"Initial Advance"</strong>) is anticipated to be the lesser of (a) [XXX]% of the Third Party Purchase Price paid for the Property and (b)[XXX]% of the "As-Is" appraised value as determined by Lender based on the appraisal of the Property prepared by an appraiser selected by Lender and in form and scope acceptable to Lender (<strong>"As-Is Value"</strong>). Any remaining portion of the Maximum Loan Amount for the Property will be advanced in multiple advances (each an "Advance") to pay for operating expenses per the Lender approved budget, to the extent that there is insufficient property cash flow generated by the Property. As used herein, <strong>"Advance" </strong>means an Advance to pay for operating budget costs other than Advances from the Interest Allocation to pay interest on the Loan. See <strong>Exhibit A</strong> - "Sources and Uses"</p>
+                    </td>
+                    <td class="row-description">
+                        A bankruptcy-remote, single-purpose limited liability company (LLC) acceptable to Lender. The LLC will include Sponsor Name
+                        (
+                        <strong>
+                            <apex:outputText value="{!Opportunity.Borrower_Entity__r.Name}" />
+                        </strong>) or an affiliate of Sponsor approved by Lender as an equity owner and as managing member
+                        or manager. Lender reserves the right to approve any other equity owners and/or managers in the LLC
+                        prior to closing, and no transfers, pledges or assignments of direct or indirect equity interests
+                        shall be permitted except as noted in the below Section entitled "No Transfers".
+                    </td>
+                </tr>
 
-                         </td>
-                        </tr>
-                        
-                        <tr style="page-break-inside:avoid;">
-                        <td class="row-title">
-                        Borrower
-                        Equity Contribution:
-                        </td>
-                         <td class="row-description">
-An estimated $[TBD] of invested equity capital, inclusive of cash and land equity, to be evidenced at Loan closing (<strong>"Borrower Equity Contribution"</strong>), subject to confirmation as determined by Lender. 
-                         </td>
-                        </tr>
-                        
-                        <tr style="page-break-inside:avoid;">
-                        <td class="row-title">
-                        Initial Loan Term:  
-                        </td>
-                         <td class="row-description">
-                         24 months (<strong>"Initial Stated Maturity Date"</strong>)
-                         </td>
-                        </tr>
-                        
-                        <tr style="page-break-inside:avoid;">
-                        <td class="row-title">
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        Guarantor:
+                    </td>
+                    <td class="row-description">
+                        The undersigned "Sponsor" and/or such individuals or entities acceptable to Lender following due diligence, on a joint and
+                        several basis.
+                    </td>
+
+                </tr>
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        Pledgor:
+                    </td>
+                    <td class="row-description">
+                        <p style="{!IF(Opportunity.Loan_Size__c >= 10000000, 'page-break-inside:avoid;', 'display:none;')}">
+
+                            A bankruptcy remote, Delaware limited liability company, acceptable to Lender following due diligence, which shall be the
+                            sole member of Borrower. [REPLACE WITH "NOT REQUIRED" IF NO EQUITY PLEDGE (FOR LOANS $10MILLION
+                            AND UNDER]
+                        </p>
+                        <p style="{!IF(Opportunity.Loan_Size__c < 10000000, 'page-break-inside:avoid;', 'display:none;')}">
+                            None.
+                        </p>
+                    </td>
+                </tr>
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        Net Worth and Liquidity Requirement:
+                    </td>
+                    <td class="row-description">
+                        Prior to Loan closing the Guarantor(s) shall evidence, on a combined basis if more than one Guarantor, a minimum net worth
+                        of 100% of the Maximum Loan Amount and minimum aggregate liquidity of 10% of the Maximum Loan Amount
+                        based on readily marketable securities and bank accounts within the United States of America. Following
+                        Loan closing these requirements must be maintained at all times and shall be tested quarterly based
+                        on unaudited compiled financial statements with supporting current bank/brokerage account statements.
+                    </td>
+                </tr>
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        Property:
+                    </td>
+                    <td class="row-description">
+                        An existing multifamily property located at the above address that is improved with a [TBD] net square foot project comprised
+                        of [TBD]-residential units (each, a
+                        <strong>"Residential Unit"</strong>), the "Improvements"). The Improvements include [TBD], 1BD/1BA units,
+                        [TBD] 2BD/1BA units, [TBD] 2BD/1.5BA units and [TBD] 3BD/2BA units. No Property may at any time be
+                        occupied by Borrower, Guarantor or any interest owner, or affiliate or relative thereof. </td>
+                </tr>
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        Loan Purpose:
+                    </td>
+                    <td class="row-description">
+                        Refinancing or acquisition of the Property.
+                    </td>
+                </tr>
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        Zoning:
+                    </td>
+                    <td class="row-description">
+                        Prior to Loan closing, Lender shall have received and approved of a zoning report obtained by Lender during the due diligence
+                        period together with any governmental approvals and/or permits, if applicable, and evidencing the
+                        Property is zoned multifamily for the number of Residential Units within the existing Improvements.
+                    </td>
+                </tr>
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        Closing:
+                    </td>
+                    <td class="row-description">
+                        Anticipated to be (45) days from the execution of this Loan Proposal (provided timely delivery of Due Diligence).
+
+                    </td>
+                </tr>
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        Maximum Loan Amount/ Advances:
+                    </td>
+                    <td class="row-description">
+                        <p>Maximum Loan Amount of
+                            <apex:outputText value=" ${0,number} ">
+                                <apex:param value="{!Opportunity.Loan_Size__c}" /></apex:outputText>, subject to confirmation and determined by Lender as follows: the Maximum
+                            Allocated Loan Amount will be the lesser of: (a)
+                            <apex:outputText value="{0,number,0}%">
+                                <apex:param value="{!Opportunity.Requested_LTV_Max__c}" /></apex:outputText> of the "As-Stabilized" market value of the Property as determined by Lender
+                            based on an appraisal of the Property prepared by an appraiser selected by Lender and in form
+                            and scope acceptable to Lender (
+                            <strong>"As-Stabilized Value"</strong>) and (b)
+                            <apex:outputText value="{0,number,0}%">
+                                <apex:param value="{!Opportunity.Requested_LTC_Max__c}" /></apex:outputText> of an amount equal to (i) the Third Party Purchase price paid for the
+                            Property as determined by Lender plus (ii) the total project costs that may have been incurred
+                            and paid for by Borrower prior to Loan closing to the extent verified as such by Lender which
+                            may be either credited to Borrower's [Initial] Equity Contribution or reimbursed to Borrower
+                            as part of the Initial Advance (discussed below) plus (iii) and operating expenses in the amounts
+                            set forth in the operating budget and the Interest Allocation (discussed below) and as more fully
+                            described in the loan documents. As used herein,
+                            <strong>"Third Party Purchase Price"</strong> means the purchase price paid by Borrower or an affiliate
+                            of Borrower or Sponsor for the Property to a third-party seller who is not related to or affiliated
+                            with Borrower or Sponsor pursuant to a written purchase and sale agreement. </p>
+                        <p>
+                            The initial advance to be disbursed on the Closing Date for financing the acquisition or refinancing of the Property which
+                            may include reimbursement of any project costs incurred and paid for in full by Borrower prior
+                            to Loan closing to the extent such paid project costs are verified as such by Lender prior to
+                            Loan closing and have not been credited to Borrower's [Initial] Equity Contribution (the
+                            <strong>"Initial Advance"</strong>) is anticipated to be the lesser of (a) [XXX]% of the Third Party
+                            Purchase Price paid for the Property and (b)[XXX]% of the "As-Is" appraised value as determined
+                            by Lender based on the appraisal of the Property prepared by an appraiser selected by Lender
+                            and in form and scope acceptable to Lender (
+                            <strong>"As-Is Value"</strong>). Any remaining portion of the Maximum Loan Amount for the Property will
+                            be advanced in multiple advances (each an "Advance") to pay for operating expenses per the Lender
+                            approved budget, to the extent that there is insufficient property cash flow generated by the
+                            Property. As used herein,
+                            <strong>"Advance" </strong>means an Advance to pay for operating budget costs other than Advances from
+                            the Interest Allocation to pay interest on the Loan. See
+                            <strong>Exhibit A</strong> - "Sources and Uses"</p>
+
+                    </td>
+                </tr>
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        Borrower Equity Contribution:
+                    </td>
+                    <td class="row-description">
+                        An estimated $[TBD] of invested equity capital, inclusive of cash and land equity, to be evidenced at Loan closing (
+                        <strong>"Borrower Equity Contribution"</strong>), subject to confirmation as determined by Lender.
+                    </td>
+                </tr>
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        Initial Loan Term:
+                    </td>
+                    <td class="row-description">
+                        24 months (
+                        <strong>"Initial Stated Maturity Date"</strong>)
+                    </td>
+                </tr>
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
                         Extension Options:
-                        </td>
-                         <td class="row-description">
-                         One, 6-month extension option(s) subject to extension requirements below.
-                         </td>
-                        </tr>
-                        
-                        <tr style="page-break-inside:avoid;">
-                        <td class="row-title">
-                        Interest Rate:
-                        </td>
-                         <td class="row-description">
-<p>The Loan will bear interest at a floating rate per annum equal to Term SOFR plus [XXX]% (<strong>"Interest Rate"</strong>), adjusted monthly and provided Term SOFR shall not be less than the Floor. Interest will be paid monthly in arrears on the tenth day of each calendar month for accrued interest for the preceding calendar month (each an <strong>"Interest Accrual Period"</strong>).  Interest will be calculated based on a 360-day year and the actual number of days elapsed (Actual/360) and will accrue on any unpaid principal balance. As used herein, the following terms shall have the meanings set forth below:</p>
-      <p><strong>"Floor"</strong> means [XXX]% per annum.</p>
-<p><strong>"Interest Adjustment Date</strong>" means, for the initial Interest Accrual Period, the date that is two U.S. Government Securities Business Days prior to the first day of the calendar month in which the Closing Date occurs, and for any subsequent Interest Accrual Period, the date that is two U.S. Government Securities Business Days prior to the first day of such Interest Accrual Period.</p>
-<p><strong>"SOFR"</strong> means a rate equal to the secured overnight financing rate as administered by the Federal Reserve Bank of New York (or a successor administrator of the secured overnight financing rate).</p>
-<p><strong>"Term SOFR"</strong> means, for any Interest Accrual Period, the rate per annum equal to the forward-looking term rate based on SOFR for a one-month tenor as of the Interest Adjustment Date, as published by the CME Group Benchmark Administration Limited (or a successor administrator of such rate), as determined by Lender; provided that if as of 5:00 p.m. U.S. Central Time on the Interest Adjustment Date Term SOFR has not been published, then Term SOFR shall mean such rate as of the first U.S. Government Securities Business Day preceding the Interest Adjustment Date for which a Term SOFR was published so long as such first preceding U.S. Government Securities Business Day is not more than three U.S. Government Securities Business Days prior to the Interest Adjustment Date. </p>
-<p><strong>"U.S. Government Securities Business Day" </strong>means any day except for (i) a Saturday, (ii) a Sunday or (iii) a day on which the Securities Industry and Financial Markets Association recommends that the fixed income departments of its members be closed for the entire day for purposes of trading in United States government securities.</p>
- 
-       
-                         </td>
-                        </tr>
-                        
-                        <tr style="page-break-inside:avoid;">
-                        <td class="row-title">
-                        Amortization:   
-                        </td>
-                         <td class="row-description">
-                         Interest Only
-                         </td>
-                        </tr>
-                        
-                        <tr style="page-break-inside:avoid;">
-                        <td class="row-title">
-                        Origination Fee:    
-                        </td>
-                         <td class="row-description">
-                         <apex:outputText value="{!Opportunity.Requested_Origination_Fee__c}" />% of the Maximum Loan Amount payable at Closing, which fee shall be fully earned and non-refundable to Borrower.
-                         </td>
-                        </tr>
-                        
-                        <tr style="page-break-inside:avoid;">
-                        <td class="row-title">
-                        Advance Fee:
-                        </td>
-                         <td class="row-description">
-                         None.
-                         
-                         </td>
-                        </tr>
-                     
-                        
-                        <tr style="page-break-inside:avoid;">
-                        <td class="row-title">
-                        Exit Fee:   
-                        </td>
-                         <td class="row-description">
-                           <span style="{!IF(Opportunity.Exit_Fee__c != null , 'page-break-inside:avoid;', 'display:none;')}">
+                    </td>
+                    <td class="row-description">
+                        One, 6-month extension option(s) subject to extension requirements below.
+                    </td>
+                </tr>
 
-                         <apex:outputText value="{!Opportunity.Exit_Fee__c}" />
-% of the Maximum Loan Amount, which shall be due and payable in full upon the earlier of (a) the maturity date of the Loan, and (b) the date the Loan is repaid in full, provided that the Exit Fee will be waived if the Loan is repaid in full with a permanent term loan from Lender [IF NO EXIT FEE, REPLACE WITH None]   
-                            </span>
-                            <span style="{!IF(Opportunity.Exit_Fee__c = null , 'page-break-inside:avoid;', 'display:none;')}">
-None</span>
-                       
-                       </td>
-                        </tr>   
-                        
-                        <tr style="page-break-inside:avoid;">
-                        <td class="row-title">
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        Interest Rate:
+                    </td>
+                    <td class="row-description">
+                        <p>The Loan will bear interest at a floating rate per annum equal to Term SOFR plus
+                            <apex:outputText value="{0,number,0}%">
+                                <apex:param value="{!Opportunity.Requested_Index_Margin__c}" /></apex:outputText> (
+                            <strong>"Interest Rate"</strong>), adjusted monthly and provided Term SOFR shall not be less than the
+                            Floor. Interest will be paid monthly in arrears on the tenth day of each calendar month for accrued
+                            interest for the preceding calendar month (each an
+                            <strong>"Interest Accrual Period"</strong>). Interest will be calculated based on a 360-day year and
+                            the actual number of days elapsed (Actual/360) and will accrue on any unpaid principal balance.
+                            As used herein, the following terms shall have the meanings set forth below:</p>
+                        <p>
+                            <strong>"Floor"</strong> means
+                            <apex:outputText value="{!Opportunity.Requested_Index_Floor__c}" /> per annum.</p>
+                        <p>
+                            <strong>"Interest Adjustment Date</strong>" means, for the initial Interest Accrual Period, the date
+                            that is two U.S. Government Securities Business Days prior to the first day of the calendar month
+                            in which the Closing Date occurs, and for any subsequent Interest Accrual Period, the date that
+                            is two U.S. Government Securities Business Days prior to the first day of such Interest Accrual
+                            Period.
+                        </p>
+                        <p>
+                            <strong>"SOFR"</strong> means a rate equal to the secured overnight financing rate as administered by
+                            the Federal Reserve Bank of New York (or a successor administrator of the secured overnight financing
+                            rate).
+                        </p>
+                        <p>
+                            <strong>"Term SOFR"</strong> means, for any Interest Accrual Period, the rate per annum equal to the
+                            forward-looking term rate based on SOFR for a one-month tenor as of the Interest Adjustment Date,
+                            as published by the CME Group Benchmark Administration Limited (or a successor administrator
+                            of such rate), as determined by Lender; provided that if as of 5:00 p.m. U.S. Central Time on
+                            the Interest Adjustment Date Term SOFR has not been published, then Term SOFR shall mean such
+                            rate as of the first U.S. Government Securities Business Day preceding the Interest Adjustment
+                            Date for which a Term SOFR was published so long as such first preceding U.S. Government Securities
+                            Business Day is not more than three U.S. Government Securities Business Days prior to the Interest
+                            Adjustment Date. </p>
+                        <p>
+                            <strong>"U.S. Government Securities Business Day" </strong>means any day except for (i) a Saturday, (ii)
+                            a Sunday or (iii) a day on which the Securities Industry and Financial Markets Association recommends
+                            that the fixed income departments of its members be closed for the entire day for purposes of
+                            trading in United States government securities.</p>
+
+
+                    </td>
+                </tr>
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        Amortization:
+                    </td>
+                    <td class="row-description">
+                        Interest Only
+                    </td>
+                </tr>
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        Origination Fee:
+                    </td>
+                    <td class="row-description">
+                        <apex:outputText value="{0,number,0}%">
+                            <apex:param value="{!Opportunity.Requested_Origination_Fee__c}" /> </apex:outputText> of the Maximum Loan Amount payable at Closing, which fee shall be fully earned
+                        and non-refundable to Borrower.
+                    </td>
+                </tr>
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        Advance Fee:
+                    </td>
+                    <td class="row-description">
+                        None.
+
+                    </td>
+                </tr>
+
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        Exit Fee:
+                    </td>
+                    <td class="row-description">
+                        <span style="{!IF(Opportunity.Exit_Fee__c != null , 'page-break-inside:avoid;', 'display:none;')}">
+
+                            <apex:outputText value="{!Opportunity.Exit_Fee__c}" /> % of the Maximum Loan Amount, which shall be due and payable in full upon the earlier of (a)
+                            the maturity date of the Loan, and (b) the date the Loan is repaid in full, provided that the
+                            Exit Fee will be waived if the Loan is repaid in full with a permanent term loan from Lender
+                            [IF NO EXIT FEE, REPLACE WITH None]
+                        </span>
+                        <span style="{!IF(Opportunity.Exit_Fee__c = null , 'page-break-inside:avoid;', 'display:none;')}">
+                            None</span>
+
+                    </td>
+                </tr>
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
                         Extension Fee:
 
-                        </td>
-                         <td class="row-description">
-                          0.50% of the Maximum Loan Amount
-                       </td>
-                        </tr>  
-                        
-                        <tr style="page-break-inside:avoid;">
-                        <td class="row-title">
-                        Extension Option 
-                        Requirements: 
+                    </td>
+                    <td class="row-description">
+                        0.50% of the Maximum Loan Amount
+                    </td>
+                </tr>
 
-                        </td>
-                         <td class="row-description">
-                         <p>
-a)  No default or event of default has occurred and is then continuing, </p><p>
-b)  Borrower shall have delivered to Lender an irrevocable written notice requesting such   extension at least 60 days but no more than 180 days prior to the stated maturity date, </p><p>
-c)  Borrower shall have paid Lender the Extension Fee on or before the Initial Stated Maturity Date, </p><p>
-d)  The Loan must be in balance through extended maturity with Borrower depositing necessary Balancing Funds prior to the Initial Stated Maturity date (see "Loan in Balance" below)  </p><p>
-e)  An As-Is LTV ratio of no greater than [X.XX]% [INSERT THE STABILIZED LTV % IN ABOVE SECTION ENTITLED MAXIMUM LOAN AMOUNT]  as tested by a current appraisal; </p><p>
-f)  Borrower shall have provided evidence satisfactory to Lender that at least [85]% of the Residential Units are occupied by Eligible Tenants pursuant to Eligible Leases as of the Initial Stated Maturity Date; and</p><p>
-g)  There shall have been no material adverse change in the financial condition of Guarantor that would materially and adversely affect Guarantor's ability to perform its obligations under the Loan Documents, as determined by Lender, and Guarantor shall have delivered to Lender a Compliance Certificate dated as of the Initial Stated Maturity Date, with all supporting documentation, evidencing Guarantor is in compliance with Guarantor's  minimum liquidity and net worth covenants.[IF NO EXTENSION OPTION, DELETE (a)-(h) TEXT AND REPLACE WITH N/A] </p>
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        Extension Option Requirements:
 
-                       </td>
-                        </tr>  
-                        
-                        <tr style="page-break-inside:avoid;">
-                        <td class="row-title">
+                    </td>
+                    <td class="row-description">
+                        <p>
+                            a) No default or event of default has occurred and is then continuing, </p>
+                        <p>
+                            b) Borrower shall have delivered to Lender an irrevocable written notice requesting such extension at least 60 days but no
+                            more than 180 days prior to the stated maturity date, </p>
+                        <p>
+                            c) Borrower shall have paid Lender the Extension Fee on or before the Initial Stated Maturity Date, </p>
+                        <p>
+                            d) The Loan must be in balance through extended maturity with Borrower depositing necessary Balancing Funds prior to the
+                            Initial Stated Maturity date (see "Loan in Balance" below) </p>
+                        <p>
+                            e) An As-Is LTV ratio of no greater than [X.XX]% [INSERT THE STABILIZED LTV % IN ABOVE SECTION ENTITLED MAXIMUM LOAN AMOUNT]
+                            as tested by a current appraisal; </p>
+                        <p>
+                            f) Borrower shall have provided evidence satisfactory to Lender that at least [85]% of the Residential Units are occupied
+                            by Eligible Tenants pursuant to Eligible Leases as of the Initial Stated Maturity Date; and</p>
+                        <p>
+                            g) There shall have been no material adverse change in the financial condition of Guarantor that would materially and adversely
+                            affect Guarantor's ability to perform its obligations under the Loan Documents, as determined
+                            by Lender, and Guarantor shall have delivered to Lender a Compliance Certificate dated as of
+                            the Initial Stated Maturity Date, with all supporting documentation, evidencing Guarantor is
+                            in compliance with Guarantor's minimum liquidity and net worth covenants.[IF NO EXTENSION OPTION,
+                            DELETE (a)-(h) TEXT AND REPLACE WITH N/A] </p>
+
+                    </td>
+                </tr>
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
                         Lockout Period:
-                        </td>
-                         <td class="row-description">
-                         None.
-                       </td>
-                        </tr>  
-                        
-                        <tr style="page-break-inside:avoid;">
-                        <td class="row-title">
+                    </td>
+                    <td class="row-description">
+                        None.
+                    </td>
+                </tr>
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
                         Minimum Interest:
-                        </td>
-                         <td class="row-description">
-                         None.
-                        </td>
-                        </tr>  
-                                                
-                        <tr style="page-break-inside:avoid;">
-                        <td class="row-title">
-                        Prepayment: 
-                        </td>
-                         <td class="row-description">
-                         The Loan is freely pre-payable in whole but not in in part, without premium or penalty, upon giving to the Lender of at least The Loan is freely pre-payable in whole but not in in part, without premium or penalty, upon giving to the Lender of at least ten (10) business days prior written notice and payment of all principal, accrued but unpaid interest, the Exit Fee (unless waived by Lender as provided in the section entitled "Exit Fee) and any and all other amounts then due under the Loan.
-                       </td>
-                        </tr>  
-                        
-                       
-                        
-                        <tr style="page-break-inside:avoid;">
-                        <td class="row-title">
-Interest Allocation:
-                        </td>
-                         <td class="row-description">
-So long as there is no Event of Default under the Loan, Lender will make payments of interest, when due, from the unadvanced Loan Proceeds designated at closing for the payment of interest on the Loan (the <strong>"Interest Allocation"</strong>), provided, however, to the extent that there is net cash flow generated by the Property, such funds shall be utilized to pay accrued but unpaid interest prior to any Advance from the Interest Allocation. The estimated amount of the Interest Allocation is $[TBD]. The Interest Allocation is subject to change by Lender during underwriting, in its sole and absolute discretion. If Lender determines, at any time during the Loan term, that the undisbursed Loan Proceeds allocated to the Interest Allocation along with projected cash flow from Property operations (if any), is insufficient to fund the Loan's projected interest expense through Loan maturity, the Borrower shall deposit with Lender Balancing Funds (defined below) in an amount equal to such shortfall.  The obligation to deposit Balancing Funds with Lender shall be a Guarantor liability.                       </td>
-                        </tr>  
-                        
-                        <tr style="page-break-inside:avoid;">
-                        <td class="row-title">
-                        Loan in Balance:    
-                        </td>
-                         <td class="row-description">
-Advances of the unfunded Loan Proceeds will only be made if the Loan is "in balance"; i.e. when the undisbursed Loan Proceeds (together with any Balancing Funds on deposit with Lender) are sufficient to pay all interest on the Loan until maturity.  If the Loan is not "in-balance", as determined by Lender, Borrower shall be required to deposit with Lender funds (<strong>"Balancing Funds"</strong>) in an amount sufficient to bring the Loan "in-balance" before any additional Advances or disbursements may be made.  This shall be a Guarantor liability.                       </td>
-                        </tr> 
-                             
-                        <tr style="page-break-inside:avoid;">
-                        <td class="row-title">
-                        Leasing:    
-                        </td>
-                         <td class="row-description">
-The Residential Units shall be leased only to Eligible Tenants pursuant to Eligible Leases. As used herein, <strong>"Eligible Lease"</strong> means a written Lease that (a) is executed by an Eligible Tenant and Borrower, (b)  has an initial term (together with all renewal options) of not less than [one (1) year and not greater than two (2) years], (c)  has a rental rate and terms consistent with rates and terms then prevailing in the local market where the Property is located, (d) otherwise complies with the leasing requirements to be set forth in the Loan Agreement. As used herein, <strong>"Eligible Tenant"</strong> means a bona fide third-party tenant of a Residential Unit who satisfies each of the following criteria:  (a)  Borrower screened the tenant and determined the tenant had sufficient financial resources to satisfy its obligations under the Lease (pursuant to screening criteria and protocol approved by Lender prior to Loan closing), (b) the tenant is not subject to an ongoing bankruptcy, (c) the tenant is not affiliated with or related to Borrower or Guarantor; (d) the Tenant will be the occupant of the unit subject to the Lease.                         </td>
-                        </tr> 
-                        
+                    </td>
+                    <td class="row-description">
+                        None.
+                    </td>
+                </tr>
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        Prepayment:
+                    </td>
+                    <td class="row-description">
+                        The Loan is freely pre-payable in whole but not in in part, without premium or penalty, upon giving to the Lender of at least
+                        The Loan is freely pre-payable in whole but not in in part, without premium or penalty, upon giving
+                        to the Lender of at least ten (10) business days prior written notice and payment of all principal,
+                        accrued but unpaid interest, the Exit Fee (unless waived by Lender as provided in the section entitled
+                        "Exit Fee) and any and all other amounts then due under the Loan.
+                    </td>
+                </tr>
 
 
-                        
-                         <tr style="page-break-inside:avoid;">
-                        <td class="row-title">
-Minimum Leasing
-Requirements:                        
-</td>
-                         <td class="row-description">
-                         <p>The following minimum leasing requirements for the Property must be achieved on or before the dates set forth below:</p><p>
-(a) No later than [__] months following Loan closing, not less than [__]% of the Residential Units must be occupied by Eligible Tenants pursuant to Eligible Leases. </p><p>
-(b) No later than [__] months following Loan closing, not less than [__]% of the Residential Units must be occupied by Eligible Tenants pursuant to Eligible Leases.</p>
 
-                       </td>
-                        </tr>
-                        
-                        <tr style="page-break-inside:avoid;">
-                        <td class="row-title">
-Collateral:
-                        </td>
-                         <td class="row-description">
-The Loan shall be secured by, among other things, (a) a first priority mortgage/deed of trust on the Property; (b) a first priority blanket assignment of all leases and rents with respect to the Property, (c)  a first priority security interest in all other property and assets related to the Property, and (d) a first priority security interest in all other property and assets of the Borrower, including but not limited to, a collateral assignment of management agreement and any other contracts as determined by Lender [and (e) a pledge of the 100% of the equity interests in the Borrower].  The owner's interest under each of the of the aforementioned documents must be in the name of the Borrower.                       </td>
-                        </tr> 
-                        
- 
-                        
-                         <tr style="page-break-inside:avoid;">
-                        <td class="row-title">
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        Interest Allocation:
+                    </td>
+                    <td class="row-description">
+                        So long as there is no Event of Default under the Loan, Lender will make payments of interest, when due, from the unadvanced
+                        Loan Proceeds designated at closing for the payment of interest on the Loan (the
+                        <strong>"Interest Allocation"</strong>), provided, however, to the extent that there is net cash flow generated
+                        by the Property, such funds shall be utilized to pay accrued but unpaid interest prior to any Advance
+                        from the Interest Allocation. The estimated amount of the Interest Allocation is $[TBD]. The Interest
+                        Allocation is subject to change by Lender during underwriting, in its sole and absolute discretion.
+                        If Lender determines, at any time during the Loan term, that the undisbursed Loan Proceeds allocated
+                        to the Interest Allocation along with projected cash flow from Property operations (if any), is insufficient
+                        to fund the Loan's projected interest expense through Loan maturity, the Borrower shall deposit with
+                        Lender Balancing Funds (defined below) in an amount equal to such shortfall. The obligation to deposit
+                        Balancing Funds with Lender shall be a Guarantor liability. </td>
+                </tr>
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        Loan in Balance:
+                    </td>
+                    <td class="row-description">
+                        Advances of the unfunded Loan Proceeds will only be made if the Loan is "in balance"; i.e. when the undisbursed Loan Proceeds
+                        (together with any Balancing Funds on deposit with Lender) are sufficient to pay all interest on
+                        the Loan until maturity. If the Loan is not "in-balance", as determined by Lender, Borrower shall
+                        be required to deposit with Lender funds (
+                        <strong>"Balancing Funds"</strong>) in an amount sufficient to bring the Loan "in-balance" before any additional
+                        Advances or disbursements may be made. This shall be a Guarantor liability. </td>
+                </tr>
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        Leasing:
+                    </td>
+                    <td class="row-description">
+                        The Residential Units shall be leased only to Eligible Tenants pursuant to Eligible Leases. As used herein,
+                        <strong>"Eligible Lease"</strong> means a written Lease that (a) is executed by an Eligible Tenant and Borrower,
+                        (b) has an initial term (together with all renewal options) of not less than [one (1) year and not
+                        greater than two (2) years], (c) has a rental rate and terms consistent with rates and terms then
+                        prevailing in the local market where the Property is located, (d) otherwise complies with the leasing
+                        requirements to be set forth in the Loan Agreement. As used herein,
+                        <strong>"Eligible Tenant"</strong> means a bona fide third-party tenant of a Residential Unit who satisfies
+                        each of the following criteria: (a) Borrower screened the tenant and determined the tenant had sufficient
+                        financial resources to satisfy its obligations under the Lease (pursuant to screening criteria and
+                        protocol approved by Lender prior to Loan closing), (b) the tenant is not subject to an ongoing bankruptcy,
+                        (c) the tenant is not affiliated with or related to Borrower or Guarantor; (d) the Tenant will be
+                        the occupant of the unit subject to the Lease. </td>
+                </tr>
+
+
+
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        Minimum Leasing Requirements:
+                    </td>
+                    <td class="row-description">
+                        <p>The following minimum leasing requirements for the Property must be achieved on or before the dates
+                            set forth below:</p>
+                        <p>
+                            (a) No later than [__] months following Loan closing, not less than [__]% of the Residential Units must be occupied by Eligible
+                            Tenants pursuant to Eligible Leases. </p>
+                        <p>
+                            (b) No later than [__] months following Loan closing, not less than [__]% of the Residential Units must be occupied by Eligible
+                            Tenants pursuant to Eligible Leases.</p>
+
+                    </td>
+                </tr>
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        Collateral:
+                    </td>
+                    <td class="row-description">
+                        The Loan shall be secured by, among other things, (a) a first priority mortgage/deed of trust on the Property; (b) a first
+                        priority blanket assignment of all leases and rents with respect to the Property, (c) a first priority
+                        security interest in all other property and assets related to the Property, and (d) a first priority
+                        security interest in all other property and assets of the Borrower, including but not limited to,
+                        a collateral assignment of management agreement and any other contracts as determined by Lender [and
+                        (e) a pledge of the 100% of the equity interests in the Borrower]. The owner's interest under each
+                        of the of the aforementioned documents must be in the name of the Borrower. </td>
+                </tr>
+
+
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
                         Recourse:
-                        </td>
-                         <td class="row-description">
-The Loan will be full recourse to Borrower. The Loan will be non-recourse to Guarantor except that Guarantor shall execute at Loan closing : (a) a Guaranty with Lender's standard carve-outs which include, among other things, fraud, misrepresentation, misappropriation of funds, unauthorized debt, unauthorized transfer of title or direct or indirect equity interests in Borrower, voluntary bankruptcy, collusive involuntary bankruptcy, breach of SPE covenants/provisions and Borrower's obligations under the environmental indemnity agreement, and (b) Borrower's obligation to keep the Loan in balance in accordance with the terms of the loan agreement, including, among other things, depositing Balancing Funds with Lender, (iii) the payment of property taxes, insurance premiums and interest on the Loan as and when due.                        </td>
-                        </tr> 
-                        
-                    <tr style="page-break-inside:avoid;">
-                    <td class="row-title">
-Reporting
-Requirement:
                     </td>
                     <td class="row-description">
-                    Borrower will provide Lender with Borrower and Guarantor financial statements and bank statements on a quarterly basis during the Loan Term accompanied by a compliance certificate executed by Guarantor, evidencing Guarantor's compliance with the net worth and liquidity covenants.  Borrower, Guarantor and their affiliates will provide Lender with such additional reports as Lender requires for transactions of the type described in this proposal.  In addition, upon commencement of leasing, Borrower will provide Lender, a management prepared certified rent roll and certified monthly operating statement sufficient to substantiate net cash flow at the Property no later than twenty (20) days after the end of each month.
+                        The Loan will be full recourse to Borrower. The Loan will be non-recourse to Guarantor except that Guarantor shall execute
+                        at Loan closing : (a) a Guaranty with Lender's standard carve-outs which include, among other things,
+                        fraud, misrepresentation, misappropriation of funds, unauthorized debt, unauthorized transfer of
+                        title or direct or indirect equity interests in Borrower, voluntary bankruptcy, collusive involuntary
+                        bankruptcy, breach of SPE covenants/provisions and Borrower's obligations under the environmental
+                        indemnity agreement, and (b) Borrower's obligation to keep the Loan in balance in accordance with
+                        the terms of the loan agreement, including, among other things, depositing Balancing Funds with Lender,
+                        (iii) the payment of property taxes, insurance premiums and interest on the Loan as and when due.
                     </td>
                 </tr>
-                
-                    <tr style="page-break-inside:avoid;">
+
+                <tr style="page-break-inside:avoid;">
                     <td class="row-title">
-                    Late Fee:   
+                        Reporting Requirement:
                     </td>
                     <td class="row-description">
-                    5.00% of the amount of any payment which is not made when due.
+                        Borrower will provide Lender with Borrower and Guarantor financial statements and bank statements on a quarterly basis during
+                        the Loan Term accompanied by a compliance certificate executed by Guarantor, evidencing Guarantor's
+                        compliance with the net worth and liquidity covenants. Borrower, Guarantor and their affiliates will
+                        provide Lender with such additional reports as Lender requires for transactions of the type described
+                        in this proposal. In addition, upon commencement of leasing, Borrower will provide Lender, a management
+                        prepared certified rent roll and certified monthly operating statement sufficient to substantiate
+                        net cash flow at the Property no later than twenty (20) days after the end of each month.
                     </td>
                 </tr>
-                        
-                     <tr style="page-break-inside:avoid;">
+
+                <tr style="page-break-inside:avoid;">
                     <td class="row-title">
-Default Interest:   
+                        Late Fee:
                     </td>
                     <td class="row-description">
-                    Interest Rate + 5.00%, but not to exceed the maximum rate permitted by applicable law.
+                        5.00% of the amount of any payment which is not made when due.
                     </td>
                 </tr>
-                        
-                        
-                    <tr style="page-break-inside:avoid;">
+
+                <tr style="page-break-inside:avoid;">
                     <td class="row-title">
-                    Additional
-                    Indebtedness:
+                        Default Interest:
                     </td>
                     <td class="row-description">
-                    No additional mortgage debt or mezzanine debt or other unsecured or secured debt is permitted. Trade payables to be capped as agreed in the Loan Documents.
+                        Interest Rate + 5.00%, but not to exceed the maximum rate permitted by applicable law.
                     </td>
                 </tr>
-                  
-                   <tr style="page-break-inside:avoid;">
-                    <td class="row-title">
-No Transfers:
-                    </td>
-                    <td class="row-description">
-                    Transfers of interests in the Property and transfers of direct and indirect equity interests in Borrower and pledges of the direct and indirect equity interests in Borrower are not permitted, provided that certain equity interest transfers may be permitted subject to the terms and conditions to be set forth in the loan documents, as determined by  Lender, in its sole discretion, prior to Loan Closing following review of the applicable organizational documents concerning, among other factors determined pertinent to Lender, management and control of the Borrower and other loan parties.
-                    </td>
-                </tr>      
-                        
-                        
-                    <tr style="page-break-inside:avoid;">
-                    <td class="row-title">
-Lender Transfer:
-                    </td>
-                    <td class="row-description">
-Lender may sell, assign, participate, pledge, or otherwise transfer the Loan, the Note the Loan Documents (any individual Advance separate from other Advances) and/or all or any portion of Lender's rights, title, obligations and interests therein, without notice to or the consent of Borrower.  The Borrower will cooperate with any such Lender sale, assignment or participation and execute such documents as are required by Lender and the purchaser, assignee or participant to effectuate any such participation, assignment or sale.  As a part of a participation, assignment or sale by Lender, Borrower acknowledges and agrees that the Loan may be split into two or more loans (which may include mezzanine loans) with the Maximum Loan Amount, Interest Rate and other economic terms materially the same as provided in this Loan Proposal. Such rights shall be exercised at the Lender's cost and expense except that the Borrower shall be responsible for its own legal fees in connection therewith. 
-                    </td>
-                </tr>  
-                
-                 <tr style="page-break-inside:avoid;">
-                    <td class="row-title">
-Due Diligence:
-                    </td>
-                    <td class="row-description">
-                    With respect to the origination of the Loan, Lender shall satisfy itself in its sole discretion with respect to (i) the financial condition and reputation of the Borrower, the Guarantor, and their respective direct and indirect equity owners, (ii) the feasibility, viability, quality and valuation of the Property, including but not limited to a Lender's approval of the appraisal(s), Borrower's organizational documents (including without limitation, evidence that Borrower is duly qualified to do business in state where the Property is located), executed Third Party Purchase Agreement, and a current title commitment for lender's title insurance policy which must be issued by any one of Fidelity National Title Insurance Company, First American Title Insurance Company, Chicago Title Insurance Company or Old Republic Title Insurance Company (each, a <strong>CoreVest Approved Title Company"</strong>) and a final proforma lender's title insurance policy, with all proforma endorsements attached, from such CoreVest Approved Title Company, and (iii) such financial information and references with respect to the Borrower and its members (and other direct and indirect owners) and Guarantor, as required by Lender. See <strong>Exhibit E</strong> - Due Diligence Deliverables.
-                    </td>
-                </tr>   
-   
-                    <tr style="page-break-inside:avoid;">
-                    <td class="row-title">
-                    Conditions Precedent
-                    To Closing: 
-                    </td>
-                    <td class="row-description">
-Conditions precedent to Closing, include, among other things, in Lender's sole and absolute discretion:  (i) approval of Lender's investment committee; (ii) satisfactory completion of Due Diligence and other conditions described herein; (iii) accuracy of representations and warranties; (iv) satisfactory Loan Documents; (v) Lender's title insurance acceptable to Lender, including without limitation, a zoning endorsement, and a final stamped ALTA as-built survey prepared by an acceptable surveyor in accordance with the Survey Requirements attached hereto as <strong><u>Exhibit C</u></strong> and otherwise acceptable to Lender; (vi) receipt and approval of the (A) as-is and as-completed appraised values of the Property, (B) the operating budget, (C) evidence satisfactory to Lender that Lender's insurance requirements set forth on <Strong><u>Exhibit D</u></strong> have been satisfied, and (F) any other information or documentation concerning the Property as Lender may request; (vii) recordation of a first lien security instrument against the Property; (vii) receipt of such assignments and third party consents as determined by Lender necessary to assign the Borrower's interest under the borrower agreement to Lender as additional collateral for the Loan.  Sponsor acknowledges that Lender shall have no obligation to make the Loan and shall be subject to Lender's approval, in its sole and absolute discretion.                                  </td>
 
-                </tr>   
-   
 
-                
-                     <tr style="page-break-inside:avoid;">
+                <tr style="page-break-inside:avoid;">
                     <td class="row-title">
-                    Representations
-                    And Warranties:  
+                        Additional Indebtedness:
+                    </td>
+                    <td class="row-description">
+                        No additional mortgage debt or mezzanine debt or other unsecured or secured debt is permitted. Trade payables to be capped
+                        as agreed in the Loan Documents.
+                    </td>
+                </tr>
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        No Transfers:
+                    </td>
+                    <td class="row-description">
+                        Transfers of interests in the Property and transfers of direct and indirect equity interests in Borrower and pledges of the
+                        direct and indirect equity interests in Borrower are not permitted, provided that certain equity
+                        interest transfers may be permitted subject to the terms and conditions to be set forth in the loan
+                        documents, as determined by Lender, in its sole discretion, prior to Loan Closing following review
+                        of the applicable organizational documents concerning, among other factors determined pertinent to
+                        Lender, management and control of the Borrower and other loan parties.
+                    </td>
+                </tr>
+
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        Lender Transfer:
+                    </td>
+                    <td class="row-description">
+                        Lender may sell, assign, participate, pledge, or otherwise transfer the Loan, the Note the Loan Documents (any individual
+                        Advance separate from other Advances) and/or all or any portion of Lender's rights, title, obligations
+                        and interests therein, without notice to or the consent of Borrower. The Borrower will cooperate
+                        with any such Lender sale, assignment or participation and execute such documents as are required
+                        by Lender and the purchaser, assignee or participant to effectuate any such participation, assignment
+                        or sale. As a part of a participation, assignment or sale by Lender, Borrower acknowledges and agrees
+                        that the Loan may be split into two or more loans (which may include mezzanine loans) with the Maximum
+                        Loan Amount, Interest Rate and other economic terms materially the same as provided in this Loan
+                        Proposal. Such rights shall be exercised at the Lender's cost and expense except that the Borrower
+                        shall be responsible for its own legal fees in connection therewith.
+                    </td>
+                </tr>
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        Due Diligence:
+                    </td>
+                    <td class="row-description">
+                        With respect to the origination of the Loan, Lender shall satisfy itself in its sole discretion with respect to (i) the financial
+                        condition and reputation of the Borrower, the Guarantor, and their respective direct and indirect
+                        equity owners, (ii) the feasibility, viability, quality and valuation of the Property, including
+                        but not limited to a Lender's approval of the appraisal(s), Borrower's organizational documents (including
+                        without limitation, evidence that Borrower is duly qualified to do business in state where the Property
+                        is located), executed Third Party Purchase Agreement, and a current title commitment for lender's
+                        title insurance policy which must be issued by any one of Fidelity National Title Insurance Company,
+                        First American Title Insurance Company, Chicago Title Insurance Company or Old Republic Title Insurance
+                        Company (each, a
+                        <strong>CoreVest Approved Title Company"</strong>) and a final proforma lender's title insurance policy,
+                        with all proforma endorsements attached, from such CoreVest Approved Title Company, and (iii) such
+                        financial information and references with respect to the Borrower and its members (and other direct
+                        and indirect owners) and Guarantor, as required by Lender. See
+                        <strong>Exhibit E</strong> - Due Diligence Deliverables.
+                    </td>
+                </tr>
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        Conditions Precedent To Closing:
+                    </td>
+                    <td class="row-description">
+                        Conditions precedent to Closing, include, among other things, in Lender's sole and absolute discretion: (i) approval of Lender's
+                        investment committee; (ii) satisfactory completion of Due Diligence and other conditions described
+                        herein; (iii) accuracy of representations and warranties; (iv) satisfactory Loan Documents; (v) Lender's
+                        title insurance acceptable to Lender, including without limitation, a zoning endorsement, and a final
+                        stamped ALTA as-built survey prepared by an acceptable surveyor in accordance with the Survey Requirements
+                        attached hereto as
+                        <strong>
+                            <u>Exhibit C</u>
+                        </strong> and otherwise acceptable to Lender; (vi) receipt and approval of the (A) as-is and as-completed appraised
+                        values of the Property, (B) the operating budget, (C) evidence satisfactory to Lender that Lender's
+                        insurance requirements set forth on
+                        <Strong>
+                            <u>Exhibit D</u>
+                        </strong> have been satisfied, and (F) any other information or documentation concerning the Property as Lender
+                        may request; (vii) recordation of a first lien security instrument against the Property; (vii) receipt
+                        of such assignments and third party consents as determined by Lender necessary to assign the Borrower's
+                        interest under the borrower agreement to Lender as additional collateral for the Loan. Sponsor acknowledges
+                        that Lender shall have no obligation to make the Loan and shall be subject to Lender's approval,
+                        in its sole and absolute discretion. </td>
+
+                </tr>
+
+
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        Representations And Warranties:
 
                     </td>
                     <td class="row-description">
-                    Usual and customary for loan transactions of this type.
-               </td>
-                </tr> 
-                
-                    <tr style="page-break-inside:avoid;">
-                    <td class="row-title">
-                    Affirmative
-                    Covenants:
+                        Usual and customary for loan transactions of this type.
                     </td>
-                    <td class="row-description">
-                    Usual and customary for loan transactions of this type, including, without limitation, the following: (a) delivery of financial statements, compliance certificates and other information; (b) notices of default, material litigation, material governmental proceedings or investigations, ERISA and environmental proceedings and material changes in accounting or financial reporting practices; (c) payment of obligations; (d) preservation of existence; (e) maintenance of properties and insurance; (f) compliance with laws; (g) maintenance of books and records; (h) inspection rights; and (i) use of proceeds.
-               </td>
-                </tr> 
-                
-                    <tr style="page-break-inside:avoid;">
-                    <td class="row-title">
-                    Negative
-                    Covenants:
-                    </td>
-                    <td class="row-description">
-                    Usual and customary for loan transactions of this type, including, without limitation, the following: (a) liens, investments (including loans and advances), transfers, indebtedness and contingent obligations/guarantees; (b) mergers, acquisitions and other fundamental changes; (c) sales and other dispositions of property or assets; (d) dividends and other distributions; (e) changes in the nature or line of business; (f) transactions with affiliates; (g) use of proceeds; (h) amendments of organizational documents; and (i) changes in accounting policies or practices.
-               </td>
-                </tr> 
-                
-                    <tr style="page-break-inside:avoid;">
-                    <td class="row-title">
-                    Expense Deposit:
-                    </td>
-                    <td class="row-description">
-                    This signed Loan Proposal must be accompanied by an expense deposit of $[XX,XXX] (<strong>"Expense Deposit"</strong>) to cover a portion of estimated costs of due diligence and documentation.  All expenses actually incurred by Lender in connection with the Loan will be paid by Sponsor and Borrower regardless of whether the Loan closes for any reason whatsoever.  These expenses shall include but not be limited to Lender's due diligence including a Lender Underwriting Fee (which shall be earned by Lender upon execution of this Loan Proposal and nonrefundable to Borrower), legal fees, appraisal fee, environmental database searches, environmental site assessment and report(s), entity searches, fees and costs of Lender's consultant, including site inspection, title review, and all other third-party expenses related to the Loan closing.  Moreover, if prior to the Loan closing, Lender determines that the Expense Deposit will be insufficient to pay all expenses, at Lender's request, Sponsor shall promptly deliver to Lender funds in the amount of such shortfall.  In the event that the Loan closes, any unused portion of the Expense Deposit will be credited to Borrower at closing or returned to Borrower if the Loan does not close. 
-                    </td>
-                </tr> 
-                
-                    <tr style="page-break-inside:avoid;">
-                    <td class="row-title">
-                    USA Patriot Act
-                    Notice: 
-                    </td>
-                    <td class="row-description">
-                    The Lender hereby notifies the Borrower that, pursuant to the requirements of the USA Patriot Act (Title III of Pub. L. 107-56 (signed into law October 26, 2001)) (the "Act"), the Lender is required to obtain, verify and record information that identifies the Borrower and the Guarantor and their respective direct and indirect owners as required by Lender, any non-member managers and all signatories to the Loan Documents, which information includes the name and address of the Borrower and the Guarantor (and their constituent members, partners and principals as required by Lender) and other information that will allow the Lender to comply with the Act and other "know your customer" requirements. 
-                                </td>
+                </tr>
 
-                </tr> 
-                
-                  <tr style="page-break-inside:avoid;">
+                <tr style="page-break-inside:avoid;">
                     <td class="row-title">
-                    Brokers:    
+                        Affirmative Covenants:
                     </td>
                     <td class="row-description">
-                    Sponsor shall indemnify and hold harmless Lender and its affiliates against any and all loss, cost, damage, liability and expenses suffered or incurred by Lender or its affiliates arising out of, or in connection with, any claims by brokers, agents or finders claiming to have assisted or represented Sponsor in connection with the Loan. 
-                    
-                    <span style="{!IF(includeCOBroker = true, 'page-break-inside:avoid;', 'display:none;')}">
- [USE IF THERE IS A BROKER] It is understood <apex:outputText value=" {!Opportunity.Referral_Source_Contact__r.Name} " /> is acting as the mortgage broker on this Loan and shall receive a fee from the Borrower equal to [X.XX]% of the Maximum Loan Amount at Loan closing (<Strong>"Broker Fee"</strong>), which Broker Fee has been capitalized in the Budget and is not included in Lender's fees listed herein.  Lender will require evidence that the Broker's Fee has been or will be paid in full prior to or at Loan Closing.
-                   </span>
+                        Usual and customary for loan transactions of this type, including, without limitation, the following: (a) delivery of financial
+                        statements, compliance certificates and other information; (b) notices of default, material litigation,
+                        material governmental proceedings or investigations, ERISA and environmental proceedings and material
+                        changes in accounting or financial reporting practices; (c) payment of obligations; (d) preservation
+                        of existence; (e) maintenance of properties and insurance; (f) compliance with laws; (g) maintenance
+                        of books and records; (h) inspection rights; and (i) use of proceeds.
                     </td>
-                </tr> 
+                </tr>
 
-    <tr style="page-break-inside:avoid;">
+                <tr style="page-break-inside:avoid;">
                     <td class="row-title">
-                    Attorney's Fees:    
+                        Negative Covenants:
                     </td>
                     <td class="row-description">
-                    In the event any party shall institute any action or proceeding against the other party relating to this Loan Proposal, the party not prevailing in such action or proceeding shall reimburse the prevailing party for its disbursements incurred in connection therewith and for its reasonable attorneys' fees and costs.
-               </td>
-                </tr> 
-                
-                    <tr style="page-break-inside:avoid;">
-                    <td class="row-title">
-                    Governing Law:  
+                        Usual and customary for loan transactions of this type, including, without limitation, the following: (a) liens, investments
+                        (including loans and advances), transfers, indebtedness and contingent obligations/guarantees; (b)
+                        mergers, acquisitions and other fundamental changes; (c) sales and other dispositions of property
+                        or assets; (d) dividends and other distributions; (e) changes in the nature or line of business;
+                        (f) transactions with affiliates; (g) use of proceeds; (h) amendments of organizational documents;
+                        and (i) changes in accounting policies or practices.
                     </td>
-                    <td class="row-description">
-                    This Loan Proposal and the Loan Documents shall be governed by the laws of the State of New York, except that the attachment, perfection and priority of the mortgage/deed of trust shall be governed by the law of the State in which the Property is located.
-               </td>
-                </tr> 
-                
-                    <tr style="page-break-inside:avoid;">
-                    <td class="row-title">
-                    Indemnification:
-                    </td>
-                    <td class="row-description">
-                    Borrower and Sponsor will hold harmless and indemnify Lender and its members, officers and affiliates (and the members and officers of such affiliates) against all liabilities, obligations, losses, damages, penalties, actions, judgments, suits, claims, costs, expenses or disbursements of any kind whatsoever, which may at any time be imposed on, incurred by or asserted against such person in connection with the Loan and/or the Property (<strong>"Liabilities"</strong>), provided that such Liabilities are not solely arising from or a result of the gross negligence or willful misconduct of Lender.
-               </td>
-                </tr> 
-                
-                    <tr style="page-break-inside:avoid;">
-                    <td class="row-title">
-                    Exclusivity:    
-                    </td>
-                    <td class="row-description">
-                    Sponsor agrees that so long as Lender is willing to provide the Loan on the terms and conditions set forth herein, it will not negotiate or deal with any party to obtain financing in substitution of or in addition to the Loan with respect to the Property or any portion thereof or interest in a Property until the date that is three (3) months after the date hereof.  If the Loan does not close for any reason other than Lender's determination not to make the Loan despite Sponsor's cooperation, and Sponsor, or any of its affiliates, accepts financing of the Property, or any portion thereof or interest in the Property, or a commitment to finance the Property or any portion thereof or interest in a Property, from a party other than Lender within six (6) months following the date hereof, then Sponsor shall pay to Lender an amount equal to 2.0% of the Maximum Loan Amount (<strong>"Breakup Fee"</strong>) promptly upon receipt of such financing or acceptance of such commitment, as the case may be.  Any unused portion of the Expense Deposit shall be retained by Lender and applied towards the payment of the Breakup Fee.
-                                                    </td>
+                </tr>
 
-                </tr> 
-                
-                    <tr style="page-break-inside:avoid;">
+                <tr style="page-break-inside:avoid;">
                     <td class="row-title">
-                    Confidentiality:    
+                        Expense Deposit:
                     </td>
                     <td class="row-description">
-                    Sponsor may use or be exposed to Lender's proprietary and confidential methodologies, procedures, processes, materials and loan documentation in the evaluation, negotiation and closing of the Loan.  Sponsor agrees to keep all such confidential information supplied by Lender (<strong>"Confidential Information"</strong>) confidential and only use the Confidential Information for the purpose of evaluating, negotiating and closing the Loan.  Sponsor agrees (i) the Confidential Information is proprietary and created by Lender for a new asset class, (ii) the Confidential Information provides Lender with a significant competitive advantage in becoming a leader in this asset class and (iii) any dissemination or disclosure of the Confidential Information will cause material harm to Lender.
-                                </td>
+                        This signed Loan Proposal must be accompanied by an expense deposit of
+                        <apex:outputText value=" ${0,number} ">
+                            <apex:param value="{!Opportunity.Deposit_Amount_Requested__c}" />
+                        </apex:outputText> (
+                        <strong>"Expense Deposit"</strong>) to cover a portion of estimated costs of due diligence and documentation.
+                        All expenses actually incurred by Lender in connection with the Loan will be paid by Sponsor and
+                        Borrower regardless of whether the Loan closes for any reason whatsoever. These expenses shall include
+                        but not be limited to Lender's due diligence including a Lender Underwriting Fee (which shall be
+                        earned by Lender upon execution of this Loan Proposal and nonrefundable to Borrower), legal fees,
+                        appraisal fee, environmental database searches, environmental site assessment and report(s), entity
+                        searches, fees and costs of Lender's consultant, including site inspection, title review, and all
+                        other third-party expenses related to the Loan closing. Moreover, if prior to the Loan closing, Lender
+                        determines that the Expense Deposit will be insufficient to pay all expenses, at Lender's request,
+                        Sponsor shall promptly deliver to Lender funds in the amount of such shortfall. In the event that
+                        the Loan closes, any unused portion of the Expense Deposit will be credited to Borrower at closing
+                        or returned to Borrower if the Loan does not close.
+                    </td>
+                </tr>
 
-                </tr> 
-                
-                
-                        </table>
-                        </div>
-                        <div>
-                        <p  style="font-family: Times; font-size: 11pt; line-height: 1.3;">This Loan Proposal does not purport to be and does not constitute a binding agreement among the parties, and the parties hereto shall have no obligations whatsoever, express or implied, written or oral, with regard to the Loan Proposal except for the provisions captioned "Expense Deposit", "Brokers", "Attorney's Fees", "Governing Law", "Indemnification", "Exclusivity" and "Confidentiality".  This Loan Proposal is for discussion purposes only and does not in any way whatsoever constitute a commitment to lend or an agreement to issue a commitment, and Lender has made no commitments or agreements whatsoever, express or implied, written or oral, to Sponsor or with regard to any of the matters covered by this Loan Proposal.  The terms of this Loan Proposal are not all-inclusive and should not be construed as to reflect all of the provisions to be included in the Loan Documents and may be varied as the Lender may determine in its sole and absolute discretion.  No oral agreements between or among the parties shall be binding under any circumstances at any time.  Sponsor acknowledges that Lender is under no obligation whatsoever to close the Loan.</p>
-<p style="font-family: Times; font-size: 11pt; line-height: 1.3;">As evidenced by the signature below, Sponsor desires to proceed with negotiating terms as outlined above. Unless otherwise extended in writing by Lender, in its sole and absolute discretion, this Loan Proposal will expire 14 days from issuance on [Month Day, Year] (the <strong>"Loan Proposal Expiration Date"</strong>).  Please indicate your willingness to deliver the Expense Deposit and proceed subject in all respects and for all purposes to the non-binding nature of this Loan Proposal (except as specifically herein provided) by signing below and returning this Loan Proposal with the Expense Deposit no later than the Loan Proposal Expiration Date. If this Loan Proposal is not signed and returned by the Loan Proposal Expiration Date together with the applicable Expense Deposit, we will assume that you have elected not to proceed with us regarding a loan.</p>
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        USA Patriot Act Notice:
+                    </td>
+                    <td class="row-description">
+                        The Lender hereby notifies the Borrower that, pursuant to the requirements of the USA Patriot Act (Title III of Pub. L. 107-56
+                        (signed into law October 26, 2001)) (the "Act"), the Lender is required to obtain, verify and record
+                        information that identifies the Borrower and the Guarantor and their respective direct and indirect
+                        owners as required by Lender, any non-member managers and all signatories to the Loan Documents,
+                        which information includes the name and address of the Borrower and the Guarantor (and their constituent
+                        members, partners and principals as required by Lender) and other information that will allow the
+                        Lender to comply with the Act and other "know your customer" requirements.
+                    </td>
 
-                        </div>
-                            <div class="sigsection">
-                    <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-                        Please don't hesitate to call
-                        <apex:outputText value="{!' ' & Opportunity.Owner_Name__c}" /> at
-                        <apex:outputText value="{! ' ' & Opportunity.Owner_Phone__c}" /> if you have any questions.
-                    </p>
-                    <table style="font-family: Times; font-size: 11pt; width:100%;">
-                        <tr>
-                            <td>
-                                Sincerely,
-                            </td>
-                        </tr>
-                        <td>
-                            <br/>
-                            <br/>COREVEST AMERICAN FINANCE LENDER LLC,
-                            <br/>
-                            <br/>
-                        </td>
-                    </table>
-                    <table style="width:100%;">
-                        <tr>
-                            <td style="font-family: Times; font-size: 11pt; border:0px;">
-                                By: ____________________
-                                <br/>
-                                ____________________
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="font-family: Times; font-size: 11pt; border:0px;">
-                                Authorized Signatory
-                            </td>
-                        </tr>
-                    </table>
-                    <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-                        Accepted and agreed to this
-                        <br/>
-                        <!--this ______ day of <apex:outputText value=" {0,date, MMMM}">
+                </tr>
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        Brokers:
+                    </td>
+                    <td class="row-description">
+                        Sponsor shall indemnify and hold harmless Lender and its affiliates against any and all loss, cost, damage, liability and
+                        expenses suffered or incurred by Lender or its affiliates arising out of, or in connection with,
+                        any claims by brokers, agents or finders claiming to have assisted or represented Sponsor in connection
+                        with the Loan. [USE IF THERE IS A BROKER] It is understood
+                        <apex:outputText value=" {!Opportunity.Referral_Source_Contact__r.Name} " /> is acting as the mortgage broker on this Loan and shall receive a fee from the Borrower equal to
+                        [X.XX]% of the Maximum Loan Amount at Loan closing (
+                        <Strong>"Broker Fee"</strong>), which Broker Fee has been capitalized in the Budget and is not included in
+                        Lender's fees listed herein. Lender will require evidence that the Broker's Fee has been or will
+                        be paid in full prior to or at Loan Closing.
+                    </td>
+                </tr>
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        Attorney's Fees:
+                    </td>
+                    <td class="row-description">
+                        In the event any party shall institute any action or proceeding against the other party relating to this Loan Proposal, the
+                        party not prevailing in such action or proceeding shall reimburse the prevailing party for its disbursements
+                        incurred in connection therewith and for its reasonable attorneys' fees and costs.
+                    </td>
+                </tr>
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        Governing Law:
+                    </td>
+                    <td class="row-description">
+                        This Loan Proposal and the Loan Documents shall be governed by the laws of the State of New York, except that the attachment,
+                        perfection and priority of the mortgage/deed of trust shall be governed by the law of the State in
+                        which the Property is located.
+                    </td>
+                </tr>
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        Indemnification:
+                    </td>
+                    <td class="row-description">
+                        Borrower and Sponsor will hold harmless and indemnify Lender and its members, officers and affiliates (and the members and
+                        officers of such affiliates) against all liabilities, obligations, losses, damages, penalties, actions,
+                        judgments, suits, claims, costs, expenses or disbursements of any kind whatsoever, which may at any
+                        time be imposed on, incurred by or asserted against such person in connection with the Loan and/or
+                        the Property (
+                        <strong>"Liabilities"</strong>), provided that such Liabilities are not solely arising from or a result of
+                        the gross negligence or willful misconduct of Lender.
+                    </td>
+                </tr>
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        Exclusivity:
+                    </td>
+                    <td class="row-description">
+                        Sponsor agrees that so long as Lender is willing to provide the Loan on the terms and conditions set forth herein, it will
+                        not negotiate or deal with any party to obtain financing in substitution of or in addition to the
+                        Loan with respect to the Property or any portion thereof or interest in a Property until the date
+                        that is three (3) months after the date hereof. If the Loan does not close for any reason other than
+                        Lender's determination not to make the Loan despite Sponsor's cooperation, and Sponsor, or any of
+                        its affiliates, accepts financing of the Property, or any portion thereof or interest in the Property,
+                        or a commitment to finance the Property or any portion thereof or interest in a Property, from a
+                        party other than Lender within six (6) months following the date hereof, then Sponsor shall pay to
+                        Lender an amount equal to 2.0% of the Maximum Loan Amount (
+                        <strong>"Breakup Fee"</strong>) promptly upon receipt of such financing or acceptance of such commitment,
+                        as the case may be. Any unused portion of the Expense Deposit shall be retained by Lender and applied
+                        towards the payment of the Breakup Fee.
+                    </td>
+
+                </tr>
+
+                <tr style="page-break-inside:avoid;">
+                    <td class="row-title">
+                        Confidentiality:
+                    </td>
+                    <td class="row-description">
+                        Sponsor may use or be exposed to Lender's proprietary and confidential methodologies, procedures, processes, materials and
+                        loan documentation in the evaluation, negotiation and closing of the Loan. Sponsor agrees to keep
+                        all such confidential information supplied by Lender (
+                        <strong>"Confidential Information"</strong>) confidential and only use the Confidential Information for the
+                        purpose of evaluating, negotiating and closing the Loan. Sponsor agrees (i) the Confidential Information
+                        is proprietary and created by Lender for a new asset class, (ii) the Confidential Information provides
+                        Lender with a significant competitive advantage in becoming a leader in this asset class and (iii)
+                        any dissemination or disclosure of the Confidential Information will cause material harm to Lender.
+                    </td>
+
+                </tr>
+
+
+            </table>
+        </div>
+        <div>
+            <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">This Loan Proposal does not purport to be and does not constitute a binding agreement among the parties, and
+                the parties hereto shall have no obligations whatsoever, express or implied, written or oral, with regard
+                to the Loan Proposal except for the provisions captioned "Expense Deposit", "Brokers", "Attorney's Fees",
+                "Governing Law", "Indemnification", "Exclusivity" and "Confidentiality". This Loan Proposal is for discussion
+                purposes only and does not in any way whatsoever constitute a commitment to lend or an agreement to issue
+                a commitment, and Lender has made no commitments or agreements whatsoever, express or implied, written or
+                oral, to Sponsor or with regard to any of the matters covered by this Loan Proposal. The terms of this Loan
+                Proposal are not all-inclusive and should not be construed as to reflect all of the provisions to be included
+                in the Loan Documents and may be varied as the Lender may determine in its sole and absolute discretion.
+                No oral agreements between or among the parties shall be binding under any circumstances at any time. Sponsor
+                acknowledges that Lender is under no obligation whatsoever to close the Loan.</p>
+            <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">As evidenced by the signature below, Sponsor desires to proceed with negotiating terms as outlined above. Unless
+                otherwise extended in writing by Lender, in its sole and absolute discretion, this Loan Proposal will expire
+                14 days from issuance on
+                <apex:outputText value="{!Opportunity.Term_Sheet_Expiration_Date__c }" /> (the
+                <strong>"Loan Proposal Expiration Date"</strong>). Please indicate your willingness to deliver the Expense Deposit
+                and proceed subject in all respects and for all purposes to the non-binding nature of this Loan Proposal
+                (except as specifically herein provided) by signing below and returning this Loan Proposal with the Expense
+                Deposit no later than the Loan Proposal Expiration Date. If this Loan Proposal is not signed and returned
+                by the Loan Proposal Expiration Date together with the applicable Expense Deposit, we will assume that you
+                have elected not to proceed with us regarding a loan.</p>
+
+        </div>
+        <div class="sigsection">
+            <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                Please don't hesitate to call
+                <apex:outputText value="{!' ' & Opportunity.Owner_Name__c}" /> at
+                <apex:outputText value="{! ' ' & Opportunity.Owner_Phone__c}" /> if you have any questions.
+            </p>
+            <table style="font-family: Times; font-size: 11pt; width:100%;">
+                <tr>
+                    <td>
+                        Sincerely,
+                    </td>
+                </tr>
+                <td>
+                    <br/>
+                    <br/>COREVEST AMERICAN FINANCE LENDER LLC,
+                    <br/>
+                    <br/>
+                </td>
+            </table>
+            <table style="width:100%;">
+                <tr>
+                    <td style="font-family: Times; font-size: 11pt; border:0px;">
+                        By: ____________________
+                        <br/> ____________________
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-family: Times; font-size: 11pt; border:0px;">
+                        Authorized Signatory
+                    </td>
+                </tr>
+            </table>
+            <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                Accepted and agreed to this
+                <br/>
+                <!--this ______ day of <apex:outputText value=" {0,date, MMMM}">
 <apex:param value="{! DATE(todayYear, todayMonth, todayDay)}" /></apex:outputText>, <apex:outputText value=" {0,date, yyyy}">
 <apex:param value="{! DATE(todayYear, todayMonth, todayDay)}" /></apex:outputText>-->
-                        THIS
-                        <span class="signing-section">_________\d1\________</span>
-                        <br/>
-                        <br/> SPONSOR:
-                        <br/>
-                    </p>
-                    <table style="border-color: white;">
-                        <tr>
-                            <td>
-                                <!--<span style="font-family: Times; color:white;">a1\\</span>-->
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="font-family: Times; font-size: 11pt;">
-                                <strong>____________________</strong>
-                            </td>
-                        </tr>
-                    </table>
-                    
-                    <table>
-                        <tr>
-                            <td style="font-family: Times; font-size: 11pt;">
-                                [Guarantor name]
-                            </td>
-                            <td style="font-family: Times; font-size: 11pt;">
-                            </td>
-                        </tr>
-                        <tr>
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                        </tr>
-                        
-                    </table>
-                    
- 
-                            <br />
-                <br />
-                                <br />
-                <br />
-                                <br />
-                <br />
-                                <br />
-                <br />
-                                <br />
-                <br />
-                                <br />
-                <br />
-                                <br />
-                <br />
-                
-            </div>
-            
-                           <div>
+
+                <span class="signing-section">_________\d1\________</span>
+                <br/>
+                <br/> SPONSOR:
+                <br/>
+            </p>
+            <table style="border-color: white;">
+                <tr>
+                    <td>
+                        <!--<span style="font-family: Times; color:white;">a1\\</span>-->
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-family: Times; font-size: 11pt;">
+                        <strong>____________________</strong>
+                    </td>
+                </tr>
+            </table>
+
+            <table>
+                <tr>
+                    <td style="font-family: Times; font-size: 11pt;">
+                        [Guarantor name]
+                    </td>
+                    <td style="font-family: Times; font-size: 11pt;">
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div>
+            <div class="pagebreak">
                 <h5 class="paragraph-title">WIRE INSTRUCTIONS FOR EXPENSE DEPOSIT</h5>
-                
-                <h4 class="lineClose">CoreVest American Finance Lender LLC</h4>
-                
-                <table style="font-family: Times; font-size: 11pt;width= 100%;">
-                    
-                    <tr>
-                        <td>
-                            Please use the following wiring instructions for disbursements to CoreVest American Finance Lender LLC:
-                        </td>
-                    </tr>
-                    <br />
-                    <tr>
-                        <td style="font-family: Times; font-size: 11pt;Width:50%">
-                            <p style="font-family: Times; font-size: 11pt; line-height: 1.3;page-break-inside:avoid;">
-                                BANK OF AMERICA N.A.
-                                <br /> 100 WEST 33RD STREET
-                                <br /> NEW YORK, NEW YORK 10001
-                                <br />
-                                ABA Routing Number: 026009593
-                                <br /> Account Name: CoreVest American Finance Lender LLC (Borrower Deposits)
-                                <br /> Account Number: 4451272357
-                                <br /> Reference: Bridge Loan/
-                                <apex:outputText value="{!Opportunity.Deal_Loan_Number__c}" />/
-                                <apex:outputText value="{!Opportunity.Name}" />
-                                <br />
-                            </p>
-                        </td>
-                    </tr>
-                </table>
-                
+            </div>
+            <h4 class="lineClose">CoreVest American Finance Lender LLC</h4>
+
+            <table style="font-family: Times; font-size: 11pt;width= 100%;">
+
+                <tr>
+                    <td>
+                        Please use the following wiring instructions for disbursements to CoreVest American Finance Lender LLC:
+                    </td>
+                </tr>
                 <br />
-                <br />
-           
-            
+                <tr>
+                    <td style="font-family: Times; font-size: 11pt;Width:50%">
+                        <p style="font-family: Times; font-size: 11pt; line-height: 1.3;page-break-inside:avoid;">
+                            BANK OF AMERICA N.A.
+                            <br /> 100 WEST 33RD STREET
+                            <br /> NEW YORK, NEW YORK 10001
+                            <br /> ABA Routing Number: 026009593
+                            <br /> Account Name: CoreVest American Finance Lender LLC (Borrower Deposits)
+                            <br /> Account Number: 4451272357
+                            <br /> Reference: Bridge Loan/
+                            <apex:outputText value="{!Opportunity.Deal_Loan_Number__c}" />/
+                            <apex:outputText value="{!Opportunity.Name}" />
                             <br />
-                <br />
-                                <br />
-                <br />
-                                <br />
-                <br />
-                                <br />
-                <br />
-                            <br />
-                <br />
-                
-                            <h5 class="paragraph-title"><u>Exhibit A
-                     Estimated Sources and Uses</u></h5>
-            
-            
-            
-                            <br />
-                <br />
-                                <br />
-                <br />
-                                <br />
-                <br />
-                                <br />
-                <br />
-                                <br />
-                <br />
-                                <br />
-                <br />
-                                <br />
-                <br />
-            
-  
+                        </p>
+                    </td>
+                </tr>
+            </table>
 
-                <h5 class="paragraph-title"><u>Exhibit B
-                                    <br /> Borrower's Proposed Operating Budget</u></h5>
-            
-            
-     
-
-                            <br />
-                <br />
-                                <br />
-                <br />
-                                <br />
-                <br />
-                                <br />
-                <br />
-                                <br />
-                <br />
-                                <br />
-                <br />
-                                <br />
-                <br />
-                
-                <h5 class="paragraph-title"><u>Exhibit C
-                                    Survey Requirements</u></h5>
-                                    
-                                                       <center><h3 style="font-family: Times; font-size: 11pt; border:0px;">COREVEST AMERICAN FINANCE LENDER LLC -<br />
-                                     2021 ALTA SURVEY REQUIREMENTS</h3></center>
-                                     
-                                     <p class="paragraph"><u><i>Table A</i></u>.  As a condition of closing, CoreVest shall have received a current, as-built ALTA title survey of the Property prepared by a land surveyor licensed to practice surveying in the jurisdiction where the Property is located and done pursuant to the 2021 Minimum Standard Detail Requirements for ALTA/NSPS Land Title Surveys (the "<u>NSPS Standards</u>"), including Table A items 2, 3, 4, 6(a), 6(b), 7(a), 7(b)(1), 7(c), 8, 9, 10, 11, 13, 14, 16, 17, 18 and 19.  The survey should be certified to:  [Name of Title Insurance Company], <strong>CoreVest American Finance Lender LLC, a Delaware limited liability company, ISAOA,</strong> (the title company) and Borrower.</p>
-
-<p class="paragraph"><u><i>Title</i></u>.  The survey must:</p>
-<p class="paragraph">
-(a) refer to the Lender's title insurance commitment(s) by number, effective date, and issue date;</p><p class="paragraph">
-(b) the legal description of the Property is to be shown on the survey and must conform to the legal description shown in the title commitment for the Lender's title insurance policy.
-</p><p class="paragraph">
-(c) include the statement <strong>"The legal description describes the same property as insured in such title insurance commitment and all property specific exceptions have been noted herein."</strong>;</p><p class="paragraph">
-
-(d) list every property specific, recorded exception appearing in the title insurance commitment, numbered/lettered to correspond with the title exception to which it relates (i.e. 9, 10(a), etc.).   Where a plat is referenced and multiple easements, setbacks, etc. are derived from the plat, please clearly distinguish among them on the Survey; </p><p class="paragraph">
-
-(e) for all property specific, recorded exceptions (not general title company exceptions), note whether the exception affects the Property, and if so, whether the exception is plottable or blanket in nature.  For example:  <strong>"Affects and shown hereon"</strong>; or <strong>"Does not affect the property" </strong>or <strong>"Affects, but blanket in nature and not plotted hereon"</strong> or <strong>"Affects, but unable to determine plotted location based on information of record."</strong>;</p><p class="paragraph">
-
-(f) plot all plottable items; </p><p class="paragraph">
-
-(g) show the boundary limits of all appurtenant easements or other off-site servitudes per Table A, Item 21, herein; and</p><p class="paragraph">
-
-(h) be satisfactory to the title insurance company and CoreVest. </p>
-
-<p class="paragraph"><u><i>Certification</i></u>.  The survey shall be dated no more than thirty (30) days prior to closing, must be certified to CoreVest and its successors and assigns, must contain the certification set forth in the NSPS Standards, and must be signed and sealed by the surveyor.  A copy of the certification contained in the NSPS Standards is set forth below.  The survey shall also be certified to the title insurance company insuring title in the transaction, shall be satisfactory to the title insurance company, shall refer to the title insurance commitment by number and effective date, and shall list every recorded exception appearing in the title insurance commitment, with a note stating whether the exception affects the property, and if so whether the exception is plottable.  If the exception is plottable, it must be plotted on the survey.  Any appurtenant easement which is plottable must also be plotted on the survey.  </p>
-<p class="paragraph"><u><i>Flood Zone</i></u>.  The survey shall contain a note concerning the flood zone designation of the property in substantially the following form:  "Said described property is located within an area having a Zone Designation _______________ by the Secretary of Housing and Urban Development, on Flood Insurance Rate Map No. ____________, with a date of identification of __________, for Community Number __________, in ___________ County, State of ___________, which is the current Flood Insurance Rate Map for the community in which said property is situated."  The survey shall indicate the limits of the flood zone if the property lies in more than one flood zone or if only a portion of the property lies in a flood zone.  </p>
-<p class="paragraph"><u><i>Zoning</i></u>.  The survey must:  </p>
-<p class="paragraph">
-(a) <u>Setbacks</u>.  Show all set back, side yard and rear yard lines shown on the recorded plat or set forth in the applicable zoning ordinance, and identified by recording number or zoning ordinance, as the case may be, with reference to the zoning report to the extent provided (which zoning report may be obtained during the diligence period and provided to the surveyor once available);</p><p class="paragraph">
-(b) <u>Building/Lot Specifics</u>.   Show the square footage of each building (consistent with Table A, Item 7(b)), the height of each building (consistent with Table A, Item 7(c)), and building coverage ratio; and</p><p class="paragraph">
-(c) <u>Zoning Report Source</u>.  Identify by zoning report as the source of the information (which will be provided upon completion - please request if you have not received prior to delivery of the draft survey).</p>
-<p class="paragraph"><u><i>Parking</i></u>.  The number of regular and handicap parking spaces located on the property shall be stated on the Survey, and all parking spaces shall be drawn on the Survey to the extent possible. </p>
-<h3 class="paragraph-title"><u>REQUIRED CERTIFICATION</u></h3>
-        <p class="paragraph">To [name of Borrower], [name of Lender] and their respective successors and/or assigns and their respective affiliates and subsidiaries any other holder of the loan secured by the Property and any lender of any loan secured, directly or indirectly, by the equity interests in [name of Borrower] and each of the foregoing's respective successors and/or assigns, and [name of Title Company]:</p>
-        <p class="paragraph">This is to certify that this map or plat and the survey on which it is based were made in accordance with the 2021 Minimum Standard Detail Requirements for ALTA/NSPS Land Title Surveys, jointly established and adopted by ALTA and NSPS, and includes Items 2, 3, 4, 6(a), 7(a), 7(b)(1), 7(c), 8, 9, 10, 11, 13, 14, 16, 17, 18 and 19 of Table A thereof.  The fieldwork was completed on __________________________.  </p>
+            <div class="pagebreak">
+                <h5 class="paragraph-title">
+                    <u>Exhibit A Estimated Sources and Uses</u>
+                </h5>
 
 
-</div>
+            </div>
+            <div class="pagebreak">
+                <h5 class="paragraph-title">
+                    <u>Exhibit B
+                        <br /> Borrower's Proposed Operating Budget</u>
+                </h5>
 
- <div class="sigsection">
-                   
+
+            </div>
+            <div class="pagebreak">
+                <h5 class="paragraph-title">
+                    <u>Exhibit C Survey Requirements</u>
+                </h5>
+            </div>
+                <center>
+                    <h3 style="font-family: Times; font-size: 11pt; border:0px;">COREVEST AMERICAN FINANCE LENDER LLC -
+                        <br /> 2021 ALTA SURVEY REQUIREMENTS</h3>
+                </center>
+
+                <p class="paragraph">
+                    <u>
+                        <i>Table A</i>
+                    </u>. As a condition of closing, CoreVest shall have received a current, as-built ALTA title survey of the
+                    Property prepared by a land surveyor licensed to practice surveying in the jurisdiction where the Property
+                    is located and done pursuant to the 2021 Minimum Standard Detail Requirements for ALTA/NSPS Land Title
+                    Surveys (the "
+                    <u>NSPS Standards</u>"), including Table A items 2, 3, 4, 6(a), 6(b), 7(a), 7(b)(1), 7(c), 8, 9, 10, 11,
+                    13, 14, 16, 17, 18 and 19. The survey should be certified to: [Name of Title Insurance Company],
+                    <strong>CoreVest American Finance Lender LLC, a Delaware limited liability company, ISAOA,</strong> (the title
+                    company) and Borrower.</p>
+
+                <p class="paragraph">
+                    <u>
+                        <i>Title</i>
+                    </u>. The survey must:</p>
+                <p class="paragraph">
+                    (a) refer to the Lender's title insurance commitment(s) by number, effective date, and issue date;</p>
+                <p class="paragraph">
+                    (b) the legal description of the Property is to be shown on the survey and must conform to the legal description shown in
+                    the title commitment for the Lender's title insurance policy.
+                </p>
+                <p class="paragraph">
+                    (c) include the statement
+                    <strong>"The legal description describes the same property as insured in such title insurance commitment and
+                        all property specific exceptions have been noted herein."</strong>;</p>
+                <p class="paragraph">
+
+                    (d) list every property specific, recorded exception appearing in the title insurance commitment, numbered/lettered to correspond
+                    with the title exception to which it relates (i.e. 9, 10(a), etc.). Where a plat is referenced and multiple
+                    easements, setbacks, etc. are derived from the plat, please clearly distinguish among them on the Survey;
+                </p>
+                <p class="paragraph">
+
+                    (e) for all property specific, recorded exceptions (not general title company exceptions), note whether the exception affects
+                    the Property, and if so, whether the exception is plottable or blanket in nature. For example:
+                    <strong>"Affects and shown hereon"</strong>; or
+                    <strong>"Does not affect the property" </strong>or
+                    <strong>"Affects, but blanket in nature and not plotted hereon"</strong> or
+                    <strong>"Affects, but unable to determine plotted location based on information of record."</strong>;</p>
+                <p class="paragraph">
+
+                    (f) plot all plottable items; </p>
+                <p class="paragraph">
+
+                    (g) show the boundary limits of all appurtenant easements or other off-site servitudes per Table A, Item 21, herein; and</p>
+                <p class="paragraph">
+
+                    (h) be satisfactory to the title insurance company and CoreVest. </p>
+
+                <p class="paragraph">
+                    <u>
+                        <i>Certification</i>
+                    </u>. The survey shall be dated no more than thirty (30) days prior to closing, must be certified to CoreVest
+                    and its successors and assigns, must contain the certification set forth in the NSPS Standards, and must
+                    be signed and sealed by the surveyor. A copy of the certification contained in the NSPS Standards is
+                    set forth below. The survey shall also be certified to the title insurance company insuring title in
+                    the transaction, shall be satisfactory to the title insurance company, shall refer to the title insurance
+                    commitment by number and effective date, and shall list every recorded exception appearing in the title
+                    insurance commitment, with a note stating whether the exception affects the property, and if so whether
+                    the exception is plottable. If the exception is plottable, it must be plotted on the survey. Any appurtenant
+                    easement which is plottable must also be plotted on the survey.
+                </p>
+                <p class="paragraph">
+                    <u>
+                        <i>Flood Zone</i>
+                    </u>. The survey shall contain a note concerning the flood zone designation of the property in substantially
+                    the following form: "Said described property is located within an area having a Zone Designation _______________
+                    by the Secretary of Housing and Urban Development, on Flood Insurance Rate Map No. ____________, with
+                    a date of identification of __________, for Community Number __________, in ___________ County, State
+                    of ___________, which is the current Flood Insurance Rate Map for the community in which said property
+                    is situated." The survey shall indicate the limits of the flood zone if the property lies in more than
+                    one flood zone or if only a portion of the property lies in a flood zone. </p>
+                <p class="paragraph">
+                    <u>
+                        <i>Zoning</i>
+                    </u>. The survey must: </p>
+                <p class="paragraph">
+                    (a)
+                    <u>Setbacks</u>. Show all set back, side yard and rear yard lines shown on the recorded plat or set forth
+                    in the applicable zoning ordinance, and identified by recording number or zoning ordinance, as the case
+                    may be, with reference to the zoning report to the extent provided (which zoning report may be obtained
+                    during the diligence period and provided to the surveyor once available);</p>
+                <p class="paragraph">
+                    (b)
+                    <u>Building/Lot Specifics</u>. Show the square footage of each building (consistent with Table A, Item 7(b)),
+                    the height of each building (consistent with Table A, Item 7(c)), and building coverage ratio; and
+                </p>
+                <p class="paragraph">
+                    (c)
+                    <u>Zoning Report Source</u>. Identify by zoning report as the source of the information (which will be provided
+                    upon completion - please request if you have not received prior to delivery of the draft survey).
+                </p>
+                <p class="paragraph">
+                    <u>
+                        <i>Parking</i>
+                    </u>. The number of regular and handicap parking spaces located on the property shall be stated on the Survey,
+                    and all parking spaces shall be drawn on the Survey to the extent possible. </p>
+                <h3 class="paragraph-title">
+                    <u>REQUIRED CERTIFICATION</u>
+                </h3>
+                <p class="paragraph">To [name of Borrower], [name of Lender] and their respective successors and/or assigns and their respective
+                    affiliates and subsidiaries any other holder of the loan secured by the Property and any lender of any
+                    loan secured, directly or indirectly, by the equity interests in [name of Borrower] and each of the foregoing's
+                    respective successors and/or assigns, and [name of Title Company]:</p>
+                <p class="paragraph">This is to certify that this map or plat and the survey on which it is based were made in accordance with
+                    the 2021 Minimum Standard Detail Requirements for ALTA/NSPS Land Title Surveys, jointly established and
+                    adopted by ALTA and NSPS, and includes Items 2, 3, 4, 6(a), 7(a), 7(b)(1), 7(c), 8, 9, 10, 11, 13, 14,
+                    16, 17, 18 and 19 of Table A thereof. The fieldwork was completed on __________________________.
+                </p>
+
+
+
+
+                <div class="sigsection">
+
                     <table style="width:100%;">
                         <tr>
                             <td style="font-family: Times; font-size: 11pt; border:0px;">
                                 Date of Plat or Map: ____________________
-                                <br/>
-                              (signed)  ____________________ (seal)
+                                <br/> (signed) ____________________ (seal)
                             </td>
                         </tr>
                         <tr>
@@ -945,193 +1247,414 @@ Conditions precedent to Closing, include, among other things, in Lender's sole a
                             </td>
                         </tr>
                         <tr>
-                        <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-                        Name: 
-                        <br/>
-                        Registration/License Number 
-                        </p>
+                            <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                                Name:
+                                <br/> Registration/License Number
+                            </p>
                         </tr>
                     </table>
- 
-                
+
+
+                </div>
+
+                <div>
+                    <h4 style="font-family: Times; font-size: 11pt;">
+                        <u>
+                            ADDITIONAL REQUIREMENTS
+                        </u>
+                    </h4>
+                    <p>The following items must be included in the ALTA/NSPS Land Title Survey to be provided to CoreVest. </p>
+                    <p class="paragraph">1. Private Interior Roadways and Drives, Etc. While all public roadways must be shown accurately, and
+                        except where they constitute encroachments, private interior access roads/streets and drives, parking
+                        areas, visible utilities, and structures without foundations need not be shown accurately from field
+                        measurements, but do need to be sketched onto the survey to show their approximate location. These
+                        items can be located by photogrammetric or other approximate methods in lieu of precise field measurements.</p>
+                    <p class="paragraph">2.
+                        <strong>
+                            <u>Reciprocal Easement Agreements</u>
+                        </strong>. The Survey must include the following note: All areas in Reciprocal Easement Agreements ("
+                        <u>REAs</u>") have been denoted on the survey. The limits of any offsite appurtenant easements are also
+                        shown on the survey. The limits of any REAs of offsite appurtenant and beneficial easements to the
+                        surveyed property are reported, including the location of all buildings, parking spaces, and other
+                        improvements thereon. </p>
+                    <p class="paragraph">
+                        <u>DELIVERY</u>
+                        Please deliver digital copies of the survey and all updates, revisions and supplements to the parties listed below. In addition
+                        and once finalized, please deliver a digital copy of the final stamped survey approved by CoreVest
+                        to the following parties: CoreVest, CoreVest's Outside Legal Counsel, Title Company and Zoning Consultant.
+                    </p>
+
+
+
+                </div>
+            
+            <div class="pagebreak">
+                <h5 class="paragraph-title">
+                    <u>Exhibit D
+                        <br />Insurance Requirements</u>
+                </h5>
             </div>
+                <p class="paragraph">Borrower shall at all times provide and maintain the following insurance coverage with respect to the Property
+                    and the Collateral issued by companies qualified to do business in the State where the Property is located
+                    having an "A-" rating or better from Standard &amp; Poor's or an Alfred M. Best Company Rating of not
+                    less than "A-" or higher and a financial size of VIII or better and shall be on such forms and written
+                    by such companies as shall be reasonably approved by the Lender.</p>
+                <ul>
+                    <li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                        Property Insurance: "All Risk" or "Special Form" against loss by fire, lightning and risk customarily covered by standard
+                        extended coverage endorsement, including the cost of debris removal, together with a vandalism and
+                        malicious mischief endorsement, or all perils endorsements to be written in the amount of not less
+                        than 100% of the full "Replacement Cost" basis (pursuant to an appraisal submitted to and approved
+                        by Lender, on the Property and Improvements) and together with either "No Coinsurance" or an "Agreed
+                        Amount" Endorsement on both Property and Business/Rental Income coverage, for the full insurable
+                        amount; a replacement cost endorsement and a waiver of subrogation endorsement must be provided.
+                        Coverage shall have a deductible no greater than $10,000 unless otherwise approved by Lender in writing;</li>
+                    <li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                        Must correctly identify the Borrower as the named insured/additional named insured, location and name of the Lender, and
+                        Its Successors and/or Assigns, as mortgagee and lender's loss payable; Flood Insurance in an amount
+                        reasonably acceptable to Lender and compliant with regulatory guidelines, unless evidence is provided
+                        that the Property is not within a flood plain as defined by the Federal Insurance Administration
+                        and the Property is not designated as being within a flood plain. Flood insurance must be maintained
+                        for the duration of the Loan term at replacement cost or the maximum coverage available through the
+                        Flood Insurance Program (NFIP) or comparable private flood policy with additional limits as required
+                        by Lender with a deductible not greater than $5,000 per building. </li>
+                    <li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                        Earthquake/Seismic: required If the Property is located within zone 3 or 4 and has a SEL of 20% or greater. Coverage is required
+                        at a limit of SEL x Replacement Cost, unless otherwise required at Lender's discretion. Deductible
+                        to be no greater than 5% of the total insurable value. Coverage to include Wind/Named Storm to the
+                        full insurable value of the building(s). In Tier 1 locations, the deductible may be as high as 5%
+                        of the total insurable value, all others to have a $10,000 deductible; </li>
+                    <li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                        Personal Property/Equipment Coverage: required if the Borrower maintains personal property at the subject location. </li>
+                    <li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                        Boiler &amp; Machinery/Equipment Breakdown coverage may be required. If it is, coverage must be in place equal to the full
+                        replacement cost, including loss of rents with a Joint Loss Agreement - 100% Replacement Cost including
+                        electric machinery, equipment, air conditioning, refrigeration &amp; mechanical objects. </li>
+                    <li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                        Ordinance or Law coverage may be required. If it is necessary, please note the following limits of coverage (required only
+                        for legal non-conforming properties): </li>
+                    <ul>
+                        <li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                            Part A coverage: Loss to the undamaged portion of the property: to match local zoning code trigger/rebuild threshold or 100%
+                            of total insurable value if zoning code is not available. </li>
+                        <li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                            Part B coverage: Demolition and Debris Removal: Minimum 15% of Replacement Cost</li>
+                        <li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                            Part C coverage: Increased Cost of Construction: Minimum 15% of Replacement Cost
+                        </li>
+                    </ul>
+                    <li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                        Terrorism - 100% of Replacement Costs for certified acts of terrorism, both foreign and domestic, </li>
+                    <li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                        Provide a Waiver of Subrogation in favor of the Lender, and it is successors and assigns, or transfer of rights of recovery.
+                    </li>
+                    <li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                        Business /Rental Income coverage: an amount equal to the aggregate annual rental payments collected or 12 months net operating
+                        income plus continuing expenses. At the discretion of Lender, Business Income of more than 12 months,
+                        including an extended period of indemnity, may be required for larger projects at an amount of time
+                        reasonably estimated to rebuild the property and bring operations back up and running to the point
+                        they were prior to the loss. </li>
+                    <li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                        During any period of construction "Special Form" Builders Risk Insurance (Completed Value basis/non-reporting form), with
+                        a "Replacement Cost" endorsement with either No Coinsurance or an Agreed Amount endorsement to be
+                        written on a "completed value basis" in an amount not less than the total value of the premises under
+                        construction and in compliance with the standard property insurance requirements. Coverage to include
+                        soft costs with delayed opening, property on-site, off- site and in-transit. Coverage in form and
+                        substance acceptable to Lender in its sole discretion. </li>
+                </ul>
+                <ul style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                    <u>ACCEPTABLE COVERAGE - LIABILITY INSURANCE:</u>
+
+                    <li style="font-family: Times; font-size: 11pt; line-height: 1.3;">Commercial general liability and excess liability/umbrella insurance, including foreign and domestic
+                        terrorism, naming Lender as an additional insured protecting Borrower and Lender against liability
+                        for bodily injury or property damage occurring in, on or adjacent to the Property, with a combined
+                        single limit of not less than:</li>
+                    <ul>
+                        <li>
+                            Loans Ten Million Dollars ($10,000,000) or less: One Million Dollars ($1,000,000) with not less than a Two Million Dollar
+                            ($2,000,000) aggregate limit and excess umbrella liability insurance of not less than Five Million
+                            ($5,000,000).
+                        </li>
+                        <li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                            Loans over Ten Million Dollars ($10,000,000) up to Twenty Million Dollars ($20,000,000): One Million Dollars ($1,000,000)
+                            per occurrence / Two Million Dollar ($2,000,000) aggregate and Ten Million ($10,000,000) Umbrella.</li>
+                        <li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                            Loans over Twenty Million Dollars ($20,000,000): One Million Dollars ($1,000,000) per occurrence / Two Million Dollar ($2,000,000)
+                            aggregate and Fifteen Million ($15,000,000) Umbrella;</li>
+                    </ul>
+                    <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">All written on an occurrence basis with deductible as described below or self-insured retention on the
+                        general liability, unless otherwise approved by Lender.</p>
+                    <li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                        Excess/Umbrella Liability Policy Limit amounts may increase depending upon the exposures at the location and whether the
+                        property is written on a blanket or stand-alone policy.</li>
+                    <li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                        Per location aggregate endorsement required if blanket policy covering more than one location. General Liability Deductible:
+                    </li>
+                    <ul style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                        <li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                            $15,000 per occurrence for a Property that is on a policy with less than $5 million in total insurable value</li>
+                        <li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                            $25,000 per occurrence for a Property that is on a policy with greater than or equal to $5 million in total insurable value
+                            and less than $50 million in total insurable value</li>
+                        <li>
+                            $50,000 per occurrence for a Property that is on a policy with greater than or equal to $50 million in total insurable value
+                            or total and less than $100 million in total insurable value</li>
+                    </ul>
+                    <li>
+                        Mortgage cancellation clause: provision must specify that such policy shall not be cancelled, unless the Lender is notified
+                        in writing at least 30 days prior to such change, 10 days for nonpayment of premium.
+                    </li>
+
+                </ul>
+                <ul style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                    <u>ADDITIONAL COVERAGE (IF APPLICABLE):</u>
+                    <li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                        Workers'Compensation Insurance: statutory amount requirement for General Contractor and Borrower. Only required from Borrower
+                        when Borrower has employees.</li>
+
+                    <p>Builders Risk - required during construction phase at the Property. 100% insurable value insurance required
+                        from the contractor or sub-contractor. Such value to be determined under the plans and specifications,
+                        construction contracts or any of the approved construction documents.</p>
+                    <li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+
+                        Sink Holes/Mine Subsidence: required if the Property is in a high-risk area.</li>
+                    <li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+
+                        Additional Coverages as required and deemed appropriate for similar properties with like Lenders.</li>
+                </ul>
+
+                <ul style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                    <u>OTHER ITEMS (WHERE APPLICABLE)</u>
+                    <li>
+                        Carriers, policy numbers and insurance amounts should be noted on certificates.</li>
+                    <li>
+                        Evidence of payment of premium through policy period.</li>
+                    <li>
+                        All forms must be signed.</li>
+                    <li>
+                        Lenders its successors and/or assigns, must be listed as mortgagee and loss payee on the property insurance and as an additional
+                        insured on the liability insurance.</li>
+                </ul>
+                <center>
+                    <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                        <u>
+                            <i>Lender's Address:</i>
+                        </u>
+                        <br/> CoreVest American Finance Lender LLC, c/o Statebridge
+                        <br/>Company
+                        <br/> ISAOA/ATIMA
+                        <br/> PO Box 7086 Troy, MI 48007-7086</p>
+                </center>
+                <ul style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                    <u>BLANKET POLICIES:</u>
+                    <li>
+                        Agent must specify how the blanket policy relates to the Property location only (provide 100% statement of value) and confirm
+                        whether there is a margin clause on the policy.</li>
+                    <li>
+                        Confirm agreed amount endorsement of blanket policy, Co-insurance is not acceptable. </li>
+                    <li>
+                        Borrower's name is specific to loan and property must appear as an additional named insured. </li>
+                    <li>
+                        Please note, if this location is covered by a blanket policy covering multiple locations, you must submit a schedule of locations
+                        and values of all other properties in this state which are covered under this policy. Also, the certificate
+                        must include the following language: "Blanket loss limit will apply on a per occurrence basis and
+                        the blanket loss limit will apply to the location for any one loss."</li>
+                </ul>
+                <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                    <strong>Lender requires all insurance agents/providers to submit evidence of property coverage on Acord Form
+                        28.
+                        <i>Certificates of liability coverage should be presented on Acord Form 25-S. Various policy endorsements
+                            will be required in order to ensure adequacy of coverage and protections for Lender, etc</i>
+                    </strong>.</p>
+
+                <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                    <strong>In addition to the ACORD Form 28, Lender requires a copy of the following from the Policy(ies):</strong>
+                </p>
+
+                <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                    <strong>
+                        <u>Mortgage Clause</u>
+                    </strong>: Loss, if any, under this policy shall be payable to any mortgagee (or trustee) as designated in any
+                    Certificate of Insurance issued under this policy or as designated in any lease or contract as interest
+                    may appear under all present or future mortgages upon the property covered hereunder in which the aforesaid
+                    may have an interest as mortgagee (or trustee) in order of precedence of said mortgages and this insurance
+                    as to the interest of the mortgagee (or trustee) only therein shall not be invalidated by any act or
+                    neglect of the mortgagor or owner of the within described property, nor by the occupation of the premises
+                    <br/> for purposes more hazardous than are permitted by the policy; provided, that in case the mortgagor or
+                    owner shall neglect to pay any premium under this policy, the mortgagee (or trustee) shall, on demand,
+                    pay the same.
+                </p>
+
+                <center>
+                    <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">AND</p>
+                </center>
+
+                <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+                    <strong>
+                        <u>Certificates of Insurance</u>
+                    </strong>: Any certificate of insurance issued in connection with this policy shall be issued solely as a matter
+                    of convenience or information for the addressee(s) or holder(s) of said certificate of insurance, except
+                    where any Additional Insured(s) or Loss Payee(s) are named pursuant to the Special Provisions of said
+                    certificate of insurance. In the event any Additional Insured(s) or Loss Payee(s) are so named, this
+                    policy shall be deemed to have been endorsed accordingly, subject to all other terms, conditions and
+                    exclusions stated herein. The Company hereby authorizes (name of insurance agency) to issue certificates
+                    of insurance including any Mortgagee, Loss Payee and Additional Insured clauses.</p>
+
+
             
-            <div>
-            <h4 style="font-family: Times; font-size: 11pt;"><u>
-            ADDITIONAL REQUIREMENTS
-           </u> </h4>
-           <p>The following items must be included in the ALTA/NSPS Land Title Survey to be provided to CoreVest.  </p>
-<p class="paragraph">1. Private Interior Roadways and Drives, Etc.  While all public roadways must be shown accurately, and except where they constitute encroachments, private interior access roads/streets and drives, parking areas, visible utilities, and structures without foundations need not be shown accurately from field measurements, but do need to be sketched onto the survey to show their approximate location.  These items can be located by photogrammetric or other approximate methods in lieu of precise field measurements.</p>
-<p class="paragraph">2. <strong><u>Reciprocal Easement Agreements</u></strong>.  The Survey must include the following note:  All areas in Reciprocal Easement Agreements ("<u>REAs</u>") have been denoted on the survey.  The limits of any offsite appurtenant easements are also shown on the survey.  The limits of any REAs of offsite appurtenant and beneficial easements to the surveyed property are reported, including the location of all buildings, parking spaces, and other improvements thereon.  </p>
-<p class="paragraph"><u>DELIVERY</u>
-Please deliver digital copies of the survey and all updates, revisions and supplements to the parties listed below.  In addition and once finalized, please deliver a digital copy of the final stamped survey approved by CoreVest to the following parties: CoreVest, CoreVest's Outside Legal Counsel, Title Company and Zoning Consultant.
-</p>                 
-                                    
-                                    
-            
+
+            <div class="pagebreak">
+
+                <h5 class="paragraph-title">
+                    <u>Exhibit E
+                        <br />Due Diligence Requirements</u>
+                </h5>
             </div>
+                <p>The underwriting and closing requirements which must be satisfied prior to closing shall include, among other
+                    things, the following:
+                </p>
+
+                <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+
+                    a) Receipt of (i) the appraisal; (ii) a "Phase I" environmental site assessment and, if required by the Lender, a "Phase
+                    II" environmental site assessment; and (iii) an engineering report, in each case satisfactory to the
+                    Lender in form and substance. </p>
+                <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+
+
+                    b) A satisfactory "budget" review report from Lender's Consultant, after reviewing the operating budget. </p>
+                <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+
+
+                    c) Property to be free and clear of all liens and encumbrances, unless approved in writing by the Lender in its sole and
+                    absolute discretion. </p>
+                <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+
+
+                    d) Borrower shall obtain and deliver to Lender and Borrower's surveyor a current title commitment for a lender's title insurance
+                    policy issued only by a CoreVest Approved Title Company (defined above). Lender shall obtain at Borrower's
+                    expense, title insurance policies including (i) a mortgagee's policy of title insurance with a liability
+                    limit in an aggregate amount not less than the Maximum Loan Amount, insuring the mortgage securing the
+                    Loan as a first lien on title to the Property, and (ii) an assignment of title insurance proceeds with
+                    respect to owner's policy of title insurance. The title insurance policy shall be subject only to such
+                    exceptions as shall be approved by, and shall contain, such endorsements as may be required by, Lender
+                    or its counsel.
+                </p>
+                <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+
+
+                    e) Evidence of proper zoning and permitting (which may include a zoning opinion of local counsel, zoning report and zoning
+                    endorsement to Lender's loan policy), and certificates of occupancy (if applicable) acceptable to the
+                    Lender.
+                </p>
+                <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+
+
+                    f) ALTA survey prepared in accordance with the Survey Requirements attached hereto as Exhibit C and otherwise acceptable
+                    to Lender in Lender's sole discretion. </p>
+                <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+
+
+                    g) All resolutions, signing authorities, and legal opinions on behalf of the Borrower, the Guarantor, as applicable, and
+                    material counterparties as deemed necessary by the Lender. </p>
+                <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+
+
+                    h) Evidence acceptable to Lender that all of Lender's insurance requirements set forth on Exhibit D hereto have been satisfied.
+                </p>
+                <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+
+
+                    i) Unpaid real property taxes and assessments which are due and owing at the time of closing of the Loan are to be paid at
+                    or prior to closing of the Loan. </p>
+                <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+
+
+                    j) Inspection of the Property by the Lender and its representatives and their approval thereof prior to closing. </p>
+                <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+
+
+                    k) Receipt, review, and approval of all applicable corporate housekeeping documentation for the Borrower and the Guarantor.
+                </p>
+                <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+
+
+                    l) Review of the management agreement between the Borrower and its property manager, together with the Lender's approval
+                    thereof in all respects. </p>
+                <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+
+
+                    m) Financial statements for Guarantor(s), which are to include, but are not limited to, income statements and balance sheets,
+                    current liquidity statements and current cash flow statements on all income property owned by the Guarantor(s)
+                    reflecting financial status as of the end of the most recent fiscal quarter; </p>
+                <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+
+
+                    n) Credit reports, personal and business references, background reports and such materials as Lender deems necessary to satisfy
+                    its standard due diligence procedures;
+                </p>
+                <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
+
+
+                    o) Borrower's and Guarantor's Certifications. </p>
+                <p style="font-family:Times; font-size:11pt;line-height:1.3">
+
+
+                    p) Documentation evidencing Borrower and Guarantor capacities to engage in any transaction or business in connection with
+                    the Loan. </p>
+                <p style="font-family:Times; font-size:11pt;line-height:1.3">
+
+                    q) Opinions in form, scope, content and from counsel for the Borrower, Pledgor (if applicable) and Guarantor (acceptable
+                    to the Lender and subject to such assumptions and qualifications as may be acceptable to Lender) </p>
+                <p style="font-family:Times; font-size:11pt;line-height:1.3">
+
+                    r) [Tax abatement to be in-place upon issuance of a TCO for the Property] - If applicable </p>
+                <p style="font-family:Times; font-size:11pt;line-height:1.3">
+
+                    s) Satisfactory review of all leases, management agreements and purchase &amp; sale contracts, if applicable. </p>
+                <p style="font-family:Times; font-size:11pt;line-height:1.3">
+
+                    t) Other requirements as may be requested by the Lender. </p>
+
+
             
-                                   <br />
-                <br />
-                                <br />
-                <br />
-                                <br />
-                <br />
-                                <br />
-                <br />
-                                <br />
-                <br />
-                                <br />
-                <br />
-                                <br />
-                <br />
-        <div>    
- <h5 class="paragraph-title"><u>Exhibit D
-                                    <br />Insurance Requirements</u></h5>
-                                    
-<p class="paragraph">Borrower shall at all times provide and maintain the following insurance coverage with respect to the Property and the Collateral issued by companies qualified to do business in the State where the Property is located having an "A-" rating or better from Standard &amp; Poor's or an Alfred M. Best Company Rating of not less than "A-" or higher and a financial size of VIII or better and shall be on such forms and written by such companies as shall be reasonably approved by the Lender.</p><ul><li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-   Property Insurance: "All Risk" or "Special Form" against loss by fire, lightning and risk customarily covered by standard extended coverage endorsement, including the cost of debris removal, together with a vandalism and malicious mischief endorsement, or all perils endorsements to be written in the amount of not less than 100% of the full "Replacement Cost" basis (pursuant to an appraisal submitted to and approved by Lender, on the Property and Improvements) and together with either "No Coinsurance" or an "Agreed Amount" Endorsement on both Property and Business/Rental Income coverage, for the full insurable amount; a replacement cost endorsement and a waiver of subrogation endorsement must be provided. Coverage shall have a deductible no greater than $10,000 unless otherwise approved by Lender in writing;</li><li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-   Must correctly identify the Borrower as the named insured/additional named insured, location and name of the Lender, and Its Successors and/or Assigns, as mortgagee and lender's loss payable;
-  Flood Insurance in an amount reasonably acceptable to Lender and compliant with regulatory guidelines, unless evidence is provided that the Property is not within a flood plain as defined by the Federal Insurance Administration and the Property is not designated as being within a flood plain. Flood insurance must be maintained for the duration of the Loan term at replacement cost or the maximum coverage available through the Flood Insurance Program (NFIP) or comparable private flood policy with additional limits as required by Lender with a deductible not greater than $5,000 per building. </li><li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-  Earthquake/Seismic: required If the Property is located within zone 3 or 4 and has a SEL of 20% or greater. Coverage is required at a limit of SEL x Replacement Cost, unless otherwise required at Lender's discretion. Deductible to be no greater than 5% of the total insurable value.
- Coverage to include Wind/Named Storm to the full insurable value of the building(s). In Tier 1 locations, the deductible may be as high as 5% of the total insurable value, all others to have a $10,000 deductible; </li><li  style="font-family: Times; font-size: 11pt; line-height: 1.3;">
- Personal Property/Equipment Coverage: required if the Borrower maintains personal property at the subject location. </li><li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
- Boiler &amp; Machinery/Equipment Breakdown coverage may be required. If it is, coverage must be in place equal to the full replacement cost, including loss of rents with a Joint Loss Agreement - 100% Replacement Cost including electric machinery, equipment, air conditioning, refrigeration &amp; mechanical objects. </li><li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-  Ordinance or Law coverage may be required. If it is necessary, please note the following limits of coverage (required only for legal non-conforming properties): </li><ul><li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-  Part A coverage: Loss to the undamaged portion of the property: to match local zoning code trigger/rebuild threshold or 100% of total insurable value if zoning code is not available. </li><li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-  Part B coverage:  Demolition and Debris Removal:  Minimum 15% of Replacement Cost</li><li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-  Part C coverage:  Increased Cost of Construction:  Minimum 15% of Replacement Cost
-</li></ul><li style="font-family: Times; font-size: 11pt; line-height: 1.3;"> 
- Terrorism - 100% of Replacement Costs for certified acts of terrorism, both foreign and domestic, </li><li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-  Provide a Waiver of Subrogation in favor of the Lender, and it is successors and assigns, or transfer of rights of recovery. </li><li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-  Business /Rental Income coverage: an amount equal to the aggregate annual rental payments collected or 12 months net operating income plus continuing expenses. At the discretion of Lender, Business Income of more than 12 months, including an extended period of indemnity, may be required for larger projects at an amount of time reasonably estimated to rebuild the property and bring operations back up and running to the point they were prior to the loss. </li><li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-  During any period of construction "Special Form" Builders Risk Insurance (Completed Value basis/non-reporting form), with a "Replacement Cost" endorsement with either No Coinsurance or an Agreed Amount endorsement to be written on a "completed value basis" in an amount not less than the total value of the premises under construction and in compliance with the standard property insurance requirements. Coverage to include soft costs with delayed opening, property on-site, off- site and in-transit. Coverage in form and substance acceptable to Lender in its sole discretion. </li></ul>
-<ul style="font-family: Times; font-size: 11pt; line-height: 1.3;"><u>ACCEPTABLE COVERAGE - LIABILITY INSURANCE:</u>
+        </div>
+        <table id='hrdftrtbl' border='1' cellspacing='0' cellpadding='0'>
+            <tr>
+                <td>
+                    <!--Header-->
+                    <div style='mso-element:header' id="h1">
+                        <p class="MsoHeader">
+                            <table border="0" width="100%">
+                                <tr>
+                                    <td width="30%"></td>
+                                    <td align="center" width="40%"></td>
+                                    <td align="right" width="30%"></td>
+                                </tr>
+                            </table>
+                        </p>
+                    </div>
+                </td>
+                <td>
+                    <div style='mso-element:footer' id="f1" width="100%">
+                        <p class="MsoFooter" width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <table width="100%">
+                                <tr>
+                                    <td width="30%"></td>
+                                    <td align="center" width="40%">
+                                        <span style='mso-field-code: PAGE '></span>
+                                    </td>
+                                    <td align="right" width="30%">
+                                        <!--span style="font-size: 10pt;">Sponsor Initials ________</span-->
+                                    </td>
+                                </tr>
+                            </table>
+                        </p>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </body>
 
-  <li style="font-family: Times; font-size: 11pt; line-height: 1.3;">Commercial general liability and excess liability/umbrella insurance, including foreign and domestic terrorism, naming Lender as an additional insured protecting Borrower and Lender against liability for bodily injury or property damage occurring in, on or adjacent to the Property, with a combined single limit of not less than:</li><ul><li>
- Loans Ten Million Dollars ($10,000,000) or less: One Million Dollars ($1,000,000) with not less than a Two Million Dollar ($2,000,000) aggregate limit and excess umbrella liability insurance of not less than Five Million ($5,000,000).</li><li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
- Loans over Ten Million Dollars ($10,000,000) up to Twenty Million Dollars ($20,000,000): One Million Dollars ($1,000,000) per occurrence / Two Million Dollar ($2,000,000) aggregate and Ten Million ($10,000,000) Umbrella.</li><li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
- Loans over Twenty Million Dollars ($20,000,000): One Million Dollars ($1,000,000) per occurrence / Two Million Dollar ($2,000,000) aggregate and Fifteen Million ($15,000,000) Umbrella;</li></ul>
-<p style="font-family: Times; font-size: 11pt; line-height: 1.3;">All written on an occurrence basis with deductible as described below or self-insured retention on the general liability, unless otherwise approved by Lender.</p><li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-  Excess/Umbrella Liability Policy Limit amounts may increase depending upon the exposures at the location and whether the property is written on a blanket or stand-alone policy.</li><li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-  Per location aggregate endorsement required if blanket policy covering more than one location.
-  General Liability Deductible: </li><ul style="font-family: Times; font-size: 11pt; line-height: 1.3;"><li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-  $15,000 per occurrence for a Property that is on a policy with less than $5 million in total insurable value</li><li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-  $25,000 per occurrence for a Property that is on a policy with greater than or equal to $5 million in total insurable value and less than $50 million in total insurable value</li><li>
-  $50,000 per occurrence for a Property that is on a policy with greater than or equal to $50 million in total insurable value or total and less than $100 million in total insurable value</li></ul><li>
-   Mortgage cancellation clause: provision must specify that such policy shall not be cancelled, unless the Lender is notified in writing at least 30 days prior to such change, 10 days for nonpayment of premium.
-</li> 
-
-           </ul>  
-           <ul style="font-family: Times; font-size: 11pt; line-height: 1.3;"><u>ADDITIONAL COVERAGE (IF APPLICABLE):</u>
-<li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-   Workers'Compensation Insurance: statutory amount requirement for General Contractor and Borrower. Only required from Borrower when Borrower has employees.</li>
-
-<p>Builders Risk - required during construction phase at the Property. 100% insurable value insurance required from the contractor or sub-contractor. Such value to be determined under the plans and specifications, construction contracts or any of the approved construction documents.</p><li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-
-Sink Holes/Mine Subsidence: required if the Property is in a high-risk area.</li> <li style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-
-Additional Coverages as required and deemed appropriate for similar properties with like Lenders.</li></ul>
-
-<ul style="font-family: Times; font-size: 11pt; line-height: 1.3;"><u>OTHER ITEMS (WHERE APPLICABLE)</u><li>
-   Carriers, policy numbers and insurance amounts should be noted on certificates.</li><li>
-   Evidence of payment of premium through policy period.</li><li>
-   All forms must be signed.</li><li>
-   Lenders its successors and/or assigns, must be listed as mortgagee and loss payee on the property insurance and as an additional insured on the liability insurance.</li>
-</ul>
-<center><p style="font-family: Times; font-size: 11pt; line-height: 1.3;"><u><i>Lender's Address:</i></u><br/>
-CoreVest American Finance Lender LLC, c/o Statebridge <br/>Company <br/>
-ISAOA/ATIMA<br/>
-PO Box 7086 Troy, MI 48007-7086</p></center>
-<ul style="font-family: Times; font-size: 11pt; line-height: 1.3;"><u>BLANKET POLICIES:</u>
-<li>
-   Agent must specify how the blanket policy relates to the Property location only (provide 100% statement of value) and confirm whether there is a margin clause on the policy.</li><li>
-   Confirm agreed amount endorsement of blanket policy, Co-insurance is not acceptable. </li><li>
-   Borrower's name is specific to loan and property must appear as an additional named insured. </li><li>
-   Please note, if this location is covered by a blanket policy covering multiple locations, you must submit a schedule of locations and values of all other properties in this state which are covered under this policy. Also, the certificate must include the following language: "Blanket loss limit will apply on a per occurrence basis and the blanket loss limit will apply to the location for any one loss."</li>
-</ul>
-<p style="font-family: Times; font-size: 11pt; line-height: 1.3;"><strong>Lender requires all insurance agents/providers to submit evidence of property coverage on Acord Form 28. <i>Certificates of liability coverage should be presented on Acord Form 25-S. Various policy endorsements will be required in order to ensure adequacy of coverage and protections for Lender, etc</i></strong>.</p>
-
-<p style="font-family: Times; font-size: 11pt; line-height: 1.3;"><strong>In addition to the ACORD Form 28, Lender requires a copy of the following from the Policy(ies):</strong></p>
-
-<p style="font-family: Times; font-size: 11pt; line-height: 1.3;"><strong><u>Mortgage Clause</u></strong>: Loss, if any, under this policy shall be payable to any mortgagee (or trustee) as designated in any Certificate of Insurance issued under this policy or as designated in any lease or contract as interest may appear under all present or future mortgages upon the property covered hereunder in which the aforesaid may have an interest as mortgagee (or trustee) in order of precedence of said mortgages and this insurance as to the interest of the mortgagee (or trustee) only therein shall not be invalidated by any act or neglect of the mortgagor or owner of the within described property, nor by the occupation of the premises<br/>
-for purposes more hazardous than are permitted by the policy; provided, that in case the mortgagor or owner shall neglect to pay any premium under this policy, the mortgagee (or trustee) shall, on demand, pay the same.</p>
-
-<center><p style="font-family: Times; font-size: 11pt; line-height: 1.3;">AND</p></center>
-
-<p style="font-family: Times; font-size: 11pt; line-height: 1.3;"><strong><u>Certificates of Insurance</u></strong>: Any certificate of insurance issued in connection with this policy shall be issued solely as a matter of convenience or information for the addressee(s) or holder(s) of said certificate of insurance, except where any Additional Insured(s) or Loss Payee(s) are named pursuant to the Special Provisions of said certificate of insurance. In the event any Additional Insured(s) or Loss Payee(s) are so named, this policy shall be deemed to have been endorsed accordingly, subject to all other terms, conditions and exclusions stated herein. The Company hereby authorizes (name of insurance agency) to issue certificates of insurance including any Mortgagee, Loss Payee and Additional Insured clauses.</p>
-
-           
-             </div>  
-              
-              <div>
-                
-                 <h5 class="paragraph-title"><u>Exhibit E
-                                    <br />Due Diligence Requirements</u></h5>
-                                    
-<p>The underwriting and closing requirements which must be satisfied prior to closing shall include, among other things, the following:
-                 </p>
-                 
-                 <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-
-a)  Receipt of (i) the appraisal; (ii) a "Phase I" environmental site assessment and, if required by the Lender, a "Phase II" environmental site assessment; and (iii) an engineering report, in each case satisfactory to the Lender in form and substance. </p>  <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-
-
-b)  A satisfactory "budget" review report from Lender's Consultant, after reviewing the operating budget.  </p>  <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-
-
-c)  Property to be free and clear of all liens and encumbrances, unless approved in writing by the Lender in its sole and absolute discretion.  </p>  <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-
-
-d)  Borrower shall obtain and deliver to Lender and Borrower's surveyor a current title commitment for a lender's title insurance policy issued only by a CoreVest Approved Title Company (defined above).  Lender shall obtain at Borrower's expense, title insurance policies including (i) a mortgagee's policy of title insurance with a liability limit in an aggregate amount not less than the Maximum Loan Amount, insuring the mortgage securing the Loan as a first lien on title to the Property, and (ii) an assignment of title insurance proceeds with respect to owner's policy of title insurance. The title insurance policy shall be subject only to such exceptions as shall be approved by, and shall contain, such endorsements as may be required by, Lender or its counsel.  </p>  <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-
-
-e)  Evidence of proper zoning and permitting (which may include a zoning opinion of local counsel, zoning report and zoning endorsement to Lender's loan policy), and certificates of occupancy (if applicable) acceptable to the Lender. </p>  <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-
-
-f)  ALTA survey prepared in accordance with the Survey Requirements attached hereto as Exhibit C and otherwise acceptable to Lender in Lender's sole discretion. </p>  <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-
-
-g)  All resolutions, signing authorities, and legal opinions on behalf of the Borrower, the Guarantor, as applicable, and material counterparties as deemed necessary by the Lender. </p>  <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-
-
-h)  Evidence acceptable to Lender that all of Lender's insurance requirements set forth on Exhibit D hereto have been satisfied. </p>  <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-
-
-i)  Unpaid real property taxes and assessments which are due and owing at the time of closing of the Loan are to be paid at or prior to closing of the Loan. </p>  <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-
-
-j)  Inspection of the Property by the Lender and its representatives and their approval thereof prior to closing. </p>  <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-
-
-k)  Receipt, review, and approval of all applicable corporate housekeeping documentation for the Borrower and the Guarantor. </p>  <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-
-
-l)  Review of the management agreement between the Borrower and its property manager, together with the Lender's approval thereof in all respects. </p>  <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-
-
-m)  Financial statements for Guarantor(s), which are to include, but are not limited to, income statements and balance sheets, current liquidity statements and current cash flow statements on all income property owned by the Guarantor(s) reflecting financial status as of the end of the most recent fiscal quarter; </p>  <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-
-
-n)  Credit reports, personal and business references, background reports and such materials as Lender deems necessary to satisfy its standard due diligence procedures;
-</p>  <p style="font-family: Times; font-size: 11pt; line-height: 1.3;">
-
-
-o)  Borrower's and Guarantor's Certifications.  </p><p style="font-family:Times; font-size:11pt;line-height:1.3">
-
-
-p)  Documentation evidencing Borrower and Guarantor capacities to engage in any transaction or business in connection with the Loan. </p><p style="font-family:Times; font-size:11pt;line-height:1.3">
-
-q)  Opinions in form, scope, content and from counsel for the Borrower, Pledgor (if applicable) and Guarantor (acceptable to the Lender and subject to such assumptions and qualifications as may be acceptable to Lender)  </p><p style="font-family:Times; font-size:11pt;line-height:1.3">
-
-r)  [Tax abatement to be in-place upon issuance of a TCO for the Property] - If applicable </p><p style="font-family:Times; font-size:11pt;line-height:1.3">
-
-s)  Satisfactory review of all leases, management agreements and purchase &amp; sale contracts, if applicable. </p><p style="font-family:Times; font-size:11pt;line-height:1.3">
-
-t)  Other requirements as may be requested by the Lender. </p>
-
-
-     </div>
-</body>
-</html>
+    </html>
 </apex:page>

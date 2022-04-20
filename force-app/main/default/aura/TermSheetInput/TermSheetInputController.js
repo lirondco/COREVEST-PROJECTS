@@ -27,6 +27,7 @@
           returnVal.Checkboxes[0] == "false"
         ) {
           helper.toggleHide(component, "checkboxes");
+          component.set("v.showCheckboxes", false);
         }
 
         if (
@@ -175,9 +176,9 @@
       let state = response.getState();
       if ("SUCCESS" === state) {
         if (
-          component.get("v.generateDocPermission") == "true" &&
+          (component.get("v.generateDocPermission") == "true" &&
           component.find("Generate_Word_Doc").get("v.checked").toString() ==
-            "true"
+            "true")
         ) {
           let returnVal = response.getReturnValue();
           console.log(returnVal);

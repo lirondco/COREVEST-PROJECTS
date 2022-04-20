@@ -27,8 +27,8 @@
             }
             
             .lineClose {
-  text-align: center;
-  }
+                text-align: center;
+            }
 
             div.Section1 {
                 page: Section1;
@@ -194,11 +194,10 @@
                 </p>
                
                 <p style="font-family: Times; font-size: 11pt; line-height: 1.3;  page-break-inside:avoid;">
-                    <apex:outputText value=" ${0,number} Loan Proposal to the acquisition an  an [XX]-property [portfolio] located {1}">
+                   <apex:outputText value=" ${0,number} Loan Proposal to the acquisition an  an [XX]-property [portfolio] located {1}">
                         <apex:param value="{!Opportunity.Loan_Size__c}" />
                         <apex:param value="{!IF(Opportunity.Number_of_Properties__c != null && Opportunity.Number_of_Properties__c > 1, 'in ' + allProperties[0].City__c + ', ' + allProperties[0].State__c, 'at ' + allProperties[0].Name + ' ' + allProperties[0].City__c + ', ' + allProperties[0].State__c)}" />
                     </apex:outputText> (the "Property")
-  
                 </p>
                 <p style="font-family: Times; font-size: 11pt; line-height: 1.3;  page-break-inside:avoid;">
                     <apex:outputText value="{! 'Dear ' & Opportunity.Contact__r.FirstName}" />:
@@ -262,7 +261,7 @@
                             Property:
                         </td>
                          <td class="row-description">
-                         Existing <!--<apex:outputText value="{!Property.Name}" />--> -property located in <!--<apex:outputText value="{!Property.City__c}" />-->, <!--<apex:outputText value="{!Property.State__c}" />]-->, comprised of <!--<apex:outputText value="{!Property.Number_of_Units__c}" />--> residential units (each, a "Residential Unit") and [ [X] Commercial units (each, a "Commercial Unit")]. No portion of the Property may at any time be occupied by Borrower, Guarantor or any interest owner, or affiliate or relative thereof.
+                         Existing <!--<apex:outputText value="{!Property.Name}" />--> -property located in <!--<apex:outputText value="{!Property.City__c}" />-->, <!--<apex:outputText value="{!Property.State__c}" />]-->, comprised of <!--<apex:outputText value="{!Property.Number_of_Units__c}" />--> residential units (each, a "Residential Unit") and [X] Commercial units (each, a "Commercial Unit")]. No portion of the Property may at any time be occupied by Borrower, Guarantor or any interest owner, or affiliate or relative thereof.
                          </td>
                         </tr>
                         
@@ -348,12 +347,12 @@
                            Interest Rate:
                         </td>
                          <td class="row-description">
-                         <p>The Loan will bear interest at a floating rate per annum equal to Term SOFR plus the Margin (<strong>"Interest Rate"</strong>), adjusted monthly and provided Term SOFR shall not be less than the Term SOFR Floor. Interest will be paid monthly in arrears on the tenth day of each calendar month for accrued interest for the preceding calendar month (each an <strong>"Interest Accrual Period"</strong>).  Interest will be calculated based on a 360-day year and the actual number of days elapsed (Actual/360) and will accrue on any unpaid principal balance. As used herein, the following terms shall have the meanings set forth below:</p>
+                         <p>The Loan will bear interest at a floating rate per annum equal to Term SOFR plus the <apex:outputText value="{0,number,0}%"><apex:param value="{!Opportunity.Requested_Index_Margin__c}" /></apex:outputText> (<strong>"Interest Rate"</strong>), adjusted monthly and provided Term SOFR shall not be less than the Term SOFR Floor. Interest will be paid monthly in arrears on the tenth day of each calendar month for accrued interest for the preceding calendar month (each an <strong>"Interest Accrual Period"</strong>).  Interest will be calculated based on a 360-day year and the actual number of days elapsed (Actual/360) and will accrue on any unpaid principal balance. As used herein, the following terms shall have the meanings set forth below:</p>
                          <p><strong>"Interest Adjustment Date"</strong> means, for any Interest Accrual Period, the date that is two U.S. Government Securities Business Days prior to the first day of such Interest Accrual Period.</P>
-                         <p><strong>"Margin"</strong> means <apex:outputText value="{!Opportunity.Margin__c}" />%.</p>
+                         <p><strong>"Margin"</strong> means <apex:outputText value="{0,number,0}%"><apex:param value="{!Opportunity.Margin__c}" /></apex:outputText>.</p>
                          <p><strong>"SOFR"</strong> means a rate equal to the secured overnight financing rate as administered by the Federal Reserve Bank of New York (or a successor administrator of the secured overnight financing rate).</p>
                          <p><strong>"Term SOFR"</strong> means, for the initial Interest Accrual Period and for any subsequent Interest Accrual Period, the rate per annum equal to the forward-looking term rate based on SOFR for a one-month tenor as of the Interest Adjustment Date, as published by the CME Group Benchmark Administration Limited (or a successor administrator of such rate), as determined by Lender; provided that if as of 5:00 p.m. U.S. Central Time on any day of determination Term SOFR has not been published, then Term SOFR shall mean such rate as of the first U.S. Government Securities Business Day preceding such day of determination for which a Term SOFR was published so long as such first preceding U.S. Government Securities Business Day is not more than three U.S. Government Securities Business Days prior to such day of determination. </p>
-                         <p><strong>"Term SOFR Floor"</strong> means [XXX]% per annum.</p>
+                         <p><strong>"Term SOFR Floor"</strong> means <apex:outputText value="{0,number,0}%"><apex:param value="{!Opportunity.Requested_Index_Floor__c}" /></apex:outputText> per annum.</p>
                          <p><strong>"U.S. Government Securities Business Day"</strong> means any day except for (i) a Saturday, (ii) a Sunday or (iii) a day on which the Securities Industry and Financial Markets Association recommends that the fixed income departments of its members be closed for the entire day for purposes of trading in United States government securities.</p>
                          </td>
                         </tr>
@@ -383,7 +382,7 @@
                            Origination Fee:
                         </td>
                          <td class="row-description">
-                         <apex:outputText value="{0,number,0}%">  <apex:outputText value="{!Opportunity.Requested_Origination_Fee__c}"/> </apex:outputText> of the Maximum Loan Amount payable at Closing, which fee shall be fully earned and non-refundable to Borrower.
+                         <apex:outputText value="{0,number,0}%">  <apex:param value="{!Opportunity.Requested_Origination_Fee__c}"/> </apex:outputText> of the Maximum Loan Amount payable at Closing, which fee shall be fully earned and non-refundable to Borrower.
                          </td>
                         </tr>
                         
@@ -661,7 +660,7 @@
                         To Closing: 
                     </td>
                     <td class="row-description">
-                        Conditions precedent to Closing, include, among other things, in Lender's sole and absolute discretion: (i) approval of Lender's investment committee; (ii) satisfactory completion of Due Diligence and other conditions described herein; (iii) accuracy of representations and warranties; (iv) satisfactory Loan Documents; (v) Lender's title insurance; (vi) evidence the Property is in compliance with all applicable laws, including zoning, building and safety laws and ordinances; (vii) receipt and approval of the as–is and as-stabilized appraised values of the Property and any other information or documentation concerning the Property as Lender may request; (viii) recordation of a first lien security instrument against the Property; (ix) receipt of the collateral assignment of the Interest Rate Cap Agreement and counterparty's consent thereto and review and approval of the Interest Rate Cap Agreement; and (x) and (xi) review and approval of opinions of Borrower's counsel (including organizational existence, due authorization and enforceability, and for loans greater than $20,000,000, non-consolidation) with respect to Borrower, Guarantor, Pledgor, and such other affiliates of Borrower, Pledgor and Guarantor as Lender determines.  Sponsor acknowledges that Lender shall have no obligation to make the Loan and shall be subject to Lender's approval, in its sole and absolute discretion.                    </td>
+                        Conditions precedent to Closing, include, among other things, in Lender's sole and absolute discretion: (i) approval of Lender's investment committee; (ii) satisfactory completion of Due Diligence and other conditions described herein; (iii) accuracy of representations and warranties; (iv) satisfactory Loan Documents; (v) Lender's title insurance; (vi) evidence the Property is in compliance with all applicable laws, including zoning, building and safety laws and ordinances; (vii) receipt and approval of the as-is and as-stabilized appraised values of the Property and any other information or documentation concerning the Property as Lender may request; (viii) recordation of a first lien security instrument against the Property; (ix) receipt of the collateral assignment of the Interest Rate Cap Agreement and counterparty's consent thereto and review and approval of the Interest Rate Cap Agreement; and (x) and (xi) review and approval of opinions of Borrower's counsel (including organizational existence, due authorization and enforceability, and for loans greater than $20,000,000, non-consolidation) with respect to Borrower, Guarantor, Pledgor, and such other affiliates of Borrower, Pledgor and Guarantor as Lender determines.  Sponsor acknowledges that Lender shall have no obligation to make the Loan and shall be subject to Lender's approval, in its sole and absolute discretion.                    </td>
                 </tr>   
    
                     <tr style="page-break-inside:avoid;">
@@ -669,7 +668,7 @@
                         Expense Deposit:
                     </td>
                     <td class="row-description">
-                    This signed Loan Proposal must be accompanied by an expense deposit of<apex:outputText value=" ${0,number} ">
+                    This signed Loan Proposal must be accompanied by an expense deposit of <apex:outputText value=" ${0,number} ">
 <apex:param value="{!Opportunity.Deposit_Amount_Requested__c}" />
                     </apex:outputText>
  (<strong>"Expense Deposit"</strong>) to cover a portion of estimated costs of due diligence and documentation.  All expenses actually incurred by Lender in connection with the Loan will be paid by Sponsor and Borrower regardless of whether the Loan closes for any reason whatsoever.  These expenses shall include but not be limited to Lender's due diligence, legal fees, appraisal fee, environmental database searches, environmental site assessment and report(s), zoning and property condition reports, entity searches, fees and costs of Lender's consultant, including site inspection, title review, and all other third-party expenses related to the Loan closing.  Moreover, if prior to the Loan closing, Lender determines that the Expense Deposit will be insufficient to pay all expenses, at Lender's request, Sponsor shall promptly deliver to Lender funds in the amount of such shortfall.  In the event that the Loan closes, any unused portion of the Expense Deposit will be credited to Borrower at closing or returned to Borrower if the Loan does not close. 
@@ -864,12 +863,47 @@
                         </tr>
                     </table>
                     
-                                        <br />
                     <br />
-                    
+                    <br />
+                    <div class="pagebreak">
                        <h5 class="paragraph-title">Exhibit A - Estimated Sources Uses</h5>
-
+                    </div>
                 </div>
+                <table id='hrdftrtbl' border='1' cellspacing='0' cellpadding='0'>
+                    <tr>
+                        <td>
+                            <!--Header-->
+                            <div style='mso-element:header' id="h1">
+                                <p class="MsoHeader">
+                                    <table border="0" width="100%">
+                                        <tr>
+                                            <td width="30%"></td>
+                                            <td align="center" width="40%"></td>
+                                            <td align="right" width="30%"></td>
+                                        </tr>
+                                    </table>
+                                </p>
+                            </div>
+                        </td>
+                        <td>
+                            <div style='mso-element:footer' id="f1" width="100%">
+                                <p class="MsoFooter" width="100%" border="0" cellspacing="0" cellpadding="0">
+                                    <table width="100%">
+                                        <tr>
+                                            <td width="30%"></td>
+                                            <td align="center" width="40%">
+                                                <span style='mso-field-code: PAGE '></span>
+                                            </td>
+                                            <td align="right" width="30%">
+                                                <!--span style="font-size: 10pt;">Sponsor Initials ________</span-->
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
                 </div>
             </body>
     </html>
