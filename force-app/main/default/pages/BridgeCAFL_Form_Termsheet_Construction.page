@@ -149,6 +149,11 @@
                 border-bottom-width: 1px;
                 border-color: black;
             }
+
+            .mark {
+                background-color: yellow;
+                color: black;
+                }
         </style>
     </head>
 
@@ -263,7 +268,7 @@
                     <td class="row-description">
                         A bankruptcy remote, Delaware limited liability company, acceptable to Lender following due diligence, which shall be the
                         sole member of Borrower.
-                        <mark>[REPLACE WITH "NOT REQUIRED" IF NO EQUITY PLEDGE]</mark>
+                        <span class="mark">[REPLACE WITH "NOT REQUIRED" IF NO EQUITY PLEDGE]</span>
                     </td>
                 </tr>
 
@@ -286,17 +291,17 @@
                     </td>
                     <td class="row-description">
                         <p>[XXX] acres of unimproved land comprised of
-                            <mark>[XXX]</mark> legally subdivided residential lot(s) (each a
+                            <span class="mark">[XXX]</span> legally subdivided residential lot(s) (each a
                             <strong>"Residential Lot"</strong>) each of which is a Finished Lot(s) located at the address set forth
                             above to be improved with
-                            <mark>[XXX]</mark> residential dwelling units (each a
+                            <span class="mark">[XXX]</span> residential dwelling units (each a
                             <strong>"Residential Unit"</strong> and collectively, together with any related improvements included
                             in the Final Plans
                             <strong>
-                                <mark>[**List any specific improvements such as a clubhouse, parking garage, pool and other amenities],
+                                <span class="mark">[**List any specific improvements such as a clubhouse, parking garage, pool and other amenities],
                                     the "Improvements"). The Improvements shall include [**list Project type (e.g. single
                                     family homes/townhomes, multifamily apartment building(s) and square footage and unit
-                                    mix # of 1 bed, 2 bed 3, bed etc.]</mark>
+                                    mix # of 1 bed, 2 bed 3, bed etc.]</span>
                             </strong> (unit mix may change prior to Loan closing) pursuant to Final Plans, Construction Documents (defined
                             below) and a construction budget, detailing by line item total eligible project costs, as approved
                             by Lender prior to the closing of the Loan, and otherwise in accordance with the terms and conditions
@@ -348,10 +353,10 @@
                     </td>
                     <td class="row-description">
                         <p>Maximum Loan Amount of
-                            <mark>
+                            <span class="mark">
                                 <apex:outputText value=" ${0,number} ">
                                     <apex:param value="{!Opportunity.Loan_Size__c}" /></apex:outputText>
-                            </mark>, subject to confirmation and determined by Lender as follows: the Maximum Loan Amount will be
+                            </span>, subject to confirmation and determined by Lender as follows: the Maximum Loan Amount will be
                             the lesser of: (a)
                             <apex:outputText value="{0,number,0}%">
                                 <apex:param value="{!Opportunity.Requested_LTV_Max__c}" /></apex:outputText> of the "As-Stabilized" market value of the Property as determined by Lender
@@ -379,8 +384,8 @@
                             such by Lender prior to Loan closing and have not been credited to Borrower's [Initial] Equity
                             Contribution (the
                             <strong>"Initial Advance"</strong>) is anticipated to be the lesser of (a) [
-                            <mark>XXX</mark>]% of the Third Party Purchase Price paid for the Property and (b)[
-                            <mark>XXX</mark>]% of the "As-Is" appraised value as determined by Lender based on the appraisal of
+                            <span class="mark">XXX</span>]% of the Third Party Purchase Price paid for the Property and (b)[
+                            <span class="mark">XXX</span>]% of the "As-Is" appraised value as determined by Lender based on the appraisal of
                             the Property prepared by an appraiser selected by Lender and in form and scope acceptable to
                             Lender (
                             <strong>"As-Is Value"</strong>). The remaining portion of the Maximum Loan Amount (the
@@ -389,7 +394,7 @@
                             <strong>"Construction Advance"</strong> means an Advance to pay for Eligible Project Costs other than
                             Advances from the Interest Allocation to pay interest on the Loan. The Construction Loan Proceeds
                             are estimated to be $[
-                            <mark>XXX</mark>] subject to confirmation by Lender. See
+                            <span class="mark">XXX</span>] subject to confirmation by Lender. See
                             <strong>Exhibit A</strong> - "Sources and Uses.</p>
 
                     </td>
@@ -401,19 +406,19 @@
                     </td>
                     <td class="row-description">
                         <p>[USE IF NO ADDITIONAL EQUITY] an estimated [$
-                            <mark>XXX</mark>] of invested equity capital, inclusive of cash and land equity, to be evidenced at
+                            <span class="mark">XXX</span>] of invested equity capital, inclusive of cash and land equity, to be evidenced at
                             Loan closing (
                             <strong> "Borrower's Equity Contribution" </strong>), subject to confirmation as determined by Lender
                             prior to Loan Closing that the Construction Loan Proceeds are not less than Eligible Project
                             Costs.]
                         </p>
                         <p>[USE IF ADDITIONAL EQUITY REQUIRED] an estimated $[
-                            <mark>XXX</mark>] of invested equity capital, inclusive of cash and land equity, to be evidenced at
+                            <span class="mark">XXX</span>] of invested equity capital, inclusive of cash and land equity, to be evidenced at
                             Loan closing (
                             <strong> "Borrower's Initial Equity Contribution" </strong>) at Loan Closing, subject to Lender confirmation
                             prior to Loan Closing.</p>
                         <p>Following Loan Closing, an additional estimated $[
-                            <mark>XXX</mark>] of equity capital to be fully invested by Borrower towards Eligible Project Costs
+                            <span class="mark">XXX</span>] of equity capital to be fully invested by Borrower towards Eligible Project Costs
                             prior to and as a condition to the disbursement of any Construction Advance under the Loan (
                             <strong>"Borrower's Additional Equity Contribution"</strong>), subject to confirmation as determined
                             by Lender prior to Loan Closing that the Construction Loan Proceeds plus Borrower's Additional
@@ -434,8 +439,8 @@
                     </td>
                     <td class="row-description">
                         [
-                        <mark>XXX</mark>] months [
-                        <mark>INSERT IF EXTENSION OPTION</mark> "Initial Stated Maturity Date"]
+                        <span class="mark">XXX</span>] months [
+                        <span class="mark">INSERT IF EXTENSION OPTION</span> "Initial Stated Maturity Date"]
                     </td>
                 </tr>
 
@@ -528,7 +533,7 @@
                     </td>
                     <td class="row-description">
                         $[
-                        <mark>1,000</mark>] per Construction Advance payable to Lender as a condition to each Construction Advance.
+                        <span class="mark">1,000</span>] per Construction Advance payable to Lender as a condition to each Construction Advance.
                     </td>
                 </tr>
 
@@ -552,8 +557,8 @@
                     </td>
                     <td class="row-description">
                         <p>[USE IF PARTIAL RELEASES][
-                            <mark>XXX</mark>]% of 1/[
-                            <mark>total number of Residential Units</mark>] of the Maximum Loan Amount for each Residential Unit
+                            <span class="mark">XXX</span>]% of 1/[
+                            <span class="mark">total number of Residential Units</span>] of the Maximum Loan Amount for each Residential Unit
                             (as may be adjusted by Lender during Lender's due diligence based on the Residential Unit composition
                             (e.g., unit size and type), per Release Property appraised value or other pertinent factors as
                             determined by Lender), which shall be due and payable in full upon the earlier of (a) the maturity
@@ -613,7 +618,7 @@
                     </td>
                     <td class="row-description">
                         The Improvements must be Completed no later than the date that is [
-                        <mark>XXX</mark>] months following the closing of the Loan (
+                        <span class="mark">XXX</span>] months following the closing of the Loan (
                         <strong>"Outside Completion Date"</strong>).
                     </td>
                 </tr>
@@ -760,7 +765,7 @@
                             generated by the Property, such funds shall be utilized to pay accrued but unpaid interest prior
                             to any Advance from the Interest Allocation. The estimated amount of the Interest Allocation
                             is $[
-                            <mark>XXX</mark>]. The Interest Allocation may be adjusted by Lender during underwriting, in its sole
+                            <span class="mark">XXX</span>]. The Interest Allocation may be adjusted by Lender during underwriting, in its sole
                             and absolute discretion. If Lender determines, at any time during the Loan term, that the undisbursed
                             Construction Loan Proceeds allocated to the Interest Allocation along with projected cash flow
                             from Property operations (if any), is insufficient to fund the Loan's projected interest expense
@@ -830,7 +835,7 @@
                         The Residential Units shall be leased only to Eligible Tenants pursuant to Eligible Leases. As used herein,
                         <strong>"Eligible Lease"</strong> means a written Lease that (a) is executed by an Eligible Tenant and Borrower,
                         (b) has an initial term (together with all renewal options) of not less than [
-                        <mark>one (1) year and not greater than two (2) years</mark>], (c) has a rental rate and terms consistent
+                        <span class="mark">one (1) year and not greater than two (2) years</span>], (c) has a rental rate and terms consistent
                         with rates and terms then prevailing in the local market where the Property is located, (d) covers
                         100% of the square footage of the applicable Residential Unit and (e) otherwise complies with the
                         leasing requirements to be set forth in the Loan Agreement. As used herein,
@@ -852,12 +857,12 @@
                             will agree to cause the Improvements to be:</p>
                         <p>
                             (a) Not less than
-                            <mark>[___]</mark>% completed no later than
-                            <mark>[___]</mark> months following Loan closing.</p>
+                            <span class="mark">[___]</span>% completed no later than
+                            <span class="mark">[___]</span> months following Loan closing.</p>
                         <p>
                             (b) Not less than
-                            <mark>[___]</mark>% completed no later than
-                            <mark>[___]</mark> months following Loan closing.</p>
+                            <span class="mark">[___]</span>% completed no later than
+                            <span class="mark">[___]</span> months following Loan closing.</p>
 
                     </td>
 
@@ -873,14 +878,14 @@
                             set forth below:</p>
                         <p>
                             (a) No later than
-                            <mark>[__]</mark> months following Loan closing, not less than
-                            <mark>[__]</mark>% of the Residential Units must be occupied by Eligible Tenants pursuant to Eligible
+                            <span class="mark">[__]</span> months following Loan closing, not less than
+                            <span class="mark">[__]</span>% of the Residential Units must be occupied by Eligible Tenants pursuant to Eligible
                             Leases.
                         </p>
                         <p>
                             (b) No later than
-                            <mark>[__]</mark> months following Loan closing, not less than
-                            <mark>[__]</mark>% of the Residential Units must be occupied by Eligible Tenants pursuant to Eligible
+                            <span class="mark">[__]</span> months following Loan closing, not less than
+                            <span class="mark">[__]</span>% of the Residential Units must be occupied by Eligible Tenants pursuant to Eligible
                             Leases.
                         </p>
 
@@ -899,7 +904,7 @@
                         management agreement, construction management and any other construction contracts as determined
                         by Lender (collectively,
                         <strong>"Construction Documents"</strong>) [
-                        <mark>and (d) a pledge of the 100% of the equity interests in the Borrower</mark>]. The owner's interest
+                        <span class="mark">and (d) a pledge of the 100% of the equity interests in the Borrower</span>]. The owner's interest
                         under each of the Construction Documents must be in the name of the Borrower.
                     </td>
                 </tr>
