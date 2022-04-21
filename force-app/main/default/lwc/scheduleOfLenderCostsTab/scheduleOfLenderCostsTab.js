@@ -64,6 +64,10 @@ export default class ScheduleOfLenderCostsTab extends LightningElement {
     
   }
 
+  handleRefresh() {
+    this.connectedCallback();
+  }
+
   refreshNew() {
     if(this.template.querySelector("c-schedule-of-lender-costs-new") != null) {
       this.template.querySelector("c-schedule-of-lender-costs-new").refreshPage();
