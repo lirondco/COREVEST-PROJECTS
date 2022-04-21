@@ -43,13 +43,13 @@ public without sharing class GinaPipelineHelper {
     }
     
     @AuraEnabled
-    public static GinaPipelineObject methodName(){
+    public static String retrieveAllData(){
         try {
             GinaPipelineObject retObj = new GinaPipelineObject();
             retObj.template = lightning_Controller.getTemplate(TEMPLATE_NAME);
             retObj.columns = generateColumns();
             retObj.data = returnData();
-            return retObj;
+            return JSON.serialize(retObj);
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }
@@ -72,6 +72,9 @@ public without sharing class GinaPipelineHelper {
         Map<Id,Map<String,String>> parsedData = new Map<Id,Map<String,String>>();
         Map<Id, Set<String>> advPropTypes = new Map<Id, Set<String>>();
         Map<Id, Set<String>> advPropStates = new Map<Id, Set<String>>();
+
+        Map<Id, Integer> refinanceCt = new Map<Id, Integer>();
+        Map<Id, Integer> acqCt = new Map<Id, Integer>();
 
         List<Property__c> props = [
             SELECT 
@@ -116,9 +119,17 @@ public without sharing class GinaPipelineHelper {
             if(!advPropStates.containsKey(p.Initial_Advance__c)) {
                 advPropStates.put(p.Initial_Advance__c, new Set<String>());
             }
+            if(!refinanceCt.containsKey(p.Initial_Advance__c)) {
+                refinanceCt.put(p.Initial_Advance__c, 0);
+            }
+            if(!acqCt.containsKey(p.Initial_Advance__c)) {
+                acqCt.put(p.Initial_Advance__c, 0);
+            }
             Map<String,String> rowData = parsedData.get(p.Initial_Advance__c);
             Set<String> propTypes = advPropTypes.get(p.Initial_Advance__c);
             Set<String> propStates = advPropStates.get(p.Initial_Advance__c);
+            Integer refCt = refinanceCt.get(p.Initial_Advance__c);
+            Integer ac = acqCt.get(p.Initial_Advance__c);
 
             rowData.put('reqFundDate', 
             p.Initial_Advance__r.Target_Advance_Date__c.month() + '/' +
@@ -147,7 +158,16 @@ public without sharing class GinaPipelineHelper {
             rowData.put('propState', String.join(new List<String>(propStates), ','));
             advPropStates.put(p.Initial_Advance__c, propStates);
 
-            rowData.put('acqOrRef', p.Refinance_Acquisition__c);
+            
+            if(p.Refinance_Acquisition__c == 'Refinance') {
+                refCt++;
+            } else {
+                ac++;
+            }
+            rowData.put('acqOrRef', 'Refinance(' + refCt + ') / Acquisition(' + ac + ')');
+            refinanceCt.put(p.Initial_Advance__c, refCt);
+            acqCt.put(p.Initial_Advance__c, ac);
+
             rowData.put('acqPrice', 
                 String.isEmpty(rowData.get('acqPrice')) ? 
                 String.valueOf(p.Acquisition_Price__c) : String.valueOf(p.Acquisition_Price__c + Decimal.valueOf(rowData.get('acqPrice')))

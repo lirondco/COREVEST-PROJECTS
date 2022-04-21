@@ -1,0 +1,36 @@
+<aura:component
+  controller="GinaPipelineHelper"
+  implements="flexipage:availableForAllPageTypes,force:LightningQuickAction"
+>
+  <aura:handler name="init" value="{!this}" action="{!c.onCompLoad}"/>
+  <ltng:require scripts="{!$Resource.xlsx_populate}" afterScriptsLoaded="{!c.onScriptLoad}"  />
+
+  <aura:attribute name="sheetData" type="String" />
+  <aura:attribute name="scriptLoaded" type="Boolean" default="false" />
+  <lightning:layout
+    class="slds-m-top_medium"
+    horizontalAlign="spread"
+    verticalAlign="center"
+  >
+    <lightning:layoutItem>
+      <div class="slds-is-relative">
+        <lightning:buttonGroup>
+          <aura:if isTrue="{!v.sheetData != null &amp;&amp; v.scriptLoaded == true}">
+            <lightning:button
+              label="Bridge Pipeline Prioritization Report"
+              aura:id="download"
+              onclick="{!c.createPipelineReport}"
+            />
+            <aura:set attribute="else">
+              <lightning:spinner
+                size="small"
+                variant="brand"
+                aura:id="spinner"
+              />
+            </aura:set>
+          </aura:if>
+        </lightning:buttonGroup>
+      </div>
+    </lightning:layoutItem>
+  </lightning:layout>
+</aura:component>
