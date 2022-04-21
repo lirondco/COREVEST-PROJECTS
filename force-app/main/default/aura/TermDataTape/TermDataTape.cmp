@@ -333,6 +333,12 @@
                   allowEmpty="false"
                 />
                 <c:hotColumn
+                  data="Estimated_Rent__c"
+                  title="Monthly Estimated Rent"
+                  type="numeric"
+                  format="$0,0.00"
+                />                  
+                <c:hotColumn
                   data="Security_Deposit__c"
                   title="Security Deposit"
                   type="numeric"
