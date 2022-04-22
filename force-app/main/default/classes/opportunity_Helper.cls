@@ -356,15 +356,6 @@ public without sharing class opportunity_Helper {
         );
 
         termRecordIds.add(o.Id);
-        OpportunityLineItem oli = new OpportunityLineItem();
-        oli.OpportunityId = o.id;
-        // Product2Id = PRODUCT_MAP.get('Term Loan').Id,
-       // oli.PricebookEntryId = '01u0a00000K75E5AAJ'; 
-        oli.PricebookEntryId = '01s760000001aloAAA';
-        oli.Quantity = 1;
-        oli.ServiceDate = o.CloseDate;
-        oli.UnitPrice = util.fixNull(o.Loan_Size__c);
-       // insert oli;
       } else if (o.RecordType__c == 'Bridge') {
         applicants.add(
           new Deal_Contact__c(
@@ -406,49 +397,6 @@ public without sharing class opportunity_Helper {
             Vendor_Type__c = 'Insurance'
           )
         );
-        // OpportunityLineItem oli = new OpportunityLineItem(
-        //     OpportunityId = o.id,
-        //     // Product2Id = PRODUCT_MAP.get('Bridge Loan').Id,
-        //     PricebookEntryId = '01u0a00000K75EAAAZ',
-        //     Quantity = 1,
-        //     UnitPrice = util.fixNull(o.Loan_Size__c)
-        // );
-        // insert oli;
-      } else if (o.RecordType__c == 'Single Asset Rental') {
-        if (o.Loan_Size__c != null && o.Final_Loan_Amount__c == null) {
-          OpportunityLineItem oli = new OpportunityLineItem(
-            OpportunityId = o.id,
-            // Product2Id = PRODUCT_MAP.get('Single Rental Loan').Id,
-            PricebookEntryId = '01u0a00000K75EKAAZ',
-            Quantity = 1,
-            ServiceDate = o.CloseDate,
-            UnitPrice = util.fixNull(o.Loan_Size__c)
-          );
-          insert oli;
-        } else if (o.Final_Loan_Amount__c != null) {
-          OpportunityLineItem oli = new OpportunityLineItem(
-            OpportunityId = o.id,
-            // Product2Id = PRODUCT_MAP.get('Single Rental Loan').Id,
-            PricebookEntryId = '01u0a00000K75EKAAZ',
-            Quantity = 1,
-            ServiceDate = o.CloseDate,
-            UnitPrice = util.fixNull(o.Final_Loan_Amount__c)
-          );
-          insert oli;
-        }
-      } else if (o.RecordType__c == 'Investor DSCR') {
-        OpportunityLineItem oli = new OpportunityLineItem(
-          OpportunityId = o.id,
-          // Product2Id = PRODUCT_MAP.get('Single Rental Loan').Id,
-          PricebookEntryId = '01u78000000LkkZAAS',
-          Quantity = 1,
-          ServiceDate = o.CloseDate,
-          UnitPrice = util.fixNull(o.Final_Loan_Amount__c)
-        );
-        //raj
-        if (!Test.isRunningTest()) {
-          insert oli;
-        }
       }
 
       if (o.Underwriter__c != null) {
@@ -650,7 +598,7 @@ public without sharing class opportunity_Helper {
         currOpp.IC_Approval_Date__c = System.today();
       }
 
-   if (validateDealForIcReapproval(prevOpp, currOpp)) {
+      if (validateDealForIcReapproval(prevOpp, currOpp)) {
         currOpp.IC_Approval__c = null;
         currOpp.IC_Approval_Date__c = null;
         currOpp.StageName = 'Underwriting';
@@ -3504,13 +3452,13 @@ public without sharing class opportunity_Helper {
     Boolean isRecourseChanged = currOpp.Recourse__c != prevOpp.Recourse__c;
     Boolean shouldReapproveActualDSCR = false;
 
-    Decimal prevActualDSCR = String.isNotEmpty(prevOpp.Actual_DSCR__c) && prevOpp.Actual_DSCR__c.replaceAll('[^\\d]', '')
-        .isNumeric()
+    Decimal prevActualDSCR = String.isNotEmpty(prevOpp.Actual_DSCR__c) &&
+      prevOpp.Actual_DSCR__c.replaceAll('[^\\d]', '').isNumeric()
       ? Decimal.valueOf(prevOpp.Actual_DSCR__c.replaceAll('[^.\\d]', ''))
       : null;
     if (prevActualDSCR != null) {
-      Decimal currActualDSCR = String.isNotEmpty(currOpp.Actual_DSCR__c) && currOpp.Actual_DSCR__c.replaceAll('[^\\d]', '')
-          .isNumeric()
+      Decimal currActualDSCR = String.isNotEmpty(currOpp.Actual_DSCR__c) &&
+        currOpp.Actual_DSCR__c.replaceAll('[^\\d]', '').isNumeric()
         ? Decimal.valueOf(currOpp.Actual_DSCR__c.replaceAll('[^.\\d]', ''))
         : null;
       Decimal dscrDifference = currActualDSCR - prevActualDSCR;
