@@ -48,7 +48,14 @@ public without sharing class AdvanceClearToFundController {
     if(advance.Deal__r.Record_Type_Name__c == 'Single_Asset_Bridge_Loan') {
       List<String> newDocstructures = new List<String>();
       for(String ds : docStructures) {
-        newDocstructures.add(ds + '_sab');
+        if(ds == 'Advance_Funding_Request_for_Advance') {
+          continue;
+        }
+        if(ds == 'Advance_Funding_Funding_Approval_Package') {
+          newDocstructures.add('Advance_Funding_Funding_Approval_sab');
+        } else if (ds == 'Settlement_Statement') {
+          newDocstructures.add('Settlement_Statement_sab2');
+        } else { newDocstructures.add(ds + '_sab');}
       }
       docStructures = newDocstructures;
     }
@@ -138,7 +145,14 @@ public without sharing class AdvanceClearToFundController {
     Map<String, Map<String, Object>> finalResponse = new Map<String, Map<String, Object>>();
 
     for (String docString : response.keySet()) {
-      String devName = docStringMap.get(docString).replace('_sab', '');
+      String devName = docStringMap.get(docString);
+      if(devName.contains('sab2')) {
+        devName = devName.replace('_sab2', '');
+      }  else if (devName == 'Advance_Funding_Funding_Approval_sab') {
+        devName = 'Advance_Funding_Funding_Approval_Package';
+      } else if (devName.contains('sab')) {
+        devName = devName.replace('_sab', '');
+      }
       finalResponse.put(devName, response.get(docString));
 
       List<Deal_Document__c> dealDocs = (List<Deal_Document__c>) (finalResponse.get(

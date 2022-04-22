@@ -19,14 +19,22 @@
   <!-- <aura:handler name="init" value="{!this}" action="{!c.init}" /> -->
   <aura:attribute name="uploaderType" type="String" default="internal" />
   <aura:attribute name="message" type="String" default="" />
+  <aura:attribute name="advRecord" type="Object" />
+  <force:recordData
+    aura:id="recordLoader"
+    fields="Deal__r.RecordType.DeveloperName"
+    recordId="{!v.recordId}"
+    targetFields="{!v.advRecord}"
+    recordUpdated="{!c.handleRecordUpdated}"
+  />
 
-  <!-- <aura:if isTrue="{!!empty(v.recordType)}"> -->
+  <aura:if isTrue="{!!empty(v.recordType)}">
   <c:DocumentUploader
     recordId="{!v.recordId}"
     sobjectType="Advance__c"
-    recordType="LOC_Loan"
+    recordType="{!v.recordType}"
   />
-  <!-- </aura:if> -->
+  </aura:if>
 
   <!-- <c:util aura:id="util" /> -->
 </aura:component>

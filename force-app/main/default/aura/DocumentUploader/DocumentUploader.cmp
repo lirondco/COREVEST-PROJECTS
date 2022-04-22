@@ -32,6 +32,10 @@
     type="LoanVersionValidator__c"
     aura:id="validator"
   /> 
+  <lightning:messageChannel
+  type="documentChannel__c"
+  aura:id="POVMC"
+  />
   <!-- <aura:if isTrue="{!v.uploaderType != 'portal'}">
     <c:loanVersionValidatorChannel
       aura:id="validator"
