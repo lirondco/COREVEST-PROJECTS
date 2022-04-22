@@ -33,9 +33,9 @@ public without sharing class SpecialAssetHelper {
     for (Special_Asset__c sa : newMap.values()) {
       Special_Asset__c oldSa = oldMap.get(sa.id);
       if (
-        (sa.REO_Date__c != null && oldSa.REO_date__c == null) ||
+        (sa.REO_Date__c != null && oldSa.REO_date__c != sa.REO_Date__c) ||
         (sa.REO_Sell_Date__c != null &&
-        oldSa.REO_Sell_Date__c == null)
+        oldSa.REO_Sell_Date__c != sa.REO_Sell_Date__c) 
       ) {
         sa.Resolved_Date__c = sa.REO_Date__c != null
           ? sa.REO_Date__c
@@ -55,7 +55,7 @@ public without sharing class SpecialAssetHelper {
               SELECT REO_Date__c
               FROM Special_Assets__r
               WHERE REO_Date__c != NULL
-              ORDER BY SystemModStamp DESC
+              ORDER BY CreatedDate DESC
               LIMIT 1
             )
           FROM Property__c
@@ -95,7 +95,9 @@ public without sharing class SpecialAssetHelper {
         forForeclosure.put(id, n);
       }
 
-      if (o.Resolved_Date__c == null && n.Resolved_Date__c != null) {
+      if (String.isNotEmpty(n.Resolution_Type__c) && n.Resolved_Date__c != null && (
+        n.Resolved_Date__c != o.Resolved_Date__c || n.Resolution_Type__c != o.Resolution_Type__c
+      )) {
         if (String.isNotEmpty(n.Resolution_Type__c)) {
           propertiesToUpdate.add(n.Property__c);
         }
