@@ -17,6 +17,16 @@ public without sharing class SecuritizationHelper {
     createRelatedFundingVehicles(newList);
   }
 
+  public static void beforeUpdate(List<Securitization__c> newList, Map<Id,Securitization__c> oldMap) {
+   //Redemption_Date__c
+   for(Securitization__c nS : newList) {
+    Securitization__c oS = oldMap.get(nS.Id);
+     if(nS.Status__c == 'Redeemed' && oS.Status__c != 'Redeemed') {
+      nS.Redemption_Date__c = System.today();
+     }
+   }
+  }
+
   public static void afterUpdate(
     Map<Id, Securitization__c> oldMap,
     List<Securitization__c> newList
