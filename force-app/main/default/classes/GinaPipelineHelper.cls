@@ -172,8 +172,8 @@ public without sharing class GinaPipelineHelper {
                 String.isEmpty(rowData.get('acqPrice')) ? 
                 String.valueOf(p.Acquisition_Price__c) : String.valueOf(p.Acquisition_Price__c + Decimal.valueOf(rowData.get('acqPrice')))
             );
-            rowData.put('initAdvance', p.Initial_Advance__r.Name);
-            rowData.put('closingDate', p.Deal__r.CloseDate.month() + '/' + p.Deal__r.CloseDate.day() + '/' + p.Deal__r.CloseDate.year());
+            rowData.put('initAdv', p.Initial_Advance__r.Name);
+            rowData.put('closeDate', p.Deal__r.CloseDate.month() + '/' + p.Deal__r.CloseDate.day() + '/' + p.Deal__r.CloseDate.year());
             rowData.put('fundingProb', p.Funding_Probability__c);
             rowData.put('projectedInitialDisbursement', 
                 String.isEmpty(rowData.get('projectedInitialDisbursement')) ? 
