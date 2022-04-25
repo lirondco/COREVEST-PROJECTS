@@ -28,7 +28,9 @@
     console.log("BRIDGE PIPELINE REPORT");
     const sheetData = JSON.parse(component.get("v.sheetData"));
     console.log(sheetData.template);
-    XlsxPopulate.fromDataAsync(helper.base64ToArrayBuffer(JSON.parse(sheetData.template)))
+    XlsxPopulate.fromDataAsync(
+      helper.base64ToArrayBuffer(JSON.parse(sheetData.template))
+    )
       .then((workbook) => {
         let columns = sheetData.columns;
         let rows = sheetData.data;
@@ -36,19 +38,20 @@
           for (let j = 0; j < columns.length; j++) {
             let r = columns[j].data;
 
-            if (
-              columns[j].type == "date" &&
-              !$A.util.isEmpty(rows[i][r])
-            ) {
+            if (columns[j].type == "date" && !$A.util.isEmpty(rows[i][r])) {
               rows[i][r] = $A.localizationService.formatDate(
                 rows[i][r],
                 "MM/DD/YYYY"
               );
             }
 
-            if (
-              !$A.util.isEmpty(r)
-            ) {
+            if (columns[j].type == "number" && !$A.util.isEmpty(rows[i][r])) {
+              rows[i][r] = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
+                parseFloat(rows[i][r])
+              );
+            }
+
+            if (!$A.util.isEmpty(r)) {
               workbook
                 .sheet("Pipeline")
                 .row(3 + i)
