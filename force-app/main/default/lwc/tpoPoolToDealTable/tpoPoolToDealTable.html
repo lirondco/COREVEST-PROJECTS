@@ -1,0 +1,25 @@
+<template>
+  <template if:true={recordId}>
+    <template if:true={isComponentReady}>
+      <lightning-card
+        variant="Narrow"
+        title={cardTitle}
+        icon-name="standard:account"
+      >
+        <div class="slds-p-horizontal_small">
+          <c-custom-data-table
+            key-field="id"
+            columns={columns}
+            data={tableData}
+            hide-checkbox-column
+            default-sort-direction={defaultSortDirection}
+            sorted-direction={sortDirection}
+            sorted-by={sortedBy}
+            onsort={onHandleSort}
+          >
+          </c-custom-data-table>
+        </div>
+      </lightning-card>
+    </template>
+  </template>
+</template>
