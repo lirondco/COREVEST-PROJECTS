@@ -19,6 +19,7 @@ public without sharing class AdvanceClearToFundController {
       SELECT
         Id,
         Deal__c,
+        Deal__r.Record_Type_Name__c,
         Closing_Funds_Checklist__c,
         Closing_Funds_Checklist_Date__c,
         Closing_Funds_Checklist_Comments__c,
@@ -44,6 +45,21 @@ public without sharing class AdvanceClearToFundController {
       LIMIT 1
     ];
 
+    if(advance.Deal__r.Record_Type_Name__c == 'Single_Asset_Bridge_Loan') {
+      List<String> newDocstructures = new List<String>();
+      for(String ds : docStructures) {
+        if(ds == 'Advance_Funding_Request_for_Advance') {
+          continue;
+        }
+        if(ds == 'Advance_Funding_Funding_Approval_Package') {
+          newDocstructures.add('Advance_Funding_Funding_Approval_sab');
+        } else if (ds == 'Settlement_Statement') {
+          newDocstructures.add('Settlement_Statement_sab2');
+        } else { newDocstructures.add(ds + '_sab');}
+      }
+      docStructures = newDocstructures;
+    }
+
     Map<String, Map<String, Object>> response = new Map<String, Map<String, Object>>();
 
     Map<String, String> docStringMap = new Map<String, String>();
@@ -56,6 +72,7 @@ public without sharing class AdvanceClearToFundController {
         docStructure.Folder_Structure_String__c +
         '|' +
         docStructure.Document_Type__c;
+
       docStringMap.put(docString, docStructure.DeveloperName);
 
       response.put(docString, new Map<String, Object>());
@@ -129,6 +146,13 @@ public without sharing class AdvanceClearToFundController {
 
     for (String docString : response.keySet()) {
       String devName = docStringMap.get(docString);
+      if(devName.contains('sab2')) {
+        devName = devName.replace('_sab2', '');
+      }  else if (devName == 'Advance_Funding_Funding_Approval_sab') {
+        devName = 'Advance_Funding_Funding_Approval_Package';
+      } else if (devName.contains('sab')) {
+        devName = devName.replace('_sab', '');
+      }
       finalResponse.put(devName, response.get(docString));
 
       List<Deal_Document__c> dealDocs = (List<Deal_Document__c>) (finalResponse.get(
