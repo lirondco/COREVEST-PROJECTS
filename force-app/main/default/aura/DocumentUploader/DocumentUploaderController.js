@@ -113,6 +113,14 @@
         // close.fire();
         // $A.get("e.force:closeQuickAction").fire();
       } else if (files.length > 0 && savedCount == files.length) {
+        let payload = {
+          recordId: component.get("v.recordId"),
+          sobjectType: component.get("v.sobjectType"),
+          files: files,
+          message: 'All files are saved successfully.',
+          source: 'DocumentUploader'
+        };
+        component.find("POVMC").publish(payload);
         var toastEvent = $A.get("e.force:showToast");
         toastEvent.setParams({
           title: "Success!",
