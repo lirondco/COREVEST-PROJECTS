@@ -19,8 +19,8 @@ public without sharing class InterfaceEmail_LightningController {
   public static final String emailAddress = retrieveEmailServiceAddress();
   public static final String BETH = queryEmailAddress('Beth O\'Brien')
     .Email_Address__c;
-  public static final String RYAN = queryEmailAddress('Ryan McBride')
-    .Email_Address__c;
+  // public static final String RYAN = queryEmailAddress('Ryan McBride')
+  //   .Email_Address__c;
   public static final String CHRIS = queryEmailAddress('Chris Hoeffel')
     .Email_Address__c;
   public static final String BRAD = queryEmailAddress('Brad Chmura')
@@ -413,7 +413,7 @@ public without sharing class InterfaceEmail_LightningController {
     if (null != oRecordType && oRecordType == 'Term_Loan') {
       m.put(
         'CC',
-        new List<Object>{ o.Owner.Email, TERM_LIST, BETH, RYAN, CHRIS }
+        new List<Object>{ o.Owner.Email, TERM_LIST, BETH, CHRIS }
       );
     }
     if (
@@ -424,7 +424,7 @@ public without sharing class InterfaceEmail_LightningController {
     ) {
       m.put(
         'CC',
-        new List<Object>{ o.Owner.Email, BRIDGE_LIST, BETH, RYAN, CHRIS }
+        new List<Object>{ o.Owner.Email, BRIDGE_LIST, BETH, CHRIS }
       );
     }
     m.put('ContentVersions', cvList);

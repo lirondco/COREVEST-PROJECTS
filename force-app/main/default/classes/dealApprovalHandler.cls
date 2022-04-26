@@ -6,9 +6,9 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
   // static final String handlerAddress = 'dealapprovalhandler@z-21v3s1rxdsiq86g66t7hglls19pn9knj4z9ipe9qmtde06twmy.z-9t6ahmas.cs11.apex.sandbox.salesforce.com';
   
   static final String handlerAddress = retrieveEmailServiceAddress();
-  static final Email_Addresses__c RYAN_SETTINGS = queryEmailAddress(
-    'Ryan McBride'
-  );
+  // static final Email_Addresses__c RYAN_SETTINGS = queryEmailAddress(
+  //   'Ryan McBride'
+  // );
   static final Email_Addresses__c BETH_SETTINGS = queryEmailAddress(
     'Beth O\'Brien'
   );
@@ -28,14 +28,14 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
     'Micaela Lumpkin'
   );
 
-  static final String RYAN = RYAN_SETTINGS.Email_Address__c;
+  // static final String RYAN = RYAN_SETTINGS.Email_Address__c;
   static final String BETH = BETH_SETTINGS.Email_Address__c;
   static final String CHRIS = CHRIS_SETTINGS.Email_Address__c;
   // static final String BRYON = BRYON_SETTINGS.Email_Address__c;
   static final String BRAD = BRAD_SETTINGS.Email_Address__c;
   static final String MICAELA = MICAELA_SETTINGS.Email_Address__c;
   static final String MATT = MATT_SETTINGS.Email_Address__c;
-  static final String RYAN_CODE = RYAN_SETTINGS.Approver_Code__c.toLowerCase();
+  // static final String RYAN_CODE = RYAN_SETTINGS.Approver_Code__c.toLowerCase();
   static final String BETH_CODE = BETH_SETTINGS.Approver_Code__c.toLowerCase();
   static final String CHRIS_CODE = CHRIS_SETTINGS.Approver_Code__c.toLowerCase();
   // static final String BRYON_CODE = BRYON_SETTINGS.Approver_Code__c.toLowerCase();
@@ -220,7 +220,7 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
 
     List<Messaging.SingleEmailMessage> messages = new List<Messaging.SingleEmailMessage>();
 
-    User ryanUser = userMap.get('Ryan McBride');
+    // User ryanUser = userMap.get('Ryan McBride');
     User chrisUser = userMap.get('Christopher Hoeffel');
     User bethUser = userMap.get('Beth O\'Brien');
     // User bryonUser = userMap.get('Bryon Harland');
@@ -314,7 +314,7 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
 
         List<String> bossEmails = new List<String>{
           BETH,
-          RYAN,
+          // RYAN,
           CHRIS,
           // BRYON,
           BRAD,
@@ -427,7 +427,7 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
         ) {
           System.debug('email is from Beth');
           List<String> bossEmails = new List<String>{
-            RYAN,
+            // RYAN,
             CHRIS,
             // BRYON,
             BRAD,
@@ -506,13 +506,13 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
           );
           // sendEmail(email, deal, emailAddress, ccAddressesList);
         } else if (
-          fromAddress == RYAN ||
+          // fromAddress == RYAN ||
           fromAddress == CHRIS ||
           // fromAddress == BRYON ||
           fromAddress == BRAD ||
           fromAddress == MICAELA ||
           fromAddress == MATT ||
-          alternateFromAddress == RYAN ||
+          // alternateFromAddress == RYAN ||
           alternateFromAddress == CHRIS ||
           // alternateFromAddress == BRYON ||
           alternateFromAddress == BRAD ||
@@ -528,9 +528,10 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
           }
           // cc.add(BETH);
           
-          if(fromAddress == RYAN || alternateFromAddress == RYAN) {
-            toId = ryanUser.Id;
-          } else if(fromAddress == CHRIS || alternateFromAddress == CHRIS) {
+          // if(fromAddress == RYAN || alternateFromAddress == RYAN) {
+          //   toId = ryanUser.Id;
+          // } else 
+          if(fromAddress == CHRIS || alternateFromAddress == CHRIS) {
             toId = chrisUser.Id;
           } else if (fromAddress == BRAD || alternateFromAddress == BRAD) {
             toId = bradUser.Id;
@@ -541,7 +542,6 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
           }
 
           if (
-            (null != RYAN_CODE && htmlBody.toLowerCase().contains(RYAN_CODE)) ||
             (null != CHRIS_CODE &&
             htmlBody.toLowerCase().contains(CHRIS_CODE)) ||
             // (null != BRYON_CODE &&
@@ -658,7 +658,8 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
         Owner.Email,
         Underwriter__c,
         Underwriter__r.Email,
-        RecordType.DeveloperName
+        RecordType.DeveloperName,
+        Last_Referenced_Term_Sheet__c
       FROM Opportunity
       WHERE Id = :opportunityId
       LIMIT 1
@@ -678,7 +679,7 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
         FROM User
         WHERE
           Name = 'Beth O\'Brien'
-          OR Name = 'Ryan McBride'
+          // OR Name = 'Ryan McBride'
           OR Name = 'Christopher Hoeffel'
           // OR Name = 'Bryon Harland'
           OR Name = 'Brad Chmura'

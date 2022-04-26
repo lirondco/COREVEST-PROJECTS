@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
-        <members>OpportunityMethods</members>
-        <members>OpportunityMethodsTest</members>
-        <members>PaidOffSabPropertiesBatch</members>
-        <members>PaidOffSabPropertiesBatchTest</members>
+        <members>InterfaceEmail_LightningController</members>
+        <members>dealApprovalHandler</members>
+        <members>InterfaceEmail_Tests</members>
+        <members>dealApprovalHandler_Tests</members>
         <name>ApexClass</name>
     </types>
     
     <version>53.0</version>
 </Package>
-<!-- sfdx force:source:deploy -x manifest/deploy.xml -l RunSpecifiedTests -r OpportunityMethodsTest,PaidOffSabPropertiesBatchTest -->
+<!-- sfdx force:source:deploy -x manifest/deploy.xml -l RunSpecifiedTests -r InterfaceEmail_Tests,dealApprovalHandler_Tests -->
