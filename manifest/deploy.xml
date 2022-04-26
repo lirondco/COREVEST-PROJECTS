@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>Securitization__c.Redemption_Date__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
+        <members>SecuritizationHelper</members>
+        <members>securitizationHelperTest</members>
+        <name>ApexClass</name>
+    </types>
+
+
+    <version>53.0</version>
+</Package>
+<!-- sfdx force:source:deploy -x manifest/deploy.xml -l RunSpecifiedTests -r securitizationHelperTest -->
