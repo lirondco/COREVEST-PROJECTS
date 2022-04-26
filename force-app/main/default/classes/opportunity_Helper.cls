@@ -598,7 +598,7 @@ public without sharing class opportunity_Helper {
         currOpp.IC_Approval_Date__c = System.today();
       }
 
-   if (validateDealForIcReapproval(prevOpp, currOpp)) {
+   if (validateDealForIcReapproval(prevOpp, currOpp) && currOpp.IC_Approval__c == 'Approved') {
         currOpp.IC_Approval__c = null;
         currOpp.IC_Approval_Date__c = null;
         currOpp.StageName = 'Underwriting';
@@ -3135,7 +3135,13 @@ public without sharing class opportunity_Helper {
       }
 
       addlRecipIds.add(deal.OwnerId);
-      addlRecipIds.add(deal.Underwriter__c);
+      if(deal.Underwriter__c != null) {
+        addlRecipIds.add(deal.Underwriter__c);
+      }
+
+      if(deal.X2nd_Underwriter__c != null) {
+        addlRecipIds.add(deal.X2nd_Underwriter__c);
+      }
 
       if (deal.Record_Type_Name__c == 'Term_Loan') {
         termDealIdsByRecipients.put(deal.Id, addlRecipIds);
