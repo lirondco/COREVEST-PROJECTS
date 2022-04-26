@@ -41,7 +41,8 @@ private class lead_Tests {
       LastName = 'Tester3',
       email = 'test3@tester.com',
       Company = 'Test Company3',
-      Introduction_Source__c = 'Event',
+      Introduction_Source__c = 'Pre-Prod',
+      Introduction_Subsource__c = 'Pre-Prod Main Application',
       Applicant_Type__c = 'Broker',
       OwnerId = UserInfo.getUserId()
     );

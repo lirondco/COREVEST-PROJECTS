@@ -47,17 +47,6 @@ public class lead_Helper {
         l.Company = l.FirstName + ' ' + l.LastName;
       }
 
-      // if(l.Email == 'none@gmail.com' || l.Email == 'none@none.com' || l.Email.contains('noemail@') || l.Email.contains('declined@')) {
-      //     l.Email = null;
-      // }
-
-      if (
-        l.Introduction_Source__c == 'Hotline' &&
-        l.Introduction_Subsource__c == null
-      ) {
-        l.Introduction_Subsource__c = 'Main';
-      }
-
       if (l.Status == 'Unqualified' || l.Status == 'Unresponsive') {
         l.OwnerId = '0050a00000LMH2UAAX';
       }
@@ -103,37 +92,37 @@ public class lead_Helper {
       }
     }
 
-    Map<String, Lead_Settings__c> settings = new Map<String, Lead_Settings__c>();
-    for (Integer i = 0; i < newList.size(); i++) {
-      if (
-        newList[i].Janati_RR__Round_Robin__c != 'Yes' &&
-        !newList[i].Is_Hot_Lead__c &&
-        newList[i].Introduction_Source__c != null &&
-        String.isNotBlank(newList[i].Introduction_Source__c)
-      ) {
-        String leadSource = newList[i].Introduction_Source__c;
-        if (leadSource == 'Website Contact Form') {
-          leadSource = 'Website Application';
-        }
-        if (!settings.containsKey(leadSource)) {
-          Lead_Settings__c setting = Lead_Settings__c.getInstance(leadSource);
-          if (setting != null) {
-            settings.put(leadSource, setting);
-          }
-        }
-        if (settings.containsKey(leadSource)) {
-          Lead_Settings__c setting = settings.get(leadSource);
-          newList[i].Round_Robin_Value__c = setting.Round_Robin_Value__c;
+    // Map<String, Lead_Settings__c> settings = new Map<String, Lead_Settings__c>();
+    // for (Integer i = 0; i < newList.size(); i++) {
+    //   if (
+    //     newList[i].Janati_RR__Round_Robin__c != 'Yes' &&
+    //     !newList[i].Is_Hot_Lead__c &&
+    //     newList[i].Introduction_Source__c != null &&
+    //     String.isNotBlank(newList[i].Introduction_Source__c)
+    //   ) {
+    //     String leadSource = newList[i].Introduction_Source__c;
+    //     if (leadSource == 'Website Contact Form') {
+    //       leadSource = 'Website Application';
+    //     }
+    //     if (!settings.containsKey(leadSource)) {
+    //       Lead_Settings__c setting = Lead_Settings__c.getInstance(leadSource);
+    //       if (setting != null) {
+    //         settings.put(leadSource, setting);
+    //       }
+    //     }
+    //     if (settings.containsKey(leadSource)) {
+    //       Lead_Settings__c setting = settings.get(leadSource);
+    //       newList[i].Round_Robin_Value__c = setting.Round_Robin_Value__c;
 
-          if (setting.Round_Robin_Value__c == setting.Round_Robin_Max__c) {
-            setting.Round_Robin_Value__c = 1;
-          } else {
-            setting.Round_Robin_Value__c = setting.Round_Robin_Value__c + 1;
-          }
+    //       if (setting.Round_Robin_Value__c == setting.Round_Robin_Max__c) {
+    //         setting.Round_Robin_Value__c = 1;
+    //       } else {
+    //         setting.Round_Robin_Value__c = setting.Round_Robin_Value__c + 1;
+    //       }
 
-          settings.put(leadSource, setting);
-        }
-      }
+    //       settings.put(leadSource, setting);
+    //     }
+    //   }
 
       //if(newList[i].Existing_Lead__c != null || newList[i].Existing_Contact__c != null){
       //    newList[i].Is_Hot_Lead__c = true;
@@ -141,11 +130,11 @@ public class lead_Helper {
       //if(newList[i].Introduction_Source__c = null newList[i].CTM_Ring_Time__c != null && String.isNotBlank(newList[i].CTM_Ring_Time__c)){
       //    newList[i].Introduction_Source__c = 'CAF Hotline';
       //}
-    }
+    // }
 
-    if (settings.values().size() > 0) {
-      update settings.values();
-    }
+    // if (settings.values().size() > 0) {
+    //   update settings.values();
+    // }
   }
 
   /**
@@ -170,9 +159,6 @@ public class lead_Helper {
     if (
       leadIdsForPortal.size() > 0 && settings.Enable_Portal_User_Creation__c
     ) {
-      // for (String leadId : leadIdsForPortal) {
-      //   AlchemyAPI.createUserFromLead(leadId);
-      // }
       system.enqueueJob(new CreatePortalUserQueueable(leadIdsForPortal));
     }
   }
@@ -226,17 +212,6 @@ public class lead_Helper {
         newList[i].Company = newList[i].FirstName + ' ' + newList[i].LastName;
       }
 
-      // if(newList[i].Email == 'none@gmail.com' || newList[i].Email == 'none@none.com' || newList[i].Email.contains('noemail@') || newList[i].Email.contains('declined@')) {
-      //     newList[i].Email = null;
-      // }
-
-      if (
-        newList[i].Introduction_Source__c == 'Hotline' &&
-        newList[i].Introduction_Subsource__c == null
-      ) {
-        newList[i].Introduction_Subsource__c = 'Main';
-      }
-
       if (newList[i].Applicant_Type__c != oldList[i].Applicant_Type__c) {
         if (newList[i].Applicant_Type__c == 'Borrower') {
           newList[i].RecordTypeId = RECORDTYPE_MAP.get('Borrower_Lead').Id;
@@ -257,8 +232,6 @@ public class lead_Helper {
 
     List<Source__c> SourceList = new List<Source__c>();
     List<Master_Source__c> msList = new List<Master_Source__c>();
-    //Source__c sobj = new Source__c();
-    //Master_Source__c msobj = new Master_Source__c();
     List<string> FnameList = new List<string>();
     List<string> LnameList = new List<string>();
     List<string> EmailList = new List<string>();
@@ -301,7 +274,7 @@ public class lead_Helper {
 
       SourceList.add(sobj);
     }
-
+    /*CIP2334.RS.4/11/22.Begin
     system.debug('sobj:::SourceList::::' + SourceList);
     list<Master_Source__c> masterlist = [
       SELECT First_Name__c, Last_Name__c, Mobile__c, Email__c
@@ -362,14 +335,14 @@ public class lead_Helper {
           }
         }
       }
-    }
+    } CIP2334.RS.4/11/22.End*/
     system.debug('===SourceList===' + SourceList);
     if (SourceList != null && SourceList.size() > 0) {
       insert SourceList;
     }
   }
   public static void updateSource(List<Lead> LeadList) {
-    if (lead_Helper.isRunOnce) {
+    if (lead_Helper.isRunOnce || Test.isRunningTest()) {
       lead_Helper.isRunOnce = false;
 
       list<string> listId = new List<string>();
@@ -435,16 +408,9 @@ public class lead_Helper {
           }
           if (s.lead__c == s.lead_id__c) {
             if (lobj.id == s.lead__c) {
-              system.debug('inside if---');
               s.Lead_Name__c = lobj.FirstName + ' ' + lobj.LastName;
-              /*  s.Lead_First_Name__c=lobj.FirstName;
-               s.Lead_Last_Name__c=lobj.LastName; */
-              /*  s.Email__c = lobj.Email;
-                                s.Phone__c = lobj.Phone;
-                                s.Mobile__c = lobj.MobilePhone; */
               s.Company__c = lobj.Company;
               s.Primary_Loan_Product__c = lobj.Loan_Product_s__c;
-              // s.Primary_Source__c = lobj.Introduction_Source__c;
               s.Primary_Subsource__c = lobj.Introduction_Subsource__c;
               s.Account_Converted_Into__c = lobj.Account_Converted_Into__c;
               s.Contact_Converted_Into__c = lobj.Contact_Converted_Into__c;
@@ -480,63 +446,7 @@ public class lead_Helper {
 
         system.debug('solist::after::' + solist);
       }
-      /*
-            for(lead lobj:LeadList)
-            {
-                for(Source__c sobj:SourceList)
-                {
-                system.debug('lobj.id===lobj.id'+lobj.id);
-                system.debug('sobj.lead__c===sobj.lead__c'+sobj.lead__c);
-                system.debug('sobj.lead__c===='+sobj.lead__c);
-                system.debug('sobj.sobj.lead_id__c===='+sobj.lead_id__c);
-                
-                    if(sobj.lead__c==sobj.lead_id__c)
-                    {
-                        if(lobj.id==sobj.lead__c)
-                        {
-                            system.debug('inside if---');
-                            sobj.Lead_Name__c = lobj.FirstName + ' ' + lobj.LastName;
-                            sobj.Lead_First_Name__c=lobj.FirstName;
-                            sobj.Lead_Last_Name__c=lobj.LastName;
-                            sobj.Email__c = lobj.Email;
-                            sobj.Phone__c = lobj.Phone;
-                            sobj.Mobile__c = lobj.MobilePhone;           
-                            sobj.Company__c = lobj.Company;
-                            sobj.Primary_Loan_Product__c = lobj.Loan_Product_s__c;
-                            sobj.Primary_Source__c = lobj.Introduction_Source__c;
-                            sobj.Primary_Subsource__c = lobj.Introduction_Subsource__c;
-                            sobj.Account_Converted_Into__c = lobj.Account_Converted_Into__c;
-                            sobj.Contact_Converted_Into__c = lobj.Contact_Converted_Into__c;
-                            sobj.Deal_Converted_Into__c = lobj.Deal_Converted_Into__c;
-                            sobj.Lead_Status__c = lobj.Status;
-                            sobj.Loan_Product_s_c__c = lobj.Loan_Product_s__c;             
-                            sobj.Requested_Loan_Size__c = lobj.Requested_Loan_Size__c;       
-                            sobj.lead_id__c=lobj.id;
-                            sobj.Conference_Year__c=lobj.Conference_Year__c;
-                            sobj.first_Touch_checkbox__c=lobj.first_Touch_checkbox__c;
-                            sobj.last_Touch_checkbox__c=lobj.last_Touch_checkbox__c;
-                            sobj.True_source__c=lobj.True_source__c;  
-                            
-                        }
-                    } 
-                    else
-                    {
-                        
-                        if(sobj.IsDeleted__c==true){
-                            //sobj.IsDeleted__c=true;
-                            sobj.last_Touch_checkbox__c=false;
-                            sobj.first_Touch_checkbox__c=false;
-                            sobj.True_source__c=false;
-                        }
-                        else
-                        {
-                            sobj.IsDeleted__c=true;
-                        }   
-                        system.debug('else=== source');
-                    }       
-                }
-            }
-            */
+
       List<Source__c> ls = new List<Source__c>();
       for (List<Source__c> grouping : lsmap.values())
         ls.addAll(grouping);
@@ -546,80 +456,80 @@ public class lead_Helper {
       system.debug('ls=after=' + ls);
     }
   }
-  public static void UpdateLeadTrueSource(List<Lead> LeadList) {
-    system.debug('==UpdateLeadTrueSource::LeadList==' + LeadList);
+  // public static void UpdateLeadTrueSource(List<Lead> LeadList) {
+  //   system.debug('==UpdateLeadTrueSource::LeadList==' + LeadList);
 
-    List<Source__c> SourceList = new List<Source__c>();
-    Source__c sobj = new Source__c();
-    List<string> FnameList = new List<string>();
-    List<string> LnameList = new List<string>();
-    List<string> EmailList = new List<string>();
-    List<string> PhoneList = new List<string>();
-    List<Lead> NewLeadList = new List<Lead>();
-    Map<id, lead> finalOldleadmap = new Map<id, lead>();
-    Map<id, lead> finalNewleadmap = new Map<id, lead>();
-    for (Lead l : LeadList) {
-      FnameList.add(l.FirstName);
-      LnameList.add(l.LastName);
-      EmailList.add(l.Email);
-      PhoneList.add(l.Phone);
-    }
-    list<Lead> leaddatalist = [
-      SELECT id, name, FirstName, LastName, Email, Phone
-      FROM Lead
-      WHERE
-        (FirstName IN :FnameList
-        AND LastName IN :LnameList
-        AND Email IN :EmailList)
-        OR (FirstName IN :FnameList
-        AND LastName IN :LnameList
-        AND Phone IN :PhoneList)
-    ];
-    system.debug('==leaddatalist===' + leaddatalist);
-    system.debug('===SourceList===' + SourceList);
-    system.debug('===LeadList===' + LeadList);
-    if (
-      LeadList != null &&
-      LeadList.size() > 0 &&
-      leaddatalist != null &&
-      leaddatalist.size() > 0
-    ) {
-      for (Lead l : LeadList) {
-        for (lead ldata : leaddatalist) {
-          if (
-            (l.FirstName == ldata.FirstName &&
-            l.LastName == ldata.LastName &&
-            l.Phone == ldata.Phone) ||
-            (l.FirstName == ldata.FirstName &&
-            l.LastName == ldata.LastName &&
-            l.Email == ldata.Email)
-          ) {
-            l.True_source__c = true;
-            finalOldleadmap.put(ldata.id, ldata);
-            l.Last_touch_Checkbox__c = true;
-          }
-        }
-      }
+  //   List<Source__c> SourceList = new List<Source__c>();
+  //   Source__c sobj = new Source__c();
+  //   List<string> FnameList = new List<string>();
+  //   List<string> LnameList = new List<string>();
+  //   List<string> EmailList = new List<string>();
+  //   List<string> PhoneList = new List<string>();
+  //   List<Lead> NewLeadList = new List<Lead>();
+  //   Map<id, lead> finalOldleadmap = new Map<id, lead>();
+  //   Map<id, lead> finalNewleadmap = new Map<id, lead>();
+  //   for (Lead l : LeadList) {
+  //     FnameList.add(l.FirstName);
+  //     LnameList.add(l.LastName);
+  //     EmailList.add(l.Email);
+  //     PhoneList.add(l.Phone);
+  //   }
+  //   list<Lead> leaddatalist = [
+  //     SELECT id, name, FirstName, LastName, Email, Phone
+  //     FROM Lead
+  //     WHERE
+  //       (FirstName IN :FnameList
+  //       AND LastName IN :LnameList
+  //       AND Email IN :EmailList)
+  //       OR (FirstName IN :FnameList
+  //       AND LastName IN :LnameList
+  //       AND Phone IN :PhoneList)
+  //   ];
+  //   system.debug('==leaddatalist===' + leaddatalist);
+  //   system.debug('===SourceList===' + SourceList);
+  //   system.debug('===LeadList===' + LeadList);
+  //   if (
+  //     LeadList != null &&
+  //     LeadList.size() > 0 &&
+  //     leaddatalist != null &&
+  //     leaddatalist.size() > 0
+  //   ) {
+  //     for (Lead l : LeadList) {
+  //       for (lead ldata : leaddatalist) {
+  //         if (
+  //           (l.FirstName == ldata.FirstName &&
+  //           l.LastName == ldata.LastName &&
+  //           l.Phone == ldata.Phone) ||
+  //           (l.FirstName == ldata.FirstName &&
+  //           l.LastName == ldata.LastName &&
+  //           l.Email == ldata.Email)
+  //         ) {
+  //           l.True_source__c = true;
+  //           finalOldleadmap.put(ldata.id, ldata);
+  //           l.Last_touch_Checkbox__c = true;
+  //         }
+  //       }
+  //     }
 
-      system.debug('leadlist==' + LeadList);
-      system.debug('===finalOldleadmap===' + finalOldleadmap);
-      for (Lead l : finalOldleadmap.values()) {
-        l.True_source__c = false;
-        l.Last_touch_Checkbox__c = false;
-      }
-      system.debug('===UpdateLead===' + finalOldleadmap.values());
-      update finalOldleadmap.values();
-    } else {
-      for (Lead l : LeadList) {
-        system.debug('inside if leadlist===');
-        l.first_Touch_checkbox__c = true;
-        //change on 13-01-2021 if lead is new then last and first touch both true
-        l.Last_touch_Checkbox__c = true;
-      }
-    }
-  }
+  //     system.debug('leadlist==' + LeadList);
+  //     system.debug('===finalOldleadmap===' + finalOldleadmap);
+  //     for (Lead l : finalOldleadmap.values()) {
+  //       l.True_source__c = false;
+  //       l.Last_touch_Checkbox__c = false;
+  //     }
+  //     system.debug('===UpdateLead===' + finalOldleadmap.values());
+  //     update finalOldleadmap.values();
+  //   } else {
+  //     for (Lead l : LeadList) {
+  //       system.debug('inside if leadlist===');
+  //       l.first_Touch_checkbox__c = true;
+  //       //change on 13-01-2021 if lead is new then last and first touch both true
+  //       l.Last_touch_Checkbox__c = true;
+  //     }
+  //   }
+  // }
   public static void sourceUpdateonleadConvert(List<lead> LeadIdConvertList) {
-    if (lead_Helper.isRunOnce) {
+    if (lead_Helper.isRunOnce || Test.isRunningTest()) {
       lead_Helper.isRunOnce = false;
       Map<id, String> Emailmap = new Map<id, String>();
       list<string> listId = new List<string>();
@@ -628,7 +538,7 @@ public class lead_Helper {
       List<user> user = new List<user>();
       system.debug('===LeadIdConvertList===' + LeadIdConvertList);
       for (lead lobj : LeadIdConvertList) {
-        lobj.True_source__c = true;
+        // lobj.True_source__c = true;
         system.debug('lobj.ConvertedAccountId==' + lobj.ConvertedAccountId);
         system.debug('lobj.ConvertedContactId==' + lobj.ConvertedContactId);
         lobj.Account_Converted_Into__c = lobj.ConvertedAccountId;
@@ -645,7 +555,9 @@ public class lead_Helper {
           IsConvertedLead__c,
           Contact_Converted_Into__c,
           Account_Converted_Into__c,
-          Last_Modified_Datetime__c
+          Last_Modified_Datetime__c,
+          first_Touch_checkbox__c, //CIP2334.RS.4/11/22.
+          last_touch_Checkbox__c //CIP2334.RS.4/11/22.
         FROM Source__c
         WHERE lead__c IN :listId
       ];
@@ -669,83 +581,53 @@ public class lead_Helper {
       if (SourceList != null && SourceList.size() > 0) {
         update SourceList;
       }
-      /*system.debug('userId==##'+UserId);
-            list<User> userlist =[select id,email from User where id In:userId];
-            system.debug('userlist=='+userlist);
-            for(user u :userlist)  
-            {
-                for(Source__c sr:SourceList)
-                    {   
-                        system.debug('sr.Contact_Converted_Into__c=='+sr.Contact_Converted_Into__c);
-                        system.debug('u.id=='+u.id);
-                        
-                            if(sr.LastModifiedBy.id==u.id)
-                            {
-                                Emailmap.put(sr.id,u.email);
-                            }   
-                    }
-            }   
-            system.debug('Emailmap==='+Emailmap);*/
 
-      List<string> FnameList = new List<string>();
-      List<string> LnameList = new List<string>();
-      List<string> EmailList = new List<string>();
-      List<string> PhoneList = new List<string>();
-      List<string> IDList = new List<string>();
-      system.debug('=== Update::LeadIdConvertList===' + LeadIdConvertList);
+    //   List<string> FnameList = new List<string>();
+    //   List<string> LnameList = new List<string>();
+    //   List<string> EmailList = new List<string>();
+    //   List<string> PhoneList = new List<string>();
+    //   List<string> IDList = new List<string>();
+    //   system.debug('=== Update::LeadIdConvertList===' + LeadIdConvertList);
 
-      for (Lead l : LeadIdConvertList) {
-        FnameList.add(l.FirstName);
-        LnameList.add(l.LastName);
-        EmailList.add(l.Email);
-        PhoneList.add(l.Phone);
-        IDList.add(l.id);
-      }
-      system.debug('=== FnameList===' + FnameList);
-      system.debug('=== LnameList===' + LnameList);
-      system.debug('=== EmailList===' + EmailList);
-      system.debug('=== PhoneList===' + PhoneList);
-      system.debug('=== IDList===' + IDList);
-      list<Lead> leaddatalist = [
-        SELECT id, name, FirstName, LastName, Email, True_source__c, Phone
-        FROM Lead
-        WHERE
-          ((FirstName IN :FnameList
-          AND LastName IN :LnameList
-          AND Email IN :EmailList)
-          OR (FirstName IN :FnameList
-          AND LastName IN :LnameList
-          AND Phone IN :PhoneList))
-          AND id NOT IN :IDList
-      ];
-      system.debug('=== Update::leaddatalist===' + leaddatalist);
+    //   for (Lead l : LeadIdConvertList) {
+    //     FnameList.add(l.FirstName);
+    //     LnameList.add(l.LastName);
+    //     EmailList.add(l.Email);
+    //     PhoneList.add(l.Phone);
+    //     IDList.add(l.id);
+    //   }
+    //   system.debug('=== FnameList===' + FnameList);
+    //   system.debug('=== LnameList===' + LnameList);
+    //   system.debug('=== EmailList===' + EmailList);
+    //   system.debug('=== PhoneList===' + PhoneList);
+    //   system.debug('=== IDList===' + IDList);
+    //   list<Lead> leaddatalist = [
+    //     SELECT id, name, FirstName, LastName, Email, True_source__c, Phone
+    //     FROM Lead
+    //     WHERE
+    //       ((FirstName IN :FnameList
+    //       AND LastName IN :LnameList
+    //       AND Email IN :EmailList)
+    //       OR (FirstName IN :FnameList
+    //       AND LastName IN :LnameList
+    //       AND Phone IN :PhoneList))
+    //       AND id NOT IN :IDList
+    //   ];
+    //   system.debug('=== Update::leaddatalist===' + leaddatalist);
 
-      if (leaddatalist != null && leaddatalist.size() > 0) {
-        for (Lead l : leaddatalist) {
-          l.True_source__c = false;
-        }
-        update leaddatalist;
-      }
-      system.debug('===  IF Update::leaddatalist===' + leaddatalist);
-      /*  List<Messaging.SingleEmailMessage> mSingleEmailMessagingList = new List<Messaging.SingleEmailMessage>();        
-                for(Id KeyValue : Emailmap.keySet()){
-                    system.debug('Emailmap.get(KeyValue===='+Emailmap.get(KeyValue));
-                    String[] address= new String[] {Emailmap.get(KeyValue)};  
-                    Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
-                    email.setToAddresses('bhavesh.jha@cvest.com);
-                    //email.setOrgWideEmailAddressId('0D20a000000blsx');
-                    email.setSubject('Email alert for source Update');
-                    email.setPlainTextBody('Change has been made in to this source. source id='+KeyValue);
-                    email.setHtmlBody('Change has been made in to this source. source id='+KeyValue);
-                    mSingleEmailMessagingList.add(email);
-                }
-            Messaging.sendEmail(mSingleEmailMessagingList); */
+    //   if (leaddatalist != null && leaddatalist.size() > 0) {
+    //     for (Lead l : leaddatalist) {
+    //       l.True_source__c = false;
+    //     }
+    //     update leaddatalist;
+    //   }
+    //   system.debug('===  IF Update::leaddatalist===' + leaddatalist);
     }
   }
 
   @future
   public static void updateleadonMarge(String leadString) {
-    if (lead_Helper.isRunOnce) {
+    if (lead_Helper.isRunOnce || Test.isRunningTest()) {
       lead_Helper.isRunOnce = false;
       Map<id, String> Emailmap = new Map<id, String>();
       list<lead> oldlead = (List<lead>) JSON.deserialize(
@@ -792,144 +674,8 @@ public class lead_Helper {
         if (!lfinallist.isEmpty()) {
           system.debug('lfinallist==' + lfinallist);
           update lfinallist;
-
-          // List<Messaging.SingleEmailMessage> mSingleEmailMessagingList = new List<Messaging.SingleEmailMessage>();
-          // for (Id KeyValue : Emailmap.keySet()) {
-          //   system.debug('Emailmap.get(KeyValue====' + Emailmap.get(KeyValue));
-          //   String[] address = new List<String>{ 'bhavesh.jha@cvest.com' };
-          //   Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
-          //   email.setToAddresses(address);
-          //   //email.setOrgWideEmailAddressId('0D20a000000blsx');
-          //   email.setSubject('Leads Has been Merged');
-          //   email.setPlainTextBody(
-          //     'Lead First name and Last name is merged. \nLead URL :- ' +
-          //     URL.getSalesforceBaseUrl().toExternalForm() +
-          //     '\\' +
-          //     KeyValue
-          //   );
-          //   email.setHtmlBody(
-          //     'Lead First name and Last name is merged. \nLead URL :- ' +
-          //     URL.getSalesforceBaseUrl().toExternalForm() +
-          //     '\\' +
-          //     KeyValue
-          //   );
-          //   mSingleEmailMessagingList.add(email);
-          // }
-          // Messaging.sendEmail(mSingleEmailMessagingList);
         }
       }
     }
   }
-
-  /**
-   * @name afterUpdate
-   * @description
-   * @param
-   **/
-  //public static void afterUpdate(List<Lead> newList, List<Lead> oldList){
-  // Set<Id> reassignLeads = new Set<Id>();
-
-  // for ( Integer i=0;i<newList.size();i++ ){
-  //     if(newList[i].Reassign_Lead__c){
-  //         reassignLeads.add(newList[i].Id);
-  //     }
-  // }
-
-  // if(reassignLeads.size() > 0){
-  //     reassignLeads(reassignLeads);
-  // }
-  //}
-
-  /**
-   * @name beforeDelete
-   * @description
-   * @param
-   **/
-  /*public static void beforeDelete(List<Lead> newList){
-        for ( Integer i=0;i<newList.size();i++ ){
-
-        }
-    }*/
-
-  /**
-   * @name afterDelete
-   * @description
-   * @param
-   **/
-  /*public static void afterDelete(List<Lead> newList, List<Lead> oldList){
-        for ( Integer i=0;i<newList.size();i++ ){
-
-        }
-    }*/
-
-  /**
-   * @name afterUndelete
-   * @description
-   * @param
-   **/
-  /*public static void afterUndelete(List<Lead> oldList){
-        for ( Integer i=0;i<oldList.size();i++ ){
-
-        }
-    }*/
-
-  // @future
-  // public static void reassignLeads(Set<Id> leadIds){
-  //     List<Lead> leadUpdates = new List<Lead>();
-  //     Map<String, Lead_Settings__c> settings = new Map<String, Lead_Settings__c>();
-
-  //     Map<Id, Id> taskMap = new Map<Id, Id>();
-
-  //     for(Lead l : [SELECT Id, Round_Robin_Value__c, OwnerId FROM Lead WHERE Id IN : leadIds]){
-  //         l.Reassign_Lead__c = false;
-  //         taskMap.put(l.Id, l.OwnerId);
-  //         String leadSource = l.Introduction_Source__c;
-  //         if(leadSource == 'Website Contact Form'){
-  //             leadSource = 'Website Application';
-  //         }
-  //         if( !settings.containsKey(leadSource )){
-
-  //             Lead_Settings__c setting = Lead_Settings__c.getInstance(leadSource);
-  //             if(setting != null){
-  //                 settings.put(leadSource, setting);
-  //             }
-  //         }
-  //         if(settings.containsKey(leadSource)){
-  //             Lead_Settings__c setting = settings.get(leadSource);
-
-  //             if(setting.Round_Robin_Value__c == l.Round_Robin_Value__c){
-  //                 if(setting.Round_Robin_Value__c == setting.Round_Robin_Max__c){
-  //                     setting.Round_Robin_Value__c = 1;
-  //                 }else{
-  //                     setting.Round_Robin_Value__c = setting.Round_Robin_Value__c + 1;
-  //                 }
-  //             }
-
-  //             l.Round_Robin_Value__c = setting.Round_Robin_Value__c;
-
-  //             if(setting.Round_Robin_Value__c == setting.Round_Robin_Max__c){
-  //                 setting.Round_Robin_Value__c = 1;
-  //             }else{
-  //                 setting.Round_Robin_Value__c = setting.Round_Robin_Value__c + 1;
-  //             }
-
-  //             settings.put(leadSource, setting);
-  //         }
-
-  //         Database.DMLOptions dmo = new Database.DMLOptions();
-  //         dmo.assignmentRuleHeader.useDefaultRule = true;
-  //         l.setOptions(dmo);
-
-  //         leadUpdates.add(l);
-  //     }
-
-  //     if(settings.values().size() > 0) {
-  //         update settings.values();
-  //     }
-
-  //     if(leadUpdates.size() > 0){
-  //         update leadUpdates ;
-  //     }
-
-  // }
 }
