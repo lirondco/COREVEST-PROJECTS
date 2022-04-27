@@ -41,7 +41,7 @@
             if (columns[j].type == "date" && !$A.util.isEmpty(rows[i][r])) {
               rows[i][r] = $A.localizationService.formatDate(
                 rows[i][r],
-                "MM/DD/YYYY"
+                "MM/dd/yyyy"
               );
             }
 
@@ -63,9 +63,11 @@
         return workbook.outputAsync("base64");
       })
       .then((data) => {
+        const todayDate = new Date(new Date().toLocaleDateString('en-US'));
+        const fileName = 'Bridge Pipeline Prioritization ' +  $A.localizationService.formatDate(todayDate, "MMddyy") + '.xlsx';
         var link = document.createElement("a");
         link.href = "data:" + XlsxPopulate.MIME_TYPE + ";base64," + data;
-        link.download = "CoreVestDataTapeTemplate.xlsx";
+        link.download = fileName;
         link.click();
       });
   }
