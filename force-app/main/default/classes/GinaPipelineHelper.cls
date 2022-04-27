@@ -3,7 +3,11 @@ public without sharing class GinaPipelineHelper {
 
   private static final List<String> DEALRECTYPES = new List<String>{
     'LOC_Loan',
-    'Single_Asset_Bridge_Loan'
+    'Single_Asset_Bridge_Loan',
+    'Table_Funded_Bridge_Loan_Active',
+    'Table_Funded_Bridge_Loan',
+    'Acquired_Bridge_Loan',
+    'Acquired_Bridge_Loan_Active'
   };
 
   private static final List<String> PROPSTATUSES = new List<String>{
@@ -94,6 +98,7 @@ public without sharing class GinaPipelineHelper {
         Funding_Probability__c,
         Projected_Initial_Disbursement__c,
         Initial_Disbursement__c,
+        Requested_Funding_Date__c,
         Deal__c,
         Deal__r.Name,
         Deal__r.Deal_Loan_Number__c,
@@ -108,47 +113,78 @@ public without sharing class GinaPipelineHelper {
       WHERE
         Deal__r.RecordType.DeveloperName IN :DEALRECTYPES
         AND Status__c IN :PROPSTATUSES
-        AND Initial_Advance__r.Target_Advance_Date__c = NEXT_N_DAYS:60
+        AND (Initial_Advance__r.Target_Advance_Date__c = NEXT_N_DAYS:60
+        OR Initial_Advance__r.Target_Advance_Date__c < TODAY
+        OR Requested_Funding_Date__c = NEXT_N_DAYS:60
+        OR Requested_Funding_Date__c < TODAY)
       ORDER BY
         Initial_Advance__r.Target_Advance_Date__c ASC,
+        Requested_Funding_Date__c ASC,
         Initial_Advance__r.Advance_Group_Name__c ASC,
         Name ASC
     ];
 
     for (Property__c p : props) {
-      if (!parsedData.containsKey(p.Initial_Advance__c)) {
-        parsedData.put(p.Initial_Advance__c, generateMapKey());
+      Id key = p.Id;
+      if (p.Initial_Advance__c != null) {
+        key = p.Initial_Advance__c;
+        if (!parsedData.containsKey(p.Initial_Advance__c)) {
+          parsedData.put(key, generateMapKey());
+        }
+        if (!advPropTypes.containsKey(p.Initial_Advance__c)) {
+          advPropTypes.put(key, new Set<String>());
+        }
+        if (!advPropStates.containsKey(p.Initial_Advance__c)) {
+          advPropStates.put(key, new Set<String>());
+        }
+        if (!refinanceCt.containsKey(p.Initial_Advance__c)) {
+          refinanceCt.put(key, 0);
+        }
+        if (!acqCt.containsKey(p.Initial_Advance__c)) {
+          acqCt.put(key, 0);
+        }
+      } else {
+        if (!parsedData.containsKey(p.Id)) {
+          parsedData.put(p.Id, generateMapKey());
+        }
+        if (!advPropTypes.containsKey(p.Id)) {
+          advPropTypes.put(p.Id, new Set<String>());
+        }
+        if (!advPropStates.containsKey(p.Id)) {
+          advPropStates.put(p.Id, new Set<String>());
+        }
+        if (!refinanceCt.containsKey(p.Id)) {
+          refinanceCt.put(p.Id, 0);
+        }
+        if (!acqCt.containsKey(p.Id)) {
+          acqCt.put(p.Id, 0);
+        }
       }
-      if (!advPropTypes.containsKey(p.Initial_Advance__c)) {
-        advPropTypes.put(p.Initial_Advance__c, new Set<String>());
-      }
-      if (!advPropStates.containsKey(p.Initial_Advance__c)) {
-        advPropStates.put(p.Initial_Advance__c, new Set<String>());
-      }
-      if (!refinanceCt.containsKey(p.Initial_Advance__c)) {
-        refinanceCt.put(p.Initial_Advance__c, 0);
-      }
-      if (!acqCt.containsKey(p.Initial_Advance__c)) {
-        acqCt.put(p.Initial_Advance__c, 0);
-      }
-      Map<String, String> rowData = parsedData.get(p.Initial_Advance__c);
-      Set<String> propTypes = advPropTypes.get(p.Initial_Advance__c);
-      Set<String> propStates = advPropStates.get(p.Initial_Advance__c);
-      Integer refCt = refinanceCt.get(p.Initial_Advance__c);
-      Integer ac = acqCt.get(p.Initial_Advance__c);
 
-      rowData.put(
-        'reqFundDate',
-        p.Initial_Advance__r.Target_Advance_Date__c.month() +
-        '/' +
-        p.Initial_Advance__r.Target_Advance_Date__c.day() +
-        '/' +
-        p.Initial_Advance__r.Target_Advance_Date__c.year()
-      );
+      Map<String, String> rowData = parsedData.get(key);
+      Set<String> propTypes = advPropTypes.get(key);
+      Set<String> propStates = advPropStates.get(key);
+      Integer refCt = refinanceCt.get(key);
+      Integer ac = acqCt.get(key);
+      Date reqFundDate = p.Initial_Advance__c != null &&
+        p.Initial_Advance__r.Target_Advance_Date__c != null
+        ? p.Initial_Advance__r.Target_Advance_Date__c
+        : p.Requested_Funding_Date__c;
+      if (reqFundDate != null) {
+        rowData.put(
+          'reqFundDate',
+          reqFundDate.month() +
+          '/' +
+          reqFundDate.day() +
+          '/' +
+          reqFundDate.year()
+        );
+      }
 
       rowData.put(
         'advGroupOrPropName',
-        String.isNotEmpty(p.Initial_Advance__r.Advance_Group_Name__c)
+        p.Initial_Advance__c != null &&
+          String.isNotEmpty(p.Initial_Advance__r.Advance_Group_Name__c)
           ? p.Initial_Advance__r.Advance_Group_Name__c
           : p.Name
       );
@@ -160,7 +196,7 @@ public without sharing class GinaPipelineHelper {
 
       propTypes.add(p.Property_Type__c);
       rowData.put('propType', String.join(new List<String>(propTypes), ','));
-      advPropTypes.put(p.Initial_Advance__c, propTypes);
+      advPropTypes.put(key, propTypes);
 
       rowData.put('propStatus', p.Status__c);
       rowData.put(
@@ -170,7 +206,7 @@ public without sharing class GinaPipelineHelper {
 
       propStates.add(p.State__c);
       rowData.put('propState', String.join(new List<String>(propStates), ','));
-      advPropStates.put(p.Initial_Advance__c, propStates);
+      advPropStates.put(key, propStates);
 
       if (p.Refinance_Acquisition__c == 'Refinance') {
         refCt++;
@@ -185,8 +221,8 @@ public without sharing class GinaPipelineHelper {
         ac +
         ')'
       );
-      refinanceCt.put(p.Initial_Advance__c, refCt);
-      acqCt.put(p.Initial_Advance__c, ac);
+      refinanceCt.put(key, refCt);
+      acqCt.put(key, ac);
 
       rowData.put(
         'acqPrice',
@@ -224,7 +260,7 @@ public without sharing class GinaPipelineHelper {
             )
       );
 
-      parsedData.put(p.Initial_Advance__c, rowData);
+      parsedData.put(key, rowData);
     }
 
     return parsedData.values();
