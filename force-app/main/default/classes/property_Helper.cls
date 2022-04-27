@@ -266,13 +266,10 @@ public without sharing class property_Helper {
         List<String> preCountList = currProp.Yardi_Id__c.split(
           string.valueOf(deal.Deal_Loan_Number__c)
         );
-        if (!test.isRunningTest())
-        {
-        currentCount = decimal.valueOf(preCountList[1]) + 1;
-         }
-        else
-        {
-          currentCount = 10;  
+        if (!test.isRunningTest()) {
+          currentCount = decimal.valueOf(preCountList[1]) + 1;
+        } else {
+          currentCount = 10;
         }
       }
 
@@ -766,7 +763,7 @@ public without sharing class property_Helper {
 
     if (opIds.size() > 0) {
       rollupOpportunities(opIds);
-        bridgeRollupOpportunities(opIds);
+      bridgeRollupOpportunities(opIds);
     }
 
     if (termIds.size() > 0) {
@@ -780,12 +777,12 @@ public without sharing class property_Helper {
     if (propertyIds.size() > 0) {
       System.enqueueJob(new SmartyStreetsQueueable(new List<Id>(propertyIds)));
     }
-//CIP-2191-RS.4/4/22.Added Quable Call to Beekin to get rental information for the property.Begin      
-//  	if(newList.size() > 0) 
-//    {
- //       ID jobID = System.enqueueJob(new BeekinAPIBatch(newList));
-  //  }
-//CIP-2191-RS.4/4/22.Added Call to Beekin to get rental information for the property.End.  
+    //CIP-2191-RS.4/4/22.Added Quable Call to Beekin to get rental information for the property.Begin
+    //  	if(newList.size() > 0)
+    //    {
+    //       ID jobID = System.enqueueJob(new BeekinAPIBatch(newList));
+    //  }
+    //CIP-2191-RS.4/4/22.Added Call to Beekin to get rental information for the property.End.
   }
 
   public static Map<Id, Opportunity> avgDate(Map<Id, Opportunity> oppMap) {
@@ -1144,6 +1141,14 @@ public without sharing class property_Helper {
       // }
       //}
 
+      // CIP 2206 27 Apr 2022 Start
+
+      if (newList[i].Current_UPB__c == 0 && oldList[i].Current_UPB__c != 0) {
+        newList[i].UPB_Before_Payoff__c = oldList[i].Current_UPB__c;
+      }
+
+      // CIP 2206 27 Apr 2022 End
+
       if (
         (newList[i].Status__c == 'Closing' &&
         oldList[i].Status__c != 'Closing') &&
@@ -1376,9 +1381,9 @@ public without sharing class property_Helper {
     Set<Id> bothIds = new Set<Id>();
     Map<Id, String> refinanceBubble = new Map<Id, String>();
 
-    Map<String, Map<Id,Property__c>> propSnapshotMap = new Map<String, Map<Id,Property__c>>{
-      'Asset Paid Off' => new Map<Id,Property__c>(),
-      'Asset Sold' => new Map<Id,Property__c>()
+    Map<String, Map<Id, Property__c>> propSnapshotMap = new Map<String, Map<Id, Property__c>>{
+      'Asset Paid Off' => new Map<Id, Property__c>(),
+      'Asset Sold' => new Map<Id, Property__c>()
     };
 
     // Set<Id> smartyStreetIds = new Set<Id>();
@@ -1388,20 +1393,18 @@ public without sharing class property_Helper {
 
     for (Integer i = 0; i < newList.size(); i++) {
       bothIds.add(newList[i].Deal__c);
-        
-       if (
+
+      if (
         RECORDTYPE_MAP.get(newList[i].RecordTypeId) ==
         'Ground_Up_Construction' ||
         RECORDTYPE_MAP.get(newList[i].RecordTypeId).contains('Bridge')
       ) {
         bridgeOpIds.add(newList[i].Deal__c);
-          if(newList[i].Deal__c != oldList[i].Deal__c ){
-         bridgeOpIds.add(newList[i].Deal__c);
-         bridgeOpIds.add(oldList[i].Deal__c);
-          }
+        if (newList[i].Deal__c != oldList[i].Deal__c) {
+          bridgeOpIds.add(newList[i].Deal__c);
+          bridgeOpIds.add(oldList[i].Deal__c);
+        }
       }
-        
-        
 
       if (
         ((newList[i].Status__c != oldList[i].Status__c &&
@@ -1414,14 +1417,17 @@ public without sharing class property_Helper {
         sendToYardiCSV.add(newList[i].Id);
       }
 
-      if(newList[i].Status__c == 'Paid Off' && newList[i].Status__c != oldList[i].Status__c){
-        Map<Id,Property__c> propMap = propSnapshotMap.get('Asset Paid Off');
+      if (
+        newList[i].Status__c == 'Paid Off' &&
+        newList[i].Status__c != oldList[i].Status__c
+      ) {
+        Map<Id, Property__c> propMap = propSnapshotMap.get('Asset Paid Off');
         propMap.put(newList[i].Id, newList[i]);
         propSnapshotMap.put('Asset Paid Off', propMap);
       }
 
-      if(oldList[i].REO_Date__c == null && newList[i].REO_Date__c != null) {
-        Map<Id,Property__c> propMap = propSnapshotMap.get('Asset Sold');
+      if (oldList[i].REO_Date__c == null && newList[i].REO_Date__c != null) {
+        Map<Id, Property__c> propMap = propSnapshotMap.get('Asset Sold');
         propMap.put(newList[i].Id, newList[i]);
         propSnapshotMap.put('Asset Sold', propMap);
       }
@@ -1479,7 +1485,10 @@ public without sharing class property_Helper {
       }
     }
 
-    if(propSnapshotMap.get('Asset Paid Off').size() > 0 || propSnapshotMap.get('Asset Sold').size() > 0){
+    if (
+      propSnapshotMap.get('Asset Paid Off').size() > 0 ||
+      propSnapshotMap.get('Asset Sold').size() > 0
+    ) {
       PropertySnapshotHelper.createPropertySnapshot(propSnapshotMap);
     }
 
@@ -1490,10 +1499,10 @@ public without sharing class property_Helper {
     if (bothIds.size() > 0) {
       rollupOpportunities(bothIds);
     }
-      if(bridgeOpIds.size()>0){
-          system.debug('bridgeopps' + bridgeOpIds.size());
-       bridgeRollupOpportunities(bridgeOpIds);
-      }
+    if (bridgeOpIds.size() > 0) {
+      system.debug('bridgeopps' + bridgeOpIds.size());
+      bridgeRollupOpportunities(bridgeOpIds);
+    }
 
     if (bothIds.size() > 0) {
       //sumStates(bothIds);
@@ -1631,7 +1640,7 @@ public without sharing class property_Helper {
 
     if (termIds.size() > 0) {
       system.debug('calculate state percentages');
-	 calculateStatePercentagesFuture(termIds);
+      calculateStatePercentagesFuture(termIds);
     }
 
     if (propertyAdvancePropIds.size() > 0) {
@@ -1687,15 +1696,14 @@ public without sharing class property_Helper {
   ) {
     Set<Id> parentIds = new Set<Id>();
     Set<Id> bridgeOppToUpdate = new Set<Id>();
- 
+
     system.debug(newList);
     system.debug(oldList);
     for (Integer i = 0; i < oldList.size(); i++) {
-                bridgeOppToUpdate.add(oldList[i].Deal__c);
+      bridgeOppToUpdate.add(oldList[i].Deal__c);
 
       if (oldList[i].Parent_Property__c != null) {
         parentIds.add(oldList[i].Parent_Property__c);
-          
       }
     }
 
@@ -1703,10 +1711,10 @@ public without sharing class property_Helper {
       system.debug(parentIds);
       rollupDelete(parentIds);
     }
-      if(bridgeOppToUpdate.size()>0){
+    if (bridgeOppToUpdate.size() > 0) {
       bridgeRollupOpportunities(bridgeOppToUpdate);
-          system.debug('oldlistsize'+bridgeOppToUpdate.size());
-      }
+      system.debug('oldlistsize' + bridgeOppToUpdate.size());
+    }
     //Set<Id> ids = (new Map<Id, Property__c>(oldList)).keySet();
 
     //delete [SELECT Id FROM Deal_Document__c WHERE Property__c IN : ids];
@@ -1794,8 +1802,6 @@ public without sharing class property_Helper {
       opportunityMap.put(i, o);
     }
 
-   
-      
     for (AggregateResult ar : [
       SELECT
         Deal__c parent,
@@ -1888,12 +1894,9 @@ public without sharing class property_Helper {
     }
 
     for (AggregateResult ar : [
-      SELECT
-        Deal__c parent,
-        SUM(Current_UPB__c) ar
+      SELECT Deal__c parent, SUM(Current_UPB__c) ar
       FROM Property__c
-      WHERE
-        Deal__c IN :opIds
+      WHERE Current_UPB__c != NULL AND Deal__c IN :opIds
       GROUP BY Deal__c
     ]) {
       Id dealId = (Id) ar.get('parent');
@@ -1903,18 +1906,15 @@ public without sharing class property_Helper {
       Opportunity deal = opportunityMap.get(dealId);
       deal.Current_UPB__c = (Decimal) ar.get('ar');
 
-
       opportunityMap.put(dealId, deal);
     }
-
-
 
     if (opportunityMap.keySet().size() > 0) {
       system.debug(opportunityMap.values());
       update opportunityMap.values();
     }
-  }  
- 
+  }
+
   public static void rollupDelete(Set<Id> ids) {
     List<Property__c> propertiesToDelete = new List<Property__c>();
     for (Property__c parent : [
