@@ -3,10 +3,12 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
   // static final String handlerAddressSB = 'dealapprovalhandler@y-1743xjz0wr71vsi0mlpa94d43nex0gxmqgq50qhxn2rb8ccjpn.3i-oe9uam.cs123.apex.sandbox.salesforce.com'; // Handler Email for FULL
 
   //static final String handlerAddress = 'dealapprovalhandler@pyo7p2pzqqm356qd6r207z35fsfvn6429vh6lwamowp6ctfb5.j-l4sceas.na54.apex.salesforce.com'; // Handler Email for Production
-  static final String handlerAddress = 'dealapprovalhandler@z-21v3s1rxdsiq86g66t7hglls19pn9knj4z9ipe9qmtde06twmy.z-9t6ahmas.cs11.apex.sandbox.salesforce.com';
-  static final Email_Addresses__c RYAN_SETTINGS = queryEmailAddress(
-    'Ryan McBride'
-  );
+  // static final String handlerAddress = 'dealapprovalhandler@z-21v3s1rxdsiq86g66t7hglls19pn9knj4z9ipe9qmtde06twmy.z-9t6ahmas.cs11.apex.sandbox.salesforce.com';
+
+  static final String handlerAddress = retrieveEmailServiceAddress();
+  // static final Email_Addresses__c RYAN_SETTINGS = queryEmailAddress(
+  //   'Ryan McBride'
+  // );
   static final Email_Addresses__c BETH_SETTINGS = queryEmailAddress(
     'Beth O\'Brien'
   );
@@ -26,14 +28,14 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
     'Micaela Lumpkin'
   );
 
-  static final String RYAN = RYAN_SETTINGS.Email_Address__c;
+  // static final String RYAN = RYAN_SETTINGS.Email_Address__c;
   static final String BETH = BETH_SETTINGS.Email_Address__c;
   static final String CHRIS = CHRIS_SETTINGS.Email_Address__c;
   // static final String BRYON = BRYON_SETTINGS.Email_Address__c;
   static final String BRAD = BRAD_SETTINGS.Email_Address__c;
   static final String MICAELA = MICAELA_SETTINGS.Email_Address__c;
   static final String MATT = MATT_SETTINGS.Email_Address__c;
-  static final String RYAN_CODE = RYAN_SETTINGS.Approver_Code__c.toLowerCase();
+  // static final String RYAN_CODE = RYAN_SETTINGS.Approver_Code__c.toLowerCase();
   static final String BETH_CODE = BETH_SETTINGS.Approver_Code__c.toLowerCase();
   static final String CHRIS_CODE = CHRIS_SETTINGS.Approver_Code__c.toLowerCase();
   // static final String BRYON_CODE = BRYON_SETTINGS.Approver_Code__c.toLowerCase();
@@ -51,6 +53,24 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
   public static boolean performTestCoverageForBETH = false;
   public static boolean performTestCoverageForRYAN = false;
   public static boolean performTestCoverageForCHRIS = false;
+
+  public static String retrieveEmailServiceAddress() {
+    EmailServicesFunction emailFunction = [
+      SELECT Id
+      FROM EmailServicesFunction
+      WHERE FunctionName = 'dealApprovalHandler'
+    ];
+
+    EmailServicesAddress emailServicesAddress = [
+      SELECT Id, LocalPart, EmailDomainName
+      FROM EmailServicesAddress
+      WHERE FunctionId = :emailFunction.Id
+    ];
+
+    return (emailServicesAddress.LocalPart +
+    '@' +
+    emailServicesAddress.EmailDomainName);
+  }
 
   public static Email_Addresses__c queryEmailAddress(String name) {
     Email_Addresses__c setting = Email_Addresses__c.getInstance(name);
@@ -83,7 +103,11 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
     'Dec' => 12
   };
 
-  public static void postToChatter(Opportunity deal, String subjectId) {
+  public static void postToChatter(
+    Opportunity deal,
+    String subjectId,
+    Boolean isGlc
+  ) {
     System.debug('postToChatter has been hit');
     ConnectApi.MessageBodyInput messageInput = new ConnectApi.MessageBodyInput();
     messageInput.messageSegments = new List<ConnectApi.MessageSegmentInput>();
@@ -93,7 +117,11 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
     messageInput.messageSegments.add(mentionSegment);
 
     ConnectApi.TextSegmentInput textSegment = new ConnectApi.TextSegmentInput();
-    textSegment.text = ' ' + deal.Name + ' has been approved.';
+    String segmentText = ' ' + deal.Name + ' has been approved.';
+    if (isGlc) {
+      segmentText += ' This Deal requires GLC Approval.';
+    }
+    textSegment.text = segmentText;
     messageInput.messageSegments.add(textSegment);
 
     ConnectApi.FeedItemInput input = new ConnectApi.FeedItemInput();
@@ -193,7 +221,7 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
 
     List<Messaging.SingleEmailMessage> messages = new List<Messaging.SingleEmailMessage>();
 
-    User ryanUser = userMap.get('Ryan McBride');
+    // User ryanUser = userMap.get('Ryan McBride');
     User chrisUser = userMap.get('Christopher Hoeffel');
     User bethUser = userMap.get('Beth O\'Brien');
     // User bryonUser = userMap.get('Bryon Harland');
@@ -287,7 +315,7 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
 
         List<String> bossEmails = new List<String>{
           BETH,
-          RYAN,
+          // RYAN,
           CHRIS,
           // BRYON,
           BRAD,
@@ -400,7 +428,7 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
         ) {
           System.debug('email is from Beth');
           List<String> bossEmails = new List<String>{
-            RYAN,
+            // RYAN,
             CHRIS,
             // BRYON,
             BRAD,
@@ -420,7 +448,7 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
           if (null != BETH_CODE && htmlBody.toLowerCase().contains(BETH_CODE)) {
             b = true;
             createAttachment(email, deal);
-            postToChatter(deal, deal.Id);
+            postToChatter(deal, deal.Id, false);
           }
 
           List<String> emailAddressesList = new List<String>();
@@ -479,13 +507,13 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
           );
           // sendEmail(email, deal, emailAddress, ccAddressesList);
         } else if (
-          fromAddress == RYAN ||
+          // fromAddress == RYAN ||
           fromAddress == CHRIS ||
           // fromAddress == BRYON ||
           fromAddress == BRAD ||
           fromAddress == MICAELA ||
           fromAddress == MATT ||
-          alternateFromAddress == RYAN ||
+          // alternateFromAddress == RYAN ||
           alternateFromAddress == CHRIS ||
           // alternateFromAddress == BRYON ||
           alternateFromAddress == BRAD ||
@@ -500,21 +528,24 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
             setEmails.add(BETH);
           }
           // cc.add(BETH);
-          
-          if(fromAddress == RYAN || alternateFromAddress == RYAN) {
-            toId = ryanUser.Id;
-          } else if(fromAddress == CHRIS || alternateFromAddress == CHRIS) {
+
+          // if(fromAddress == RYAN || alternateFromAddress == RYAN) {
+          //   toId = ryanUser.Id;
+          // } else
+          if (fromAddress == CHRIS || alternateFromAddress == CHRIS) {
             toId = chrisUser.Id;
           } else if (fromAddress == BRAD || alternateFromAddress == BRAD) {
             toId = bradUser.Id;
-          } else if (fromAddress == MICAELA || alternateFromAddress == MICAELA) {
+          } else if (
+            fromAddress == MICAELA ||
+            alternateFromAddress == MICAELA
+          ) {
             toId = micaelaUser.Id;
-          } else  if (fromAddress == MATT || alternateFromAddress == MATT) {
+          } else if (fromAddress == MATT || alternateFromAddress == MATT) {
             toId = mattUser.Id;
           }
 
           if (
-            (null != RYAN_CODE && htmlBody.toLowerCase().contains(RYAN_CODE)) ||
             (null != CHRIS_CODE &&
             htmlBody.toLowerCase().contains(CHRIS_CODE)) ||
             // (null != BRYON_CODE &&
@@ -525,8 +556,13 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
             (null != MATT_CODE && htmlBody.toLowerCase().contains(MATT_CODE))
           ) {
             b = true;
+            Boolean isGLC = false;
+            if (htmlBody.toLowerCase().contains(BRAD_CODE + ' glc')) {
+              updateDealForGlc(deal.Id);
+              isGLC = true;
+            }
             createAttachment(email, deal);
-            postToChatter(deal, deal.Id);
+            postToChatter(deal, deal.Id, isGLC);
           }
 
           List<String> emailAddressesList = new List<String>();
@@ -626,7 +662,8 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
         Owner.Email,
         Underwriter__c,
         Underwriter__r.Email,
-        RecordType.DeveloperName
+        RecordType.DeveloperName,
+        Last_Referenced_Term_Sheet__c
       FROM Opportunity
       WHERE Id = :opportunityId
       LIMIT 1
@@ -646,7 +683,7 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
         FROM User
         WHERE
           Name = 'Beth O\'Brien'
-          OR Name = 'Ryan McBride'
+          // OR Name = 'Ryan McBride'
           OR Name = 'Christopher Hoeffel'
           // OR Name = 'Bryon Harland'
           OR Name = 'Brad Chmura'
@@ -1170,5 +1207,16 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
     email.setSubject('Deal Approval Handler Error');
 
     Messaging.sendEmail(new List<Messaging.SIngleEmailMessage>{ email });
+  }
+
+  @future
+  public static void updateDealForGlc(String dealId) {
+    Opportunity deal = new Opportunity(
+      Id = dealId,
+      GLC_Required__c = true,
+      Approval_Email_Status__c = 'Submitted to GLC'
+    );
+
+    update deal;
   }
 }

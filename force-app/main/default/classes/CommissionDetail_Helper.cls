@@ -106,7 +106,10 @@ public class CommissionDetail_Helper {
         OwnerId,
         Name
       FROM Commission_Detail__c
-      WHERE Loan_Type__C = 'Term Loan' AND Id IN :myListApproved AND Final_Loan_Amount__c > 750000
+      WHERE
+        Loan_Type__C = 'Term Loan'
+        AND Id IN :myListApproved
+        AND Final_Loan_Amount__c > 750000
     ];
     System.debug(myCommDetailsTerm.size());
 
@@ -128,7 +131,10 @@ public class CommissionDetail_Helper {
         decimal finComm;
         decimal finalCommAmount;
         decimal originationFeeTotal;
-        decimal orgFee = termComm.Deal__r.CAF_Upfront_Fee__c / 100;
+        decimal orgFee = termComm.Deal__c != null &&
+          termComm.Deal__r.CAF_Upfront_Fee__c != null
+          ? termComm.Deal__r.CAF_Upfront_Fee__c / 100
+          : 0;
         decimal rateBasedOnBorrowed;
 
         if (
@@ -147,27 +153,25 @@ public class CommissionDetail_Helper {
             'o fee' + termComm.Deal__r.Calculated_Origination_Fee__c
           );
           if (
-            termComm.Internal_Referral__c != null && termComm.Internal_Referral_Fee_Bypass__c !=true &&
+            termComm.Internal_Referral__c != null &&
+            termComm.Internal_Referral_Fee_Bypass__c != true &&
             termComm.Internal_Referral_Fee__c != null &&
             termComm.Internal_Referral_Fee__c != 'N/A'
           ) {
             //decimal internalFee = termComm.Internal_Referral_Fee__c == '20%'
-              //? .20
-              //: .50;
-                                   decimal internalFee;
-                        
-                        if(termComm.Internal_Referral_Fee__c == '10%'){
-                            internalFee = .10;
-                        }else if(termComm.Internal_Referral_Fee__c == '20%'){
-                            internalFee = .20;
-                            
-                        }else if(termComm.Internal_Referral_Fee__c == '30%'){
-                            internalFee = .30;
-                            
-                        }else if(termComm.Internal_Referral_Fee__c == '50%'){
-                            internalFee = .50;
-                            
-                        }
+            //? .20
+            //: .50;
+            decimal internalFee;
+
+            if (termComm.Internal_Referral_Fee__c == '10%') {
+              internalFee = .10;
+            } else if (termComm.Internal_Referral_Fee__c == '20%') {
+              internalFee = .20;
+            } else if (termComm.Internal_Referral_Fee__c == '30%') {
+              internalFee = .30;
+            } else if (termComm.Internal_Referral_Fee__c == '50%') {
+              internalFee = .50;
+            }
 
             if (
               termComm.CAF_YSP__c == '0 BPS in Spread' ||
@@ -601,7 +605,7 @@ public class CommissionDetail_Helper {
             }
           }
         } else if (
-		  termComm.Final_Loan_Amount__c > 750000 &&
+          termComm.Final_Loan_Amount__c > 750000 &&
           termComm.Final_Loan_Amount__c <= 5000000 &&
           termComm.Commission_Type__c == 'Internal' &&
           termComm.Originator_Paid_in_Full__c != true
@@ -612,27 +616,25 @@ public class CommissionDetail_Helper {
             ? 0.15
             : 0.35;
           if (
-            termComm.Internal_Referral__c != null && termComm.Internal_Referral_Fee_Bypass__c !=true &&
+            termComm.Internal_Referral__c != null &&
+            termComm.Internal_Referral_Fee_Bypass__c != true &&
             termComm.Internal_Referral_Fee__c != null &&
             termComm.Internal_Referral_Fee__c != 'N/A'
           ) {
             //decimal internalFee = termComm.Internal_Referral_Fee__c == '20%'
             //  ? .20
-             // : .50;
-                        decimal internalFee;
-                        
-                        if(termComm.Internal_Referral_Fee__c == '10%'){
-                            internalFee = .10;
-                        }else if(termComm.Internal_Referral_Fee__c == '20%'){
-                            internalFee = .20;
-                            
-                        }else if(termComm.Internal_Referral_Fee__c == '30%'){
-                            internalFee = .30;
-                            
-                        }else if(termComm.Internal_Referral_Fee__c == '50%'){
-                            internalFee = .50;
-                            
-                        }
+            // : .50;
+            decimal internalFee;
+
+            if (termComm.Internal_Referral_Fee__c == '10%') {
+              internalFee = .10;
+            } else if (termComm.Internal_Referral_Fee__c == '20%') {
+              internalFee = .20;
+            } else if (termComm.Internal_Referral_Fee__c == '30%') {
+              internalFee = .30;
+            } else if (termComm.Internal_Referral_Fee__c == '50%') {
+              internalFee = .50;
+            }
             if (
               termComm.CAF_YSP__c == '0 BPS in Spread' ||
               termComm.CAF_YSP__c == null
@@ -714,7 +716,7 @@ public class CommissionDetail_Helper {
               myCommission.Origination_Fee_Amt__c =
                 termComm.Final_Loan_Amount__c * originationPlusCaf;
               myCommission.Owner__c = termComm.Internal_Referral__r.id;
-              myCommission.OwnerId  = termComm.Internal_Referral__r.id;
+              myCommission.OwnerId = termComm.Internal_Referral__r.id;
 
               myCommission.Total_Borrowed_on_Term__c = termComm.Deal__r.Account.Borrowed_on_Term_Loans__c;
               myCommission.Total_Borrowed_on_Bridge__c = termComm.Deal__r.Account.Borrowed_on_Bridge_Loans__c;
@@ -969,7 +971,6 @@ public class CommissionDetail_Helper {
               myCommission.Owner__c = termComm.OwnerId;
               myCommission.OwnerId = termComm.OwnerId;
 
-
               myCommission.Commission_Amount1__c =
                 (termComm.Final_Loan_Amount__c * originationPlusCaf) *
                 rateBasedOnBorrowed;
@@ -1001,7 +1002,6 @@ public class CommissionDetail_Helper {
               myCommission.Loan_Type__c = termComm.Loan_Type__c;
               myCommission.Owner__c = termComm.OwnerId;
               myCommission.OwnerId = termComm.OwnerId;
-
 
               myCommission.Commission_Amount1__c =
                 (termComm.Final_Loan_Amount__c * originationPlusCaf) *
@@ -1098,30 +1098,28 @@ public class CommissionDetail_Helper {
             : 0.50;
 
           if (
-            termComm.Internal_Referral__c != null && termComm.Internal_Referral_Fee_Bypass__c !=true &&
+            termComm.Internal_Referral__c != null &&
+            termComm.Internal_Referral_Fee_Bypass__c != true &&
             termComm.Internal_Referral_Fee__c != null &&
             termComm.Internal_Referral_Fee__c != 'N/A'
           ) {
             system.debug('internal condition 4');
 
             //decimal internalFee = termComm.Internal_Referral_Fee__c == '20%'
-             // ? .20
-             // : .50;
+            // ? .20
+            // : .50;
 
-                                      decimal internalFee;
-                        
-                        if(termComm.Internal_Referral_Fee__c == '10%'){
-                            internalFee = .10;
-                        }else if(termComm.Internal_Referral_Fee__c == '20%'){
-                            internalFee = .20;
-                            
-                        }else if(termComm.Internal_Referral_Fee__c == '30%'){
-                            internalFee = .30;
-                            
-                        }else if(termComm.Internal_Referral_Fee__c == '50%'){
-                            internalFee = .50;
-                            
-                        }
+            decimal internalFee;
+
+            if (termComm.Internal_Referral_Fee__c == '10%') {
+              internalFee = .10;
+            } else if (termComm.Internal_Referral_Fee__c == '20%') {
+              internalFee = .20;
+            } else if (termComm.Internal_Referral_Fee__c == '30%') {
+              internalFee = .30;
+            } else if (termComm.Internal_Referral_Fee__c == '50%') {
+              internalFee = .50;
+            }
             if (
               termComm.CAF_YSP__c == '0 BPS in Spread' ||
               termComm.CAF_YSP__c == null
@@ -1688,30 +1686,28 @@ public class CommissionDetail_Helper {
             : 0.35;
 
           if (
-            termComm.Internal_Referral__c != null && termComm.Internal_Referral_Fee_Bypass__c !=true &&
+            termComm.Internal_Referral__c != null &&
+            termComm.Internal_Referral_Fee_Bypass__c != true &&
             termComm.Internal_Referral_Fee__c != null &&
             termComm.Internal_Referral_Fee__c != 'N/A'
           ) {
             system.debug('internal condition 4');
 
-           // decimal internalFee = termComm.Internal_Referral_Fee__c == '20%'
+            // decimal internalFee = termComm.Internal_Referral_Fee__c == '20%'
             //  ? .20
             //  : .50;
-            
-                                      decimal internalFee;
-                        
-                        if(termComm.Internal_Referral_Fee__c == '10%'){
-                            internalFee = .10;
-                        }else if(termComm.Internal_Referral_Fee__c == '20%'){
-                            internalFee = .20;
-                            
-                        }else if(termComm.Internal_Referral_Fee__c == '30%'){
-                            internalFee = .30;
-                            
-                        }else if(termComm.Internal_Referral_Fee__c == '50%'){
-                            internalFee = .50;
-                            
-                        }
+
+            decimal internalFee;
+
+            if (termComm.Internal_Referral_Fee__c == '10%') {
+              internalFee = .10;
+            } else if (termComm.Internal_Referral_Fee__c == '20%') {
+              internalFee = .20;
+            } else if (termComm.Internal_Referral_Fee__c == '30%') {
+              internalFee = .30;
+            } else if (termComm.Internal_Referral_Fee__c == '50%') {
+              internalFee = .50;
+            }
 
             if (
               termComm.CAF_YSP__c == '0 BPS in Spread' ||
@@ -2045,7 +2041,7 @@ public class CommissionDetail_Helper {
                 (5000000 * originationPlusCaf) +
                 (above5Mill * originationPlusCaf);
               refCommission.Owner__c = termComm.OwnerId;
-             refCommission.OwnerId = termComm.OwnerId;
+              refCommission.OwnerId = termComm.OwnerId;
 
               refCommission.Total_Borrowed_on_Term__c = termComm.Deal__r.Account.Borrowed_on_Term_Loans__c;
               refCommission.Total_Borrowed_on_Bridge__c = termComm.Deal__r.Account.Borrowed_on_Bridge_Loans__c;
@@ -2266,31 +2262,31 @@ public class CommissionDetail_Helper {
     }
 
     if (myCommDetailsBridge.size() > 0) {
-     List<Commission_Detail__c> commDetailsBridge = new List<Commission_Detail__c>();
-    Map<Id, Id> dealDetailMap = new Map<Id, Id>();
+      List<Commission_Detail__c> commDetailsBridge = new List<Commission_Detail__c>();
+      Map<Id, Id> dealDetailMap = new Map<Id, Id>();
 
-    for (Integer i = 0; i < newList.size(); i++) {
-      if (newList[i].Loan_Type__c == 'Bridge Loan') {
-        commDetailsBridge.add(newList[i]);
-        dealDetailmap.put(newList[i].Deal__c, newList[i].Id);
+      for (Integer i = 0; i < newList.size(); i++) {
+        if (newList[i].Loan_Type__c == 'Bridge Loan') {
+          commDetailsBridge.add(newList[i]);
+          dealDetailmap.put(newList[i].Deal__c, newList[i].Id);
+        }
       }
-    }
-    if (commDetailsBridge.size() > 0) {
-      for (Commission__c bridgeCommission : [
-        SELECT Id, Deal__c
-        FROM Commission__c
-        WHERE Commission_Detail__c = NULL AND Deal__c IN :dealDetailMap.keySet()
-      ]) {
-        bridgeCommission.Commission_Detail__c = dealDetailMap.get(
-          bridgeCommission.Deal__c
-        );
-        commsToUpdate.add(bridgeCommission);
+      if (commDetailsBridge.size() > 0) {
+        for (Commission__c bridgeCommission : [
+          SELECT Id, Deal__c
+          FROM Commission__c
+          WHERE
+            Commission_Detail__c = NULL
+            AND Deal__c IN :dealDetailMap.keySet()
+        ]) {
+          bridgeCommission.Commission_Detail__c = dealDetailMap.get(
+            bridgeCommission.Deal__c
+          );
+          commsToUpdate.add(bridgeCommission);
+        }
+
+        update commsToUpdate;
       }
-
-      update commsToUpdate;
-
-    }
-
     }
 
     if (myCommsToAdd.size() > 0) {
