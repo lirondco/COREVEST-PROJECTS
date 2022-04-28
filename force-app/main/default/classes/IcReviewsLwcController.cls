@@ -1,4 +1,4 @@
-public with sharing class IcReviewsLwcController {
+public without sharing class IcReviewsLwcController {
   public static List<String> IC_PROCESS_NAMES = new List<String>{
     'Bridge IC Process',
     'Term Sub-IC',

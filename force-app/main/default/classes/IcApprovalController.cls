@@ -10,7 +10,7 @@ public without sharing class IcApprovalController {
   // ? Setting the same group for both Bridge and Term sub IC processes because they're identical
 
   public static final Map<String, List<String>> EMAILSMAP = new Map<String, List<String>>{
-    'Bridge IC' => queryEmailAddresses('Bridge_IC_Approval', 'group'),
+    'Bridge IC' => queryEmailAddresses('Term_IC_Approval', 'group'),
     'Term Sub-IC' => queryEmailAddresses('Term_Sub_IC', 'group'),
     'Term IC' => queryEmailAddresses('Term_IC_Approval', 'group'),
     'Bridge Sub-IC' => queryEmailAddresses('Term_Sub_IC', 'group')

@@ -23,7 +23,7 @@ global class icApprovalHandler implements Messaging.InboundEmailHandler {
   };
 
   public static final Set<String> BRIDGE_IC_GROUP = queryEmailAddresses(
-    'Bridge_IC_Approval'
+    'Term_IC_Approval'
   );
   public static final Set<String> TERM_SUB_IC_GROUP = queryEmailAddresses(
     'Term_Sub_IC'
