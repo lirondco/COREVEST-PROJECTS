@@ -1,0 +1,4 @@
+:host {
+  --slds-c-tooltip-color-background: red;
+  --slds-c-popover-position-zindex: 999;
+}

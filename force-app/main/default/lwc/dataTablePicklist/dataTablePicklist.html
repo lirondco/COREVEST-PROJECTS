@@ -1,6 +1,30 @@
 <template>
-  <div class="picklist-container">
-      <lightning-combobox name="picklist" label={label} value={value} placeholder={placeholder} options={options}
-          onchange={handleChange}></lightning-combobox>
+  <template if:false={isOpen}>
+    <template if:true={showError}>
+      <div
+        if:true={errorMessage}
+        class="slds-popover slds-popover_tooltip slds-nubbin_top-left"
+        role="tooltip"
+        id="help"
+        style="white-space: normal; position: absolute; bottom: -60px; left: 40px"
+      >
+        <div class="slds-popover__body">{errorMessage}</div>
+      </div>
+    </template>
+  </template>
+  <div class={divClass}>
+    <div class="slds-form-element__control">
+      <lightning-combobox
+        name="picklist"
+        label={label}
+        value={fieldValue}
+        placeholder={placeholder}
+        options={options}
+        onchange={handleChange}
+        onopen={handleClick}
+        onmouseout={handleMouseOut}
+        disabled={disabled}
+      ></lightning-combobox>
+    </div>
   </div>
 </template>

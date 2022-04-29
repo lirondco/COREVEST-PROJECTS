@@ -59,9 +59,15 @@
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
+                <componentName>tpoPoolToDealTable</componentName>
+                <identifier>c_tpoPoolToDealTable1</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
                 <componentInstanceProperties>
                     <name>relatedListComponentOverride</name>
-                    <value>NONE</value>
+                    <value>ADVGRID</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>rowsToDisplay</name>
@@ -182,7 +188,7 @@
     </flexiPageRegions>
     <masterLabel>Lender Deal Record Page</masterLabel>
     <parentFlexiPage>flexipage__default_rec_L</parentFlexiPage>
-    <sobjectType>Lender_Deal__c</sobjectType>
+    <sobjectType>TPO_Pool__c</sobjectType>
     <template>
         <name>flexipage:recordHomeTemplateDesktop</name>
     </template>

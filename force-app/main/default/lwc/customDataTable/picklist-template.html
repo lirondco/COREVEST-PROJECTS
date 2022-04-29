@@ -1,5 +1,14 @@
 <template>
-  <c-data-table-picklist label={typeAttributes.label} value={typeAttributes.value}
-      placeholder={typeAttributes.placeholder} options={typeAttributes.options} context={typeAttributes.context}>
+  <c-data-table-picklist
+    label={typeAttributes.label}
+    value={typeAttributes.value}
+    placeholder={typeAttributes.placeholder}
+    options={typeAttributes.options}
+    context={typeAttributes.context}
+    api-name={typeAttributes.apiName}
+    show-error={typeAttributes.showError}
+    error-message={typeAttributes.errorMessage}
+    disabled={typeAttributes.disabled}
+  >
   </c-data-table-picklist>
 </template>
