@@ -80,9 +80,13 @@ public with sharing class Test_Helper {
     insert pbe3;
   }
 
+  private static String nameRandomiser() {
+    return String.valueOf(Math.random() * 1000000);
+  }
+
   public static Account createAccount() {
     Account a = new Account();
-    a.Name = 'Test Helper Account';
+    a.Name = 'Test Helper Account' + nameRandomiser();
     a.BillingCountry = 'United States';
     a.BillingState = 'California';
     a.Introductions_Source__c = 'Hotline';

@@ -18,10 +18,18 @@ public with sharing class GinaPipelineHelperTests {
     adv.Target_Advance_Date__c = System.today().addDays(4);
     update adv;
 
+    Id recTypeId = [
+      SELECT Id
+      FROM RecordType
+      WHERE SobjectType = 'Property__c' AND DeveloperName = 'Bridge_Renovation'
+      LIMIT 1
+    ]
+    .Id;
+
     for (Property__c p : props) {
       p.Initial_Advance__c = adv.Id;
       p.Status__c = 'Closing';
-      p.recordTypeId = '0120a0000019jiA';
+      p.recordTypeId = recTypeId;
     }
     update props;
   }

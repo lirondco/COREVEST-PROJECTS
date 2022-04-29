@@ -23,6 +23,7 @@ public without sharing class GinaPipelineHelper {
     'dealName' => 'string',
     'dealStage' => 'string',
     'prodType' => 'string',
+    'projStrat' => 'string',
     'propType' => 'string',
     'propStatus' => 'string',
     'propCity' => 'string',
@@ -105,6 +106,7 @@ public without sharing class GinaPipelineHelper {
         Deal__r.StageName,
         Deal__r.LOC_Loan_Type__c,
         Deal__r.CloseDate,
+        Deal__r.Project_Strategy__c,
         Initial_Advance__c,
         Initial_Advance__r.Name,
         Initial_Advance__r.Target_Advance_Date__c,
@@ -118,9 +120,9 @@ public without sharing class GinaPipelineHelper {
         OR Requested_Funding_Date__c = NEXT_N_DAYS:60
         OR Requested_Funding_Date__c < TODAY)
       ORDER BY
-        Initial_Advance__r.Target_Advance_Date__c ASC,
-        Requested_Funding_Date__c ASC,
-        Initial_Advance__r.Advance_Group_Name__c ASC,
+        Initial_Advance__r.Target_Advance_Date__c ASC NULLS LAST,
+        Requested_Funding_Date__c ASC NULLS LAST,
+        Initial_Advance__r.Advance_Group_Name__c ASC NULLS LAST, // sort by group name
         Name ASC
     ];
 
@@ -193,6 +195,7 @@ public without sharing class GinaPipelineHelper {
       rowData.put('dealName', p.Deal__r.Name);
       rowData.put('dealStage', p.Deal__r.StageName);
       rowData.put('prodType', p.Deal__r.LOC_Loan_Type__c);
+      rowData.put('projStrat', p.Deal__r.Project_Strategy__c);
 
       propTypes.add(p.Property_Type__c);
       rowData.put('propType', String.join(new List<String>(propTypes), ','));
