@@ -4,7 +4,7 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
 
   //static final String handlerAddress = 'dealapprovalhandler@pyo7p2pzqqm356qd6r207z35fsfvn6429vh6lwamowp6ctfb5.j-l4sceas.na54.apex.salesforce.com'; // Handler Email for Production
   // static final String handlerAddress = 'dealapprovalhandler@z-21v3s1rxdsiq86g66t7hglls19pn9knj4z9ipe9qmtde06twmy.z-9t6ahmas.cs11.apex.sandbox.salesforce.com';
-
+  
   static final String handlerAddress = retrieveEmailServiceAddress();
   // static final Email_Addresses__c RYAN_SETTINGS = queryEmailAddress(
   //   'Ryan McBride'
@@ -70,7 +70,10 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
     return (emailServicesAddress.LocalPart +
     '@' +
     emailServicesAddress.EmailDomainName);
+
   }
+
+
 
   public static Email_Addresses__c queryEmailAddress(String name) {
     Email_Addresses__c setting = Email_Addresses__c.getInstance(name);
@@ -103,11 +106,7 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
     'Dec' => 12
   };
 
-  public static void postToChatter(
-    Opportunity deal,
-    String subjectId,
-    Boolean isGlc
-  ) {
+  public static void postToChatter(Opportunity deal, String subjectId, Boolean isGlc) {
     System.debug('postToChatter has been hit');
     ConnectApi.MessageBodyInput messageInput = new ConnectApi.MessageBodyInput();
     messageInput.messageSegments = new List<ConnectApi.MessageSegmentInput>();
@@ -118,7 +117,7 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
 
     ConnectApi.TextSegmentInput textSegment = new ConnectApi.TextSegmentInput();
     String segmentText = ' ' + deal.Name + ' has been approved.';
-    if (isGlc) {
+    if(isGlc) {
       segmentText += ' This Deal requires GLC Approval.';
     }
     textSegment.text = segmentText;
@@ -528,20 +527,17 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
             setEmails.add(BETH);
           }
           // cc.add(BETH);
-
+          
           // if(fromAddress == RYAN || alternateFromAddress == RYAN) {
           //   toId = ryanUser.Id;
-          // } else
-          if (fromAddress == CHRIS || alternateFromAddress == CHRIS) {
+          // } else 
+          if(fromAddress == CHRIS || alternateFromAddress == CHRIS) {
             toId = chrisUser.Id;
           } else if (fromAddress == BRAD || alternateFromAddress == BRAD) {
             toId = bradUser.Id;
-          } else if (
-            fromAddress == MICAELA ||
-            alternateFromAddress == MICAELA
-          ) {
+          } else if (fromAddress == MICAELA || alternateFromAddress == MICAELA) {
             toId = micaelaUser.Id;
-          } else if (fromAddress == MATT || alternateFromAddress == MATT) {
+          } else  if (fromAddress == MATT || alternateFromAddress == MATT) {
             toId = mattUser.Id;
           }
 
@@ -557,7 +553,7 @@ global class dealApprovalHandler implements Messaging.InboundEmailHandler {
           ) {
             b = true;
             Boolean isGLC = false;
-            if (htmlBody.toLowerCase().contains(BRAD_CODE + ' glc')) {
+            if(htmlBody.toLowerCase().contains(BRAD_CODE + ' glc')) {
               updateDealForGlc(deal.Id);
               isGLC = true;
             }
