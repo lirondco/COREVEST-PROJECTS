@@ -289,6 +289,21 @@
                             <apex:outputText rendered="{! If(record.Origination_Fee__c == null, true, false ) }" value="$0.00" /> 
                         </td>
                     </tr>
+
+                    <tr style="{! if(record.Discount_Fee_Number__c != null && record.Discount_Fee_Number__c != 0, '', 'display:none;')}">
+                        <td colspan="2">
+                        </td>
+                        <td>
+                            
+                            Rate Buydown
+                        </td>
+                        <td>
+                            <apex:outputText value="${0, number,###,###,###,##0.00}">
+                                <apex:param value="{!record.Discount_Fee_Number__c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+
                     <tr>
                         <td colspan="2">
                         </td>
