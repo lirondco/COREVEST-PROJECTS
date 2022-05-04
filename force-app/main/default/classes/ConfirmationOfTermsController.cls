@@ -50,6 +50,30 @@ public without sharing class ConfirmationOfTermsController {
     return picklists;
   }
 
+  @AuraEnabled
+  public static Map<String, List<String>> getDependentPicklistValues(String loanTerm) {
+    // YM_Prepayment_Penalty__c
+    // Stepdown_Prepayment_Period__c
+    // Term_Loan_Type__c
+
+    Map<String, List<String>> picklists = new Map<String, List<String>>();
+    picklists.put('YM_Prepayment_Penalty__c', new List<String>());
+    picklists.put('Stepdown_Prepayment_Period__c', new List<String>());
+
+    if(String.isNotEmpty(loanTerm)) {
+      Map<String, List<String>> ymPrepayAll = lightning_Util.GetDependentOptions('Opportunity', 'Term_Loan_Type__c','YM_Prepayment_Penalty__c');
+      Map<String, List<String>> stepdownPrepayAll = lightning_Util.GetDependentOptions('Opportunity', 'Term_Loan_Type__c','Stepdown_Prepayment_Period__c');
+      if(ymPrepayAll.containsKey(loanTerm)) {
+        picklists.put('YM_Prepayment_Penalty__c', ymPrepayAll.get(loanTerm));
+      }
+      if(stepdownPrepayAll.containsKey(loanTerm)) {
+        picklists.put('Stepdown_Prepayment_Period__c', stepdownPrepayAll.get(loanTerm));
+      }
+    }
+
+    return picklists;
+  }
+
   private static void sendEmailForConfirmation(
     Id approvalHistoryID,
     Id oppRecordID,
@@ -256,7 +280,9 @@ public without sharing class ConfirmationOfTermsController {
         YSP_perc__c,
         Current_Loan_Amount__c,
         Property_Management__c,
-        Property_Management_Adjustment__c
+        Property_Management_Adjustment__c,
+        YM_Prepayment_Penalty__c,
+        Stepdown_Prepayment_Period__c
       FROM Opportunity
       WHERE Id = :recordId
     ];
@@ -304,7 +330,13 @@ public without sharing class ConfirmationOfTermsController {
           Origination_Fee__c,
           Status__c,
           Amortization_Status__c,
-          Amortization_Status_Comment__c
+          Amortization_Status_Comment__c,
+          YM_Par_Prepayment_Period__c,
+          YM_Par_Prepayment_Comment__c,
+          Stepdown_Prepayment_Period__c,
+          Stepdown_Prepayment_Comment__c,
+          Yield_Maintenance__c,
+          Yield_Maintenance_Comment__c
         FROM Approval_History__c
         WHERE
           Tracking_Status__c = 'Closer'
@@ -349,7 +381,13 @@ public without sharing class ConfirmationOfTermsController {
           Origination_Fee_Comment__c,
           Status__c,
           Amortization_Status__c,
-          Amortization_Status_Comment__c
+          Amortization_Status_Comment__c,
+          YM_Par_Prepayment_Period__c,
+          YM_Par_Prepayment_Comment__c,
+          Stepdown_Prepayment_Period__c,
+          Stepdown_Prepayment_Comment__c,
+          Yield_Maintenance__c,
+          Yield_Maintenance_Comment__c
         FROM Approval_History__c
         WHERE
           Tracking_Status__c = 'Originations'
@@ -928,6 +966,15 @@ public without sharing class ConfirmationOfTermsController {
       originatorHistory.Broker_YSP__c *= 100;
     }
 
+    originatorHistory.Yield_Maintenance__c = details.yieldMaintenance;
+    originatorHistory.Stepdown_Prepayment_Period__c = details.stepdownPrepayment;
+    originatorHistory.YM_Par_Prepayment_Period__c = details.ymParPrepayment;
+    
+    originatorHistory.Yield_Maintenance_Comment__c = allComments.yieldMaintenance;
+    originatorHistory.Stepdown_Prepayment_Comment__c = allComments.stepdownPrepayment;
+    originatorHistory.YM_Par_Prepayment_Comment__c = allComments.ymParPrepayment;
+
+
     originatorHistory.Deposit_Amount_Comment__c = allComments.depositCollected;
     originatorHistory.Final_Spread_Comment__c = allComments.finalSpread;
     originatorHistory.Recourse_Comment__c = allComments.recourse;
@@ -1277,6 +1324,10 @@ public without sharing class ConfirmationOfTermsController {
     public String propertyManagement { get; set; }
     public Decimal propertyManagementAdjustment { get; set; }
     public String amortizationStatus { get; set; }
+    public String yieldMaintenance { get; set; }
+    public String stepdownPrepayment { get; set; }
+    public String ymParPrepayment { get; set; }
+
     SubmissionPanel(Opportunity deal) {
       this.recourse = deal.Recourse__c;
       this.depositCollected = deal.Deposit_Amount__c;
@@ -1302,6 +1353,9 @@ public without sharing class ConfirmationOfTermsController {
         ? deal.Property_Management_Adjustment__c / 100
         : null;
       this.amortizationStatus = null;
+      this.yieldMaintenance = null;
+      this.stepdownPrepayment = deal.Stepdown_Prepayment_Period__c;
+      this.ymParPrepayment = deal.YM_Prepayment_Penalty__c;
     }
 
     public void setHistory(Approval_History__c history) {
@@ -1333,6 +1387,15 @@ public without sharing class ConfirmationOfTermsController {
       this.amortizationStatus = history.Amortization_Status__c != null
         ? history.Amortization_Status__c
         : null;
+      this.yieldMaintenance = String.isNotEmpty(history.Yield_Maintenance__c)
+        ? history.Yield_Maintenance__c
+        : null;
+      this.stepdownPrepayment = String.isNotEmpty(history.Stepdown_Prepayment_Period__c)
+        ? history.Stepdown_Prepayment_Period__c
+        : null;
+      this.ymParPrepayment = String.isNotEmpty(history.YM_Par_Prepayment_Period__c)
+        ? history.YM_Par_Prepayment_Period__c
+        : null;  
     }
   }
 
@@ -1359,6 +1422,9 @@ public without sharing class ConfirmationOfTermsController {
     public String modelUpToDate { get; set; }
     public String clearToLock { get; set; }
     public String amortizationStatus { get; set; }
+    public String yieldMaintenance { get; set; }
+    public String stepdownPrepayment { get; set; }
+    public String ymParPrepayment { get; set; }
     CurrentPanel(Opportunity deal) {
       this.recourse = deal.Recourse__c;
       this.depositCollected = null;
@@ -1392,6 +1458,9 @@ public without sharing class ConfirmationOfTermsController {
       this.modelUpToDate = '';
       this.clearToLock = '';
       this.amortizationStatus = null;
+      this.yieldMaintenance = '';
+      this.stepdownPrepayment = 'N/A';
+      this.ymParPrepayment = 'N/A';
     }
 
     public void setOriginationsHistory(Approval_History__c history) {
@@ -1414,6 +1483,14 @@ public without sharing class ConfirmationOfTermsController {
       this.brokerYsp = history.Broker_YSP__c != null
         ? history.Broker_YSP__c / 100
         : null;
+      this.yieldMaintenance = history.Yield_Maintenance__c;
+      this.stepdownPrepayment = String.isNotEmpty(history.Yield_Maintenance__c) && history.Yield_Maintenance__c == 'Yes' ? history.Stepdown_Prepayment_Period__c : 'N/A';
+      this.ymParPrepayment = String.isNotEmpty(history.Yield_Maintenance__c) && history.Yield_Maintenance__c == 'Yes' ? history.YM_Par_Prepayment_Period__c : 'N/A';
+      /*
+                YM_Par_Prepayment_Period__c,
+          Stepdown_Prepayment_Period__c,
+          Yield_Maintenance__c
+ */
     }
 
     public void setUnderwriterHistory(Approval_History__c history) {
@@ -1463,11 +1540,14 @@ public without sharing class ConfirmationOfTermsController {
     public String modelUpToDate { get; set; }
     public String clearToLock { get; set; }
     public String amortizationStatus { get; set; }
+    public String yieldMaintenance { get; set; }
+    public String stepdownPrepayment { get; set; }
+    public String ymParPrepayment { get; set; }
+
 
     public String submissionComments { get; set; }
     public String originationsComments { get; set; }
     public String underwriterComments { get; set; }
-
     Comments() {
       depositCollected = '';
       finalSpread = '';
@@ -1491,6 +1571,9 @@ public without sharing class ConfirmationOfTermsController {
       modelUpToDate = '';
       clearToLock = '';
       amortizationStatus = '';
+      yieldMaintenance = '';
+      stepdownPrepayment = '';
+      ymParPrepayment = '';
     }
 
     public void setOriginationsComments(Approval_History__c history) {
@@ -1506,6 +1589,10 @@ public without sharing class ConfirmationOfTermsController {
       originationFee = history.Origination_Fee_Comment__c;
       brokerYSP = history.Broker_YSP_Comment__c;
       originationsComments = history.Comments__c;
+      yieldMaintenance = history.Yield_Maintenance_Comment__c;
+      stepdownPrepayment = history.Stepdown_Prepayment_Comment__c;
+      ymParPrepayment = history.YM_Par_Prepayment_Comment__c;
+
     }
 
     public void setUnderwriterComments(Approval_History__c history) {
