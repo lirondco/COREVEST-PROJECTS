@@ -169,7 +169,41 @@
   <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.brokerYSP}"></apex:outputText></td>
 </tr>
 
+<tr>
+  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Yield Maintenance</td>
+  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+    <apex:outputText value="{!panels.submissionDetails.yieldMaintenance}" rendered="{!!ISBLANK(panels.submissionDetails.yieldMaintenance)}" />
+  </td>
+  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+    <apex:outputText value="{!panels.currentDetails.yieldMaintenance}" rendered="{!!ISBLANK(panels.currentDetails.yieldMaintenance)}" />
+  </td>
+
+  <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.yieldMaintenance}"></apex:outputText></td>
+</tr>
+
+<tr>
+  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">YM Par Prepayment Period</td>
+  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+    <apex:outputText value="{!panels.submissionDetails.ymParPrepayment}" rendered="{!!ISBLANK(panels.submissionDetails.ymParPrepayment)}" />
+  </td>
+  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+    <apex:outputText value="{!panels.currentDetails.ymParPrepayment}" rendered="{!!ISBLANK(panels.currentDetails.ymParPrepayment)}" />
+  </td>
+
+  <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.ymParPrepayment}"></apex:outputText></td>
+</tr>
           
+<tr>
+  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Stepdown Prepayment Period</td>
+  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+    <apex:outputText value="{!panels.submissionDetails.stepdownPrepayment}" rendered="{!!ISBLANK(panels.submissionDetails.stepdownPrepayment)}" />
+  </td>
+  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+    <apex:outputText value="{!panels.currentDetails.stepdownPrepayment}" rendered="{!!ISBLANK(panels.currentDetails.stepdownPrepayment)}" />
+  </td>
+
+  <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.stepdownPrepayment}"></apex:outputText></td>
+</tr>
           
       </tbody>
   </table>
