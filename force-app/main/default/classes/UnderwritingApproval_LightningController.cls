@@ -82,7 +82,7 @@ public class UnderwritingApproval_LightningController {
 
     queryString += ' (SELECT Id, Status__c, Property_Type__c, Red_Bell_Sync__c, Deal__c FROM Properties__r), Foreign_National__c, Loan_Purpose__c, ';
     queryString += ' (SELECT Id, Document_Type__c, Other_Document_Type__c, Type__c, Document_Loaded__c FROM Deal_Documents__r ';
-    queryString += '    WHERE Document_Loaded__c = true AND (Document_Type__c IN : bridgeRequiredDocuments OR Document_Type__c IN : termRequiredDocuments))';
+    queryString += '    WHERE Document_Loaded__c = true AND Is_Deleted__c = FALSE AND (Document_Type__c IN : bridgeRequiredDocuments OR Document_Type__c IN : termRequiredDocuments))';
     queryString += ' FROM Opportunity WHERE Id =: recordId LIMIT 1';
 
     Opportunity o = (Opportunity) Database.query(queryString);
