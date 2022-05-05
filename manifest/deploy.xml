@@ -5,9 +5,10 @@
         <members>dealApprovalHandler</members>
         <members>InterfaceEmail_Tests</members>
         <members>dealApprovalHandler_Tests</members>
+        <members>UnderwritingApproval_LightningController</members>
         <name>ApexClass</name>
     </types>
     
     <version>53.0</version>
 </Package>
-<!-- sfdx force:source:deploy -x manifest/deploy.xml -l RunSpecifiedTests -r InterfaceEmail_Tests,dealApprovalHandler_Tests -->
+<!-- sfdx force:source:deploy -x manifest/deploy.xml -l RunSpecifiedTests -r InterfaceEmail_Tests,dealApprovalHandler_Tests,UnderwritingApprovalTests -->

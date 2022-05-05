@@ -27,8 +27,8 @@ public without sharing class InterfaceEmail_LightningController {
     .Email_Address__c;
   public static final String MICAELA = queryEmailAddress('Micaela Lumpkin')
     .Email_Address__c;
-  public static final String MATT = queryEmailAddress('Matthew Orrino')
-    .Email_Address__c;
+  // public static final String MATT = queryEmailAddress('Matthew Orrino')
+  //   .Email_Address__c;
   public static final String BRYON = queryEmailAddress('Bryon Harland')
     .Email_Address__c;
   public static final String BRIDGE_LIST = queryEmailAddress(
@@ -59,7 +59,6 @@ public without sharing class InterfaceEmail_LightningController {
     return (emailServicesAddress.LocalPart +
     '@' +
     emailServicesAddress.EmailDomainName);
-
   }
 
   public static Email_Addresses__c queryEmailAddress(String name) {
@@ -409,12 +408,9 @@ public without sharing class InterfaceEmail_LightningController {
       m.put('Subject', new List<Object>{ mail.getSubject() });
     }
     // replace in body w/ opp details
-    m.put('Recipients', new List<Object>{ BRAD, MICAELA, MATT });
+    m.put('Recipients', new List<Object>{ BRAD, MICAELA });
     if (null != oRecordType && oRecordType == 'Term_Loan') {
-      m.put(
-        'CC',
-        new List<Object>{ o.Owner.Email, TERM_LIST, BETH, CHRIS }
-      );
+      m.put('CC', new List<Object>{ o.Owner.Email, TERM_LIST, BETH, CHRIS });
     }
     if (
       null != oRecordType &&
@@ -422,10 +418,7 @@ public without sharing class InterfaceEmail_LightningController {
       oRecordType.contains('Bridge') ||
       oRecordType.contains('LOC'))
     ) {
-      m.put(
-        'CC',
-        new List<Object>{ o.Owner.Email, BRIDGE_LIST, BETH, CHRIS }
-      );
+      m.put('CC', new List<Object>{ o.Owner.Email, BRIDGE_LIST, BETH, CHRIS });
     }
     m.put('ContentVersions', cvList);
     m.put('CurrentUser', p);
@@ -538,7 +531,9 @@ public without sharing class InterfaceEmail_LightningController {
     System.debug('these are the people included in IE_LC: ');
     System.debug(addresses);
     Opportunity op = [
-      SELECT Contact__c, Id FROM Opportunity WHERE Id = :m.get('recordId')
+      SELECT Contact__c, Id
+      FROM Opportunity
+      WHERE Id = :m.get('recordId')
     ];
     sendMail(
       addresses,
