@@ -1,347 +1,512 @@
 <apex:component access="global" controller="ConfirmationOfTermsEmailController">
-  <apex:attribute name="approvalHistoryId" type="String" description="Attribute for Task id" required="required" assignTo="{!historyId}" />
-  <apex:image url="https://cvest--full--c.documentforce.com/servlet/servlet.ImageServer?id=0157h000000Q2XF&oid=00D7h0000004f9i&lastMod=1623740874000" height="70px"></apex:image>
-  <p>Confirmation of Terms Approval has been {!panels.status} for <a href="{!LEFT($Api.Partner_Server_URL_360, FIND( '/services', $Api.Partner_Server_URL_360))}/{!deal.Id}">{!deal.Name}</a></p>
+  <apex:attribute name="approvalHistoryId" type="String" description="Attribute for Task id" required="required" assignTo="{!historyId}"
+  />
+  <apex:image url="https://cvest--full--c.documentforce.com/servlet/servlet.ImageServer?id=0157h000000Q2XF&oid=00D7h0000004f9i&lastMod=1623740874000"
+    height="70px"></apex:image>
+  <p>Confirmation of Terms Approval has been {!panels.status} for
+    <a href="{!LEFT($Api.Partner_Server_URL_360, FIND( '/services', $Api.Partner_Server_URL_360))}/{!deal.Id}">{!deal.Name}</a>
+  </p>
   <p>Deal Name: {!deal.Name}</p>
   <p>Deal Loan Number: {!deal.Deal_Loan_Number__c}</p>
   <div class="spacing">
     Comment: {!panels.comments.submissionComments}
-    </div>
-  <div class="spacing">   
-  Originations Review Status: {!panels.originationsStatus}
   </div>
-  <div class="spacing">   
+  <div class="spacing">
+    Originations Review Status: {!panels.originationsStatus}
+  </div>
+  <div class="spacing">
     Underwriter Review Status: {!panels.underwriterStatus}
-    </div>
-  
+  </div>
+
   <br />
   <div style="font-size: 17px;font-weight: bold;">
-      Originator, Please confirm:
-  </div> 
-  
+    Originator, Please confirm:
+  </div>
+
   <table cellspacing="0">
-      <tbody>
+    <tbody>
+
+      <tr>
+        <td style="width:25%;padding: 5px;border-bottom: 2px solid black;"></td>
+        <td style="width:25%;padding: 5px;font-weight: bold;font-size: 15px;text-align: center;border-bottom: 2px solid black;">Details at Submission</td>
+        <td style="width:25%;padding: 5px;font-weight: bold;font-size: 15px;text-align: center;border-bottom: 2px solid black;">Current Details</td>
+        <td style="padding: 5px;font-weight: bold;font-size: 15px;text-align: center;border-bottom: 2px solid black;">Comments</td>
+      </tr>
+
+      <tr>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Deposit
+          <br/>Amount
+          <br/> Collected</td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="${0, number, ###,###.##}" rendered="{!!ISBLANK(panels.submissionDetails.depositCollected)}">
+            <apex:param value="{!panels.submissionDetails.depositCollected}" />
+          </apex:outputText>
+        </td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="${0, number, ###,###.##}" rendered="{!!ISBLANK(panels.currentDetails.depositCollected)}">
+            <apex:param value="{!panels.currentDetails.depositCollected}" />
+          </apex:outputText>
+        </td>
+
+        <td style="padding : 10px 0px 5px 15px;">
+          <apex:outputText value="{!panels.comments.depositCollected}"></apex:outputText>
+        </td>
+      </tr>
+
+      <tr>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Final Spread</td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{0,number,0.0000}%" rendered="{!!ISBLANK(panels.submissionDetails.finalSpread)}">
+            <apex:param value="{!panels.submissionDetails.finalSpread*100}" />
+          </apex:outputText>
+        </td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{0,number,0.0000}%" rendered="{!!ISBLANK(panels.currentDetails.finalSpread)}">
+            <apex:param value="{!panels.currentDetails.finalSpread*100}" />
+          </apex:outputText>
+        </td>
+
+        <td style="padding : 10px 0px 5px 15px;">
+          <apex:outputText value="{!panels.comments.finalSpread}"></apex:outputText>
+        </td>
+      </tr>
+
+      <tr>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Recourse</td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{!panels.submissionDetails.recourse}"></apex:outputText>
+        </td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{!panels.currentDetails.recourse}"></apex:outputText>
+        </td>
+
+        <td style="padding : 10px 0px 5px 15px;">
+          <apex:outputText value="{!panels.comments.recourse}"></apex:outputText>
+        </td>
+      </tr>
+
+      <tr>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Foreign National</td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{!IF(panels.submissionDetails.foreignNational,'Yes','No')}"></apex:outputText>
+        </td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{!IF(panels.currentDetails.foreignNational,'Yes','No')}"></apex:outputText>
+        </td>
+
+        <td style="padding : 10px 0px 5px 15px;">
+          <apex:outputText value="{!panels.comments.foreignNational}"></apex:outputText>
+        </td>
+      </tr>
+
+      <tr>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Holdback Multiplier</td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{0, number, 0}" rendered="{!!ISBLANK(panels.submissionDetails.holdback)}">
+            <apex:param value="{!panels.submissionDetails.holdback}" />
+          </apex:outputText>
+        </td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{0, number, 0}" rendered="{!!ISBLANK(panels.currentDetails.holdback)}">
+            <apex:param value="{!panels.currentDetails.holdback}" />
+          </apex:outputText>
+        </td>
+
+        <td style="padding : 10px 0px 5px 15px;">
+          <apex:outputText value="{!panels.comments.holdback}"></apex:outputText>
+        </td>
+      </tr>
+
+      <tr>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Broker Fee %</td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{0,number,0.0000}%" rendered="{!!ISBLANK(panels.submissionDetails.brokerFees)}">
+            <apex:param value="{!panels.submissionDetails.brokerFees*100}" />
+          </apex:outputText>
+        </td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{0,number,0.0000}%" rendered="{!!ISBLANK(panels.currentDetails.brokerFees)}">
+            <apex:param value="{!panels.currentDetails.brokerFees*100}" />
+          </apex:outputText>
+        </td>
+
+        <td style="padding : 10px 0px 5px 15px;">
+          <apex:outputText value="{!panels.comments.brokerFees}"></apex:outputText>
+        </td>
+      </tr>
+
+      <tr>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Term Loan Type</td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{!panels.submissionDetails.termLoanType}"></apex:outputText>
+        </td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{!panels.currentDetails.termLoanType}"></apex:outputText>
+        </td>
+
+        <td style="padding : 10px 0px 5px 15px;">
+          <apex:outputText value="{!panels.comments.termLoanType}"></apex:outputText>
+        </td>
+      </tr>
+
+      <tr>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Amortization Term</td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{!panels.submissionDetails.amortizationTerm}"></apex:outputText>
+        </td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{!panels.currentDetails.amortizationTerm}"></apex:outputText>
+        </td>
+
+        <td style="padding : 10px 0px 5px 15px;">
+          <apex:outputText value="{!panels.comments.amortizationTerm}"></apex:outputText>
+        </td>
+      </tr>
+
+      <tr>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Cash Management</td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{!panels.submissionDetails.cashManagement}"></apex:outputText>
+        </td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{!panels.currentDetails.cashManagement}"></apex:outputText>
+        </td>
+
+        <td style="padding : 10px 0px 5px 15px;">
+          <apex:outputText value="{!panels.comments.cashManagement}"></apex:outputText>
+        </td>
+      </tr>
+
+      <tr>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Origination Fee %</td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{0,number,0.0000}%" rendered="{!!ISBLANK(panels.submissionDetails.originationFee)}">
+            <apex:param value="{!panels.submissionDetails.originationFee*100}" />
+          </apex:outputText>
+        </td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{0,number,0.0000}%" rendered="{!!ISBLANK(panels.currentDetails.originationFee)}">
+            <apex:param value="{!panels.currentDetails.originationFee*100}" />
+          </apex:outputText>
+        </td>
+
+        <td style="padding : 10px 0px 5px 15px;">
+          <apex:outputText value="{!panels.comments.originationFee}"></apex:outputText>
+        </td>
+      </tr>
+
+      <tr>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Broker YSP%</td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{0,number,0.0000}%" rendered="{!!ISBLANK(panels.submissionDetails.brokerYSP)}">
+            <apex:param value="{!panels.submissionDetails.brokerYSP*100}" />
+          </apex:outputText>
+        </td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{0,number,0.0000}%" rendered="{!!ISBLANK(panels.currentDetails.brokerYSP)}">
+            <apex:param value="{!panels.currentDetails.brokerYSP*100}" />
+          </apex:outputText>
+        </td>
+
+        <td style="padding : 10px 0px 5px 15px;">
+          <apex:outputText value="{!panels.comments.brokerYSP}"></apex:outputText>
+        </td>
+      </tr>
       
-          <tr>
-              <td style="width:25%;padding: 5px;border-bottom: 2px solid black;"></td>
-              <td style="width:25%;padding: 5px;font-weight: bold;font-size: 15px;text-align: center;border-bottom: 2px solid black;">Details at Submission</td>
-              <td style="width:25%;padding: 5px;font-weight: bold;font-size: 15px;text-align: center;border-bottom: 2px solid black;">Current Details</td>
-              <td style="padding: 5px;font-weight: bold;font-size: 15px;text-align: center;border-bottom: 2px solid black;">Comments</td>
-          </tr>
-          
-          <tr>
-              <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Deposit <br/>Amount<br/> Collected</td>
-              <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-                <apex:outputText value="${0, number, ###,###.##}" rendered="{!!ISBLANK(panels.submissionDetails.depositCollected)}">
-                  <apex:param value="{!panels.submissionDetails.depositCollected}" />
-                </apex:outputText>
-              </td>
-              <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-                <apex:outputText value="${0, number, ###,###.##}" rendered="{!!ISBLANK(panels.currentDetails.depositCollected)}">
-                  <apex:param value="{!panels.currentDetails.depositCollected}" />
-                </apex:outputText>
-              </td>
-
-              <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.depositCollected}"></apex:outputText></td>
-          </tr>
-          
-          <tr>
-            <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Final Spread</td>
-            <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-              <apex:outputText value="{0,number,0}%" rendered="{!!ISBLANK(panels.submissionDetails.finalSpread)}">
-                <apex:param value="{!panels.submissionDetails.finalSpread*100}" />
-              </apex:outputText>
-            </td>
-            <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-              <apex:outputText value="{0,number,0}%" rendered="{!!ISBLANK(panels.currentDetails.finalSpread)}">
-                <apex:param value="{!panels.currentDetails.finalSpread*100}" />
-              </apex:outputText>
-            </td>
-
-            <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.finalSpread}"></apex:outputText></td>
-          </tr>
-
-          <tr>
-              <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Recourse</td>
-              <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;"><apex:outputText value="{!panels.submissionDetails.recourse}"></apex:outputText></td>
-              <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;"><apex:outputText value="{!panels.currentDetails.recourse}"></apex:outputText></td>
-  
-              <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.recourse}"></apex:outputText></td>
-        </tr>
-
-        <tr>
-          <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Foreign National</td>
-          <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-            <apex:outputText value="{!IF(panels.submissionDetails.foreignNational,'Yes','No')}"></apex:outputText>
-          </td>
-          <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-            <apex:outputText value="{!IF(panels.currentDetails.foreignNational,'Yes','No')}"></apex:outputText>
-          </td>
-
-          <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.foreignNational}"></apex:outputText></td>
-    </tr>
-
-    <tr>
-      <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Holdback Multiplier</td>
-      <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-        <apex:outputText value="{0, number, 0}" rendered="{!!ISBLANK(panels.submissionDetails.holdback)}">
-          <apex:param value="{!panels.submissionDetails.holdback}" />
-        </apex:outputText>
-      </td>
-      <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-        <apex:outputText value="{0, number, 0}" rendered="{!!ISBLANK(panels.currentDetails.holdback)}">
-          <apex:param value="{!panels.currentDetails.holdback}" />
-        </apex:outputText>
-      </td>
-
-      <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.holdback}"></apex:outputText></td>
-  </tr>
-
-    <tr>
-      <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Broker Fee %</td>
-      <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-        <apex:outputText value="{0,number,0}%" rendered="{!!ISBLANK(panels.submissionDetails.brokerFees)}">
-          <apex:param value="{!panels.submissionDetails.brokerFees*100}" />
-        </apex:outputText>  
-      </td>
-      <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-        <apex:outputText value="{0,number,0}%" rendered="{!!ISBLANK(panels.currentDetails.brokerFees)}">
-                <apex:param value="{!panels.currentDetails.brokerFees*100}" />
-              </apex:outputText>
-      </td>
-
-      <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.brokerFees}"></apex:outputText></td>
-</tr>
-
-<tr>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Term Loan Type</td>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;"><apex:outputText value="{!panels.submissionDetails.termLoanType}"></apex:outputText></td>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;"><apex:outputText value="{!panels.currentDetails.termLoanType}"></apex:outputText></td>
-
-  <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.termLoanType}"></apex:outputText></td>
-</tr>
-
-<tr>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Amortization Term</td>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;"><apex:outputText value="{!panels.submissionDetails.amortizationTerm}"></apex:outputText></td>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;"><apex:outputText value="{!panels.currentDetails.amortizationTerm}"></apex:outputText></td>
-
-  <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.amortizationTerm}"></apex:outputText></td>
-</tr>
-
-<tr>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Cash Management</td>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;"><apex:outputText value="{!panels.submissionDetails.cashManagement}"></apex:outputText></td>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;"><apex:outputText value="{!panels.currentDetails.cashManagement}"></apex:outputText></td>
-
-  <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.cashManagement}"></apex:outputText></td>
-</tr>
-
-<tr>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Origination Fee %</td>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-    <apex:outputText value="{0,number,0}%" rendered="{!!ISBLANK(panels.submissionDetails.originationFee)}">
-                <apex:param value="{!panels.submissionDetails.originationFee*100}" />
-              </apex:outputText>
-  </td>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-    <apex:outputText value="{0,number,0}%" rendered="{!!ISBLANK(panels.currentDetails.originationFee)}">
-                <apex:param value="{!panels.currentDetails.originationFee*100}" />
-              </apex:outputText>
-  </td>
-
-  <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.originationFee}"></apex:outputText></td>
-</tr>
-
-<tr>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Broker YSP%</td>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-    <apex:outputText value="{0,number,0}%" rendered="{!!ISBLANK(panels.submissionDetails.brokerYSP)}">
-                <apex:param value="{!panels.submissionDetails.brokerYSP*100}" />
-              </apex:outputText>
-  </td>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-    <apex:outputText value="{0,number,0}%" rendered="{!!ISBLANK(panels.currentDetails.brokerYSP)}">
-                <apex:param value="{!panels.currentDetails.brokerYSP*100}" />
-              </apex:outputText>
-  </td>
-
-  <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.brokerYSP}"></apex:outputText></td>
-</tr>
-
-<tr>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Yield Maintenance</td>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-    <apex:outputText value="{!panels.submissionDetails.yieldMaintenance}" rendered="{!!ISBLANK(panels.submissionDetails.yieldMaintenance)}" />
-  </td>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-    <apex:outputText value="{!panels.currentDetails.yieldMaintenance}" rendered="{!!ISBLANK(panels.currentDetails.yieldMaintenance)}" />
-  </td>
-
-  <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.yieldMaintenance}"></apex:outputText></td>
-</tr>
-
-<tr>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">YM Par Prepayment Period</td>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-    <apex:outputText value="{!panels.submissionDetails.ymParPrepayment}" rendered="{!!ISBLANK(panels.submissionDetails.ymParPrepayment)}" />
-  </td>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-    <apex:outputText value="{!panels.currentDetails.ymParPrepayment}" rendered="{!!ISBLANK(panels.currentDetails.ymParPrepayment)}" />
-  </td>
-
-  <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.ymParPrepayment}"></apex:outputText></td>
-</tr>
-          
-<tr>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Stepdown Prepayment Period</td>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-    <apex:outputText value="{!panels.submissionDetails.stepdownPrepayment}" rendered="{!!ISBLANK(panels.submissionDetails.stepdownPrepayment)}" />
-  </td>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-    <apex:outputText value="{!panels.currentDetails.stepdownPrepayment}" rendered="{!!ISBLANK(panels.currentDetails.stepdownPrepayment)}" />
-  </td>
-
-  <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.stepdownPrepayment}"></apex:outputText></td>
-</tr>
-          
-      </tbody>
+      <tr>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Yield Maintenance</td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{!panels.submissionDetails.yieldMaintenance}" rendered="{!!ISBLANK(panels.submissionDetails.yieldMaintenance)}" />
+        </td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{!panels.currentDetails.yieldMaintenance}" rendered="{!!ISBLANK(panels.currentDetails.yieldMaintenance)}" />
+        </td>
+      
+        <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.yieldMaintenance}"></apex:outputText></td>
+      </tr>
+      
+      <tr>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">YM Par Prepayment Period</td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{!panels.submissionDetails.ymParPrepayment}" rendered="{!!ISBLANK(panels.submissionDetails.ymParPrepayment)}" />
+        </td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{!panels.currentDetails.ymParPrepayment}" rendered="{!!ISBLANK(panels.currentDetails.ymParPrepayment)}" />
+        </td>
+      
+        <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.ymParPrepayment}"></apex:outputText></td>
+      </tr>
+                
+      <tr>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Stepdown Prepayment<br />Period</td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{!panels.submissionDetails.stepdownPrepayment}" rendered="{!!ISBLANK(panels.submissionDetails.stepdownPrepayment)}" />
+        </td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{!panels.currentDetails.stepdownPrepayment}" rendered="{!!ISBLANK(panels.currentDetails.stepdownPrepayment)}" />
+        </td>
+      
+        <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.stepdownPrepayment}"></apex:outputText></td>
+      </tr>
+    </tbody>
   </table>
+  <br/>
+  <table cellspacing="0">
+    <tbody>
+      <tr>
+        <td style="width:25%;padding: 5px;border-bottom: 2px solid black;font-weight: bold;font-size: 15px;text-align: center;">Servicer
+          <wbr /> Contact
+          <wbr /> Information</td>
+        <td style="width:25%;padding: 5px;font-weight: bold;font-size: 15px;text-align: center;border-bottom: 2px solid black;">Details at Submission</td>
+        <td style="width:25%;padding: 5px;font-weight: bold;font-size: 15px;text-align: center;border-bottom: 2px solid black;">Current Details</td>
+        <td style="padding: 5px;font-weight: bold;font-size: 15px;text-align: center;border-bottom: 2px solid black;">Comments</td>
+      </tr>
+
+      <tr>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Name</td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{!panels.submissionDetails.contactName}" rendered="{!!ISBLANK(panels.submissionDetails.contactName)}"
+          />
+        </td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{!panels.currentDetails.servicerContactName}" rendered="{!!ISBLANK(panels.currentDetails.servicerContactName)}"
+          />
+        </td>
+
+        <td style="padding : 10px 0px 5px 15px;">
+          <apex:outputText value="{!panels.comments.contactNameComments}"></apex:outputText>
+        </td>
+      </tr>
+
+      <tr>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Phone Number</td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{!panels.submissionDetails.contactPhone}" rendered="{!!ISBLANK(panels.submissionDetails.contactPhone)}"
+          />
+        </td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{!panels.currentDetails.servicerContactPhone}" rendered="{!!ISBLANK(panels.currentDetails.servicerContactPhone)}"
+          />
+        </td>
+        <td style="padding : 10px 0px 5px 15px;">
+          <apex:outputText value="{!panels.comments.contactPhoneComments}"></apex:outputText>
+        </td>
+      </tr>
+
+      <tr>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Address</td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{!panels.submissionDetails.contactAddress}" rendered="{!!ISBLANK(panels.submissionDetails.contactAddress)}"
+          />
+        </td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{!panels.currentDetails.servicerContactAddress}" rendered="{!!ISBLANK(panels.currentDetails.servicerContactAddress)}"
+          />
+        </td>
+        <td style="padding : 10px 0px 5px 15px;">
+          <apex:outputText value="{!panels.comments.contactAddressComments}"></apex:outputText>
+        </td>
+      </tr>
+
+      <tr>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Email</td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{!panels.submissionDetails.contactEmail}" rendered="{!!ISBLANK(panels.submissionDetails.contactEmail)}"
+          />
+        </td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{!panels.currentDetails.servicerContactEmail}" rendered="{!!ISBLANK(panels.currentDetails.servicerContactEmail)}"
+          />
+        </td>
+        <td style="padding : 10px 0px 5px 15px;">
+          <apex:outputText value="{!panels.comments.contactEmailComments}"></apex:outputText>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+  <br />
   <div class="spacing">
     Originator Comment: {!panels.comments.originationsComments}
-    </div>
+  </div>
   <br />
   <div style="font-size: 17px;font-weight: bold;">
-      Underwriter, Please confirm:
+    Underwriter, Please confirm:
   </div>
-  
+
   <table cellspacing="0">
-      <tbody>
-          
-        <tr>
-          <td style="width:25%;padding: 5px;border-bottom: 2px solid black;"></td>
-          <td style="width:25%;padding: 5px;font-weight: bold;font-size: 15px;text-align: center;border-bottom: 2px solid black;">Details at Submission</td>
-          <td style="width:25%;padding: 5px;font-weight: bold;font-size: 15px;text-align: center;border-bottom: 2px solid black;">Current Details</td>
-          <td style="padding: 5px;font-weight: bold;font-size: 15px;text-align: center;border-bottom: 2px solid black;">Comments</td>
-      </tr>
-      
-      <tr>
-          <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Current Loan<br/> Amount</td>
-          <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-            <apex:outputText value="${0, number, ###,###.##}" rendered="{!!ISBLANK(panels.submissionDetails.currentLoanAmount)}">
-                  <apex:param value="{!panels.submissionDetails.currentLoanAmount}" />
-                </apex:outputText>
-          </td>
-          <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-            <apex:outputText value="${0, number, ###,###.##}" rendered="{!!ISBLANK(panels.currentDetails.currentLoanAmount)}">
-                  <apex:param value="{!panels.currentDetails.currentLoanAmount}" />
-                </apex:outputText>
-          </td>
+    <tbody>
 
-          <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.currentLoanAmount}"></apex:outputText></td>
+      <tr>
+        <td style="width:25%;padding: 5px;border-bottom: 2px solid black;"></td>
+        <td style="width:25%;padding: 5px;font-weight: bold;font-size: 15px;text-align: center;border-bottom: 2px solid black;">Details at Submission</td>
+        <td style="width:25%;padding: 5px;font-weight: bold;font-size: 15px;text-align: center;border-bottom: 2px solid black;">Current Details</td>
+        <td style="padding: 5px;font-weight: bold;font-size: 15px;text-align: center;border-bottom: 2px solid black;">Comments</td>
       </tr>
 
       <tr>
-          <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Is this Loan <br /> Amortized <br /> or Interest Only?</td>
-          <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Current Loan
+          <br/> Amount</td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="${0, number, ###,###.##}" rendered="{!!ISBLANK(panels.submissionDetails.currentLoanAmount)}">
+            <apex:param value="{!panels.submissionDetails.currentLoanAmount}" />
+          </apex:outputText>
+        </td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="${0, number, ###,###.##}" rendered="{!!ISBLANK(panels.currentDetails.currentLoanAmount)}">
+            <apex:param value="{!panels.currentDetails.currentLoanAmount}" />
+          </apex:outputText>
+        </td>
 
-          </td>
-          <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-            <apex:outputText value="{!panels.currentDetails.amortizationStatus}" rendered="{!!ISBLANK(panels.currentDetails.amortizationStatus)}">
-            </apex:outputText>
-          </td>
-
-          <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.amortizationStatus}"></apex:outputText></td>
+        <td style="padding : 10px 0px 5px 15px;">
+          <apex:outputText value="{!panels.comments.currentLoanAmount}"></apex:outputText>
+        </td>
       </tr>
 
       <tr>
-        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Property <br/>Management</td>
-        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;"><apex:outputText value="{!panels.submissionDetails.propertyManagement}"></apex:outputText></td>
-        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;"><apex:outputText value="{!panels.currentDetails.propertyManagement}"></apex:outputText></td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Is this Loan
+          <br /> Amortized
+          <br /> or Interest Only?</td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
 
-        <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.propertyManagement}"></apex:outputText></td>
-    </tr>
+        </td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{!panels.currentDetails.amortizationStatus}" rendered="{!!ISBLANK(panels.currentDetails.amortizationStatus)}">
+          </apex:outputText>
+        </td>
 
-    <tr>
-      <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Property <br/>Management <br/> Adjustment</td>
-      <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-        <apex:outputText value="{0,number,0}%" rendered="{!!ISBLANK(panels.submissionDetails.propertyManagementAdjustment)}">
-                <apex:param value="{!panels.submissionDetails.propertyManagementAdjustment*100}" />
-              </apex:outputText>
-      </td>
-      <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-        <apex:outputText value="{0,number,0}%" rendered="{!!ISBLANK(panels.currentDetails.propertyManagementAdjustment)}">
-                <apex:param value="{!panels.currentDetails.propertyManagementAdjustment*100}" />
-              </apex:outputText>
-      </td>
+        <td style="padding : 10px 0px 5px 15px;">
+          <apex:outputText value="{!panels.comments.amortizationStatus}"></apex:outputText>
+        </td>
+      </tr>
 
-      <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.propertyManagementAdjustment}"></apex:outputText></td>
-  </tr>
+      <tr>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Property
+          <br/>Management</td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{!panels.submissionDetails.propertyManagement}"></apex:outputText>
+        </td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{!panels.currentDetails.propertyManagement}"></apex:outputText>
+        </td>
 
-  <tr>
-    <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Total Annual<br/> Cap Ex</td>
-    <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;"></td>
-    <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-      <apex:outputText value="${0, number, ###,###.##}" rendered="{!!ISBLANK(panels.currentDetails.totalAnnualCapEx)}">
-                  <apex:param value="{!panels.currentDetails.totalAnnualCapEx}" />
-                </apex:outputText>
-    </td>
+        <td style="padding : 10px 0px 5px 15px;">
+          <apex:outputText value="{!panels.comments.propertyManagement}"></apex:outputText>
+        </td>
+      </tr>
 
-    <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.totalAnnualCapEx}"></apex:outputText></td>
-</tr>
+      <tr>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Property
+          <br/>Management
+          <br/> Adjustment</td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{0,number,0.0000}%" rendered="{!!ISBLANK(panels.submissionDetails.propertyManagementAdjustment)}">
+            <apex:param value="{!panels.submissionDetails.propertyManagementAdjustment*100}" />
+          </apex:outputText>
+        </td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{0,number,0.0000}%" rendered="{!!ISBLANK(panels.currentDetails.propertyManagementAdjustment)}">
+            <apex:param value="{!panels.currentDetails.propertyManagementAdjustment*100}" />
+          </apex:outputText>
+        </td>
 
-<tr>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Valuation Invoices</td>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;"></td>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
-    <apex:outputText value="${0, number, ###,###.##}" rendered="{!!ISBLANK(panels.currentDetails.valuationInvoices)}">
-                  <apex:param value="{!panels.currentDetails.valuationInvoices}" />
-                </apex:outputText>
-  </td>
+        <td style="padding : 10px 0px 5px 15px;">
+          <apex:outputText value="{!panels.comments.propertyManagementAdjustment}"></apex:outputText>
+        </td>
+      </tr>
 
-  <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.valuationInvoices}"></apex:outputText></td>
-</tr>
+      <tr>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Total Annual
+          <br/> Cap Ex</td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;"></td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="${0, number, ###,###.##}" rendered="{!!ISBLANK(panels.currentDetails.totalAnnualCapEx)}">
+            <apex:param value="{!panels.currentDetails.totalAnnualCapEx}" />
+          </apex:outputText>
+        </td>
 
-<tr>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Valuation Invoice<br/> uploaded to SF?</td>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;"></td>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;"><apex:outputText value="{!panels.currentDetails.valuationInvoiceUploaded}"></apex:outputText></td>
+        <td style="padding : 10px 0px 5px 15px;">
+          <apex:outputText value="{!panels.comments.totalAnnualCapEx}"></apex:outputText>
+        </td>
+      </tr>
 
-  <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.valuationInvoiceUploaded}"></apex:outputText></td>
-</tr>
+      <tr>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Valuation Invoices</td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;"></td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="${0, number, ###,###.##}" rendered="{!!ISBLANK(panels.currentDetails.valuationInvoices)}">
+            <apex:param value="{!panels.currentDetails.valuationInvoices}" />
+          </apex:outputText>
+        </td>
 
-<tr>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Lease and PP<br/> review complete?</td>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;"></td>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;"><apex:outputText value="{!panels.currentDetails.leasePPReviewComplete}"></apex:outputText></td>
+        <td style="padding : 10px 0px 5px 15px;">
+          <apex:outputText value="{!panels.comments.valuationInvoices}"></apex:outputText>
+        </td>
+      </tr>
 
-  <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.leasePPReviewComplete}"></apex:outputText></td>
-</tr>
+      <tr>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Valuation Invoice
+          <br/> uploaded to SF?</td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;"></td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{!panels.currentDetails.valuationInvoiceUploaded}"></apex:outputText>
+        </td>
 
-<tr>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Insurance<br/> Complete</td>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;"></td>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;"><apex:outputText value="{!panels.currentDetails.insuranceComplete}"></apex:outputText></td>
+        <td style="padding : 10px 0px 5px 15px;">
+          <apex:outputText value="{!panels.comments.valuationInvoiceUploaded}"></apex:outputText>
+        </td>
+      </tr>
 
-  <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.insuranceComplete}"></apex:outputText></td>
-</tr>
+      <tr>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Lease and PP
+          <br/> review complete?</td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;"></td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{!panels.currentDetails.leasePPReviewComplete}"></apex:outputText>
+        </td>
 
-<tr>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Model up to date</td>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;"></td>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;"><apex:outputText value="{!panels.currentDetails.modelUpToDate}"></apex:outputText></td>
+        <td style="padding : 10px 0px 5px 15px;">
+          <apex:outputText value="{!panels.comments.leasePPReviewComplete}"></apex:outputText>
+        </td>
+      </tr>
 
-  <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.modelUpToDate}"></apex:outputText></td>
-</tr>
+      <tr>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Insurance
+          <br/> Complete</td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;"></td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{!panels.currentDetails.insuranceComplete}"></apex:outputText>
+        </td>
 
-<tr>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Clear to Lock</td>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;"></td>
-  <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;"><apex:outputText value="{!panels.currentDetails.clearToLock}"></apex:outputText></td>
+        <td style="padding : 10px 0px 5px 15px;">
+          <apex:outputText value="{!panels.comments.insuranceComplete}"></apex:outputText>
+        </td>
+      </tr>
 
-  <td style="padding : 10px 0px 5px 15px;"><apex:outputText value="{!panels.comments.clearToLock}"></apex:outputText></td>
-</tr>
-          <!--
+      <tr>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Model up to date</td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;"></td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{!panels.currentDetails.modelUpToDate}"></apex:outputText>
+        </td>
+
+        <td style="padding : 10px 0px 5px 15px;">
+          <apex:outputText value="{!panels.comments.modelUpToDate}"></apex:outputText>
+        </td>
+      </tr>
+
+      <tr>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Clear to Lock</td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;"></td>
+        <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">
+          <apex:outputText value="{!panels.currentDetails.clearToLock}"></apex:outputText>
+        </td>
+
+        <td style="padding : 10px 0px 5px 15px;">
+          <apex:outputText value="{!panels.comments.clearToLock}"></apex:outputText>
+        </td>
+      </tr>
+      <!--
           <tr>
               <td style="width:33%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">Current Loan Amount</td>
               <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;"><apex:outputField value="{!relatedTo.Deal__r.Current_Loan_Amount__c}"></apex:outputField></td>
@@ -401,13 +566,13 @@
               <td style="width:25%;padding : 10px 0px 5px 15px;border-right: 2px solid black;border-collapse: collapse;">{!relatedTo.Model_up_to_date__c}</td>
               <td style="padding : 10px 0px 5px 15px;"><apex:outputField value="{!relatedTo.Origination_Fee_Comment__c}"></apex:outputField></td>
           </tr> -->
-      </tbody>
+    </tbody>
   </table>
   <div class="spacing">
     Underwriter Comment: {!panels.comments.underwriterComments}
-    </div>
-  
- <!--  <div style="margin-left:20px;">
+  </div>
+
+  <!--  <div style="margin-left:20px;">
       <div class="spacing">
           1. Deposit:&nbsp;<apex:outputField value="{!relatedTo.Deal__r.Deposit_Amount__c}"></apex:outputField><br />
       </div>

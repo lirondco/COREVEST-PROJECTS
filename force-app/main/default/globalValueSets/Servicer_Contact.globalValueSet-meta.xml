@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Confirmed</fullName>
+        <default>false</default>
+        <label>Confirmed</label>
+    </customValue>
+    <customValue>
+        <fullName>Need to Update</fullName>
+        <default>false</default>
+        <label>Need to Update</label>
+    </customValue>
+    <masterLabel>Servicer Contact</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

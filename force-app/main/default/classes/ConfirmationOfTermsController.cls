@@ -84,6 +84,13 @@ public without sharing class ConfirmationOfTermsController {
         id,
         Name,
         Contact__c,
+        Contact__r.Name,
+        Contact__r.Phone,
+        Contact__r.Email,
+        Contact__r.MailingStreet,
+        Contact__r.MailingCity,
+        Contact__r.MailingState,
+        Contact__r.MailingPostalCode,
         Closer__r.Email,
         Closer__r.Name,
         Closer__c,
@@ -281,6 +288,14 @@ public without sharing class ConfirmationOfTermsController {
         Current_Loan_Amount__c,
         Property_Management__c,
         Property_Management_Adjustment__c,
+        Contact__c,
+        Contact__r.Name,
+        Contact__r.Phone,
+        Contact__r.Email,
+        Contact__r.MailingStreet,
+        Contact__r.MailingCity,
+        Contact__r.MailingState,
+        Contact__r.MailingPostalCode,
         YM_Prepayment_Penalty__c,
         Stepdown_Prepayment_Period__c
       FROM Opportunity
@@ -316,6 +331,7 @@ public without sharing class ConfirmationOfTermsController {
           Comments__c,
           Deposit_Amount__c,
           Spread__c,
+          Final_Spread__c,
           Recourse__c,
           Foreign_National__c,
           Holdback_Multiplier__c,
@@ -336,7 +352,11 @@ public without sharing class ConfirmationOfTermsController {
           Stepdown_Prepayment_Period__c,
           Stepdown_Prepayment_Comment__c,
           Yield_Maintenance__c,
-          Yield_Maintenance_Comment__c
+          Yield_Maintenance_Comment__c,
+          Contact_Name__c,
+          Contact_Email__c,
+          Contact_Phone__c,
+          Contact_Address__c
         FROM Approval_History__c
         WHERE
           Tracking_Status__c = 'Closer'
@@ -354,6 +374,7 @@ public without sharing class ConfirmationOfTermsController {
           Deposit_Amount__c,
           Deposit_Amount_Comment__c,
           Spread__c,
+          Final_Spread__c,
           Final_Spread_Comment__c,
           Recourse__c,
           Recourse_Comment__c,
@@ -387,7 +408,15 @@ public without sharing class ConfirmationOfTermsController {
           Stepdown_Prepayment_Period__c,
           Stepdown_Prepayment_Comment__c,
           Yield_Maintenance__c,
-          Yield_Maintenance_Comment__c
+          Yield_Maintenance_Comment__c,
+          Servicer_Contact_Name__c,
+          Servicer_Contact_Email__c,
+          Servicer_Contact_Phone__c,
+          Servicer_Contact_Address__c,
+          Contact_Name_Comment__c,
+          Contact_Email_Comment__c,
+          Contact_Phone_Comment__c,
+          Contact_Address_Comment__c
         FROM Approval_History__c
         WHERE
           Tracking_Status__c = 'Originations'
@@ -414,6 +443,7 @@ public without sharing class ConfirmationOfTermsController {
           Deposit_Amount__c,
           Deposit_Amount_Comment__c,
           Spread__c,
+          Final_Spread__c,
           Final_Spread_Comment__c,
           Recourse__c,
           Recourse_Comment__c,
@@ -572,14 +602,19 @@ public without sharing class ConfirmationOfTermsController {
       ahc.YM_Par_Prepayment_Period__c = submission.ymParPrepayment;
 
       ahc.Deposit_Amount__c = submission.depositCollected;
-      ahc.Spread__c = submission.finalSpread;
-      if (ahc.Spread__c != null) {
-        ahc.Spread__c *= 100;
+      ahc.Final_Spread__c = submission.finalSpread;
+      if (ahc.Final_Spread__c != null) {
+        ahc.Final_Spread__c *= 100;
       }
       ahc.Recourse__c = submission.recourse; // (String) submission.get('recourse');
       ahc.Foreign_National__c = submission.foreignNational; //(Boolean) submission.get('foreignNational');
       ahc.Holdback_Multiplier__c = submission.holdback;
       ahc.Broker_Fee__c = submission.brokerFees;
+      
+      ahc.Contact_Name__c = submission.contactName;
+      ahc.Contact_Email__c = submission.contactEmail;
+      ahc.Contact_Phone__c = submission.contactPhone;
+      ahc.Contact_Address__c = submission.contactAddress;
 
       if (ahc.Broker_Fee__c != null) {
         ahc.Broker_Fee__c *= 100;
@@ -599,6 +634,8 @@ public without sharing class ConfirmationOfTermsController {
       if (ahc.Property_Management_Adjustment__c != null) {
         ahc.Property_Management_Adjustment__c *= 100;
       }
+
+
 
       ahc.Origination_Fee__c = submission.originationFee; //(Decimal) submission.get('originationFee');
 
@@ -651,9 +688,9 @@ public without sharing class ConfirmationOfTermsController {
         }
 
         a.Deposit_Amount__c = submission.depositCollected;
-        a.Spread__c = submission.finalSpread;
-        if (a.Spread__c != null) {
-          a.Spread__c *= 100;
+        a.Final_Spread__c = submission.finalSpread;
+        if (a.Final_Spread__c != null) {
+          a.Final_Spread__c *= 100;
         }
         a.Recourse__c = submission.recourse; // (String) submission.get('recourse');
         a.Foreign_National__c = submission.foreignNational; //(Boolean) submission.get('foreignNational');
@@ -766,7 +803,7 @@ public without sharing class ConfirmationOfTermsController {
       WHERE
         PermissionSet.Name = 'Term_Underwriter'
         AND AssigneeId = :UserInfo.getUserId()
-        AND AssigneeId = :dealRecord.Underwriter__c
+        // AND AssigneeId = :dealRecord.Underwriter__c
     ];
 
     isUnderWriterPanel = permissionSetAssignmentListForUnderWriter.size() > 0;
@@ -963,8 +1000,8 @@ public without sharing class ConfirmationOfTermsController {
 
     originatorHistory.Deposit_Amount__c = details.depositCollected;
 
-    originatorHistory.Spread__c = details.finalSpread; //((Decimal) details.get('finalSpread')) * 100;
-    if (originatorHistory.Spread__c != null) {
+    originatorHistory.Final_Spread__c = details.finalSpread; //((Decimal) details.get('finalSpread')) * 100;
+    if (originatorHistory.Final_Spread__c != null) {
       details.finalSpread *= 100;
     }
 
@@ -982,6 +1019,11 @@ public without sharing class ConfirmationOfTermsController {
     if (originatorHistory.Broker_YSP__c != null) {
       originatorHistory.Broker_YSP__c *= 100;
     }
+
+    originatorHistory.Servicer_Contact_Name__c = details.servicerContactName;
+    originatorHistory.Servicer_Contact_Phone__c = details.servicerContactPhone;
+    originatorHistory.Servicer_Contact_Email__c = details.servicerContactEmail;
+    originatorHistory.Servicer_Contact_Address__c = details.servicerContactAddress;
 
     originatorHistory.Yield_Maintenance__c = details.yieldMaintenance;
     originatorHistory.Stepdown_Prepayment_Period__c = details.stepdownPrepayment;
@@ -1004,6 +1046,11 @@ public without sharing class ConfirmationOfTermsController {
     originatorHistory.Cash_Management_Comment__c = allComments.cashManagement;
     originatorHistory.Origination_Fee_Comment__c = allComments.originationFee;
     originatorHistory.Broker_YSP_Comment__c = allComments.brokerYSP;
+
+    originatorHistory.Contact_Name_Comment__c = allComments.contactNameComments;
+    originatorHistory.Contact_Phone_Comment__c = allComments.contactPhoneComments;
+    originatorHistory.Contact_Email_Comment__c = allComments.contactEmailComments;
+    originatorHistory.Contact_Address_Comment__c = allComments.contactAddressComments;
 
     originatorHistory.Actor__c = UserInfo.getUserId();
     originatorHistory.Approver__c = UserInfo.getName();
@@ -1341,6 +1388,10 @@ public without sharing class ConfirmationOfTermsController {
     public String propertyManagement { get; set; }
     public Decimal propertyManagementAdjustment { get; set; }
     public String amortizationStatus { get; set; }
+    public String contactName { get; set; }
+    public String contactAddress { get; set; }
+    public String contactEmail { get; set; }
+    public String contactPhone { get; set; }
     public String yieldMaintenance { get; set; }
     public String stepdownPrepayment { get; set; }
     public String ymParPrepayment { get; set; }
@@ -1373,14 +1424,21 @@ public without sharing class ConfirmationOfTermsController {
       this.yieldMaintenance = null;
       this.stepdownPrepayment = deal.Stepdown_Prepayment_Period__c;
       this.ymParPrepayment = deal.YM_Prepayment_Penalty__c;
+      this.contactName = deal.Contact__r.Name;
+      this.contactAddress = deal.Contact__r.MailingStreet + '\n' + deal.Contact__r.MailingCity +
+        ', ' + deal.Contact__r.MailingState + ' ' + deal.Contact__r.MailingPostalCode;
+      this.contactEmail = deal.Contact__r.Email;
+      this.contactPhone = deal.Contact__r.Phone;
     }
 
     public void setHistory(Approval_History__c history) {
       this.recourse = history.Recourse__c;
       this.depositCollected = history.Deposit_Amount__c;
-      this.finalSpread = history.Spread__c != null
-        ? history.Spread__c / 100
-        : null;
+      this.finalSpread = history.Final_Spread__c != null
+        ? history.Final_Spread__c / 100
+        : history.Spread__c != null
+          ? history.Spread__c / 100
+          : null;
       this.foreignNational = history.Foreign_National__c;
       this.holdback = history.Holdback_Multiplier__c;
       this.brokerFees = history.Broker_Fee__c != null
@@ -1404,6 +1462,11 @@ public without sharing class ConfirmationOfTermsController {
       this.amortizationStatus = history.Amortization_Status__c != null
         ? history.Amortization_Status__c
         : null;
+      this.contactName = history.Contact_Name__c;
+      this.contactAddress = history.Contact_Address__c;
+      this.contactEmail = history.Contact_Email__c;
+      this.contactPhone = history.Contact_Phone__c;
+
       this.yieldMaintenance = String.isNotEmpty(history.Yield_Maintenance__c)
         ? history.Yield_Maintenance__c
         : null;
@@ -1442,6 +1505,10 @@ public without sharing class ConfirmationOfTermsController {
     public String yieldMaintenance { get; set; }
     public String stepdownPrepayment { get; set; }
     public String ymParPrepayment { get; set; }
+    public String servicerContactName { get; set; }
+    public String servicerContactAddress { get; set; }
+    public String servicerContactEmail { get; set; }
+    public String servicerContactPhone { get; set; }
     CurrentPanel(Opportunity deal) {
       this.recourse = deal.Recourse__c;
       this.depositCollected = null;
@@ -1483,9 +1550,11 @@ public without sharing class ConfirmationOfTermsController {
     public void setOriginationsHistory(Approval_History__c history) {
       this.recourse = history.Recourse__c;
       this.depositCollected = history.Deposit_Amount__c;
-      this.finalSpread = history.Spread__c != null
-        ? history.Spread__c / 100
-        : null;
+      this.finalSpread = history.Final_Spread__c != null
+        ? history.Final_Spread__c / 100
+        : history.Spread__c != null
+          ? history.Spread__c / 100
+          : null;
       this.foreignNational = history.Foreign_National__c;
       this.holdback = history.Holdback_Multiplier__c;
       this.brokerFees = history.Broker_Fee__c != null
@@ -1500,6 +1569,11 @@ public without sharing class ConfirmationOfTermsController {
       this.brokerYsp = history.Broker_YSP__c != null
         ? history.Broker_YSP__c / 100
         : null;
+      this.servicerContactName = history.Servicer_Contact_Name__c;
+      this.servicerContactAddress = history.Servicer_Contact_Address__c;
+      this.servicerContactEmail = history.Servicer_Contact_Email__c;
+      this.servicerContactPhone = history.Servicer_Contact_Phone__c;
+  
       this.yieldMaintenance = history.Yield_Maintenance__c;
       this.stepdownPrepayment = String.isNotEmpty(history.Yield_Maintenance__c) && history.Yield_Maintenance__c == 'Yes' ? history.Stepdown_Prepayment_Period__c : 'N/A';
       this.ymParPrepayment = String.isNotEmpty(history.Yield_Maintenance__c) && history.Yield_Maintenance__c == 'Yes' ? history.YM_Par_Prepayment_Period__c : 'N/A';
@@ -1565,6 +1639,13 @@ public without sharing class ConfirmationOfTermsController {
     public String submissionComments { get; set; }
     public String originationsComments { get; set; }
     public String underwriterComments { get; set; }
+
+    public String contactNameComments { get; set; }
+    public String contactAddressComments { get; set; }
+    public String contactEmailComments { get; set; }
+    public String contactPhoneComments { get; set; }
+
+
     Comments() {
       depositCollected = '';
       finalSpread = '';
@@ -1591,6 +1672,10 @@ public without sharing class ConfirmationOfTermsController {
       yieldMaintenance = '';
       stepdownPrepayment = '';
       ymParPrepayment = '';
+      contactNameComments = '';
+      contactAddressComments = '';
+      contactEmailComments = '';
+      contactPhoneComments = '';
     }
 
     public void setOriginationsComments(Approval_History__c history) {
@@ -1609,7 +1694,10 @@ public without sharing class ConfirmationOfTermsController {
       yieldMaintenance = history.Yield_Maintenance_Comment__c;
       stepdownPrepayment = history.Stepdown_Prepayment_Comment__c;
       ymParPrepayment = history.YM_Par_Prepayment_Comment__c;
-
+      contactNameComments = history.Contact_Name_Comment__c;
+      contactAddressComments = history.Contact_Address_Comment__c;
+      contactEmailComments = history.Contact_Email_Comment__c;
+      contactPhoneComments = history.Contact_Phone_Comment__c;
     }
 
     public void setUnderwriterComments(Approval_History__c history) {
