@@ -554,6 +554,23 @@ public without sharing class ConfirmationOfTermsController {
         Tracking_Status__c = 'Closer'
       );
 
+      /* 
+            this.yieldMaintenance = String.isNotEmpty(history.Yield_Maintenance__c)
+        ? history.Yield_Maintenance__c
+        : null;
+      this.stepdownPrepayment = String.isNotEmpty(history.Stepdown_Prepayment_Period__c)
+        ? history.Stepdown_Prepayment_Period__c
+        : null;
+      this.ymParPrepayment = String.isNotEmpty(history.YM_Par_Prepayment_Period__c)
+        ? history.YM_Par_Prepayment_Period__c
+        : null;  
+
+      */
+
+      ahc.Yield_Maintenance__c = submission.yieldMaintenance;
+      ahc.Stepdown_Prepayment_Period__c = submission.stepdownPrepayment;
+      ahc.YM_Par_Prepayment_Period__c = submission.ymParPrepayment;
+
       ahc.Deposit_Amount__c = submission.depositCollected;
       ahc.Spread__c = submission.finalSpread;
       if (ahc.Spread__c != null) {
@@ -1459,8 +1476,8 @@ public without sharing class ConfirmationOfTermsController {
       this.clearToLock = '';
       this.amortizationStatus = null;
       this.yieldMaintenance = '';
-      this.stepdownPrepayment = 'N/A';
-      this.ymParPrepayment = 'N/A';
+      this.stepdownPrepayment = '';
+      this.ymParPrepayment = '';
     }
 
     public void setOriginationsHistory(Approval_History__c history) {

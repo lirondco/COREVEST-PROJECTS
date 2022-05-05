@@ -764,6 +764,7 @@
                 onchange={handleCurrentDetailsUpdate}
                 data-field="yieldMaintenance"
                 disabled={originationsFieldsDisabled}
+                data-required="true"
                 required
               ></lightning-combobox>
             </td>
@@ -825,6 +826,7 @@
                   options={ymPrepayOptions}
                   onchange={handleCurrentDetailsUpdate}
                   data-field="ymParPrepayment"
+                  data-required="true"
                   disabled={originationsFieldsDisabled}
                   required
                 ></lightning-combobox>
@@ -851,7 +853,7 @@
                 border-collapse: collapse;
               "
             >
-              Stepdown Prepayment Period
+              Stepdown Prepayment<br />Period
             </td>
             <td
               style="
@@ -886,6 +888,7 @@
                   label="label"
                   variant="label-hidden"
                   options={stepDownPrepayOptions}
+                  data-required="true"
                   onchange={handleCurrentDetailsUpdate}
                   data-field="stepdownPrepayment"
                   disabled={originationsFieldsDisabled}

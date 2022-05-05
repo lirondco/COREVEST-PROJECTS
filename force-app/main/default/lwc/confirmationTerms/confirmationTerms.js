@@ -138,7 +138,7 @@ export default class ConfirmationTerms extends LightningElement {
   }
 
   get ymPicklistsDisabled() {
-    return this.originationsFieldsDisabled && this.ymSelection != "Yes";
+    return this.originationsFieldsDisabled || this.ymSelection != "Yes";
   }
 
   get showContactNameField() {
@@ -388,6 +388,11 @@ export default class ConfirmationTerms extends LightningElement {
     }
 
     if (this.isOriginatorPanel && this.isEnabledOriginatorPanel) {
+      const requiredFields = [...this.template.querySelectorAll('[data-required="true"]')];
+      validated = requiredFields.reduce(( val , inp) => {
+        inp.reportValidity();
+        return val && inp.checkValidity();
+      }, validated);
       if (!this.currentDetails.depositCollected) {
         const depositCollected = this.template.querySelector([
           '[data-field="depositCollected"]'
