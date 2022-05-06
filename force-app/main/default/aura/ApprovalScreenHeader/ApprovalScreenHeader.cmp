@@ -207,7 +207,7 @@
               ></lightning:inputField>
             </aura:if>
 
-            <aura:if
+            <!-- <aura:if
               isTrue="{!and(or(v.approvalName == 'Custom_SAB_Pricing_Review', v.approvalName == 'Standard_SAB_Pricing_Review'), v.userRole != 'Capital Markets')}"
             >
               <lightning:inputField
@@ -222,7 +222,7 @@
                 aura:id="fields"
                 fieldName="Closer__c"
               ></lightning:inputField>
-            </aura:if>
+            </aura:if> -->
           </lightning:recordEditForm>
 
           <div class="slds-form-element">

@@ -7,10 +7,12 @@ public without sharing class PricingReviewRequest_LightningController {
 
   public static Set<Id> repriceCcUsers {
     get {
-      if(REPRICE_CC_NAMES.size() == 0) {
+      if (REPRICE_CC_NAMES.size() == 0) {
         return new Set<Id>();
       }
-      Map<Id, User> users = new Map<Id,User>([SELECT Id FROM User WHERE Name IN :REPRICE_CC_NAMES]);
+      Map<Id, User> users = new Map<Id, User>(
+        [SELECT Id FROM User WHERE Name IN :REPRICE_CC_NAMES]
+      );
 
       return users.keySet();
     }
@@ -189,9 +191,9 @@ public without sharing class PricingReviewRequest_LightningController {
     system.debug(ri);
     // if (!ri.isDisplayGLC && o.GLC_Required__c && !o.GLC_Approved__c) {
     //   ri.isDisplayGLC = true;
-    // } 
-    
-    if(!ri.isDisplayGLC) {
+    // }
+
+    if (!ri.isDisplayGLC) {
       termRequiredDocuments.remove('Greenlight Deck');
     }
 
@@ -336,36 +338,61 @@ public without sharing class PricingReviewRequest_LightningController {
       ri.wrongStage = true;
     }
 
-//CIP-2191-RS.4/4/22.Begin.
-	// if (universalSetting.Request_Beekin_Rental_Data_Validation__c && beekingRentalInfoCheck(recordId))
-  //   {
-	// 	ri.otherMessage.add(
-  //         'Please reterieve rental estimates from Beekin on all the properties before moveing the deal to Underwriting.'
-  //       );        
-  //   }
-////CIP-2191-RS.4/4/22.End.      
+    //CIP-2191-RS.4/4/22.Begin.
+    if (
+      universalSetting.Request_Beekin_Rental_Data_Validation__c &&
+      beekingRentalInfoCheck(recordId)
+    ) {
+      ri.otherMessage.add(
+        'Please retrieve rental estimates from Beekin on all the properties before moving the deal to Pricing Review.'
+      );
+    }
+    ////CIP-2191-RS.4/4/22.End.
 
     System.debug(ri);
     return JSON.serialize(ri, true);
   }
 
-//CIP-2191-RS.4/4/22.Cannot change the deal stage if there is a property with no rental data.Begin.
-// @AuraEnabled
-// public static Boolean beekingRentalInfoCheck(Id recId) {
-//           List<property__c> issue_properties = [select id   FROM Property__c WHERE Deal__r.StageName IN ('Data Tape Received' , 'Term Sheet Issued' , 'Term Sheet Signed/Deposit Collected' 
-//                                                                         , 'Submitted to Underwriting' , 'Underwriting' , 'UW Hold' , 'Approved by Committee')
-//                                                 AND Property__c.Deal__c = :recId AND Status__c NOT IN ('Inactive','Cancelled','Rescinded')
-//                                                 AND Property__c.ZipCode__c != null AND 
-//                                                 Property__c.Property_Type__c IN ('SFR' , 'Condo','Townhome','2-4 Unit','Multifamily')
-//                                                 AND Property__c.Is_Parent__c = False AND deal__r.RecordType__c = 'Term' and (Estimated_Rent__c = Null Or Estimated_Min_Rent__c= Null Or Estimated_Max_Rent__c= Null) Limit 1];
-//         if (issue_properties.size() > 0)  
-//         {
-//          return True;
-//         }
-//       return False;
-//   }
-//CIP-2191-RS.4/4/22.Cannot change the deal stage if there is a property with no rental data.End.      
-    
+  //CIP-2191-RS.4/4/22.Cannot change the deal stage if there is a property with no rental data.Begin.
+  @AuraEnabled
+  public static Boolean beekingRentalInfoCheck(Id recId) {
+    List<property__c> issue_properties = [
+      SELECT id
+      FROM Property__c
+      WHERE
+        Deal__r.StageName IN (
+          'Data Tape Received',
+          'Term Sheet Issued',
+          'Term Sheet Signed/Deposit Collected',
+          'Submitted to Underwriting',
+          'Underwriting',
+          'UW Hold',
+          'Approved by Committee'
+        )
+        AND Property__c.Deal__c = :recId
+        AND Status__c NOT IN ('Inactive', 'Cancelled', 'Rescinded')
+        AND Property__c.ZipCode__c != NULL
+        AND Property__c.Property_Type__c IN (
+          'SFR',
+          'Condo',
+          'Townhome',
+          '2-4 Unit',
+          'Multifamily'
+        )
+        AND Property__c.Is_Parent__c = FALSE
+        AND deal__r.RecordType__c = 'Term'
+        AND (Estimated_Rent__c = NULL
+        OR Estimated_Min_Rent__c = NULL
+        OR Estimated_Max_Rent__c = NULL)
+      LIMIT 1
+    ];
+    if (issue_properties.size() > 0) {
+      return true;
+    }
+    return false;
+  }
+  //CIP-2191-RS.4/4/22.Cannot change the deal stage if there is a property with no rental data.End.
+
   @AuraEnabled
   public static Integer queryPricingCount(Id recId) {
     try {
@@ -412,7 +439,7 @@ public without sharing class PricingReviewRequest_LightningController {
 
     System.debug('starting approval through server code');
 
-    String qs = 'SELECT GLC_Approved__c,RecordType.DeveloperName,OwnerId,Name,Fee__c,CAF_Upfront_Fee__c,Loan_Size__c,Spread_BPS__c,Swap_Rate__c,Exit_Fee__c,Max_Advance_Fee__c,StageName,LOC_Program_Type__c,Property_Street__c,Property_City__c,Property_State__c,Property_Zip__c,LOC_Loan_Type__c,Type,Broker_Fees__c, YSP_perc__c, Deal_Intro_Sub_Source__c,';
+    String qs = 'SELECT GLC_Approved__c,RecordType.DeveloperName,OwnerId,Name,Fee__c,CAF_Upfront_Fee__c,Loan_Size__c,Spread_BPS__c,Swap_Rate__c,Exit_Fee__c,Max_Advance_Fee__c,StageName,LOC_Program_Type__c,LOC_Loan_Type__c,Product_Sub_Type__c,Type,Broker_Fees__c, YSP_perc__c, Deal_Intro_Sub_Source__c,';
 
     for (String field : termFields.keySet()) {
       if (!qs.contains(field + ',')) {
@@ -492,14 +519,23 @@ public without sharing class PricingReviewRequest_LightningController {
         // req.setProcessDefinitionNameOrId('Test_Marc_Winnie_LOC');
       }
     } else if (recordType == 'Term_Loan') {
-      if (opp.Loan_Size__c < 5000000) {
+      if (
+        opp.Loan_Size__c < 5000000 &&
+        opp.Product_Sub_Type__c != 'Short Term Rental'
+      ) {
         System.debug('inside here, looking for term loan approval process');
         processName = 'Term_Pricing_Review_Capital_Markets';
-        req.setProcessDefinitionNameOrId(isReprice ? 'Term_Repricing_Review_Capital_Markets' : 'Term_Pricing_Review_Capital_Markets');
+        req.setProcessDefinitionNameOrId(
+          isReprice
+            ? 'Term_Repricing_Review_Capital_Markets'
+            : 'Term_Pricing_Review_Capital_Markets'
+        );
       } else {
         System.debug('inside here, looking for term loan approval process');
         processName = 'Term_Pricing_Review';
-        req.setProcessDefinitionNameOrId(isReprice ? 'Term_Repricing_Review' : 'Term_Pricing_Review');
+        req.setProcessDefinitionNameOrId(
+          isReprice ? 'Term_Repricing_Review' : 'Term_Pricing_Review'
+        );
         // req.setProcessDefinitionNameOrId('Test_Willie_Dinorah_Term');
         // req.setProcessDefinitionNameOrId('Test_Marc_Winnie_Term');
       }
@@ -633,7 +669,7 @@ public without sharing class PricingReviewRequest_LightningController {
             o.Name +
             '.';
           ApprovalAttachments_lightningController.createNotification(
-          o,
+            o,
             UserInfo.getUserId(),
             'all',
             s,
@@ -642,12 +678,12 @@ public without sharing class PricingReviewRequest_LightningController {
           System.debug('successful notification');
         }
       }
-      if(isReprice) {
+      if (isReprice) {
         sendRepricingEmail(oppId);
       }
       return 'The record has been submitted for review.';
     } catch (Exception e) {
-      System.debug(e.getMessage());
+      System.debug(e.getMessage() + ' на рядку номер ' + e.getLineNumber());
       return e.getMessage();
     }
   }
@@ -660,10 +696,14 @@ public without sharing class PricingReviewRequest_LightningController {
       WHERE DeveloperName = 'Pricing_Review_Request_Courtesy'
     ];
 
-    if(template == null) {
+    if (template == null) {
       return;
     }
-    Opportunity opp = [SELECT Id, Closer__c,Contact__c, Underwriter__c FROM Opportunity WHERE Id = :oppId];
+    Opportunity opp = [
+      SELECT Id, Closer__c, Contact__c, Underwriter__c
+      FROM Opportunity
+      WHERE Id = :oppId
+    ];
     Set<Id> recipientIds = new Set<Id>();
     recipientIds.addAll(repriceCcUsers);
     if (opp.Closer__c != null) {
@@ -672,7 +712,6 @@ public without sharing class PricingReviewRequest_LightningController {
     if (opp.Underwriter__c != null) {
       recipientIds.add(opp.Underwriter__c);
     }
-
 
     List<Id> recipIdsAsList = new List<Id>();
     recipIdsAsList.addAll(recipientIds);
@@ -687,9 +726,9 @@ public without sharing class PricingReviewRequest_LightningController {
       FROM OrgWideEmailAddress
       WHERE Address = 'caf-apps@cvest.com'
     ];
-    if(owea.size() > 0) {
+    if (owea.size() > 0) {
       email.setOrgWideEmailAddressId(owea[0].Id);
     }
-    Messaging.sendEmail(new List<Messaging.SingleEmailMessage>{email});
+    Messaging.sendEmail(new List<Messaging.SingleEmailMessage>{ email });
   }
 }

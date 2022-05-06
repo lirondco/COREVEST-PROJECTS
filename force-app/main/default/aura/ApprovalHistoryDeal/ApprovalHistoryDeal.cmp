@@ -180,7 +180,7 @@
 
       <!-- Chatter Comments here 
                    Added by Trivikram to display the chatter comments in the Approvals Tab-->
-      <aura:iteration items="{!v.chatterComments}" var="step" indexVar="index">
+        <!-- CIP-2173.RS.4/8/22.Begin <aura:iteration items="{!v.chatterComments}" var="step" indexVar="index">
         <table width="100%;display: block;">
           <tr>
             <th colspan="5">
@@ -212,7 +212,7 @@
             <td></td>
           </tr>
         </table>
-      </aura:iteration>
+      </aura:iteration> CIP-2173.RS.4/8/22.End-->
 
       <aura:if isTrue="{! !empty(v.extraSteps)}">
         <div class="slds-hide" aura:id="hiddenSteps">
@@ -420,7 +420,7 @@
                 ></lightning:inputField>
               </aura:if>
 
-              <aura:if
+              <!-- <aura:if
                 isTrue="{!and(or(v.approvalType == 'Custom_SAB_Pricing_Review', v.approvalType == 'Standard_SAB_Pricing_Review'), v.userRole != 'Capital Markets')}"
               >
                 <lightning:inputField
@@ -435,7 +435,7 @@
                   aura:id="fields"
                   fieldName="Closer__c"
                 ></lightning:inputField>
-              </aura:if>
+              </aura:if> -->
             </lightning:recordEditForm>
 
             <div class="slds-form-element">
