@@ -12,46 +12,48 @@
       </div>
 
       <div slot="actions">
-            
-
-            <template if:true={permissionsMap.sobject.isCreateable}>
-              <template if:true={showNew}>
-                <lightning-button
-                  label="Create Schedule"
-                  onclick={createLoanVersion}
-                ></lightning-button>
-              </template>
-            </template>
-            <template if:true={showSelectedButtons}>
+        <template if:true={permissionsMap.sobject.isCreateable}>
+          <template if:true={showNew}>
+            <lightning-button
+              label="Create Schedule"
+              onclick={createLoanVersion}
+            ></lightning-button>
+          </template>
+        </template>
+        <template if:true={showSelectedButtons}>
+          <lightning-button
+            label="Generate Document"
+            onclick={generateDocument}
+          ></lightning-button>
+          <template if:true={permissionsMap.Finalized__c.isUpdateable}
+            ><template if:true={showButtonsUnfinalized}>
               <lightning-button
-                label="Generate Document"
-                onclick={generateDocument}
+                label="Finalize Schedule"
+                onclick={finalizeVersion}
               ></lightning-button>
-              <template if:true={permissionsMap.Finalized__c.isUpdateable}
-                ><template if:true={showButtonsUnfinalized}>
-                  <lightning-button
-                    label="Finalize Schedule"
-                    onclick={finalizeVersion}
-                  ></lightning-button>
-                </template>
-                <template if:true={showButtonsFinalized}>
-                  <lightning-button
-                    label="Unfinalize Schedule"
-                    onclick={unfinalizeVersion}
-                  ></lightning-button>
-                </template>
-                <lightning-button
-                  label="Send Email"
-                  onclick={openEmailModal}
-                ></lightning-button>
-              </template>
             </template>
-            <lightning-button-icon
-              icon-name="utility:refresh"
-              alternative-text="Refresh Tab"
-              title="Refresh Tab"
-              onclick={refreshNew}
-            ></lightning-button-icon>
+            <template if:true={showButtonsFinalized}>
+              <lightning-button
+                label="Unfinalize Schedule"
+                onclick={unfinalizeVersion}
+              ></lightning-button>
+            </template>
+            <lightning-button
+              label="Send Email"
+              onclick={openEmailModal}
+            ></lightning-button>
+          </template>
+        </template>
+        <template if:true={permissionsMap.sobject.isCreateable}>
+          <template if:true={showNew}>
+          <lightning-button-icon
+            icon-name="utility:refresh"
+            alternative-text="Refresh Tab"
+            title="Refresh Tab"
+            onclick={handleRefresh}
+          ></lightning-button-icon>
+          </template>
+        </template>
       </div>
       <template if:true={showNew}>
         <c-schedule-of-lender-costs-new
