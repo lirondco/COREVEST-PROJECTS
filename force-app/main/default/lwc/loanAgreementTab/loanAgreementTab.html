@@ -1,79 +1,75 @@
 <template>
   <lightning-card title="Loan Agreement">
-    <template if:true={dealQueried}>
-      <div>
-        <lightning-combobox
-          name="loanVersions"
-          label="Loan Agreements"
-          options={loanVersionOptions}
-          value={selectedLoanVersionId}
-          onchange={selectLoanVersion}
-        ></lightning-combobox>
-      </div>
+    <template if:true={showSpinner}> 
+      <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+    </template>
+    <template if:false={showSpinner}>
+      <template if:true={dealQueried}>
+        <div>
+          <lightning-combobox
+            name="loanVersions"
+            label="Loan Agreements"
+            options={loanVersionOptions}
+            value={selectedLoanVersionId}
+            onchange={selectLoanVersion}
+          ></lightning-combobox>
+        </div>
 
-      <!-- <div slot="actions">
+        <!-- <div slot="actions">
       <template if:true
     </div> -->
 
-      <div slot="actions">
-        <template if:true={permissionsMap.sobject.isCreateable}>
-          <template if:true={showNew}>
-            <lightning-layout horizontal-align="end" multiple-rows="true">
-              <lightning-layout-item size="12"
-                ><lightning-button
+        <div slot="actions">
+          <template if:true={permissionsMap.sobject.isCreateable}>
+            <template if:true={showNew}>
+              <lightning-layout horizontal-align="end" multiple-rows="true">
+                <lightning-button
                   label="Create Loan Agreement"
                   onclick={createLoanAgreement}
                 ></lightning-button>
-              </lightning-layout-item>
-              <lightning-layout-item size="2"
-                ><lightning-button-icon
-                  class="slds-m-top_small"
-                  variant="bare"
+                <lightning-button-icon
                   icon-name="utility:refresh"
+                  alternative-text="Refresh Tab"
+                  title="Refresh Tab"
                   onclick={refreshNew}
-                ></lightning-button-icon
-              ></lightning-layout-item>
-            </lightning-layout>
+                ></lightning-button-icon>
+              </lightning-layout>
+            </template>
           </template>
-        </template>
-        <template if:true={showSelectedButtons}>
-          <lightning-button
-            label="Generate Document"
-            onclick={generateDocument}
-          ></lightning-button>
-          <template if:true={permissionsMap.Finalized__c.isUpdateable}>
-            <template if:true={showButtonsUnfinalized}>
-              <lightning-button
-                label="Finalize Agreement"
-                onclick={finalizeAgreement}
-              ></lightning-button>
-            </template>
-            <template if:true={showButtonsFinalized}>
-              <lightning-button
-                label="Unfinalize Agreement"
-                onclick={unfinalizeAgreement}
-              ></lightning-button>
-            </template>
+          <template if:true={showSelectedButtons}>
             <lightning-button
-              label="Send Email"
-              onclick={openEmailModal}
+              label="Generate Document"
+              onclick={generateDocument}
             ></lightning-button>
+            <template if:true={permissionsMap.Finalized__c.isUpdateable}>
+              <template if:true={showButtonsUnfinalized}>
+                <lightning-button
+                  label="Finalize Agreement"
+                  onclick={finalizeAgreement}
+                ></lightning-button>
+              </template>
+              <template if:true={showButtonsFinalized}>
+                <lightning-button
+                  label="Unfinalize Agreement"
+                  onclick={unfinalizeAgreement}
+                ></lightning-button>
+              </template>
+              <lightning-button
+                label="Send Email"
+                onclick={openEmailModal}
+              ></lightning-button>
+            </template>
           </template>
+        </div>
+        <template if:true={showNew}>
+          <c-loan-agreement-new deal={deal}> </c-loan-agreement-new>
         </template>
-      </div>
-      <template if:true={showNew}>
-        <c-loan-agreement-new
-          deal={deal}
-          record-type-id={recordTypeId}
-          record-id={recordId}
-        >
-        </c-loan-agreement-new>
-      </template>
 
-      <template if:false={showNew}>
-        <c-loan-agreement-edit
-          loan-version-id={selectedLoanVersionId}
-        ></c-loan-agreement-edit>
+        <template if:false={showNew}>
+          <c-loan-agreement-edit
+            loan-version-id={selectedLoanVersionId}
+          ></c-loan-agreement-edit>
+        </template>
       </template>
     </template>
   </lightning-card>

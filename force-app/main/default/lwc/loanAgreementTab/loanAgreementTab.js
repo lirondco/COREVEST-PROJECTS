@@ -43,6 +43,8 @@ export default class LoanAgreementTab extends LightningElement {
     body: ""
   };
 
+  showSpinner = false;
+
   connectedCallback() {
     console.log("init");
     this.queryRecordTypeId();
@@ -257,6 +259,7 @@ export default class LoanAgreementTab extends LightningElement {
   }
 
   createLoanAgreement() {
+    this.showSpinner = true;
     console.log("save");
 
     const loanVersion = this.template
@@ -271,12 +274,16 @@ export default class LoanAgreementTab extends LightningElement {
       this.queryOpportunity();
       this.generateDocument(this.selectedLoanVersionId);
       console.log(results);
+    })
+    .then(() => {
+      this.showSpinner = false;
     });
 
     //console.log(results);
   }
 
   finalizeAgreement() {
+    this.showSpinner = true;
     console.log("finalize");
 
     const loanVersion = {
@@ -289,10 +296,14 @@ export default class LoanAgreementTab extends LightningElement {
       console.log("results");
       this.agreementFinalized = true;
       this.finalizedAgreementId = this.selectedLoanVersionId;
+    })
+    .then(() => {
+      this.showSpinner = false;
     });
   }
 
   unfinalizeAgreement() {
+    this.showSpinner = true;
     console.log("unfinalize");
     console.log("finalize");
 
@@ -306,6 +317,9 @@ export default class LoanAgreementTab extends LightningElement {
       console.log("results");
       this.agreementFinalized = false;
       this.finalizedAgreementId = "";
+    })
+    .then(() => {
+      this.showSpinner = false;
     });
   }
 
@@ -340,6 +354,9 @@ export default class LoanAgreementTab extends LightningElement {
     const fields = [
       "Deal__r.Name",
       "Deal__r.CloseDate",
+      "Deal__r.IO_Term__c",
+      "Deal__r.Amortization_Term__c",
+      "Deal__r.Term_Loan_Type__c",
       "Name",
       "Borrower__c",
       "Closing_Date_Insurance_Reserve_Deposit__c",
@@ -393,6 +410,7 @@ export default class LoanAgreementTab extends LightningElement {
   }
 
   generateDocument = async () => {
+    this.showSpinner = true;
     const loanVersion = await this.queryLoanVersion(this.selectedLoanVersionId);
 
     console.log(loanVersion);
@@ -402,6 +420,7 @@ export default class LoanAgreementTab extends LightningElement {
     });
 
     this.dispatchEvent(generationEvent);
+    this.showSpinner = false;
   };
 
   queryUser() {
@@ -419,10 +438,7 @@ export default class LoanAgreementTab extends LightningElement {
   }
 
   compileFieldPermissions() {
-    let fields = [
-      "Name",
-      "Finalized__c"
-    ];
+    let fields = ["Name", "Finalized__c"];
     compileFieldPermissions({
       sObjectName: "Loan_Version__c",
       fields: fields
