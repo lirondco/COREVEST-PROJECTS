@@ -19,7 +19,7 @@ public without sharing class BridgePipelineHelper {
   private static final Map<String, String> COLUMN_MAPPING = new Map<String, String>{
     'reqFundDate' => 'date',
     'advGroupOrPropName' => 'string',
-    'dealLoanNumber' => 'string',
+    'dealLoanNumber' => 'number',
     'dealName' => 'string',
     'dealStage' => 'string',
     'prodType' => 'string',
@@ -30,11 +30,11 @@ public without sharing class BridgePipelineHelper {
     'propCity' => 'string',
     'propState' => 'string',
     'acqOrRef' => 'string',
-    'acqPrice' => 'number',
-    'initAdv' => 'number',
-    'closeDate' => 'date',
-    'fundingProb' => 'string',
-    'projectedInitialDisbursement' => 'number'
+    'acqPrice' => 'currency',
+    'initAdv' => 'currency',
+    // 'closeDate' => 'date',
+    'fundingProb' => 'string'
+    // 'projectedInitialDisbursement' => 'currency'
   };
 
   public virtual class BridgePipeLineColumns {
@@ -102,6 +102,7 @@ public without sharing class BridgePipelineHelper {
         Initial_Disbursement__c,
         Requested_Funding_Date__c,
         Deal__c,
+        Deal__r.Account.Name,
         Deal__r.Name,
         Deal__r.Deal_Loan_Number__c,
         Deal__r.StageName,
@@ -115,7 +116,8 @@ public without sharing class BridgePipelineHelper {
         Initial_Advance__r.Advance_Group_Name__c
       FROM Property__c
       WHERE
-        Deal__r.RecordType.DeveloperName IN :DEALRECTYPES
+        Deal__r.Account.Name != 'Inhouse Test Account'
+        AND Deal__r.RecordType.DeveloperName IN :DEALRECTYPES
         AND Status__c IN :PROPSTATUSES
         AND (Initial_Advance__r.Target_Advance_Date__c = NEXT_N_DAYS:60
         OR Initial_Advance__r.Target_Advance_Date__c < TODAY
@@ -251,28 +253,37 @@ public without sharing class BridgePipelineHelper {
                   p.Initial_Disbursement__c +
                   Decimal.valueOf(rowData.get('initAdv'))
                 )
-          : '0'
-      );
-      rowData.put(
-        'closeDate',
-        p.Deal__r.CloseDate.month() +
-        '/' +
-        p.Deal__r.CloseDate.day() +
-        '/' +
-        p.Deal__r.CloseDate.year()
-      );
-      rowData.put('fundingProb', p.Funding_Probability__c);
-      rowData.put(
-        'projectedInitialDisbursement',
-        p.Projected_Initial_Disbursement__c != null
-          ? String.isEmpty(rowData.get('projectedInitialDisbursement'))
+          : p.Projected_Initial_Disbursement__c != null
+            ? String.isEmpty(rowData.get('initAdv'))
               ? String.valueOf(p.Projected_Initial_Disbursement__c)
               : String.valueOf(
                   p.Projected_Initial_Disbursement__c +
-                  Decimal.valueOf(rowData.get('projectedInitialDisbursement'))
+                  Decimal.valueOf(rowData.get('initAdv'))
                 )
-          : '0'
+            : '0'
       );
+      // rowData.put(
+      //   'closeDate',
+      //   p.Deal__r.CloseDate.month() +
+      //   '/' +
+      //   p.Deal__r.CloseDate.day() +
+      //   '/' +
+      //   p.Deal__r.CloseDate.year()
+      // );
+
+      rowData.put('fundingProb', p.Funding_Probability__c);
+      
+      // rowData.put(
+      //   'projectedInitialDisbursement',
+      //   p.Projected_Initial_Disbursement__c != null
+      //     ? String.isEmpty(rowData.get('projectedInitialDisbursement'))
+      //         ? String.valueOf(p.Projected_Initial_Disbursement__c)
+      //         : String.valueOf(
+      //             p.Projected_Initial_Disbursement__c +
+      //             Decimal.valueOf(rowData.get('projectedInitialDisbursement'))
+      //           )
+      //     : '0'
+      // );
 
       parsedData.put(key, rowData);
     }
