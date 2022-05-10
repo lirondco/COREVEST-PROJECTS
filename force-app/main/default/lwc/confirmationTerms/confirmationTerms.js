@@ -446,6 +446,8 @@ export default class ConfirmationTerms extends LightningElement {
       this.underwriterReviewComment = "";
 
       this.template.querySelector("c-modal").openModal();
+    } else {
+      this.showErrorToast('Please fill all the required fields');
     }
   }
 
