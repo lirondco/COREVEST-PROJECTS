@@ -53,14 +53,14 @@ private class Wire_TriggerTest {
         property[1].Status__c = 'Active';
         property[2].Payoff_Received_Date__c = system.today();
         insert property;
-    
+        Test.startTest();
+
         Advance__c adv = new Advance__c(Deal__c = opp.Id);
         insert adv;
-    
+
         Wire__c wire = new Wire__c(Advance__c = adv.Id, Wire_Number__c=123456);
         insert wire;
 
-        Test.startTest();
         Wire__c wire1 = new Wire__c(Advance__c = adv.Id, Wire_Number__c=123456);
         insert wire1;
         

@@ -63,7 +63,7 @@ private class SABAdvanceMemoExtensionTest {
 
     Advance__c adv = new Advance__c(Name = 'Test', Deal__c = opp.Id);
     insert adv;
-
+    Test.startTest();
     Property_Advance__c propAdv = new Property_Advance__c(
       Name = 'test',
       Advance__c = adv.Id,
@@ -71,7 +71,6 @@ private class SABAdvanceMemoExtensionTest {
     );
     insert propAdv;
 
-    Test.startTest();
     SABAdvanceMemoExtension obj = new SABAdvanceMemoExtension();
     obj.filtersJSON =
       '{"recordId":"' +
