@@ -246,7 +246,7 @@ public without sharing class BridgePipelineHelper {
 
       rowData.put(
         'initAdv',
-        p.Initial_Disbursement__c != null
+        p.Initial_Disbursement__c != null && p.Initial_Disbursement__c != 0
           ? String.isEmpty(rowData.get('initAdv'))
               ? String.valueOf(p.Initial_Disbursement__c)
               : String.valueOf(
