@@ -45,6 +45,8 @@ public without sharing class opportunity_Helper {
     'Closed Won'
   };
 
+  public static final User INTEGRATION_USER = [SELECT Id, Name FROM User WHERE Email LIKE 'integrations@cvest.com%' LIMIT 1];
+
   public static Integer CHUNK_SIZE = 1;
 
   // public static Map<String, Id> compileVendorMap(){
@@ -566,6 +568,7 @@ public without sharing class opportunity_Helper {
     Set<Id> businessEntityIds = new Set<Id>();
 
     Map<Id, Opportunity> oppsHaveTeamToDelete = new Map<Id, Opportunity>();
+    List<Approval_History__c> rejectedIcAHS = new List<Approval_History__c>();
 
     for (Opportunity currOpp : newMap.values()) {
       Opportunity prevOpp = oldMap.get(currOpp.Id);
@@ -599,13 +602,25 @@ public without sharing class opportunity_Helper {
       }
 
    if (validateDealForIcReapproval(prevOpp, currOpp) && currOpp.IC_Approval__c == 'Approved') {
+    Savepoint sp = Database.setSavepoint();
+    try {
+        rejectedIcAHS.add(rejectDeal(currOpp));
         currOpp.IC_Approval__c = null;
         currOpp.IC_Approval_Date__c = null;
         currOpp.StageName = 'Underwriting';
         reveresedIcDeals.put(currOpp.Id, currOpp);
+    } catch (Exception err) {
+      Database.rollback(sp);
+      System.debug(err.getMessage() + ' ' + err.getLineNumber());
+      currOpp.addError(err.getMessage());
+    }
+
       }
     }
 
+    if(rejectedIcAHS.size() > 0){
+      insert rejectedIcAHS;
+    }
     if (reveresedIcDeals.size() > 0) {
       emailReversedIcApprovalAlert(reveresedIcDeals);
     }
@@ -3076,6 +3091,7 @@ public without sharing class opportunity_Helper {
   public static void emailReversedIcApprovalAlert(
     Map<Id, Opportunity> dealMap
   ) {
+
     List<EmailServicesAddress> esas = [
       SELECT Id, LocalPart, EmailDomainName, DeveloperName
       FROM EmailServicesAddress
@@ -3510,7 +3526,7 @@ public without sharing class opportunity_Helper {
         shouldReapproveActualDSCR;
     }
 
-    Boolean isTerm = currOpp.Record_Type_Name__c == 'Term_Loan';
+    Boolean isTerm = currOpp.Record_Type_Name__c == 'Term_Loan';  
     Boolean isLoanAmountHigher =
       currOpp.Current_Loan_Amount__c > prevOpp.Current_Loan_Amount__c;
 
@@ -3522,6 +3538,60 @@ public without sharing class opportunity_Helper {
     }
 
     return false;
+  }
+
+
+  public static Approval_History__c rejectDeal(Opportunity deal) {
+    List<ProcessInstance> processInstances = [
+      SELECT
+        Id,
+        Status,
+        ProcessDefinition.Name
+      FROM ProcessInstance
+      WHERE
+        ProcessDefinition.Name LIKE '%IC%'
+        AND Status = 'Approved'
+        AND TargetObjectId = :deal.Id
+        ORDER BY CreatedDate Desc
+      LIMIT 1
+    ];
+
+    if (processInstances.size() > 0) {
+         return createApprovalHistory(processInstances[0].ProcessDefinition.Name, deal);
+    } else {
+      return null;
+    }
+  }
+  
+
+  public static Approval_History__c createApprovalHistory(String approvalType, Opportunity deal) {
+    String ahProcessName = (approvalType != 'Term Sub-IC' || approvalType != 'Bridge Sub-IC')
+    ? approvalType + ' Process'
+    : approvalType;
+    Approval_History__c ahc = new Approval_History__c(
+      Parent_Status__c = 'Rejected',
+      Deal__c = deal.Id,
+      Name = 'Approval Request: ' + deal.Name.left(50),
+      ProcessName__c = ahProcessName,
+      Approver__c = INTEGRATION_USER.Name,
+      Actor__c = INTEGRATION_USER.Id,
+      Date_Acted__c = System.now(),
+      Status__c = 'Rejected',
+      Status_Text__c = 'Rejected',
+      Approval_Type__c = approvalType,
+      Tracking_Status__c = 'Committee',
+      Deal_Stage_At_Time_of_Submission__c = 'Underwriting',
+      Comments__c = 'IC Approval is no longer approved.'
+    );
+
+    if (deal.Final_Spread__c != null) {
+      ahc.Spread__c = deal.Final_Spread__c;
+    }
+
+    if(deal.CAF_Upfront_Fee__c != null) {
+      ahc.Origination_Fee__c = deal.CAF_Upfront_Fee__c;
+    }
+    return ahc;
   }
 
   // public static void createRtlDealContacts(Set<Id> dealIds) {
