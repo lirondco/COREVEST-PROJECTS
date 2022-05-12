@@ -535,6 +535,22 @@
     return recordTypeName;
   },
 
+  createLoanApprovalRequestFormCmp: function (component, event) {
+    $A.createComponent(
+      "c:loanRequestApprovalForm",
+      {},
+      function (newCmp, status, errorMessage) {
+        if (status === "SUCCESS") {
+          var body = component.get("v.body");
+          body.push(newCmp);
+          component.set("v.body", body);
+          component.set("v.displayBridgeIcMemoCmp", true);
+
+        }
+      }
+    );
+  },
+
   createBridgeICMemoCmp: function (component, event) {
     $A.createComponent(
       "c:BridgeICMemo",

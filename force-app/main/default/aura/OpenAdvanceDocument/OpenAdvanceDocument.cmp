@@ -171,6 +171,7 @@
             >
               <option value="Bridge IC Memo">Bridge IC Memo</option>
             </aura:if>
+            <option value="Loan Approval Request Form">Loan Approval Request Form</option>
             <option
               value="docx-CoreVest_Form_Closing_Instructions_Borrower_Owned_Property.docx"
             >

@@ -32,7 +32,7 @@ public class ClearBase {
       this.Production_Endpoint = Clear_Api_Config__c.getOrgDefaults()
         .Production_Endpoint__c;
 
-      this.Person_Search_SubRoute = '/api/v2/person/searchResults';
+      this.Person_Search_SubRoute = '/api/v3/person/searchResults';
       this.Person_Report_SubRoute = '/api/v2/personReport/reportResults';
       this.Person_Risk_SubRoute = '/api/v2/riskinformperson/searchResults';
       this.Risk_Report_SubRoute = '/api/v2/riskInformPersonReport/reportResults';

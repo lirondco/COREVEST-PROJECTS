@@ -62,7 +62,10 @@
         helper.createBridgeICMemoCmp(component, event);
       } else if (val == "Funding Memo") {
         helper.createSABICMemoCmp(component, event);
-      } else {
+      } else if (val == "Loan Approval Request Form") {
+        helper.createLoanApprovalRequestFormCmp(component, event);
+      }
+        else {
         window.open(val, "_blank");
       }
     }
