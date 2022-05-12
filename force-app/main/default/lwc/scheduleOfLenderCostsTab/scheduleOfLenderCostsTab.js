@@ -28,7 +28,7 @@ export default class ScheduleOfLenderCostsTab extends LightningElement {
   loanVersions = [{ label: "", value: "" }];
 
   selectedLoanVersionId = "";
-
+  showSpinner = false;
   versionFinalized = false;
   finalizedVersionId = "";
   recordTypeName = "Schedule_Of_Lender_Cost";
@@ -296,7 +296,7 @@ export default class ScheduleOfLenderCostsTab extends LightningElement {
 
   createLoanVersion() {
     //console.log("save");
-
+    this.showSpinner = true;
     const loanVersion = this.template
       .querySelector("c-schedule-of-lender-costs-new")
       .returnLoanVersion();
@@ -310,12 +310,16 @@ export default class ScheduleOfLenderCostsTab extends LightningElement {
       this.selectedLoanVersionId = results[0].Id;
       this.queryOpportunity();
       this.generateDocument();
+    })
+    .then(() => {
+      this.showSpinner = false;
     });
+
   }
 
   finalizeVersion() {
-    //console.log("finalize");
-
+    //console.log("finalize"); 
+    this.showSpinner = true;
     const loanVersion = {
       sobjectType: "Loan_Version__c",
       Id: this.selectedLoanVersionId,
@@ -326,13 +330,16 @@ export default class ScheduleOfLenderCostsTab extends LightningElement {
       console.log("results");
       this.versionFinalized = true;
       this.finalizedVersionId = this.selectedLoanVersionId;
+    })
+    .then(() => {
+      this.showSpinner = false;
     });
   }
 
   unfinalizeVersion() {
     //console.log("unfinalize");
     //console.log("finalize");
-
+    this.showSpinner = true;
     const loanVersion = {
       sobjectType: "Loan_Version__c",
       Id: this.selectedLoanVersionId,
@@ -343,6 +350,9 @@ export default class ScheduleOfLenderCostsTab extends LightningElement {
       //console.log("results");
       this.versionFinalized = false;
       this.finalizedVersionId = "";
+    })
+    .then(() => {
+      this.showSpinner = false;
     });
   }
 
@@ -389,6 +399,7 @@ export default class ScheduleOfLenderCostsTab extends LightningElement {
   };
 
   generateDocument = async () => {
+    this.showSpinner = true;
     const loanVersion = await this.queryLoanVersion(this.selectedLoanVersionId);
     // console.log(loanVersion);
 
@@ -398,6 +409,7 @@ export default class ScheduleOfLenderCostsTab extends LightningElement {
       detail: loanVersion
     });
     this.dispatchEvent(generationEvent);
+    this.showSpinner = false;
   };
 
   queryUser() {

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+      <members>ScheduleOfLenderCostsPDFExtension</members>
+      <name>ApexClass</name>
+    </types>
+    <types>
+      <members>Opportunity.Discount_Fee__c</members>
+      <members>Opportunity.Term_Loan_Type__c</members>
+      <members>Loan_Version__c.Discount_Fee__c</members>
+      <members>Loan_Version__c.Discount_Fee_Number__c</members>
+      <name>CustomField</name>
+    </types>
+    <types>
+		  <members>scheduleOfLenderCostsTab</members>
+      <members>scheduleOfLenderCostsNew</members>
+      <members>scheduleOfLenderCostsEdit</members>
+		  <name>LightningComponentBundle</name>
+  	</types>
+    <types>
+      <members>ScheduleOfLenderCostsPDF</members>
+      <name>ApexPage</name>
+    </types>
+    <version>53.0</version>
+</Package>
+
+<!-- sfdx force:source:deploy -x manifest/deploy.xml -l RunSpecifiedTests -r ScheduleOfLenderCostControllerTest -->

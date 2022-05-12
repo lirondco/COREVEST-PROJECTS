@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Discount_Fee__c</fullName>
+    <externalId>false</externalId>
+    <label>Discount Fee %</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Term_Loan_Type__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>1 pt rate buy down / -25 BPS</fullName>
+                <default>false</default>
+                <label>1 pt rate buy down / -25 BPS</label>
+            </value>
+            <value>
+                <fullName>2 pt rate buy down / -50 BPS</fullName>
+                <default>false</default>
+                <label>2 pt rate buy down / -50 BPS</label>
+            </value>
+            <value>
+                <fullName>N/A</fullName>
+                <default>false</default>
+                <label>N/A</label>
+            </value>
+            <value>
+                <fullName>None</fullName>
+                <default>false</default>
+                <label>None</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>5 Year</controllingFieldValue>
+            <controllingFieldValue>10 Year</controllingFieldValue>
+            <controllingFieldValue>3 Year</controllingFieldValue>
+            <controllingFieldValue>7 Year</controllingFieldValue>
+            <valueName>N/A</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>30 Year</controllingFieldValue>
+            <valueName>1 pt rate buy down / -25 BPS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>30 Year</controllingFieldValue>
+            <valueName>2 pt rate buy down / -50 BPS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>30 Year</controllingFieldValue>
+            <valueName>None</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

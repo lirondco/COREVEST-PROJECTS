@@ -81,10 +81,8 @@
       </lightning-layout-item> -->
 
       <lightning-layout-item padding="around-medium" size="6"
-      ><lightning-output-field
-        field-name="Term__c"
-      ></lightning-output-field>
-    </lightning-layout-item>
+        ><lightning-output-field field-name="Term__c"></lightning-output-field>
+      </lightning-layout-item>
 
       <lightning-layout-item padding="around-medium" size="6"
         ><lightning-output-field
@@ -131,21 +129,26 @@
         ></lightning-output-field>
       </lightning-layout-item>
       <lightning-layout-item padding="around-medium" size="6"
-      ><lightning-output-field
-        field-name="Legal_Fee__c"
-      ></lightning-output-field>
-    </lightning-layout-item>
+        ><lightning-output-field
+          field-name="Legal_Fee__c"
+        ></lightning-output-field>
+      </lightning-layout-item>
+      <template if:true={showDiscountFee}>
+        <lightning-layout-item padding="around-medium" size="6">
+          <lightning-output-field
+            field-name="Discount_Fee__c"
+          ></lightning-output-field>
+        </lightning-layout-item>
+        <lightning-layout-item padding="around-medium" size="6">
+          <lightning-output-field
+            field-name="Discount_Fee_Number__c"
+          ></lightning-output-field>
+        </lightning-layout-item>
+      </template>
       <lightning-layout-item padding="around-medium" size="6"
         ><lightning-output-field
           field-name="Total_Lender__c"
         ></lightning-output-field>
-      </lightning-layout-item>
-      <lightning-layout-item padding="around-medium" size="6">
-        <template if:true={showDiscountFee}>
-        <lightning-output-field
-          field-name="Discount_Fee_Number__c"
-        ></lightning-output-field>
-      </template>
       </lightning-layout-item>
 
       <lightning-layout-item size="12">
