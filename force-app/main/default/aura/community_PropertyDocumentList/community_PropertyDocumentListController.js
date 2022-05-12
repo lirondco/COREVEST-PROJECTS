@@ -64,6 +64,7 @@
         //console.log(JSON.parse( response.getReturnValue() ));
         component.set("v.user", JSON.parse(response.getReturnValue()));
         var user = JSON.parse(response.getReturnValue());
+        console.log('user::::', user);
         //var user = component.get('v.user');
 
         component.set("v.whereClause", "Property__c != null");
@@ -75,6 +76,36 @@
       }
     });
     $A.enqueueAction(action1);
+  },
+
+  handleReviewEvent: function (component, event, helper) {
+    console.log("event in parent");
+    helper.showSpinner(component);
+    const docId = event.getParam("documentId");
+    const rec = {
+      Id: docId,
+      Reviewed__c: true,
+      Reviewed_By__c: component.get("v.user").id,
+      Reviewed_On__c: new Date().toISOString(),
+      Reviewed_By_Contact__c: component.get("v.user").contactId,
+    };
+    const action = component.get("c.upsertRecords");
+    console.log(rec);
+    action.setParams({
+      records: [rec]
+    });
+    action.setCallback(this, function (response) {
+      const state = response.getState();
+      if (state === "SUCCESS") {
+        helper.hideSpinner(component);
+        helper.queryRecordsList(component);
+      }
+      else if(state === "ERROR"){
+        console.log(response.getError());
+
+      }
+    });
+    $A.enqueueAction(action);
   },
 
   handleSortChangeEvent: function (component, event, helper) {
@@ -153,5 +184,33 @@
     );
     table.set("v.rows", recordsToDisplay);
     component.set("v.currentPage", currentPage);
+  },
+
+  handleUpdateFolder: function (component, event, helper) {
+    console.log('UPDATE FOLDER CLICKED');
+    const table = component.find("dataTable");
+    let checked = [];
+    table.getChecked(function(resp){
+      checked = resp;
+    });
+
+    if(checked == null || checked.length == 0){ 
+      let toastEvent = $A.get("e.force:showToast");
+      toastEvent.setParams({
+          "title": "Error",
+          "message": "Please select at least one document first.",
+          "type": "error"
+      });
+      toastEvent.fire();  
+    } else {
+      const rows = table.get('v.rows');
+      const ids = [];
+      for(let i = 0; i < checked.length; i++){
+        ids.push(rows[checked[i]].Id);
+      }
+      component.set("v.selectedIds", ids);
+      component.set("v.modalOpen", true);  
+    }
+
   }
 });

@@ -318,11 +318,13 @@ public without sharing class community_Controller {
       'Approved by Committee',
       'UW Hold',
       'Closed Won',
-      'Paid Off'
+      'Paid Off',
+      'Sold'
     };
     Set<String> termClosedStages = new Set<String>{
       'Closed Won',
-      'Paid Off'
+      'Paid Off',
+      'Sold'
     };
 
     Set<String> bridgeStages = new Set<String>{
@@ -336,12 +338,14 @@ public without sharing class community_Controller {
       'Closed Won',
       'Matured',
       'Expired',
-      'Paid Off'
+      'Paid Off',
+      'Sold'
     };
     Set<String> bridgeClosedStages = new Set<String>{
       'Matured',
       'Expired',
-      'Paid Off'
+      'Paid Off',
+      'Sold'
     };
 
     queryString += 'AND ((StageName IN : termStages AND RecordType__c =\'Term\') OR (StageName IN : bridgeStages AND RecordType__c =\'Bridge\'))';
@@ -434,13 +438,15 @@ public without sharing class community_Controller {
       'Closed Won',
       'Withdrawn',
       'Rejected',
-      'Paid Off'
+      'Paid Off',
+      'Sold'
     };
     Set<String> termClosedStages = new Set<String>{
       'Closed Won',
       'Withdrawn',
       'Rejected',
-      'Paid Off'
+      'Paid Off',
+      'Sold'
     };
 
     Set<String> bridgeStages = new Set<String>{
@@ -456,14 +462,16 @@ public without sharing class community_Controller {
       'Expired',
       'Withdrawn',
       'Rejected',
-      'Paid Off'
+      'Paid Off',
+      'Sold'
     };
     Set<String> bridgeClosedStages = new Set<String>{
       'Matured',
       'Expired',
       'Withdrawn',
       'Rejected',
-      'Paid Off'
+      'Paid Off',
+      'Sold'
     };
 
     queryString += 'AND ((StageName IN : termStages AND RecordType__c =\'Term\') OR (StageName IN : bridgeStages AND RecordType__c =\'Bridge\'))';

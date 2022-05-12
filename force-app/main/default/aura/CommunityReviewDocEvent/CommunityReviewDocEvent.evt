@@ -1,0 +1,3 @@
+<aura:event type="COMPONENT" description="Event for when a document is reviewed in portal" access="public">
+    <aura:attribute name="documentId" type="String" description="Id of the document that is reviewed" />
+</aura:event>

@@ -1197,7 +1197,6 @@ resultsData.add(new propertyListWrapper(sobj, 'No', null, null));
         '\' AND Attachment_Id__c != null AND ContentVersion_Id__c != null AND Borrower_Access__c = true AND Is_Viewable__c = true AND Is_Deleted__c = false ';
     }
 
-   System.debug('RS999 queryString :' +queryString);
     List<Deal_Document__c> docs = (List<Deal_Document__c>) database.query(
       queryString
     );
@@ -1480,7 +1479,8 @@ resultsData.add(new propertyListWrapper(sobj, 'No', null, null));
       'Require_AVM_Sync_on_UW_Submission__c',
       'Require_X_Author_Validation_on_Pricing__c',
       'Require_X_Author_Validation_on_UW_Submis__c',
-      'Validated_Address_Threshold__c'
+      'Validated_Address_Threshold__c',
+      'Request_Beekin_Rental_Data_Validation__c'  
     };
 
     String queryString = 'SELECT ';

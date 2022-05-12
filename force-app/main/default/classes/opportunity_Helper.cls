@@ -3526,7 +3526,7 @@ public without sharing class opportunity_Helper {
         shouldReapproveActualDSCR;
     }
 
-    Boolean isTerm = currOpp.Record_Type_Name__c == 'Term_Loan';  
+    Boolean isTerm = currOpp.Record_Type_Name__c == 'Term_Loan';
     Boolean isLoanAmountHigher =
       currOpp.Current_Loan_Amount__c > prevOpp.Current_Loan_Amount__c;
 

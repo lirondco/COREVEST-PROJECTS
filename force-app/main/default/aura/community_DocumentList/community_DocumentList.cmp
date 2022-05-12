@@ -16,6 +16,9 @@
   <aura:attribute name="footer" type="String" />
   <aura:attribute name="recordCount" type="Integer" default="0" />
 
+
+  <aura:handler name="reviewEvent" event="c:CommunityReviewDocEvent" phase="capture" action="{!c.handleReviewEvent}" />
+
   <aura:handler
     name="sortChangeEvent"
     event="c:DataTableSortChangeEvent"
@@ -32,6 +35,7 @@
   <aura:attribute name="user" type="Object" />
 
   <aura:attribute name="modalOpen" type="Boolean" />
+  <aura:attribute name="selectedIds" type="List" />
 
   <aura:handler Name="init" value="{!this}" action="{!c.init}" />
 
@@ -39,12 +43,13 @@
     <aura:set attribute="title"> </aura:set>
 
     <aura:set attribute="actions">
+      <!-- <lightning:layout horizontalAlign="end">
+        
+      </lightning:layout> -->
       <lightning:layout horizontalAlign="end">
-        <!-- <lightning:layoutItem >
-					<lightning:button label="Export" onclick="{!c.modalOpen}" />
-				</lightning:layoutItem> -->
-      </lightning:layout>
-      <lightning:layout horizontalAlign="end">
+        <lightning:layoutItem class="{!if(v.user.accountType == 'Legal Counsel', '', 'slds-hide')}">
+					<lightning:button label="Update Folder" onclick="{!c.handleUpdateFolder}" />
+				</lightning:layoutItem>
         <lightning:layoutItem>
           <lightning:button variant="base" onclick="{!c.refresh}">
             <lightning:buttonIcon
@@ -58,7 +63,7 @@
       <lightning:spinner class="" aura:id="spinner" variant="brand" />
     </aura:set>
 
-    <c:DataTable aura:id="dataTable" showCheckbox="false">
+    <c:DataTable aura:id="dataTable" showCheckbox="{!if(v.user.accountType == 'Legal Counsel', true, false)}">
       <aura:set attribute="columns">
         <c:DataTableColumn
           label="Document #"
@@ -112,6 +117,15 @@
           sortable="true"
           displayType="datetime"
         />
+        <c:DataTableColumn label=""
+          name="Allow_Portal_Review__c"
+          sortable="false"
+          displayType="reviewButton"
+          linkToRecord="Id"
+          userAccountVendorType="{!v.user.accountType}"
+          columnWidth="10"
+				/>
+
       </aura:set>
 
       <aura:set attribute="pageNumber" value="1" />
@@ -183,6 +197,16 @@
       </div>
     </aura:set>
   </lightning:card>
+
+  <aura:if isTrue="{!v.modalOpen}">
+    <c:DocumentTypeSelectorContainer
+      recordId="{!v.recordId}"
+      sObjectName="Opportunity"
+      modalOpen="{!v.modalOpen}"
+      recordIds="{!v.selectedIds}"
+    />
+  </aura:if>
+
 
   <!-- <aura:if isTrue="{!v.modalOpen}">
 		<div role="dialog" tabindex="-1" aura:id="modal" aria-labelledby="header43" class="slds-modal slds-fade-in-open">

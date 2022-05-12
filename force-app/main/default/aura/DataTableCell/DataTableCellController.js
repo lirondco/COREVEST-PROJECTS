@@ -25,7 +25,7 @@
         //if(column.)
 
         component.set('v.displayType', column.get('v.displayType'));
-        
+        component.set('v.userAccountVendorType', column.get('v.userAccountVendorType'));
         component.set('v.isEditable', column.get('v.isEditable'));
         if(component.get('v.displayType') == 'select' ){
             var select = component.find('select');
@@ -157,6 +157,15 @@
             component.set('v.editMode', true);
         }
 
+    },
+
+    handleReview : function(component, event, helper){
+        const recId = event.getSource().get("v.value");
+        const cmpEvent = component.getEvent("reviewEvent");
+        cmpEvent.setParams({
+            'documentId' : recId
+        });
+        cmpEvent.fire();
     },
 
 

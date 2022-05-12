@@ -3,7 +3,7 @@
     <apiVersion>46.0</apiVersion>
     <packageVersions>
         <majorNumber>3</majorNumber>
-        <minorNumber>321</minorNumber>
+        <minorNumber>323</minorNumber>
         <namespace>dupcheck</namespace>
     </packageVersions>
     <status>Active</status>
