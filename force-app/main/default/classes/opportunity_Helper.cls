@@ -1379,6 +1379,69 @@ public without sharing class opportunity_Helper {
           }
         }
       }
+//CIP-2416.RS.5/11/22.Begin  
+    List<Loan_Version__c> loanVersionList = [SELECT Id,Finalized__c,RecordTypeId,Deal__c   FROM Loan_Version__c WHERE RecordType.Name in ('Schedule of Lender Cost', 'Loan Agreement')
+                             AND Finalized__c = True AND Deal__c IN :closedWonMap.keySet()];
+
+	id slcId = [SELECT Id FROM RecordType WHERE sobjecttype = 'Loan_Version__c' and DeveloperName  = 'Schedule_of_Lender_Cost'].id;
+    id laId  = [SELECT Id FROM RecordType WHERE sobjecttype = 'Loan_Version__c' and DeveloperName  = 'Loan_Agreement'].id;       
+    Map<id,Map<String,String>> loanVersionDealIds;
+			for (Loan_Version__c loanVersion : loanVersionList)
+            {
+                System.Debug('RS999 loanVersion :' +loanVersion);
+                if (loanVersionDealIds.containsKey(loanVersion.Deal__c))
+                {
+                 	Map<String,String> recordTypeNameMap = loanVersionDealIds.get(loanVersion.Deal__c);
+                    if(!recordTypeNameMap.containsKey(loanVersion.RecordType.Name))
+                     {
+                        recordTypeNameMap.put(loanVersion.RecordType.Name,loanVersion.RecordTypeId);
+                        loanVersionDealIds.put(loanVersion.Deal__c,recordTypeNameMap);
+                        System.Debug('RS999 loanVersionDealIds 1 :' +loanVersionDealIds);
+                     }
+                 }
+                else
+                {
+                    Map<String,String> recordTypeNameMap;
+                    recordTypeNameMap.put(loanVersion.RecordTypeId,loanVersion.RecordTypeId);
+                    loanVersionDealIds.put(loanVersion.Deal__c,recordTypeNameMap);
+                    System.Debug('RS999 loanVersionDealIds 2 :' +loanVersionDealIds);                    
+                }
+            }        
+
+	System.Debug('RS999 loanVersionDealIds :' +loanVersionDealIds);
+        
+	for (id closeWonDealId : closedWonMap.keySet())
+    {
+        boolean validDeal = True;
+        if (loanVersionDealIds.containsKey(closeWonDealId))
+        {
+            System.Debug('RS999 Into deal found with loan version records');
+            Map<String,String> recordTypeNameMap = loanVersionDealIds.get(closeWonDealId);
+
+			if (recordTypeNameMap.containskey(slcId) && recordTypeNameMap.containskey(laId))
+            {
+            	System.Debug('RS999 Into deal found with loan version records for both record types');                
+                validDeal = True;
+            }
+        	else
+        	{
+                System.Debug('RS999 Into deal NOT found with loan version records for both record types');     
+                validDeal = False;
+        	}			
+        }
+        else
+        {
+            validDeal = False;
+        }
+
+        	System.Debug('RS999 validDeal :' +validDeal);        
+        if(!validDeal)
+        {
+         	closedWonMap.get(closeWonDealId).addError('Deal should have finalized Loan Version for \'Schedule of Lender Cost\' and  \'Loan Agreement\'');
+        }
+    }
+//CIP-2416.RS.5/11/22.End
+        
     }
   }
 
@@ -3526,7 +3589,7 @@ public without sharing class opportunity_Helper {
         shouldReapproveActualDSCR;
     }
 
-    Boolean isTerm = currOpp.Record_Type_Name__c == 'Term_Loan';  
+    Boolean isTerm = currOpp.Record_Type_Name__c == 'Term_Loan';
     Boolean isLoanAmountHigher =
       currOpp.Current_Loan_Amount__c > prevOpp.Current_Loan_Amount__c;
 
