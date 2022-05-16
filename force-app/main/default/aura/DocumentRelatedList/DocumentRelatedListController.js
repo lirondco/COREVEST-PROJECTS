@@ -7,12 +7,15 @@
       var fields = [];
       var columns = component.find("dataTable").get("v.columns");
       for (var i = 0; i < columns.length; i++) {
+        if(columns[i].get("v.name") == "isReadable") {
+          continue;
+        }
         fields.push(columns[i].get("v.name"));
       }
   
       component.set("v.fieldList", fields);
   
-      helper.queryRecords(component);
+      helper.queryRecords(component, helper);
       helper.compilePermissions(component);
     },
   
@@ -88,7 +91,7 @@
   
         function (data) {
           table.toggleSpinner();
-          helper.queryRecords(component);
+          helper.queryRecords(component, helper);
         }
       );
     },
@@ -136,7 +139,7 @@
   
       tableCmp.set("v.sortColumnName", event.getParam("columnName"));
       tableCmp.set("v.sortDirection", event.getParam("sortDirection"));
-      helper.queryRecords(component);
+      helper.queryRecords(component, helper);
     },
   
     saveRows: function (component, event, helper) {
@@ -189,7 +192,7 @@
   
         function (data) {
           table.toggleSpinner();
-          helper.queryRecords(component);
+          helper.queryRecords(component, helper);
         }
       );
     },
@@ -217,7 +220,7 @@
         },
         function (data) {
           //table.toggleSpinner();
-          helper.queryRecords(component);
+          helper.queryRecords(component, helper);
         }
       );
     },
@@ -246,7 +249,7 @@
         },
         function (data) {
           //table.toggleSpinner();
-          helper.queryRecords(component);
+          helper.queryRecords(component, helper);
         }
       );
     },

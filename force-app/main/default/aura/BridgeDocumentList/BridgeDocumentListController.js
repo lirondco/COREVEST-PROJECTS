@@ -13,7 +13,7 @@
 
     component.set("v.fieldList", fields);
 
-    helper.queryRecords(component);
+    helper.queryRecords(component, helper);
     helper.compilePermissions(component);
   },
 
@@ -30,7 +30,7 @@
 
     tableCmp.set("v.sortColumnName", event.getParam("columnName"));
     tableCmp.set("v.sortDirection", event.getParam("sortDirection"));
-    helper.queryRecords(component);
+    helper.queryRecords(component, helper);
   },
 
   deleteDocuments: function (component, event, helper) {
@@ -63,7 +63,7 @@
 
       function (data) {
         table.toggleSpinner();
-        helper.queryRecords(component);
+        helper.queryRecords(component, helper);
       }
     );
   },
@@ -116,7 +116,7 @@
 
       function (data) {
         table.toggleSpinner();
-        helper.queryRecords(component);
+        helper.queryRecords(component, helper);
       }
     );
   },
@@ -144,7 +144,7 @@
       },
       function (data) {
         //table.toggleSpinner();
-        helper.queryRecords(component);
+        helper.queryRecords(component, helper);
       }
     );
   },
@@ -173,7 +173,7 @@
       },
       function (data) {
         //table.toggleSpinner();
-        helper.queryRecords(component);
+        helper.queryRecords(component, helper);
       }
     );
   },

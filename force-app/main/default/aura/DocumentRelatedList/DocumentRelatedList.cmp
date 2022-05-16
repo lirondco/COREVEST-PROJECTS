@@ -37,6 +37,8 @@
   <aura:attribute name="maxPage" type="Integer" default="1" />
 
   <aura:handler name="init" value="{!this}" action="{!c.init}" />
+  <aura:attribute name="recordIds" type="String[]" />
+  <aura:attribute name="recordSharingMap" type="Map" />
 
   <lightning:card>
     <aura:set attribute="title">
@@ -122,6 +124,7 @@
             name="File_Name__c"
             linkToRecord="ContentVersion_Id__c"
             linkToURL="/sfc/servlet.shepherd/version/download/"
+            isReadable="isReadable"
           />
           <c:DataTableColumn
             label="ContentVersionID"
@@ -130,6 +133,7 @@
             displayType="hidden"
             sortable="false"
           />
+          
           <c:DataTableColumn
             label="Document Type"
             name="Document_Type__c"
@@ -161,6 +165,13 @@
             displayType="datetime"
             sortable="true"
           />
+          <c:DataTableColumn
+          label="isReadable"
+          name="isReadable"
+          hidden="true"
+          displayType="hidden"
+          sortable="false"
+        />
           <c:DataTableColumn
             label="Reviewed By"
             linkToRecord="Reviewed_By__c"
@@ -193,12 +204,14 @@
             sortable="true"
             isEditable="false"
             columnWidth="11"
+            isReadable="isReadable"
           />
           <c:DataTableColumn
             label="File Name"
             name="File_Name__c"
             linkToRecord="ContentVersion_Id__c"
             linkToURL="/sfc/servlet.shepherd/version/download/"
+            isReadable="isReadable"
           />
           <c:DataTableColumn
             label="ContentVersionID"
@@ -219,6 +232,7 @@
             sortable="false"
             displayType="file"
             columnWidth="5"
+            isReadable="isReadable"
           />
           <c:DataTableColumn
             label="Added On"
@@ -247,6 +261,13 @@
           <c:DataTableColumn
             label="Document_Loaded__c"
             name="Document_Loaded__c"
+            hidden="true"
+            displayType="hidden"
+            sortable="false"
+          />
+          <c:DataTableColumn
+            label="isReadable"
+            name="isReadable"
             hidden="true"
             displayType="hidden"
             sortable="false"

@@ -125,8 +125,7 @@
   //         }
   //     )
   // },
-  queryRecords: function (component) {
-    var tableCmp = component.find("dataTable");
+  queryRecords: function (component, helper) {
 
     //tableCmp.toggleSpinner();
 
@@ -139,6 +138,8 @@
     // }
 
     $A.util.removeClass(component.find("spinner"), "slds-hide");
+    var tableCmp = component.find("dataTable");
+
     this.callAction(
       component,
       "c.getRecordList",
@@ -156,11 +157,38 @@
         //var records = JSON.parse(data);
         var records = data;
         component.set("v.records", data);
+        const recordIds = [];
+        for (var i = 0; i < records.length; i++) {
+          recordIds.push(records[i].Id);
+        }
+        component.set("v.recordIds", recordIds);
         //console.log(records);
+        helper.compileRecordReadAccess(component, helper);
+        //tableCmp.toggleSpinner();
+      }
+    );
+  },
+
+  compileRecordReadAccess: function (component, helper) {
+    this.callAction(
+      component,
+      "c.generateReadAccessMap",
+      {
+        recordIds: component.get("v.recordIds"),
+      },
+      function(data) {
+        component.set("v.recordSharingMap", data);
+        const raMap = component.get("v.recordSharingMap");
         var tableCmp = component.find("dataTable");
 
         var pageSize = component.get("v.pageSize");
         var currentPage = component.get("v.currentPage");
+        const records = component.get("v.records");
+        for(var i = 0; i < records.length; i++){
+          records[i].isReadable = raMap[records[i].Id];
+        }
+        console.log("records updated", records);
+        component.set("v.records", records);
 
         component.set("v.maxPage", Math.ceil(records.length / pageSize));
 
@@ -168,13 +196,12 @@
           (currentPage - 1) * pageSize,
           currentPage * pageSize
         );
+        console.log("RECORDS TO DISPLAY", recordsToDisplay);
 
         tableCmp.set("v.rows", recordsToDisplay);
-
         $A.util.addClass(component.find("spinner"), "slds-hide");
-        //tableCmp.toggleSpinner();
       }
-    );
+    )
   },
 
   saveRecords: function (component, helper) {

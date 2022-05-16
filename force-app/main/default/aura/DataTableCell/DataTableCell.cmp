@@ -1,124 +1,138 @@
 <aura:component access="public">
+  <!-- public attributes -->
 
-    <!-- public attributes -->
+  <aura:attribute
+    name="row"
+    type="Object"
+    description="JSON object that represents the row of data being rendered."
+  />
 
-    <aura:attribute name="row"
-                    type="Object"
-                    description="JSON object that represents the row of data being rendered."/>
+  <aura:attribute
+    name="rowIdx"
+    type="Integer"
+    description="The row number being rendered. Set via the aura:iteration tag in DataTableCmp."
+  />
 
-    <aura:attribute name="rowIdx"
-                    type="Integer"
-                    description="The row number being rendered. Set via the aura:iteration tag in DataTableCmp."/>
+  <aura:attribute
+    name="column"
+    type="Aura.Component"
+    description="Column component definition of the data being rendered."
+  />
 
-    <aura:attribute name="column"
-                    type="Aura.Component"
-                    description="Column component definition of the data being rendered."/>
+  <aura:attribute
+    name="colIdx"
+    type="Integer"
+    description="The column number being rendered, zero based. Set via the aura:iteration tag in DataTableCmp."
+  />
 
-    <aura:attribute name="colIdx"
-                    type="Integer"
-                    description="The column number being rendered, zero based. Set via the aura:iteration tag in DataTableCmp."/>
+  <aura:attribute
+    name="class"
+    type="String"
+    default=""
+    description="CSS class to apply to the wrapping DIV container of the table row cell content."
+  />
 
-    <aura:attribute name="class"
-                    type="String"
-                    default=""
-                    description="CSS class to apply to the wrapping DIV container of the table row cell content."/>
+  <aura:attribute
+    name="displayType"
+    type="String"
+    default=""
+    description="Value to be displayed"
+  />
 
-    <aura:attribute name="displayType"
-                    type="String"
-                    default=""
-                    description="Value to be displayed" />
+  <aura:attribute
+    name="userAccountVendorType"
+    type="String"
+    description="The Account Vendor Subtype associated with current user."
+  />
 
-    <aura:attribute name="typeAttributes"
-                    type="String"
-                    default="text"
-                    description="" />
+  <aura:attribute
+    name="typeAttributes"
+    type="String"
+    default="text"
+    description=""
+  />
 
-    <aura:attribute name="isEditable"
-                    type="Boolean"
-                    default="false"
-                    />
-    <aura:attribute name="editMode"
-                    type="Boolean"
-                    default="true"
-                    />
+  <aura:attribute name="isEditable" type="Boolean" default="false" />
+  <aura:attribute name="editMode" type="Boolean" default="true" />
 
+  <!-- <aura:attribute name="change"  -->
 
-    <!-- <aura:attribute name="change"  -->
+  <!-- private attributes -->
 
-    <!-- private attributes -->
+  <aura:attribute
+    name="value"
+    type="Object"
+    description="The formatted value to display in this table row cell. See controller js for details."
+    access="private"
+  />
 
-    <aura:attribute name="value"
-                    type="Object"
-                    description="The formatted value to display in this table row cell. See controller js for details."
-                    access="private"/>
+  <aura:attribute
+    name="oldValue"
+    type="Object"
+    description=""
+    access="private"
+  />
 
-    <aura:attribute name="oldValue"
-                    type="Object"
-                    description=""
-                    access="private" />
+  <aura:attribute
+    name="linkToRecord"
+    type="String"
+    description="Computed URL for linking to sobject record. See controller js for details."
+    access="private"
+  />
 
-    <aura:attribute name="linkToRecord"
-                    type="String"
-                    description="Computed URL for linking to sobject record. See controller js for details."
-                    access="private"/>
+  <aura:attribute
+    name="linkToURL"
+    type="String"
+    description="Computed URL for linking to arbitrary URL. See controller js for details."
+    access="private"
+  />
 
-    <aura:attribute name="linkToURL"
-                    type="String"
-                    description="Computed URL for linking to arbitrary URL. See controller js for details."
+  <aura:attribute
+    name="classicLink"
+    type="String"
+    description="For Classic UI Theme only, the computed link URL. See controller js for details."
+    access="private"
+  />
 
-                    access="private"/>
+  <aura:attribute
+    name="uiTheme"
+    default="Lightning"
+    type="String"
+    description="Are we in Classic, Salesforce1, or Lightning? How we define the links and open URLs differs Classic vs. the others."
+    access="private"
+  />
 
-    <aura:attribute name="classicLink"
-                    type="String"
-                    description="For Classic UI Theme only, the computed link URL. See controller js for details."
-                    access="private"/>
+  <aura:attribute name="options" type="Object[]" access="private" />
 
-    <aura:attribute name="uiTheme"
-                    default="Lightning"
-                    type="String"
-                    description="Are we in Classic, Salesforce1, or Lightning? How we define the links and open URLs differs Classic vs. the others."
-                    access="private"/>
+  <aura:attribute name="lookup" type="Object" access="private" />
 
-    <aura:attribute name="options"
-                    type="Object[]"
-                    access="private" />
+  <aura:attribute name="whereClause" type="String" access="private" />
 
-    <aura:attribute name="lookup"
-                    type="Object"
-                    access="private" />
+  <aura:attribute name="record" type="Object" access="public" />
+  <aura:attribute name="lookupName" type="String" />
 
-    <aura:attribute name="whereClause"
-                    type="String"
-                    access="private" />
+  <aura:attribute name="riskNumber" type="Boolean" default="false" />
+  <aura:attribute name="addcss" type="String" />
+  <aura:attribute
+    name="isReadable"
+    type="Boolean"
+    description="Determines if record is shared to current user"
+  />
 
-    <aura:attribute name="record"
-                    type="Object"
-                    access="public"
-                     />
-    <aura:attribute name="lookupName"
-                    type="String"
-                    />
-    
-   
-    <aura:attribute name="riskNumber"
-                    type="Boolean"
-                    default="false"
-                    />
-    <aura:attribute name="addcss"
-                    type="String"
-                    />
+  <!-- events -->
 
-    <!-- events -->
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <aura:handler name="change" value="{!v.value}" action="{!c.handleChange}" />
+  <aura:registerEvent name="reviewEvent" type="c:CommunityReviewDocEvent" />
 
-    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
-    <aura:handler name="change" value="{!v.value}" action="{!c.handleChange}" />
+  <!-- markup -->
 
-
-    <!-- markup -->
-
-    <!-- <aura:if isTrue="{!v.editMode}" > -->
-     <td role="gridcell" aura:id="cell" class="{!and(v.isEditable, v.value != v.oldValue) ? 'slds-cell-edit slds-is-edited ' : 'slds-cell-edit' + ' ' + v.addcss + 
-                                                    if(v.displayType== 'hidden', 'slds-hide', '')}"> 
+  <!-- <aura:if isTrue="{!v.editMode}" > -->
+  <td
+    role="gridcell"
+    aura:id="cell"
+    class="{!and(v.isEditable, v.value != v.oldValue) ? 'slds-cell-edit slds-is-edited ' : 'slds-cell-edit' + ' ' + v.addcss + if(v.displayType== 'hidden', 'slds-hide', '')}"
+  >
     <!-- <td> -->
 
     <!-- <aura:if isTrue="{!v.displayType == 'Boolean'}">
@@ -166,163 +180,278 @@
         </div>
     </aura:if> -->
 
+    <div class="{!and(v.editMode, v.isEditable) ? '' : 'slds-hide'}">
+      <span class="">
+        <aura:if isTrue="{!v.displayType == 'Boolean'}">
+          <lightning:input type="checkbox" checked="{!v.value}" label=" " />
+        </aura:if>
 
-        <div class="{!and(v.editMode, v.isEditable) ? '' : 'slds-hide'}">
-            <span class="">
-                <aura:if isTrue="{!v.displayType == 'Boolean'}">
-                    <lightning:input type="checkbox" checked="{!v.value}" label=" "/>
-                </aura:if>
+        <aura:if isTrue="{!v.displayType == 'text'}">
+          <ui:inputText class="slds-input" value="{!v.value}" />
+        </aura:if>
 
-                <aura:if isTrue="{!v.displayType == 'text'}">
-                    <ui:inputText class="slds-input" value="{!v.value}" />
-                </aura:if>
+        <aura:if isTrue="{!v.displayType == 'currency'}">
+          <ui:inputCurrency class="slds-input" value="{!v.value}" />
+        </aura:if>
 
-                <aura:if isTrue="{!v.displayType == 'currency'}">
-                    <ui:inputCurrency class="slds-input" value="{!v.value}" />
-                </aura:if>
+        <aura:if isTrue="{!v.displayType == 'number'}">
+          <ui:inputNumber class="slds-input" value="{!v.value}" />
+        </aura:if>
 
-                <aura:if isTrue="{!v.displayType == 'number'}">
-                    <ui:inputNumber class="slds-input" value="{!v.value}" />
-                </aura:if>
+        <aura:if isTrue="{!v.displayType == 'select'}">
+          <ui:inputSelect
+            aura:id="select"
+            class="slds-input"
+            value="{!v.value}"
+          />
+        </aura:if>
 
-                <aura:if isTrue="{!v.displayType == 'select'}">
-                     <ui:inputSelect aura:id="select" class="slds-input" value="{!v.value}" />
-                </aura:if>
+        <aura:if isTrue="{!v.displayType == 'date'}">
+          <ui:inputDate
+            aura:id="date"
+            value="{!v.value}"
+            displayDatePicker="true"
+          />
+        </aura:if>
 
-                <aura:if isTrue="{!v.displayType == 'date'}">
-                    <ui:inputDate aura:id="date" value="{!v.value}" displayDatePicker="true" />
-                </aura:if>
+        <aura:if isTrue="{!v.displayType == 'percent'}">
+          <ui:inputNumber aura:id="percent" value="{!v.value}" />
+        </aura:if>
 
-                <aura:if isTrue="{!v.displayType == 'percent'}">
-                    <ui:inputNumber aura:id="percent" value="{!v.value}"/>
-                </aura:if>
+        <aura:if isTrue="{!v.displayType == 'lookup'}">
+          <c:autoComplete
+            value="{!v.value}"
+            searchTerm="{!v.lookupName}"
+            sObjectName="{!v.lookup.sobjectType}"
+            label=" "
+            whereClause="{!v.lookup.whereClause}"
+            labelPlural="{!v.lookup.sobjectLabel}"
+          />
+        </aura:if>
+      </span>
+    </div>
 
-                <aura:if isTrue="{!v.displayType == 'lookup'}">
-                    <c:autoComplete value="{!v.value}" 
-                                    searchTerm="{!v.lookupName}"
-                                    sObjectName="{!v.lookup.sobjectType}" 
-                                    label=" " 
-                                    whereClause="{!v.lookup.whereClause}" 
-                                    labelPlural="{!v.lookup.sobjectLabel}"
-                                     />
+    <div class="{!and(v.editMode, v.isEditable) ? 'slds-hide' : ''}">
+      <span
+        class="{!and( empty( v.linkToRecord ), empty( v.linkToURL ), empty( v.classicLink ) ) ? '' : 'slds-hide'}"
+      >
+        <span
+          class="slds-grid slds-grid--align-spread"
+          ondblclick="{!c.toggleEdit}"
+        >
+          <aura:if isTrue="{!v.displayType == 'Boolean'}">
+            <ui:outputText
+              class="{!'whitespace-initial ' + v.class}"
+              title="{!v.value ? 'Yes' : 'No'}"
+              value="{!v.value ? 'Yes' : 'No'}"
+            />
+          </aura:if>
 
-                </aura:if>
+          <aura:if
+            isTrue="{!or(v.displayType == 'text', v.displayType == 'select')}"
+          >
+            <ui:outputText
+              class="{!'whitespace-initial ' + v.class}"
+              value="{!v.value}"
+            />
+          </aura:if>
+          <aura:if isTrue="{!v.displayType == 'date'}">
+            <ui:outputDate
+              class="{!'whitespace-initial ' + v.class}"
+              value="{!v.value}"
+            />
+          </aura:if>
 
-            </span>
-        </div>
-        
-        <div class="{!and(v.editMode, v.isEditable) ? 'slds-hide' : ''}">
-                <span class="{!and( empty( v.linkToRecord ), empty( v.linkToURL ), empty( v.classicLink ) ) ? '' : 'slds-hide'}">
-                    <span class="slds-grid slds-grid--align-spread" ondblclick="{!c.toggleEdit}">
+          <aura:if isTrue="{!v.displayType =='datetime'}">
+            <ui:outputDateTime
+              class="{!'whitespace-initial ' + v.class}"
+              value="{!v.value}"
+            />
+          </aura:if>
 
-                        <aura:if isTrue="{!v.displayType == 'Boolean'}">
-                            <ui:outputText class="{!'whitespace-initial ' + v.class}" title="{!v.value ? 'Yes' : 'No'}" value="{!v.value ? 'Yes' : 'No'}" />
-                        </aura:if>
-                        
-                        <aura:if isTrue="{!or(v.displayType == 'text', v.displayType == 'select')}">
-                           <ui:outputText class="{!'whitespace-initial ' + v.class}" value="{!v.value}" />
-                        </aura:if>
-                        <aura:if isTrue="{!v.displayType == 'date'}">
-                            <ui:outputDate class="{!'whitespace-initial ' + v.class}" value="{!v.value}" />
-                        </aura:if>
+          <aura:if isTrue="{!v.displayType == 'lookup'}">
+            <a
+              href="javascript:void(0)"
+              onclick="{!c.lookupClick}"
+              title="{!v.value}"
+            >
+              {!v.lookupName}
+            </a>
+          </aura:if>
 
-                        <aura:if isTrue="{!v.displayType =='datetime'}">
-                            <ui:outputDateTime class="{!'whitespace-initial ' + v.class}" value="{!v.value}" />
-                        </aura:if>
+          <aura:if isTrue="{!and(v.displayType == 'currency', v.value != 0)}">
+            <ui:outputCurrency
+              class="{!'whitespace-initial ' + v.class}"
+              format="$#,###.00"
+              value="{!v.value}"
+            />
+          </aura:if>
 
-                        <aura:if isTrue="{!v.displayType == 'lookup'}">
-                            <a href="javascript:void(0)" onclick="{!c.lookupClick}" title="{!v.value}">
-                                {!v.lookupName}
-                            </a>
-                        </aura:if>
+          <aura:if
+            isTrue="{!and(v.displayType == 'currencyNoDecimals', v.value != 0)}"
+          >
+            <ui:outputCurrency
+              class="{!'whitespace-initial ' + v.class}"
+              format="$#,###"
+              value="{!v.value}"
+            />
+          </aura:if>
 
-                        <aura:if isTrue="{!and(v.displayType == 'currency', v.value != 0)}">
-                            <ui:outputCurrency class="{!'whitespace-initial ' + v.class}" format="$#,###.00" value="{!v.value}" />
-                        </aura:if>
+          <aura:if isTrue="{!and(v.displayType == 'currency', v.value == 0)}">
+            <!-- <ui:outputCurrency class="{!'whitespace-initial ' + v.class}" format="$#,###" value="0" /> -->
+            $0.00
+          </aura:if>
 
-                        <aura:if isTrue="{!and(v.displayType == 'currencyNoDecimals', v.value != 0)}">
-                            <ui:outputCurrency class="{!'whitespace-initial ' + v.class}" format="$#,###" value="{!v.value}" />
-                        </aura:if>
+          <aura:if isTrue="{!v.displayType == 'percent'}">
+            <ui:outputText
+              class="{!'whitespace-initial ' + v.class}"
+              value="{! empty(v.value) ? '' : (v.value + '%')}"
+            />
+            <!-- <lightning:formattedNumber value="{! empty(v.value) ? null : v.value__c/100}" style="percent" /> -->
+          </aura:if>
 
-                        <aura:if isTrue="{!and(v.displayType == 'currency', v.value == 0)}">
-                            <!-- <ui:outputCurrency class="{!'whitespace-initial ' + v.class}" format="$#,###" value="0" /> -->
-                            $0.00
-                        </aura:if>
+          <aura:if isTrue="{!v.displayType == 'number'}">
+            <ui:outputNumber
+              class="{!'whitespace-initial ' + v.class}"
+              value="{!v.value}"
+            />
+          </aura:if>
 
-                        <aura:if isTrue="{!v.displayType == 'percent'}">
-                            <ui:outputText class="{!'whitespace-initial ' + v.class}" value="{! empty(v.value) ? '' : (v.value + '%')}" />
-                            <!-- <lightning:formattedNumber value="{! empty(v.value) ? null : v.value__c/100}" style="percent" /> -->
-                        </aura:if>
+          <aura:if
+            isTrue="{!v.displayType == 'file' &amp;&amp; v.isReadable}"
+          >
+            <a
+              href="javascript:void(0)"
+              class="{!empty(v.value) ? 'slds-hide' : ''}"
+              onclick="{!c.viewFile}"
+              title="View"
+            >
+              View
+            </a>
+          </aura:if>
 
-                        <aura:if isTrue="{!v.displayType == 'number'}">
-                            <ui:outputNumber class="{!'whitespace-initial ' + v.class}" value="{!v.value}" />
-                        </aura:if>
-                        
-                        <aura:if isTrue="{!v.displayType == 'file'}">
-                            <a href="javascript:void(0)" class="{!empty(v.value) ? 'slds-hide' : ''}" onclick="{!c.viewFile}" title="View">
-                                                            View
-                            </a>
-                        </aura:if>
+          <aura:if isTrue="{!v.isEditable}">
+            <button
+              class="slds-button slds-button--icon slds-cell-edit__button slds-m-left--x-small"
+              tabindex="-1"
+              onclick="{!c.toggleEdit}"
+            >
+              <span class="slds-assistive-text">Edit</span>
+              <lightning:icon
+                class="slds-button__icon--edit"
+                iconName="utility:edit"
+                size="xx-small"
+              />
+            </button>
+          </aura:if>
+        </span>
+      </span>
 
+      <span
+        class="{!or( !empty( v.linkToRecord ), !empty( v.linkToURL ), !empty( v.classicLink ) ) ? '' : 'slds-hide'}"
+      >
+        <aura:if isTrue="{!v.displayType == 'BooleanAndLink'}">
+          <aura:if isTrue="{!v.value}">
+            <a
+              href="javascript:void(0)"
+              onclick="{!c.handleOnClick}"
+              title="{!v.value}"
+            >
+              Yes
+            </a>
+            <aura:set attribute="else">
+              <ui:outputText
+                class="{!'whitespace-initial ' + v.class}"
+                title="{!v.value ? 'Yes' : 'No'}"
+                value="{!v.value ? 'Yes' : 'No'}"
+              />
+            </aura:set>
+          </aura:if>
 
-
-
-                        <aura:if isTrue="{!v.isEditable}">
-                                <button class="slds-button slds-button--icon slds-cell-edit__button slds-m-left--x-small" tabindex="-1" onclick="{!c.toggleEdit}">
-                                      <span class="slds-assistive-text">Edit</span>
-                                      <lightning:icon class="slds-button__icon--edit" iconName="utility:edit" size="xx-small" />
-                                </button>
-                        </aura:if>
-                    </span>
-
-                    
-            </span>
-
-            <span class="{!or( !empty( v.linkToRecord ), !empty( v.linkToURL ), !empty( v.classicLink ) ) ? '' : 'slds-hide'}">
-                
-                <aura:if isTrue="{!v.displayType == 'BooleanAndLink'}">
-                    <aura:if isTrue="{!v.value}">
-                        <a href="javascript:void(0)" onclick="{!c.handleOnClick}" title="{!v.value}">
-                            Yes
+          <aura:set attribute="else">
+            <aura:if
+              isTrue="{!v.displayType == 'reviewButton' &amp;&amp; v.linkToRecord != null}"
+            >
+              <span
+                class="{!v.value == true &amp;&amp; v.userAccountVendorType == 'Legal Counsel' ? '' : 'slds-hide'}"
+              >
+                <div style="text-align: center">
+                  <lightning:button
+                    variant="success"
+                    label="Review"
+                    title="Review"
+                    value="{!v.linkToRecord}"
+                    onclick="{!c.handleReview}"
+                  />
+                </div>
+              </span>
+              <aura:set attribute="else">
+                <aura:if isTrue="{!v.riskNumber}">
+                  <div
+                    class="{!empty(v.classicLink) ? (' whitespace-initial ' + v.class) : 'slds-hide'}"
+                  >
+                    <a
+                      href="javascript:void(0)"
+                      onclick="{!c.handleOnClick}"
+                      title="{!v.value}"
+                    >
+                      {!v.value}
+                    </a>
+                  </div>
+                  <aura:set attribute="else">
+                    <div
+                      class="{!empty(v.classicLink) ? ('whitespace-initial ' + v.class) : 'slds-hide'}"
+                    >
+                      <aura:if isTrue="{!v.isReadable}">
+                        <a
+                          href="javascript:void(0)"
+                          onclick="{!c.handleOnClick}"
+                          title="{!v.value}"
+                        >
+                          {!v.value}
                         </a>
                         <aura:set attribute="else">
-                            <ui:outputText class="{!'whitespace-initial ' + v.class}" title="{!v.value ? 'Yes' : 'No'}" value="{!v.value ? 'Yes' : 'No'}" />
+                          <ui:outputText
+                            class="{!'whitespace-initial ' + v.class}"
+                            title="{!v.value}"
+                            value="{!v.value}"
+                          />
                         </aura:set>
-                    </aura:if>
-                    
-                    <aura:set attribute="else">
-                        <aura:if isTrue="{!v.riskNumber}">
-                                <div class="{!empty(v.classicLink) ? (' whitespace-initial ' + v.class) : 'slds-hide'}" >
-                                    <a href="javascript:void(0)" onclick="{!c.handleOnClick}" title="{!v.value}">
-                                        {!v.value}
-                                    </a>
-                                </div>
-                            <aura:set attribute="else">
-                                <div class="{!empty(v.classicLink) ? ('whitespace-initial ' + v.class) : 'slds-hide'}">
-                                    <a href="javascript:void(0)" onclick="{!c.handleOnClick}" title="{!v.value}">
-                                        {!v.value}
-                                    </a>
-                                </div>
-                            </aura:set>
-                        </aura:if>
-                        
-                       <!-- <div class="{!empty(v.classicLink) ? ('whitespace-initial ' + v.class) : 'slds-hide'}" style="background-color: red;">
+                      </aura:if>
+                    </div>
+                  </aura:set>
+                </aura:if>
+
+                <!-- <div class="{!empty(v.classicLink) ? ('whitespace-initial ' + v.class) : 'slds-hide'}" style="background-color: red;">
                             <a href="javascript:void(0)" onclick="{!c.handleOnClick}" title="{!v.value}">
                                 {!v.value}
                             </a>
                         </div>-->
-                        
-                        <div class="{!!empty(v.classicLink) ? ('whitespace-initial ' + v.class) : 'slds-hide'}">
-                            <div class="{!'whitespace-initial ' + v.class}">
-                                <ui:outputURL label="{!v.value}" title="{!v.value}" value="{!v.classicLink}"/>
-                            </div>
-                        </div>
-                        
-                    </aura:set>
-                </aura:if>
-                
-            </span>
-        </div>
-     </td>
 
+                <div
+                  class="{!!empty(v.classicLink) ? ('whitespace-initial ' + v.class) : 'slds-hide'}"
+                >
+                  <div class="{!'whitespace-initial ' + v.class}">
+                    <aura:if isTrue="{!v.isReadable}">
+                      <ui:outputURL
+                        label="{!v.value}"
+                        title="{!v.value}"
+                        value="{!v.classicLink}"
+                      />
+                      <aura:set attribute="else">
+                        <ui:outputText
+                          value="{!v.value}"
+                          title="{!v.value}"
+                        />
+                        </aura:set>
+                    </aura:if>
+                  </div>
+                </div>
+              </aura:set>
+            </aura:if>
+          </aura:set>
+        </aura:if>
+      </span>
+    </div>
+  </td>
 </aura:component>

@@ -29,6 +29,9 @@
     action="{!c.handleSortChangeEvent}"
     phase="capture"
   />
+  <aura:attribute name="recordIds" type="String[]" />
+  <aura:attribute name="recordSharingMap" type="Map" />
+
   <aura:handler event="force:refreshView" action="{!c.refresh}" />
 
   <aura:attribute name="records" type="Object[]" />
@@ -116,6 +119,7 @@
           name="File_Name__c"
           linkToRecord="ContentVersion_Id__c"
           linkToURL="/sfc/servlet.shepherd/version/download/"
+          isReadable="isReadable"
         />
         <c:DataTableColumn
           label="ContentVersionID"
@@ -125,6 +129,13 @@
           sortable="false"
         />
 
+        <!-- <c:DataTableColumn
+        label="isReadable"
+        name="isReadable"
+        hidden="true"
+        displayType="hidden"
+        sortable="false"
+      /> -->
         <c:DataTableColumn
           label="Document Type"
           name="Document_Type__c"
@@ -138,6 +149,7 @@
           sortable="false"
           displayType="file"
           columnWidth="5"
+          isReadable="isReadable"
         />
 
         <c:DataTableColumn

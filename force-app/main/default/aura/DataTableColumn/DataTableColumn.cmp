@@ -41,6 +41,10 @@
                     type="String"
                     description="Field path on row data for this column that represents an sobject record id. Only one of linkToRecord or linkToURL should be used."/>
 
+     <aura:attribute name="userAccountVendorType"
+                    type="String"
+                    description="The Account Vendor Subtype associated with current user."/>
+
     <aura:attribute name="linkToURL"
                     type="String"
                     description="Field path on row data for this column that represents an arbitrary URL. Only one of linkToRecord or linkToURL should be used."/>
@@ -63,6 +67,10 @@
     <aura:attribute name="selectOptions"
                     type="String[]"
                     description="" />
+    
+    <aura:attribute name="isReadable"
+                    type="String"
+                    description="Determines if record is shared to current user" />
 
     <aura:attribute name="columnWidth"
                     type="String" />

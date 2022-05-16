@@ -4,6 +4,8 @@
         //console.log('--cell init--');
 
         var row = component.get( 'v.row' );
+
+
         console.log('rows:::: datatable cell:::',row);
         console.log('Clear_Result__c:::: datatable cell:::',row['Clear_Result__r']);
 		
@@ -18,15 +20,35 @@
         }
         
         var column = component.get( 'v.column' );
-
+        if($A.util.isEmpty(column.get('v.isReadable'))) {
+            component.set('v.isReadable', true);
+        } else { 
+            let key = column.get('v.isReadable');
+            let childKey;
+            if(key.includes('.')) {
+                key = key.split('.')[0];
+                childKey = key.split('.')[1];
+            }
+            if(row.hasOwnProperty(key)) {
+                let value;
+                if(childKey != null){
+                    value = row[key][childKey];
+                } else {
+                    value = row[key];
+                }
+                
+                component.set('v.isReadable', value);
+            }
+        }
         //console.log(!$A.util.isEmpty(row['Parent_Property__c']));
         //console.log(column.get('v.name'))
 
         //if(column.)
 
         component.set('v.displayType', column.get('v.displayType'));
-        
+        component.set('v.userAccountVendorType', column.get('v.userAccountVendorType'));
         component.set('v.isEditable', column.get('v.isEditable'));
+        // component.set('v.isReadable', column.get('v.isReadable'));
         if(component.get('v.displayType') == 'select' ){
             var select = component.find('select');
             select.set('v.options', column.get('v.selectOptions'));
@@ -67,6 +89,7 @@
         // determine type of links to use
         var linkToRecord = column.get( 'v.linkToRecord' );
         var linkToURL = column.get( 'v.linkToURL' );
+        
                 // if linking to a record we first check if the expression evaluates to a field on the row object
         // that holds the value to link to, otherwise will use the value as-is for linking.
         // since this is intended to be an sobject record id, for classic theme only then we ensure
@@ -123,6 +146,7 @@
         }
 
 
+
         //var autocomplete_attributes
         if(column.get('v.displayType') == 'lookup'){
             component.set('v.lookup', JSON.parse(JSON.stringify(column.get('v.lookup'))) );
@@ -157,6 +181,15 @@
             component.set('v.editMode', true);
         }
 
+    },
+
+    handleReview : function(component, event, helper){
+        const recId = event.getSource().get("v.value");
+        const cmpEvent = component.getEvent("reviewEvent");
+        cmpEvent.setParams({
+            'documentId' : recId
+        });
+        cmpEvent.fire();
     },
 
 

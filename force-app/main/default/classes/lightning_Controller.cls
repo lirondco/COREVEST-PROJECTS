@@ -9,6 +9,27 @@ public without sharing class lightning_Controller {
   public static Boolean dataTapeSaving = false;
 
   @AuraEnabled
+  public static Map<Id, Boolean> generateReadAccessMap(List<Id> recordIds){
+    try {
+      Map<Id,Boolean> returnMap = new Map<Id,Boolean>();
+      List<UserRecordAccess> uras = [
+        SELECT RecordId, HasReadAccess
+        FROM UserRecordAccess
+        WHERE UserId=:UserInfo.getUserId()
+        AND RecordId IN : recordIds
+      ];
+
+      for(UserRecordAccess ura : uras){
+        returnMap.put(ura.RecordId, ura.HasReadAccess);
+      }
+
+      return returnMap;
+    } catch (Exception e) {
+      throw new AuraHandledException(e.getMessage());
+    }
+  }
+
+  @AuraEnabled
   public static List<sObject> fetchLookUpValues(
     String searchKeyWord,
     String ObjectName
@@ -1479,8 +1500,7 @@ resultsData.add(new propertyListWrapper(sobj, 'No', null, null));
       'Require_AVM_Sync_on_UW_Submission__c',
       'Require_X_Author_Validation_on_Pricing__c',
       'Require_X_Author_Validation_on_UW_Submis__c',
-      'Validated_Address_Threshold__c',
-      'Request_Beekin_Rental_Data_Validation__c'  
+      'Validated_Address_Threshold__c'
     };
 
     String queryString = 'SELECT ';
