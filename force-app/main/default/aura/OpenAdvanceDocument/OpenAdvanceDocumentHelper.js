@@ -538,7 +538,10 @@
   createLoanApprovalRequestFormCmp: function (component, event) {
     $A.createComponent(
       "c:loanRequestApprovalForm",
-      {},
+      {
+        oncancel: component.getReference("c.cancel"),
+        dealId: component.get("v.dealId"),
+      },
       function (newCmp, status, errorMessage) {
         if (status === "SUCCESS") {
           var body = component.get("v.body");

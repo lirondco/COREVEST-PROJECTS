@@ -82,7 +82,9 @@ public without sharing class IcRejectionLinkController {
       }
 
       addlRecipIds.add(deal.OwnerId);
-      addlRecipIds.add(deal.Underwriter__c);
+      if(String.isNotEmpty(deal.Underwriter__c)) {
+        addlRecipIds.add(deal.Underwriter__c);
+      }
 
       if (deal.Record_Type_Name__c == 'Term_Loan') {
         termDealIdsByRecipients.put(deal.Id, addlRecipIds);
@@ -126,7 +128,9 @@ public without sharing class IcRejectionLinkController {
         termEmail.setTemplateId(tempId);
         termEmail.setTargetObjectId(deal.Contact__c);
         termEmail.setTreatTargetObjectAsRecipient(false);
-        termEmail.setToAddresses(recpIds);
+        if(recpIds.size() > 0) {
+          termEmail.setToAddresses(recpIds);
+        }
         termEmail.setWhatId(tOpptId);
         termEmail.setReplyTo('caf-apps@cvest.com');
         if (handlerAddress != '') {
@@ -145,7 +149,9 @@ public without sharing class IcRejectionLinkController {
         bridgeEmail.setTemplateId(tempId);
         bridgeEmail.setTargetObjectId(deal.Contact__c);
         bridgeEmail.setTreatTargetObjectAsRecipient(false);
-        bridgeEmail.setToAddresses(recpIds);
+        if(recpIds.size() > 0) {
+          bridgeEmail.setToAddresses(recpIds);
+        }
         bridgeEmail.setWhatId(bOpptId);
         bridgeEmail.setReplyTo('caf-apps@cvest.com');
         if (handlerAddress != '') {
@@ -225,8 +231,8 @@ public without sharing class IcRejectionLinkController {
           toastVariant = 'success';
         } catch (Exception e) {
           Database.rollback(sp);
-          toastTitle = 'Deal Rejection Failed';
-          toastMessage = 'Unexpected error occurred while rejecting the deal.';
+          toastTitle = 'Deal Rejection Failed. Error on Line ' + e.getLineNumber();
+          toastMessage = e.getMessage();
           toastVariant = 'error';
         }
       } else {
@@ -263,7 +269,7 @@ public without sharing class IcRejectionLinkController {
 
     if (deal.Final_Spread__c != null) {
       ahc.Spread__c = deal.Final_Spread__c;
-      ahc.Spread__c *= 100;
+      // ahc.Spread__c *= 100;
     }
 
     if(deal.CAF_Upfront_Fee__c != null) {

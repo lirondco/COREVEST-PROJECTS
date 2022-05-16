@@ -45,6 +45,8 @@ public without sharing class opportunity_Helper {
     'Closed Won'
   };
 
+  public static final User INTEGRATION_USER = [SELECT Id, Name FROM User WHERE Email LIKE 'integrations@cvest.com%' LIMIT 1];
+
   public static Integer CHUNK_SIZE = 1;
 
   // public static Map<String, Id> compileVendorMap(){
@@ -566,6 +568,7 @@ public without sharing class opportunity_Helper {
     Set<Id> businessEntityIds = new Set<Id>();
 
     Map<Id, Opportunity> oppsHaveTeamToDelete = new Map<Id, Opportunity>();
+    List<Approval_History__c> rejectedIcAHS = new List<Approval_History__c>();
 
     for (Opportunity currOpp : newMap.values()) {
       Opportunity prevOpp = oldMap.get(currOpp.Id);
@@ -598,14 +601,26 @@ public without sharing class opportunity_Helper {
         currOpp.IC_Approval_Date__c = System.today();
       }
 
-   if (validateDealForIcReapproval(prevOpp, currOpp)) {
+   if (validateDealForIcReapproval(prevOpp, currOpp) && currOpp.IC_Approval__c == 'Approved') {
+    Savepoint sp = Database.setSavepoint();
+    try {
+        rejectedIcAHS.add(rejectDeal(currOpp));
         currOpp.IC_Approval__c = null;
         currOpp.IC_Approval_Date__c = null;
         currOpp.StageName = 'Underwriting';
         reveresedIcDeals.put(currOpp.Id, currOpp);
+    } catch (Exception err) {
+      Database.rollback(sp);
+      System.debug(err.getMessage() + ' ' + err.getLineNumber());
+      currOpp.addError(err.getMessage());
+    }
+
       }
     }
 
+    if(rejectedIcAHS.size() > 0){
+      insert rejectedIcAHS;
+    }
     if (reveresedIcDeals.size() > 0) {
       emailReversedIcApprovalAlert(reveresedIcDeals);
     }
@@ -1364,6 +1379,95 @@ public without sharing class opportunity_Helper {
           }
         }
       }
+//CIP-2416.RS.5/11/22.Begin  
+	System.debug('RS 999 closedWonMap.keySet :' +closedWonMap.keySet());
+    List<Loan_Version__c> loanVersionList = [SELECT Id,Finalized__c,RecordTypeId,Deal__c   FROM Loan_Version__c WHERE RecordType.Name in ('Schedule of Lender Cost', 'Loan Agreement')
+                             AND Finalized__c = True AND Deal__c IN :closedWonMap.keySet()];
+
+	id slcId = [SELECT Id FROM RecordType WHERE sobjecttype = 'Loan_Version__c' and DeveloperName  = 'Schedule_of_Lender_Cost'].id;
+    id laId  = [SELECT Id FROM RecordType WHERE sobjecttype = 'Loan_Version__c' and DeveloperName  = 'Loan_Agreement'].id;       
+    Map<id,Map<String,String>> loanVersionDealIds = new  Map<id,Map<String,String>>();
+			for (Loan_Version__c loanVersion : loanVersionList)
+            {
+                System.Debug('RS999 loanVersion :' +loanVersion);
+                if (loanVersionDealIds != Null)
+                {
+                if (loanVersionDealIds.containsKey(loanVersion.Deal__c))
+                {
+                 	Map<String,String> recordTypeNameMap = loanVersionDealIds.get(loanVersion.Deal__c);
+                    if(!recordTypeNameMap.containsKey(loanVersion.RecordTypeId))
+                     {
+                        recordTypeNameMap.put(loanVersion.RecordTypeId,loanVersion.RecordTypeId);
+                        loanVersionDealIds.put(loanVersion.Deal__c,recordTypeNameMap);
+                        System.Debug('RS999 loanVersionDealIds 1 :' +loanVersionDealIds);
+                     }
+                 }
+                else
+                {
+                    Map<String,String> recordTypeNameMap = new Map<String, String>();
+                    recordTypeNameMap.put(loanVersion.RecordTypeId,loanVersion.RecordTypeId);
+                    loanVersionDealIds.put(loanVersion.Deal__c,recordTypeNameMap);
+                    System.Debug('RS999 loanVersionDealIds 2 :' +loanVersionDealIds);                    
+                }
+               }
+                else
+                {
+                    System.Debug('RS999 - loanVersion.RecordTypeId :' +loanVersion.RecordTypeId);
+                    Map<String,String> recordTypeNameMap = new Map<String, String>();
+                    recordTypeNameMap.put(loanVersion.RecordTypeId,loanVersion.RecordTypeId);
+                    loanVersionDealIds.put(loanVersion.Deal__c,recordTypeNameMap);
+                    System.Debug('RS999 loanVersionDealIds 2 :' +loanVersionDealIds);                    
+                }                
+            }        
+
+	System.Debug('RS999 loanVersionDealIds :' +loanVersionDealIds);
+        
+	for (id closeWonDealId : closedWonMap.keySet())
+    {
+        boolean validDeal = True;
+        if (loanVersionDealIds != null)
+        {
+        if (loanVersionDealIds.size() > 0)
+        {
+        if (loanVersionDealIds.containsKey(closeWonDealId))
+        {
+            System.Debug('RS999 Into deal found with loan version records');
+            Map<String,String> recordTypeNameMap = loanVersionDealIds.get(closeWonDealId);
+
+			if (recordTypeNameMap.containskey(slcId) && recordTypeNameMap.containskey(laId))
+            {
+            	System.Debug('RS999 Into deal found with loan version records for both record types');                
+                validDeal = True;
+            }
+        	else
+        	{
+                System.Debug('RS999 Into deal NOT found with loan version records for both record types');     
+                validDeal = False;
+        	}			
+        }
+        else
+        {
+            validDeal = False;
+        }
+        }
+        else
+        {
+            validDeal = False;
+        }
+        }
+        else
+        {
+            validDeal = False;
+        }            
+        
+        System.Debug('RS999 validDeal :' +validDeal);        
+        if(!validDeal)
+        {
+         	closedWonMap.get(closeWonDealId).addError('Deal should have finalized Loan Version for \'Schedule of Lender Cost\' and  \'Loan Agreement\'');
+        }
+    }
+//CIP-2416.RS.5/11/22.End
+        
     }
   }
 
@@ -1980,7 +2084,7 @@ public without sharing class opportunity_Helper {
       /*CIP2026.RS. 3/2/2022. Begin */
       if (o.Type == 'Bridge Loan') {
         for (String s : propertyAdvanceUpdateDealFields) {
-          if (o.get(s) != oldMap.get(o.Id).get(s)) {
+          if (o.get(s) != oldMap.get(o.Id).get(s) && mapFromOppIdToProperties.containsKey(o.Id)) {
             for (Property__c pr : mapFromOppIdToProperties.get(o.Id)) {
               propertyAdvancePropIds.add(pr.Id);
             }
@@ -3076,6 +3180,7 @@ public without sharing class opportunity_Helper {
   public static void emailReversedIcApprovalAlert(
     Map<Id, Opportunity> dealMap
   ) {
+
     List<EmailServicesAddress> esas = [
       SELECT Id, LocalPart, EmailDomainName, DeveloperName
       FROM EmailServicesAddress
@@ -3135,7 +3240,13 @@ public without sharing class opportunity_Helper {
       }
 
       addlRecipIds.add(deal.OwnerId);
-      addlRecipIds.add(deal.Underwriter__c);
+      if(deal.Underwriter__c != null) {
+        addlRecipIds.add(deal.Underwriter__c);
+      }
+
+      if(deal.X2nd_Underwriter__c != null) {
+        addlRecipIds.add(deal.X2nd_Underwriter__c);
+      }
 
       if (deal.Record_Type_Name__c == 'Term_Loan') {
         termDealIdsByRecipients.put(deal.Id, addlRecipIds);
@@ -3489,11 +3600,12 @@ public without sharing class opportunity_Helper {
           .isNumeric()
         ? Decimal.valueOf(currOpp.Actual_DSCR__c.replaceAll('[^.\\d]', ''))
         : null;
-      Decimal dscrDifference = currActualDSCR - prevActualDSCR;
+      Decimal dscrDifference =  prevActualDSCR - currActualDSCR;
       shouldReapproveActualDSCR =
-        dscrDifference > 0.05 &&
-        !(prevActualDSCR > 1.80 &&
-        currActualDSCR < 1.30);
+        (prevActualDSCR < 1.30 && dscrDifference > 0) || 
+        (dscrDifference > 0.05 &&
+        !(prevActualDSCR >= 1.80 &&
+        currActualDSCR >= 1.30));
     }
 
     if (isBridge) {
@@ -3515,6 +3627,60 @@ public without sharing class opportunity_Helper {
     }
 
     return false;
+  }
+
+
+  public static Approval_History__c rejectDeal(Opportunity deal) {
+    List<ProcessInstance> processInstances = [
+      SELECT
+        Id,
+        Status,
+        ProcessDefinition.Name
+      FROM ProcessInstance
+      WHERE
+        ProcessDefinition.Name LIKE '%IC%'
+        AND Status = 'Approved'
+        AND TargetObjectId = :deal.Id
+        ORDER BY CreatedDate Desc
+      LIMIT 1
+    ];
+
+    if (processInstances.size() > 0) {
+         return createApprovalHistory(processInstances[0].ProcessDefinition.Name, deal);
+    } else {
+      return null;
+    }
+  }
+  
+
+  public static Approval_History__c createApprovalHistory(String approvalType, Opportunity deal) {
+    String ahProcessName = (approvalType != 'Term Sub-IC' || approvalType != 'Bridge Sub-IC')
+    ? approvalType + ' Process'
+    : approvalType;
+    Approval_History__c ahc = new Approval_History__c(
+      Parent_Status__c = 'Rejected',
+      Deal__c = deal.Id,
+      Name = 'Approval Request: ' + deal.Name.left(50),
+      ProcessName__c = ahProcessName,
+      Approver__c = INTEGRATION_USER.Name,
+      Actor__c = INTEGRATION_USER.Id,
+      Date_Acted__c = System.now(),
+      Status__c = 'Rejected',
+      Status_Text__c = 'Rejected',
+      Approval_Type__c = approvalType,
+      Tracking_Status__c = 'Committee',
+      Deal_Stage_At_Time_of_Submission__c = 'Underwriting',
+      Comments__c = 'IC Approval is no longer approved.'
+    );
+
+    if (deal.Final_Spread__c != null) {
+      ahc.Spread__c = deal.Final_Spread__c;
+    }
+
+    if(deal.CAF_Upfront_Fee__c != null) {
+      ahc.Origination_Fee__c = deal.CAF_Upfront_Fee__c;
+    }
+    return ahc;
   }
 
   // public static void createRtlDealContacts(Set<Id> dealIds) {

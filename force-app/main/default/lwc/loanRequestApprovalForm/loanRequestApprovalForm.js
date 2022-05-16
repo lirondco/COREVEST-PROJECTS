@@ -1,8 +1,10 @@
-import { LightningElement } from 'lwc';
+import { api, LightningElement } from 'lwc';
 import xlsxPopulate from "@salesforce/resourceUrl/xlsx_populate";
 import { loadScript } from "lightning/platformResourceLoader";
 
 export default class LoanRequestApprovalForm extends LightningElement {
+  @api dealId;
+
   connectedCallback() {
     console.log('CONNECTED');
     this.onFileSave();
@@ -12,5 +14,9 @@ export default class LoanRequestApprovalForm extends LightningElement {
       .then(() => {
         console.log('XLSX POPULATE LOADED');
       });
+  }
+
+  handleCancel() {
+    this.dispatchEvent(new CustomEvent('cancel'));
   }
 }

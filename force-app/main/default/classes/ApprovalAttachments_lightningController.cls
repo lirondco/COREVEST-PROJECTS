@@ -27,8 +27,8 @@ public without sharing class ApprovalAttachments_lightningController {
   public static final List<String> IC_PROCESS_NAMES = new List<String>{
     'Bridge IC Process',
     'Term IC Process',
-    'Term Sub-IC',
-    'Bridge Sub-IC'
+    'Term Sub-IC Process',
+    'Bridge Sub-IC Process'
   };
 
   public static Opportunity modifyOpportunity(Opportunity o) {
@@ -1022,7 +1022,7 @@ public without sharing class ApprovalAttachments_lightningController {
         String.isNotEmpty(ah.ProcessName__c) &&
         IC_PROCESS_NAMES.contains(ah.ProcessName__c)
       ) {
-        messageText = ah.ProcessName__c + ' has been rejected.';
+        messageText = ' ' + ah.ProcessName__c + ' has been rejected.';
       }
       createNotification(
         o,

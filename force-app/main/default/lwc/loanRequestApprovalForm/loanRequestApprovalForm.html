@@ -1,3 +1,38 @@
 <template>
-    
+  <lightning-quick-action-panel header="Loan Request Approval Form">
+    <div class="slds-var-p-around_medium">
+      <lightning-layout multiple-rows="true">
+        <lightning-layout-item padding="around-small" size="6">
+            <!-- combobox for property list-->
+        </lightning-layout-item>
+        <lightning-layout-item padding="around-small" size="6">
+        </lightning-layout-item>
+        <lightning-layout-item padding="around-small" size="6">
+          <lightning-input
+            type="number"
+            name="defaultRate"
+            label="Default Rate"
+            formatter="currency"
+            step="0.01"
+          ></lightning-input>
+        </lightning-layout-item>
+        <lightning-layout-item padding="around-small" size="6">
+            <!--propertyTaxStatus-->
+            
+        </lightning-layout-item>
+      </lightning-layout>
+    </div>
+    <div slot="footer">
+      <lightning-button
+        variant="neutral"
+        label="Cancel"
+        onclick={handleCancel}
+      ></lightning-button>
+      <lightning-button
+        variant="brand"
+        label="Generate File"
+        class="slds-m-left_x-small"
+      ></lightning-button>
+    </div>
+  </lightning-quick-action-panel>
 </template>

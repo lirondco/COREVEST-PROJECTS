@@ -16,14 +16,14 @@ global class icApprovalHandler implements Messaging.InboundEmailHandler {
   static final String SANDBOX_EMAIL = 'ldecastro@mkpartners.com';
 
   public static final Map<String, Map<Id, User>> USERINFOMAP = new Map<String, Map<Id, User>>{
-    'Bridge IC Process' => queryUserInfo('Bridge_IC_Approval'),
-    'Term Sub-IC' => queryUserInfo('Term_Sub_IC'),
+    'Bridge IC Process' => queryUserInfo('Term_IC_Approval'),
+    'Term Sub-IC Process' => queryUserInfo('Term_Sub_IC'),
     'Term IC Process' => queryUserInfo('Term_IC_Approval'),
-    'Bridge Sub-IC' => queryUserInfo('Term_Sub_IC')
+    'Bridge Sub-IC Process' => queryUserInfo('Term_Sub_IC')
   };
 
   public static final Set<String> BRIDGE_IC_GROUP = queryEmailAddresses(
-    'Bridge_IC_Approval'
+    'Term_IC_Approval'
   );
   public static final Set<String> TERM_SUB_IC_GROUP = queryEmailAddresses(
     'Term_Sub_IC'
@@ -640,6 +640,7 @@ global class icApprovalHandler implements Messaging.InboundEmailHandler {
         new List<Messaging.SingleEmailMessage>{ sem }
       );
     } catch (Exception e) {
+      System.debug('error sending email' + e.getMessage() + ' ' + e.getLineNumber());
       String errorMessage = '';
       errorMessage += JSON.serialize(recipients);
       errorMessage += '<br/>' + ccUsers == null
@@ -969,7 +970,7 @@ global class icApprovalHandler implements Messaging.InboundEmailHandler {
     Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
 
     email.setToAddresses(
-      new List<String>{ 'mcastillo@mkpartners.com', 'bryon@cvest.com' }
+      new List<String>{ 'ldecastro@mkpartners.com', 'bryon@cvest.com' }
     );
 
     String body = '';
