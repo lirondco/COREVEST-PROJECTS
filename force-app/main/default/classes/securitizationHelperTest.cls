@@ -55,12 +55,9 @@ public with sharing class securitizationHelperTest {
       FROM Deal_x_Funding_Vehicle__c
       WHERE Funding_Vehicle__r.Securitization__c = :testSc.Id
     ];
-
-    testSc.Status__c = 'Closed';
-
-    update testSc;
     
     testSc.Status__c = 'Redeemed';
+    testSc.Redemption_Date__c = System.today();
     update testSc;
     // System.assertEquals(true, dfvs.size() > 0, 'A connection record should have been created');
 

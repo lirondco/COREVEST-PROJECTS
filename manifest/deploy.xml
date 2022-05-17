@@ -1,28 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
-        <members>AdvanceClearToFundController</members>
-        <members>AdvanceClearToFundControllerTest</members>
+        <members>SecuritizationHelper</members>
+        <members>securitizationHelperTest</members>
         <name>ApexClass</name>
     </types>
     <types>
-        <members>advanceClearToFund</members>
-        <name>LightningComponentBundle</name>
+        <members>Securitization</members>
+        <name>ApexTrigger</name>
     </types>
     <types>
-        <members>AdvanceDocumentUploader</members>
-        <name>AuraDefinitionBundle</name>
+        <members>Securitization__c.Redemption_Date__c</members>
+        <name>CustomField</name>
     </types>
     <types>
-        <members>Document_Structure.LOC_Renovation_Cert_sab</members>
-        <members>Document_Structure.Advance_Funding_Security_Instrument_sab</members>
-        <members>Document_Structure.LOC_Closing_Instructions_sab</members>
-        <members>Document_Structure.HOA_Policy_if_applicable_sab</members>
-        <members>Document_Structure.Settlement_Statement_sab2</members>
-        <members>Document_Structure.Flood_Insurance_if_applicable_sab</members>
-        <name>CustomMetadata</name>
+        <members>Securitization__c</members>
+        <name>CustomObject</name>
     </types>
-
     <version>53.0</version>
 </Package>
-<!-- sfdx force:source:deploy -x manifest/deploy.xml -l RunSpecifiedTests -r AdvanceClearToFundControllerTest -->
+<!-- sfdx force:source:deploy -x manifest/deploy.xml -l RunSpecifiedTests -r securitizationHelperTest -->

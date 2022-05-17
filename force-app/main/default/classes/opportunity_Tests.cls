@@ -67,7 +67,7 @@ public with sharing class opportunity_Tests {
   static testMethod void opportunity_TermTest02() {
     User origU = new User(
       Alias = 'orig',
-      Email = 'standarduser1@cvest.com',
+      Email = 'standarduser1@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -82,7 +82,7 @@ public with sharing class opportunity_Tests {
 
     User origU2 = new User(
       Alias = 'orig',
-      Email = 'standarduser2@cvest.com',
+      Email = 'standarduser2@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -97,7 +97,7 @@ public with sharing class opportunity_Tests {
 
     User origU3 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -112,7 +112,7 @@ public with sharing class opportunity_Tests {
 
     User origU4 = new User(
       Alias = 'orig',
-      Email = 'standarduser4@cvest.com',
+      Email = 'standarduser4@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -127,7 +127,7 @@ public with sharing class opportunity_Tests {
 
     User analystU = new User(
       Alias = 'analyst',
-      Email = 'standarduser5@cvest.com',
+      Email = 'standarduser5@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -142,7 +142,7 @@ public with sharing class opportunity_Tests {
 
     User analystU2 = new User(
       Alias = 'analyst',
-      Email = 'standarduser6@cvest.com',
+      Email = 'standarduser6@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -157,7 +157,7 @@ public with sharing class opportunity_Tests {
 
     User analystU3 = new User(
       Alias = 'analyst',
-      Email = 'standarduser7@cvest.com',
+      Email = 'standarduser7@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -172,7 +172,7 @@ public with sharing class opportunity_Tests {
 
     User analystU4 = new User(
       Alias = 'analyst',
-      Email = 'standarduser8@cvest.com',
+      Email = 'standarduser8@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -187,7 +187,7 @@ public with sharing class opportunity_Tests {
 
     User uwU = new User(
       Alias = 'underw',
-      Email = 'standarduser9@cvest.com',
+      Email = 'standarduser9@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -202,7 +202,7 @@ public with sharing class opportunity_Tests {
 
     User uwU2 = new User(
       Alias = 'underw',
-      Email = 'standarduser10@cvest.com',
+      Email = 'standarduser10@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -217,7 +217,7 @@ public with sharing class opportunity_Tests {
 
     User lcU = new User(
       Alias = 'loanco',
-      Email = 'standarduser11@cvest.com',
+      Email = 'standarduser11@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -232,7 +232,7 @@ public with sharing class opportunity_Tests {
 
     User lcU2 = new User(
       Alias = 'loanco',
-      Email = 'standarduser12@cvest.com',
+      Email = 'standarduser12@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -247,7 +247,7 @@ public with sharing class opportunity_Tests {
 
     User closerU = new User(
       Alias = 'clos',
-      Email = 'standarduser13@cvest.com',
+      Email = 'standarduser13@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -262,7 +262,7 @@ public with sharing class opportunity_Tests {
 
     User closerU2 = new User(
       Alias = 'clos',
-      Email = 'standarduser14@cvest.com',
+      Email = 'standarduser14@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -307,7 +307,7 @@ public with sharing class opportunity_Tests {
     List<User> newUsers = new List<User>();
     User origU = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -322,7 +322,7 @@ public with sharing class opportunity_Tests {
 
     User origU2 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -337,7 +337,7 @@ public with sharing class opportunity_Tests {
 
     User origU3 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -352,7 +352,7 @@ public with sharing class opportunity_Tests {
 
     User origU4 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -367,7 +367,7 @@ public with sharing class opportunity_Tests {
 
     User analystU = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -382,7 +382,7 @@ public with sharing class opportunity_Tests {
 
     User analystU2 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -397,7 +397,7 @@ public with sharing class opportunity_Tests {
 
     User analystU3 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -412,7 +412,7 @@ public with sharing class opportunity_Tests {
 
     User analystU4 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -427,7 +427,7 @@ public with sharing class opportunity_Tests {
 
     User uwU = new User(
       Alias = 'underw',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -442,7 +442,7 @@ public with sharing class opportunity_Tests {
 
     User uwU2 = new User(
       Alias = 'underw',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -457,7 +457,7 @@ public with sharing class opportunity_Tests {
 
     User lcU = new User(
       Alias = 'loanco',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -472,7 +472,7 @@ public with sharing class opportunity_Tests {
 
     User lcU2 = new User(
       Alias = 'loanco',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -487,7 +487,7 @@ public with sharing class opportunity_Tests {
 
     User closerU = new User(
       Alias = 'clos',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -502,7 +502,7 @@ public with sharing class opportunity_Tests {
 
     User closerU2 = new User(
       Alias = 'clos',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -552,7 +552,7 @@ public with sharing class opportunity_Tests {
     List<User> newUsers = new List<User>();
     User origU = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -567,7 +567,7 @@ public with sharing class opportunity_Tests {
 
     User origU2 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -582,7 +582,7 @@ public with sharing class opportunity_Tests {
 
     User origU3 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -597,7 +597,7 @@ public with sharing class opportunity_Tests {
 
     User origU4 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -612,7 +612,7 @@ public with sharing class opportunity_Tests {
 
     User analystU = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -627,7 +627,7 @@ public with sharing class opportunity_Tests {
 
     User analystU2 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -642,7 +642,7 @@ public with sharing class opportunity_Tests {
 
     User analystU3 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -657,7 +657,7 @@ public with sharing class opportunity_Tests {
 
     User analystU4 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -672,7 +672,7 @@ public with sharing class opportunity_Tests {
 
     User uwU = new User(
       Alias = 'underw',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -687,7 +687,7 @@ public with sharing class opportunity_Tests {
 
     User uwU2 = new User(
       Alias = 'underw',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -702,7 +702,7 @@ public with sharing class opportunity_Tests {
 
     User lcU = new User(
       Alias = 'loanco',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -717,7 +717,7 @@ public with sharing class opportunity_Tests {
 
     User lcU2 = new User(
       Alias = 'loanco',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -732,7 +732,7 @@ public with sharing class opportunity_Tests {
 
     User closerU = new User(
       Alias = 'clos',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -747,7 +747,7 @@ public with sharing class opportunity_Tests {
 
     User closerU2 = new User(
       Alias = 'clos',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -804,7 +804,7 @@ public with sharing class opportunity_Tests {
     List<User> newUsers = new List<User>();
     User origU = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -819,7 +819,7 @@ public with sharing class opportunity_Tests {
 
     User origU2 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -834,7 +834,7 @@ public with sharing class opportunity_Tests {
 
     User origU3 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -849,7 +849,7 @@ public with sharing class opportunity_Tests {
 
     User origU4 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -864,7 +864,7 @@ public with sharing class opportunity_Tests {
 
     User analystU = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -879,7 +879,7 @@ public with sharing class opportunity_Tests {
 
     User analystU2 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -894,7 +894,7 @@ public with sharing class opportunity_Tests {
 
     User analystU3 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -909,7 +909,7 @@ public with sharing class opportunity_Tests {
 
     User analystU4 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -924,7 +924,7 @@ public with sharing class opportunity_Tests {
 
     User uwU = new User(
       Alias = 'underw',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -939,7 +939,7 @@ public with sharing class opportunity_Tests {
 
     User uwU2 = new User(
       Alias = 'underw',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -954,7 +954,7 @@ public with sharing class opportunity_Tests {
 
     User lcU = new User(
       Alias = 'loanco',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -969,7 +969,7 @@ public with sharing class opportunity_Tests {
 
     User lcU2 = new User(
       Alias = 'loanco',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -984,7 +984,7 @@ public with sharing class opportunity_Tests {
 
     User closerU = new User(
       Alias = 'clos',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -999,7 +999,7 @@ public with sharing class opportunity_Tests {
 
     User closerU2 = new User(
       Alias = 'clos',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1057,7 +1057,7 @@ public with sharing class opportunity_Tests {
     List<User> newUsers = new List<User>();
     User origU = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1072,7 +1072,7 @@ public with sharing class opportunity_Tests {
 
     User origU2 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1087,7 +1087,7 @@ public with sharing class opportunity_Tests {
 
     User origU3 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1102,7 +1102,7 @@ public with sharing class opportunity_Tests {
 
     User origU4 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1117,7 +1117,7 @@ public with sharing class opportunity_Tests {
 
     User analystU = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1132,7 +1132,7 @@ public with sharing class opportunity_Tests {
 
     User analystU2 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1147,7 +1147,7 @@ public with sharing class opportunity_Tests {
 
     User analystU3 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1162,7 +1162,7 @@ public with sharing class opportunity_Tests {
 
     User analystU4 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1177,7 +1177,7 @@ public with sharing class opportunity_Tests {
 
     User uwU = new User(
       Alias = 'underw',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1192,7 +1192,7 @@ public with sharing class opportunity_Tests {
 
     User uwU2 = new User(
       Alias = 'underw',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1207,7 +1207,7 @@ public with sharing class opportunity_Tests {
 
     User lcU = new User(
       Alias = 'loanco',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1222,7 +1222,7 @@ public with sharing class opportunity_Tests {
 
     User lcU2 = new User(
       Alias = 'loanco',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1237,7 +1237,7 @@ public with sharing class opportunity_Tests {
 
     User closerU = new User(
       Alias = 'clos',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1252,7 +1252,7 @@ public with sharing class opportunity_Tests {
 
     User closerU2 = new User(
       Alias = 'clos',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1321,7 +1321,7 @@ public with sharing class opportunity_Tests {
     List<User> newUsers = new List<User>();
     User origU = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1336,7 +1336,7 @@ public with sharing class opportunity_Tests {
 
     User origU2 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1351,7 +1351,7 @@ public with sharing class opportunity_Tests {
 
     User origU3 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1366,7 +1366,7 @@ public with sharing class opportunity_Tests {
 
     User origU4 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1381,7 +1381,7 @@ public with sharing class opportunity_Tests {
 
     User analystU = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1396,7 +1396,7 @@ public with sharing class opportunity_Tests {
 
     User analystU2 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1411,7 +1411,7 @@ public with sharing class opportunity_Tests {
 
     User analystU3 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1426,7 +1426,7 @@ public with sharing class opportunity_Tests {
 
     User analystU4 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1441,7 +1441,7 @@ public with sharing class opportunity_Tests {
 
     User uwU = new User(
       Alias = 'underw',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1456,7 +1456,7 @@ public with sharing class opportunity_Tests {
 
     User uwU2 = new User(
       Alias = 'underw',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1471,7 +1471,7 @@ public with sharing class opportunity_Tests {
 
     User lcU = new User(
       Alias = 'loanco',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1486,7 +1486,7 @@ public with sharing class opportunity_Tests {
 
     User lcU2 = new User(
       Alias = 'loanco',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1501,7 +1501,7 @@ public with sharing class opportunity_Tests {
 
     User closerU = new User(
       Alias = 'clos',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1516,7 +1516,7 @@ public with sharing class opportunity_Tests {
 
     User closerU2 = new User(
       Alias = 'clos',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1587,7 +1587,7 @@ public with sharing class opportunity_Tests {
     List<User> newUsers = new List<User>();
     User origU = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1602,7 +1602,7 @@ public with sharing class opportunity_Tests {
 
     User origU2 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1617,7 +1617,7 @@ public with sharing class opportunity_Tests {
 
     User origU3 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1632,7 +1632,7 @@ public with sharing class opportunity_Tests {
 
     User origU4 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1647,7 +1647,7 @@ public with sharing class opportunity_Tests {
 
     User analystU = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1662,7 +1662,7 @@ public with sharing class opportunity_Tests {
 
     User analystU2 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1677,7 +1677,7 @@ public with sharing class opportunity_Tests {
 
     User analystU3 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1692,7 +1692,7 @@ public with sharing class opportunity_Tests {
 
     User analystU4 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1707,7 +1707,7 @@ public with sharing class opportunity_Tests {
 
     User uwU = new User(
       Alias = 'underw',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1722,7 +1722,7 @@ public with sharing class opportunity_Tests {
 
     User uwU2 = new User(
       Alias = 'underw',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1737,7 +1737,7 @@ public with sharing class opportunity_Tests {
 
     User lcU = new User(
       Alias = 'loanco',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1752,7 +1752,7 @@ public with sharing class opportunity_Tests {
 
     User lcU2 = new User(
       Alias = 'loanco',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1767,7 +1767,7 @@ public with sharing class opportunity_Tests {
 
     User closerU = new User(
       Alias = 'clos',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1782,7 +1782,7 @@ public with sharing class opportunity_Tests {
 
     User closerU2 = new User(
       Alias = 'clos',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1855,7 +1855,7 @@ public with sharing class opportunity_Tests {
     List<User> newUsers = new List<User>();
     User origU = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1870,7 +1870,7 @@ public with sharing class opportunity_Tests {
 
     User origU2 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1885,7 +1885,7 @@ public with sharing class opportunity_Tests {
 
     User origU3 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1900,7 +1900,7 @@ public with sharing class opportunity_Tests {
 
     User origU4 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1915,7 +1915,7 @@ public with sharing class opportunity_Tests {
 
     User analystU = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1930,7 +1930,7 @@ public with sharing class opportunity_Tests {
 
     User analystU2 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1945,7 +1945,7 @@ public with sharing class opportunity_Tests {
 
     User analystU3 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1960,7 +1960,7 @@ public with sharing class opportunity_Tests {
 
     User analystU4 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1975,7 +1975,7 @@ public with sharing class opportunity_Tests {
 
     User uwU = new User(
       Alias = 'underw',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1990,7 +1990,7 @@ public with sharing class opportunity_Tests {
 
     User uwU2 = new User(
       Alias = 'underw',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2005,7 +2005,7 @@ public with sharing class opportunity_Tests {
 
     User lcU = new User(
       Alias = 'loanco',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2020,7 +2020,7 @@ public with sharing class opportunity_Tests {
 
     User lcU2 = new User(
       Alias = 'loanco',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2035,7 +2035,7 @@ public with sharing class opportunity_Tests {
 
     User closerU = new User(
       Alias = 'clos',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2050,7 +2050,7 @@ public with sharing class opportunity_Tests {
 
     User closerU2 = new User(
       Alias = 'clos',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2124,7 +2124,7 @@ public with sharing class opportunity_Tests {
     List<User> newUsers = new List<User>();
     User origU = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2139,7 +2139,7 @@ public with sharing class opportunity_Tests {
 
     User origU2 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2154,7 +2154,7 @@ public with sharing class opportunity_Tests {
 
     User origU3 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2169,7 +2169,7 @@ public with sharing class opportunity_Tests {
 
     User origU4 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2184,7 +2184,7 @@ public with sharing class opportunity_Tests {
 
     User analystU = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2199,7 +2199,7 @@ public with sharing class opportunity_Tests {
 
     User analystU2 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2214,7 +2214,7 @@ public with sharing class opportunity_Tests {
 
     User analystU3 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2229,7 +2229,7 @@ public with sharing class opportunity_Tests {
 
     User analystU4 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2244,7 +2244,7 @@ public with sharing class opportunity_Tests {
 
     User uwU = new User(
       Alias = 'underw',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2259,7 +2259,7 @@ public with sharing class opportunity_Tests {
 
     User uwU2 = new User(
       Alias = 'underw',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2274,7 +2274,7 @@ public with sharing class opportunity_Tests {
 
     User lcU = new User(
       Alias = 'loanco',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2289,7 +2289,7 @@ public with sharing class opportunity_Tests {
 
     User lcU2 = new User(
       Alias = 'loanco',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2304,7 +2304,7 @@ public with sharing class opportunity_Tests {
 
     User closerU = new User(
       Alias = 'clos',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2319,7 +2319,7 @@ public with sharing class opportunity_Tests {
 
     User closerU2 = new User(
       Alias = 'clos',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2395,7 +2395,7 @@ public with sharing class opportunity_Tests {
     List<User> newUsers = new List<User>();
     User origU = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2410,7 +2410,7 @@ public with sharing class opportunity_Tests {
 
     User origU2 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2425,7 +2425,7 @@ public with sharing class opportunity_Tests {
 
     User origU3 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2440,7 +2440,7 @@ public with sharing class opportunity_Tests {
 
     User origU4 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2455,7 +2455,7 @@ public with sharing class opportunity_Tests {
 
     User analystU = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2470,7 +2470,7 @@ public with sharing class opportunity_Tests {
 
     User analystU2 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2485,7 +2485,7 @@ public with sharing class opportunity_Tests {
 
     User analystU3 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2500,7 +2500,7 @@ public with sharing class opportunity_Tests {
 
     User analystU4 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2515,7 +2515,7 @@ public with sharing class opportunity_Tests {
 
     User uwU = new User(
       Alias = 'underw',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2530,7 +2530,7 @@ public with sharing class opportunity_Tests {
 
     User uwU2 = new User(
       Alias = 'underw',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2545,7 +2545,7 @@ public with sharing class opportunity_Tests {
 
     User lcU = new User(
       Alias = 'loanco',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2560,7 +2560,7 @@ public with sharing class opportunity_Tests {
 
     User lcU2 = new User(
       Alias = 'loanco',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2575,7 +2575,7 @@ public with sharing class opportunity_Tests {
 
     User closerU = new User(
       Alias = 'clos',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2590,7 +2590,7 @@ public with sharing class opportunity_Tests {
 
     User closerU2 = new User(
       Alias = 'clos',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2688,7 +2688,7 @@ public with sharing class opportunity_Tests {
     List<User> newUsers = new List<User>();
     User origU = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2703,7 +2703,7 @@ public with sharing class opportunity_Tests {
 
     User origU2 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2718,7 +2718,7 @@ public with sharing class opportunity_Tests {
 
     User origU3 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2733,7 +2733,7 @@ public with sharing class opportunity_Tests {
 
     User origU4 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2748,7 +2748,7 @@ public with sharing class opportunity_Tests {
 
     User analystU = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2763,7 +2763,7 @@ public with sharing class opportunity_Tests {
 
     User analystU2 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2778,7 +2778,7 @@ public with sharing class opportunity_Tests {
 
     User analystU3 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2793,7 +2793,7 @@ public with sharing class opportunity_Tests {
 
     User analystU4 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2808,7 +2808,7 @@ public with sharing class opportunity_Tests {
 
     User uwU = new User(
       Alias = 'underw',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2823,7 +2823,7 @@ public with sharing class opportunity_Tests {
 
     User uwU2 = new User(
       Alias = 'underw',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2838,7 +2838,7 @@ public with sharing class opportunity_Tests {
 
     User lcU = new User(
       Alias = 'loanco',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2853,7 +2853,7 @@ public with sharing class opportunity_Tests {
 
     User lcU2 = new User(
       Alias = 'loanco',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2868,7 +2868,7 @@ public with sharing class opportunity_Tests {
 
     User closerU = new User(
       Alias = 'clos',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2883,7 +2883,7 @@ public with sharing class opportunity_Tests {
 
     User closerU2 = new User(
       Alias = 'clos',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2976,7 +2976,7 @@ public with sharing class opportunity_Tests {
     List<User> newUsers = new List<User>();
     User origU = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2991,7 +2991,7 @@ public with sharing class opportunity_Tests {
 
     User origU2 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3006,7 +3006,7 @@ public with sharing class opportunity_Tests {
 
     User origU3 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3021,7 +3021,7 @@ public with sharing class opportunity_Tests {
 
     User origU4 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3036,7 +3036,7 @@ public with sharing class opportunity_Tests {
 
     User analystU = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3051,7 +3051,7 @@ public with sharing class opportunity_Tests {
 
     User analystU2 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3066,7 +3066,7 @@ public with sharing class opportunity_Tests {
 
     User analystU3 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3081,7 +3081,7 @@ public with sharing class opportunity_Tests {
 
     User analystU4 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3096,7 +3096,7 @@ public with sharing class opportunity_Tests {
 
     User uwU = new User(
       Alias = 'underw',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3111,7 +3111,7 @@ public with sharing class opportunity_Tests {
 
     User uwU2 = new User(
       Alias = 'underw',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3126,7 +3126,7 @@ public with sharing class opportunity_Tests {
 
     User lcU = new User(
       Alias = 'loanco',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3141,7 +3141,7 @@ public with sharing class opportunity_Tests {
 
     User lcU2 = new User(
       Alias = 'loanco',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3156,7 +3156,7 @@ public with sharing class opportunity_Tests {
 
     User closerU = new User(
       Alias = 'clos',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3171,7 +3171,7 @@ public with sharing class opportunity_Tests {
 
     User closerU2 = new User(
       Alias = 'clos',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3356,7 +3356,7 @@ public with sharing class opportunity_Tests {
   static testMethod void opportunity_SABTest() {
     User origU = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3371,7 +3371,7 @@ public with sharing class opportunity_Tests {
 
     User origU2 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3386,7 +3386,7 @@ public with sharing class opportunity_Tests {
 
     User origU3 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3401,7 +3401,7 @@ public with sharing class opportunity_Tests {
 
     User origU4 = new User(
       Alias = 'orig',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3416,7 +3416,7 @@ public with sharing class opportunity_Tests {
 
     User analystU = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3431,7 +3431,7 @@ public with sharing class opportunity_Tests {
 
     User analystU2 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3446,7 +3446,7 @@ public with sharing class opportunity_Tests {
 
     User analystU3 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3461,7 +3461,7 @@ public with sharing class opportunity_Tests {
 
     User analystU4 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3476,7 +3476,7 @@ public with sharing class opportunity_Tests {
 
     User uwU = new User(
       Alias = 'underw',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3491,7 +3491,7 @@ public with sharing class opportunity_Tests {
 
     User uwU2 = new User(
       Alias = 'underw',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3506,7 +3506,7 @@ public with sharing class opportunity_Tests {
 
     User lcU = new User(
       Alias = 'loanco',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3521,7 +3521,7 @@ public with sharing class opportunity_Tests {
 
     User lcU2 = new User(
       Alias = 'loanco',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3536,7 +3536,7 @@ public with sharing class opportunity_Tests {
 
     User closerU = new User(
       Alias = 'clos',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3551,7 +3551,7 @@ public with sharing class opportunity_Tests {
 
     User closerU2 = new User(
       Alias = 'clos',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3603,7 +3603,7 @@ public with sharing class opportunity_Tests {
     Profile p = [SELECT Id FROM Profile WHERE Name = 'Standard User'];
     User u = new User(
       Alias = 'standt',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3684,7 +3684,7 @@ public with sharing class opportunity_Tests {
     Profile p = [SELECT Id FROM Profile WHERE Name = 'Standard User'];
     User u = new User(
       Alias = 'standt',
-      Email = 'standarduser@cvest.com',
+      Email = 'standarduser@testorg.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
