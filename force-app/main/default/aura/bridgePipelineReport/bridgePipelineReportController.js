@@ -34,8 +34,23 @@
       .then((workbook) => {
         let columns = sheetData.columns;
         let rows = sheetData.data;
-        for (let i = 0; i < rows.length; i++) {
+
+        const afterFinalRow = rows.length + 3;
+        let colBeforeFirstNum = 0;
+        let numColumns = [];
+        for (let i = 0; i <= rows.length; i++) {
           for (let j = 0; j < columns.length; j++) {
+            if (i === rows.length) {
+              workbook
+                .sheet("Pipeline")
+                .row(afterFinalRow)
+                .cell(j + 2)
+                .style({
+                  topBorder: true,
+                  topBorderStyle: "thick"
+                });
+              continue;
+            }
             let r = columns[j].data;
 
             if (columns[j].type == "date" && !$A.util.isEmpty(rows[i][r])) {
@@ -45,26 +60,79 @@
               );
             }
 
-            if (columns[j].type == "number" && !$A.util.isEmpty(rows[i][r])) {
-              rows[i][r] = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
-                parseFloat(rows[i][r])
-              );
-            }
+            // if (columns[j].type == "number" && !$A.util.isEmpty(rows[i][r])) {
+            //   rows[i][r] = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
+            //     parseFloat(rows[i][r])
+            //   );
+            // }
+
+            const reg = new RegExp("^\\d*$");
 
             if (!$A.util.isEmpty(r)) {
-              workbook
-                .sheet("Pipeline")
-                .row(3 + i)
-                .cell(j + 2)
-                .value(rows[i][r]);
+              if (
+                columns[j].type == "currency" &&
+                !$A.util.isEmpty(rows[i][r])
+              ) {
+                workbook
+                  .sheet("Pipeline")
+                  .row(3 + i)
+                  .cell(j + 2)
+                  .value(parseFloat(rows[i][r]))
+                  .style("numberFormat", "$0,000.00");
+                if (colBeforeFirstNum === 0) {
+                  colBeforeFirstNum = j + 1;
+                }
+                if (i === 0) {
+                  numColumns.push(j + 2);
+                }
+              } else if (
+                columns[j].type == "number" &&
+                !$A.util.isEmpty(rows[i][r]) &&
+                reg.test(rows[i][r])
+              ) {
+                workbook
+                  .sheet("Pipeline")
+                  .row(3 + i)
+                  .cell(j + 2)
+                  .value(parseFloat(rows[i][r]));
+              } else {
+                workbook
+                  .sheet("Pipeline")
+                  .row(3 + i)
+                  .cell(j + 2)
+                  .value(rows[i][r]);
+              }
             }
           }
         }
+
+        workbook
+          .sheet("Pipeline")
+          .row(afterFinalRow + 1)
+          .cell(colBeforeFirstNum)
+          .value("TOTALS:")
+          .style({
+            bold: true
+          });
+
+        for (let i = 0; i < numColumns.length; i++) {
+          let col = String.fromCharCode(96 + numColumns[i]);
+          workbook
+            .sheet("Pipeline")
+            .row(afterFinalRow + 1)
+            .cell(numColumns[i])
+            .formula(`SUM(${col}3:${col}${afterFinalRow - 1})`)
+            .style("numberFormat", "$0,000.00");
+        }
+
         return workbook.outputAsync("base64");
       })
       .then((data) => {
-        const todayDate = new Date(new Date().toLocaleDateString('en-US'));
-        const fileName = 'Bridge Pipeline Prioritization ' +  $A.localizationService.formatDate(todayDate, "MMddyy") + '.xlsx';
+        const todayDate = new Date(new Date().toLocaleDateString("en-US"));
+        const fileName =
+          "Bridge Pipeline Prioritization " +
+          $A.localizationService.formatDate(todayDate, "MMddyy") +
+          ".xlsx";
         var link = document.createElement("a");
         link.href = "data:" + XlsxPopulate.MIME_TYPE + ";base64," + data;
         link.download = fileName;
