@@ -112,6 +112,7 @@
           sortable="true"
           isEditable="false"
           columnWidth="11"
+          isReadable="isReadable"
         />
 
         <c:DataTableColumn
@@ -129,13 +130,13 @@
           sortable="false"
         />
 
-        <!-- <c:DataTableColumn
+        <c:DataTableColumn
         label="isReadable"
         name="isReadable"
         hidden="true"
         displayType="hidden"
         sortable="false"
-      /> -->
+      />
         <c:DataTableColumn
           label="Document Type"
           name="Document_Type__c"
