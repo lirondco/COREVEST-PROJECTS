@@ -4,8 +4,11 @@ import { loadScript } from "lightning/platformResourceLoader";
 import queryRecord from "@salesforce/apex/lightning_Util.query";
 import getTemplate from "@salesforce/apex/lightning_Controller.getTemplate";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
+import insertFileAndLink from "@salesforce/apex/lightning_Util.insertFileAndLink";
+import createDealDocuments from "@salesforce/apex/UploadFile_LightningController.createDealDocuments";
 
 const TEMPLATE_NAME = "CVRevisedLoanRequestApprovalFormTemplate";
+const CONTENT_TYPE = 'application/vnd.ms-excel';
 export default class LoanRequestApprovalForm extends LightningElement {
   @api dealId;
   propertyOptionsLocal = [];
@@ -17,6 +20,7 @@ export default class LoanRequestApprovalForm extends LightningElement {
   activeProperties = 0;
   paidOffProperties = 0;
   propertyId;
+  showPage = true;
 
   get propertyOptions() {
     return this.propertyOptionsLocal;
@@ -62,6 +66,7 @@ export default class LoanRequestApprovalForm extends LightningElement {
             manualEntry[i.name] = i.value;
           }
         });
+        
         this.manualEntryRecord = manualEntry;
         this.retrieveRecordValues();
       } else {
@@ -86,6 +91,7 @@ export default class LoanRequestApprovalForm extends LightningElement {
 
   saveFile() {
     loadScript(this, xlsxPopulate).then(() => {
+      let downloadFile;
       XlsxPopulate.fromDataAsync(
         this.base64ToArrayBuffer(JSON.parse(this.copyTemplateFile))
       )
@@ -120,7 +126,7 @@ export default class LoanRequestApprovalForm extends LightningElement {
                       "{{countPaidOffProperties}}",
                       this.paidOffProperties
                     );
-                  } else if (manualEntry.hasOwnProperty(key)) {
+                  } else if (manualEntry.hasOwnProperty(key) && manualEntry[key]) {
                     newVal = v.replace(`{{${key}}}`, manualEntry[key]);
                   } else {
                     newVal = v.replace(`{{${key}}}`, "");
@@ -132,7 +138,7 @@ export default class LoanRequestApprovalForm extends LightningElement {
                   );
                   const fieldKey = v.slice(v.indexOf(".") + 1, v.indexOf("}"));
                   if (data.hasOwnProperty(sobjectKey)) {
-                    if (data[sobjectKey].hasOwnProperty(fieldKey)) {
+                    if (data[sobjectKey].hasOwnProperty(fieldKey) && data[sobjectKey][fieldKey]) {
                       newVal = v.replace(
                         `{{${sobjectKey}.${fieldKey}}}`,
                         data[sobjectKey][fieldKey]
@@ -150,20 +156,39 @@ export default class LoanRequestApprovalForm extends LightningElement {
               } else if (v != undefined && v.includes("FX")) {
                 newVal = v.replace("FX", "");
                 workbook.sheet("Sheet1").row(i).cell(j).formula(newVal);
-              } else {
-                workbook.sheet("Sheet1").row(i).cell(j).value(v);
-              }
+              } 
             }
           }
           return workbook.outputAsync("base64");
         })
         .then((res) => {
-          // save file!!
-          const fileName = "test.xlsx";
-          var link = document.createElement("a");
-          link.href = "data:" + XlsxPopulate.MIME_TYPE + ";base64," + res;
-          link.download = fileName;
-          link.click();
+          downloadFile = res;
+          insertFileAndLink({
+            request: JSON.stringify({
+              parentId: this.dealId,
+              fileName: 'Loan Request Approval Form.xlsx',
+              fileType: CONTENT_TYPE,
+              data: res
+            })
+          }).then((fileId) => {
+            createDealDocuments({
+              ids: [fileId],
+              dealId: this.dealId
+            }).then((res) => {
+              this.showToast({
+                title: "Success",
+                message: "File saved successfully",
+                variant: "success"
+              });
+              let link = document.createElement("a");
+              link.href = "data:" + XlsxPopulate.MIME_TYPE + ";base64," + downloadFile;
+              link.download = "Loan Request Approval Form.xlsx";
+              document.body.appendChild(link);
+              link.click();
+              this.handleCancel();
+            })
+          })
+          
         })
         .catch((err) => {
           console.error(err);
@@ -172,6 +197,7 @@ export default class LoanRequestApprovalForm extends LightningElement {
   }
 
   isNumeric(str) {
+    if(typeof str == "number") return true;
     if (typeof str != "string") return false; // we only process strings!
     return (
       !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
@@ -181,6 +207,7 @@ export default class LoanRequestApprovalForm extends LightningElement {
 
   retrieveRecordValues() {
     loadScript(this, xlsxPopulate).then(() => {
+      this.showPage = false;
       XlsxPopulate.fromDataAsync(
         this.base64ToArrayBuffer(JSON.parse(this.templateFile))
       )

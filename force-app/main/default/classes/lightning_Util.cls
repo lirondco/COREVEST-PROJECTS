@@ -382,7 +382,8 @@ public without sharing class lightning_Util {
     return mapResults;
   } //GetDependentOptions
 
-  public String insertFileAndLink(String request) {
+  @AuraEnabled
+  public static String insertFileAndLink(String request) {
     Map<String, Object> req = (Map<String, Object>) JSON.deserializeUntyped(
       request
     );
@@ -409,7 +410,7 @@ public without sharing class lightning_Util {
       Visibility = 'AllUsers'
     );
 
-    return null;
+    return contentDocumentId;
   }
 
   @AuraEnabled(cacheable=true)

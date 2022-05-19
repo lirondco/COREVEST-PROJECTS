@@ -64,6 +64,8 @@
         helper.createSABICMemoCmp(component, event);
       } else if (val == "Loan Approval Request Form") {
         helper.createLoanApprovalRequestFormCmp(component, event);
+      } else if ( val == "Schedule A") {
+        component.set("v.generateScheduleA", true);
       }
         else {
         window.open(val, "_blank");

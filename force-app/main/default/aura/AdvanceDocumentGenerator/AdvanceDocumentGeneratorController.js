@@ -89,7 +89,7 @@
 					 saveAs(out, params.fileName);
                 }else{
                     console.log('File Generated-->'+out);
-                    helper.uploadHelper(component, event, out);
+									helper.uploadHelper(component, event, out);
                 }
                
 			})

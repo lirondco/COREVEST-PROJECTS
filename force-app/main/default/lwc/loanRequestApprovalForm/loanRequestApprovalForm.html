@@ -1,165 +1,170 @@
 <template>
   <lightning-quick-action-panel header="Loan Request Approval Form">
-    <div class="slds-var-p-around_medium">
-      <lightning-layout multiple-rows="true">
-        <lightning-layout-item padding="around-small" size="12">
-          <lightning-combobox
-            name="property"
-            label="Property"
-            required
-            placeholder="Select Property"
-            options={propertyOptions}
-            data-type="propertySearch"
-          ></lightning-combobox>
-        </lightning-layout-item>
-        <lightning-layout-item padding="around-small" size="6">
-          <lightning-input
-            type="number"
-            name="defaultRate"
-            label="Default Rate"
-            formatter="currency"
-            step="0.01"
-            data-type="manualField"
-          ></lightning-input>
-        </lightning-layout-item>
-        <lightning-layout-item padding="around-small" size="6">
-          <lightning-input
-            type="text"
-            name="propertyTaxStatus"
-            label="Property Tax Status"
-            data-type="manualField"
-          ></lightning-input>
-        </lightning-layout-item>
-        <lightning-layout-item padding="around-small" size="6">
-          <lightning-input
-            type="number"
-            name="insuranceCoverageAmt"
-            label="Insurance Coverage Amt"
-            formatter="currency"
-            step="0.01"
-            data-type="manualField"
-          ></lightning-input>
-        </lightning-layout-item>
-        <lightning-layout-item padding="around-small" size="6">
-          <lightning-input
-            type="date"
-            name="proposedMaturityDate"
-            label="Proposed Maturity Date"
-            data-type="manualField"
-          ></lightning-input>
-        </lightning-layout-item>
-        <lightning-layout-item padding="around-small" size="6">
-          <lightning-input
-            type="number"
-            name="completionPct"
-            label="Completion %"
-            formatter="percent-fixed"
-            step="0.0001"
-            data-type="manualField"
-          ></lightning-input>
-        </lightning-layout-item>
-        <lightning-layout-item padding="around-small" size="12">
-          <lightning-textarea
-            maxlength="250"
-            name="explanation"
-            label="Explanation"
-            data-type="manualField"
-          ></lightning-textarea>
-        </lightning-layout-item>
-        <lightning-layout-item padding="around-small" size="12">
-          <lightning-textarea
-            maxlength="250"
-            name="request"
-            label="Request"
-            data-type="manualField"
-          ></lightning-textarea>
-        </lightning-layout-item>
-        <lightning-layout-item padding="around-small" size="12">
-          <lightning-textarea
-            maxlength="250"
-            name="reasonCategory"
-            label="Reason Category"
-            data-type="manualField"
-          ></lightning-textarea>
-        </lightning-layout-item>
-        <lightning-layout-item padding="around-small" size="12">
-          <lightning-textarea
-            maxlength="250"
-            name="exitStrategy"
-            label="Exit Strategy"
-            data-type="manualField"
-          ></lightning-textarea>
-        </lightning-layout-item>
-        <lightning-layout-item padding="around-small" size="12">
-          <lightning-textarea
-            maxlength="250"
-            name="kycUpdate"
-            label="KYC Update"
-            data-type="manualField"
-          ></lightning-textarea>
-        </lightning-layout-item>
-        <lightning-layout-item padding="around-small" size="12">
-          <lightning-textarea
-            maxlength="250"
-            name="priorModifications"
-            label="Prior Modifications"
-            data-type="manualField"
-          ></lightning-textarea>
-        </lightning-layout-item>
-        <lightning-layout-item padding="around-small" size="12">
-          <lightning-textarea
-            maxlength="250"
-            name="paymentHistory"
-            label="Payment History"
-            data-type="manualField"
-          ></lightning-textarea>
-        </lightning-layout-item>
-        <lightning-layout-item padding="around-small" size="12">
-          <lightning-textarea
-            maxlength="250"
-            name="payoffDemandPending"
-            label="Payoff Demand Pending?"
-            data-type="manualField"
-          ></lightning-textarea>
-        </lightning-layout-item>
-        <lightning-layout-item padding="around-small" size="12">
-          <lightning-textarea
-            maxlength="250"
-            name="feeBreakdown"
-            label="Fee Breakdown"
-            data-type="manualField"
-          ></lightning-textarea>
-        </lightning-layout-item>
-        <lightning-layout-item padding="around-small" size="12">
-          <lightning-textarea
-            maxlength="250"
-            name="lossMitigationAssociate"
-            label="Loss Mitigation Associate"
-            data-type="manualField"
-          ></lightning-textarea>
-        </lightning-layout-item>
-        <lightning-layout-item padding="around-small" size="12">
-          <lightning-textarea
-            maxlength="250"
-            name="investorApproval"
-            label="Investor Approval"
-            data-type="manualField"
-          ></lightning-textarea>
-        </lightning-layout-item>
-      </lightning-layout>
-    </div>
-    <div slot="footer">
-      <lightning-button
-        variant="neutral"
-        label="Cancel"
-        onclick={handleCancel}
-      ></lightning-button>
-      <lightning-button
-        variant="brand"
-        label="Generate File"
-        onclick={handleGenerate}
-        class="slds-m-left_x-small"
-      ></lightning-button>
-    </div>
+    <template if:false={showPage}>
+      <lightning-spinner size="medium" aria-label="Loading"></lightning-spinner>
+    </template>
+    <template if:true={showPage}>
+      <div class="slds-var-p-around_medium">
+        <lightning-layout multiple-rows="true">
+          <lightning-layout-item padding="around-small" size="12">
+            <lightning-combobox
+              name="property"
+              label="Property"
+              required
+              placeholder="Select Property"
+              options={propertyOptions}
+              data-type="propertySearch"
+            ></lightning-combobox>
+          </lightning-layout-item>
+          <lightning-layout-item padding="around-small" size="6">
+            <lightning-input
+              type="number"
+              name="defaultRate"
+              label="Default Rate"
+              formatter="currency"
+              step="0.01"
+              data-type="manualField"
+            ></lightning-input>
+          </lightning-layout-item>
+          <lightning-layout-item padding="around-small" size="6">
+            <lightning-input
+              type="text"
+              name="propertyTaxStatus"
+              label="Property Tax Status"
+              data-type="manualField"
+            ></lightning-input>
+          </lightning-layout-item>
+          <lightning-layout-item padding="around-small" size="6">
+            <lightning-input
+              type="number"
+              name="insuranceCoverageAmt"
+              label="Insurance Coverage Amt"
+              formatter="currency"
+              step="0.01"
+              data-type="manualField"
+            ></lightning-input>
+          </lightning-layout-item>
+          <lightning-layout-item padding="around-small" size="6">
+            <lightning-input
+              type="date"
+              name="proposedMaturityDate"
+              label="Proposed Maturity Date"
+              data-type="manualField"
+            ></lightning-input>
+          </lightning-layout-item>
+          <lightning-layout-item padding="around-small" size="6">
+            <lightning-input
+              type="number"
+              name="completionPct"
+              label="Completion %"
+              formatter="percent-fixed"
+              step="0.0001"
+              data-type="manualField"
+            ></lightning-input>
+          </lightning-layout-item>
+          <lightning-layout-item padding="around-small" size="12">
+            <lightning-textarea
+              maxlength="250"
+              name="explanation"
+              label="Explanation"
+              data-type="manualField"
+            ></lightning-textarea>
+          </lightning-layout-item>
+          <lightning-layout-item padding="around-small" size="12">
+            <lightning-textarea
+              maxlength="250"
+              name="request"
+              label="Request"
+              data-type="manualField"
+            ></lightning-textarea>
+          </lightning-layout-item>
+          <lightning-layout-item padding="around-small" size="12">
+            <lightning-textarea
+              maxlength="250"
+              name="reasonCategory"
+              label="Reason Category"
+              data-type="manualField"
+            ></lightning-textarea>
+          </lightning-layout-item>
+          <lightning-layout-item padding="around-small" size="12">
+            <lightning-textarea
+              maxlength="250"
+              name="exitStrategy"
+              label="Exit Strategy"
+              data-type="manualField"
+            ></lightning-textarea>
+          </lightning-layout-item>
+          <lightning-layout-item padding="around-small" size="12">
+            <lightning-textarea
+              maxlength="250"
+              name="kycUpdate"
+              label="KYC Update"
+              data-type="manualField"
+            ></lightning-textarea>
+          </lightning-layout-item>
+          <lightning-layout-item padding="around-small" size="12">
+            <lightning-textarea
+              maxlength="250"
+              name="priorModifications"
+              label="Prior Modifications"
+              data-type="manualField"
+            ></lightning-textarea>
+          </lightning-layout-item>
+          <lightning-layout-item padding="around-small" size="12">
+            <lightning-textarea
+              maxlength="250"
+              name="paymentHistory"
+              label="Payment History"
+              data-type="manualField"
+            ></lightning-textarea>
+          </lightning-layout-item>
+          <lightning-layout-item padding="around-small" size="12">
+            <lightning-textarea
+              maxlength="250"
+              name="payoffDemandPending"
+              label="Payoff Demand Pending?"
+              data-type="manualField"
+            ></lightning-textarea>
+          </lightning-layout-item>
+          <lightning-layout-item padding="around-small" size="12">
+            <lightning-textarea
+              maxlength="250"
+              name="feeBreakdown"
+              label="Fee Breakdown"
+              data-type="manualField"
+            ></lightning-textarea>
+          </lightning-layout-item>
+          <lightning-layout-item padding="around-small" size="12">
+            <lightning-textarea
+              maxlength="250"
+              name="lossMitigationAssociate"
+              label="Loss Mitigation Associate"
+              data-type="manualField"
+            ></lightning-textarea>
+          </lightning-layout-item>
+          <lightning-layout-item padding="around-small" size="12">
+            <lightning-textarea
+              maxlength="250"
+              name="investorApproval"
+              label="Investor Approval"
+              data-type="manualField"
+            ></lightning-textarea>
+          </lightning-layout-item>
+        </lightning-layout>
+      </div>
+      <div slot="footer">
+        <lightning-button
+          variant="neutral"
+          label="Cancel"
+          onclick={handleCancel}
+        ></lightning-button>
+        <lightning-button
+          variant="brand"
+          label="Generate File"
+          onclick={handleGenerate}
+          class="slds-m-left_x-small"
+        ></lightning-button>
+      </div>
+    </template>
   </lightning-quick-action-panel>
 </template>

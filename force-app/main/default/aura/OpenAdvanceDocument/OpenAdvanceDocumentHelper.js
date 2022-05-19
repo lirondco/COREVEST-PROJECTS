@@ -535,12 +535,31 @@
     return recordTypeName;
   },
 
+  // createScheduleACmp: function (component, event) {
+  //   $A.createComponent(
+  //     "c:scheduleA",
+  //     {
+  //       dealId: component.get("v.dealId"),
+  //       prodSubType: component.get("v.filterFields.ProductSubType"),
+  //       propertyIds: component.get("v.propertyIds"),
+  //       oncancel: component.getReference("c.onCancel")
+  //     },
+  //     function (newCmp, status, errorMessage) {
+  //       if (status === "SUCCESS") {
+  //         var body = component.get("v.body");
+  //         body.push(newCmp);
+  //         component.set("v.body", body);
+  //         component.set("v.displayBridgeIcMemoCmp", true);
+  //       }
+  //     }
+  //   );
+  // },
   createLoanApprovalRequestFormCmp: function (component, event) {
     $A.createComponent(
       "c:loanRequestApprovalForm",
       {
         oncancel: component.getReference("c.cancel"),
-        dealId: component.get("v.dealId"),
+        dealId: component.get("v.dealId")
       },
       function (newCmp, status, errorMessage) {
         if (status === "SUCCESS") {
@@ -548,7 +567,6 @@
           body.push(newCmp);
           component.set("v.body", body);
           component.set("v.displayBridgeIcMemoCmp", true);
-
         }
       }
     );
