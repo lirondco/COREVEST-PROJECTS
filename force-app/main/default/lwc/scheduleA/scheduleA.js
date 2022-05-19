@@ -303,7 +303,6 @@ export default class ScheduleA extends LightningElement {
                   .row(currXlsRow)
                   .cell(j + 1)
                   .formula(formula)
-                  .style("numberFormat", "$0,000.00");
               } else {
                 workbook
                   .sheet("Schedule A")
