@@ -6,12 +6,14 @@
     <name>IC Metrics For Term</name>
     <style>freeForm</style>
     <subject>Your Deal is NOT Approved by Committee - {!Opportunity.Name} - #{!Opportunity.Deal_Loan_Number__c}</subject>
-    <textOnly>Hi {!Opportunity.OwnerFirstName},
+    <textOnly>--DEALIDSTART--{!Opportunity.Id}--DEALIDEND----CONTENTIDSTART----CONTENTIDEND--Hi {!Opportunity.OwnerFirstName},
 
-Your Deal is no longer IC Approved due to an increase in Max LTV% and/or Current Loan Amount.
+Your Deal is no longer IC Approved due to a change in one or more the fields below:
 
 Current LTV: {!Opportunity.LTV__c}.
 Current Loan Amount: {!Opportunity.Current_Loan_Amount__c}
+Recourse: {!Opportunity.Recourse__c}
+Actual DSCR: {!Opportunity.Actual_DSCR__c}
 
 Deal: {!Opportunity.Name}
 

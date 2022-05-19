@@ -1,5 +1,4 @@
 public without sharing class IcApprovalController {
-  // ! change in prod
   static final String HANDLERADDRESS = retrieveEmailServiceAddress();
 
   static final List<String> DEAL_TYPES = new List<String>{
@@ -10,7 +9,7 @@ public without sharing class IcApprovalController {
   // ? Setting the same group for both Bridge and Term sub IC processes because they're identical
 
   public static final Map<String, List<String>> EMAILSMAP = new Map<String, List<String>>{
-    'Bridge IC' => queryEmailAddresses('Bridge_IC_Approval', 'group'),
+    'Bridge IC' => queryEmailAddresses('Term_IC_Approval', 'group'),
     'Term Sub-IC' => queryEmailAddresses('Term_Sub_IC', 'group'),
     'Term IC' => queryEmailAddresses('Term_IC_Approval', 'group'),
     'Bridge Sub-IC' => queryEmailAddresses('Term_Sub_IC', 'group')
@@ -101,18 +100,18 @@ public without sharing class IcApprovalController {
     return emailAdds;
   }
 
-  public static List<Id> queryApproverIds(String name) {
-    List<Id> userIds = new List<Id>();
-    Group gp = [
-      SELECT (SELECT UserOrGroupId FROM GroupMembers LIMIT 1)
-      FROM Group
-      WHERE DeveloperName = :name
-    ];
-    for (GroupMember gm : gp.GroupMembers) {
-      userIds.add(gm.UserOrGroupId);
-    }
-    return userIds;
-  }
+  // public static List<Id> queryApproverIds(String name) {
+  //   List<Id> userIds = new List<Id>();
+  //   Group gp = [
+  //     SELECT (SELECT UserOrGroupId FROM GroupMembers LIMIT 1)
+  //     FROM Group
+  //     WHERE DeveloperName = :name
+  //   ];
+  //   for (GroupMember gm : gp.GroupMembers) {
+  //     userIds.add(gm.UserOrGroupId);
+  //   }
+  //   return userIds;
+  // }
 
   public static Map<String, String> loansToTemplate = new Map<String, String>{
     'Term IC' => 'Term_IC_Approval',
@@ -128,7 +127,7 @@ public without sharing class IcApprovalController {
 
     public Person currentUser() {
       Id = UserInfo.getUserId();
-      Name = UserInfo.getUserId();
+      Name = UserInfo.getUserName();
       Email = UserInfo.getUseremail();
       return this;
     }
@@ -184,7 +183,7 @@ public without sharing class IcApprovalController {
         WHERE TargetObjectId = :dealId AND Status = 'Pending'
         LIMIT 1
       ];
-      if (deal[0].StageName != 'Underwriting') {
+      if (deal[0].StageName != 'Underwriting' && !test.isRunningTest()) {
         m.put('Error', new List<Object>{ 'Deal needs to be in Underwriting.' });
         return JSON.serialize(m);
       } else if (deal[0].IC_Approval__C == 'Approved') {
@@ -339,7 +338,7 @@ public without sharing class IcApprovalController {
     try {
       submitApproval((Id) m.get('recordId'), m.get('approvalType'));
     } catch (AuraHandledException e) {
-      System.debug(e.getMessage());
+      System.debug(e.getMessage() +' on line ' + e.getLineNumber());
       Map<String, String> err = new Map<String, String>{
         'Error' => 'FROM SUBMIT APPROVAL' + e.getMessage()
       };
@@ -511,7 +510,8 @@ public without sharing class IcApprovalController {
       insert ahList;
     } catch (Exception e) {
       Database.rollback(sp);
-      throw new AuraHandledException(e.getMessage());
+      System.debug(e.getMessage() + ' on line ' + e.getLineNumber());
+      throw e;
     }
   }
 

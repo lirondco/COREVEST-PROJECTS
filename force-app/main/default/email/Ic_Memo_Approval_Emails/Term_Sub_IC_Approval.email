@@ -7,7 +7,7 @@
 
     <br />
     <p>
-        Please review the deal below that has a loan amount that's less than $2,000,000.
+        Please review the deal below that has a loan amount that is less than $2,000,000.
     </p>
     <br />
 
@@ -302,17 +302,17 @@
     <tr>
         <th colspan="2" style="border:1px solid black;text-align:center;">
     <strong>
-    Proposed Pricing
+    Approved Pricing
     </strong>
     </th>
     </tr>
     <tr>
     <td style="border:1px solid black;">
-    Requested Loan Amount:
+    Current Loan Amount:
     </td>
     <td style="border:1px solid black;text-align:right;">
         <apex:outputText value="{0, number, currency}">
-            <apex:param value="{!relatedTo.Loan_Size__c}" />
+            <apex:param value="{!relatedTo.Current_Loan_Amount__c}" />
         </apex:outputText>
     </td>
     </tr>
@@ -418,6 +418,14 @@
     </tr>
     <tr>
     <td style="border:1px solid black;">
+    Actual DSCR:
+    </td>
+    <td style="border:1px solid black;text-align:right;">
+    <apex:outputText value="{!relatedTo.Actual_DSCR__c}" />
+    </td>
+    </tr>
+    <tr>
+    <td style="border:1px solid black;">    
     Term:
     </td>
     <td style="border:1px solid black;text-align:right;">

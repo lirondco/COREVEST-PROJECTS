@@ -2,6 +2,7 @@
     <aura:attribute name="recordId" type="Id" />
     <aura:attribute name="record" type="Object" />
     <aura:attribute name="properties" type="Object[]" />
+
     <aura:attribute name="Name" type="String" default="down" />
     <aura:attribute name="City__c" type="String" default="down" />
     <aura:attribute name="State__c" type="String" default="down" />

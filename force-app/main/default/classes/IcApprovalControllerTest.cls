@@ -14,6 +14,7 @@ private class IcApprovalControllerTest {
     }
 
     static TestMethod void IcApprovalControllerTest_UnitTest(){
+        Test_Helper.setupProduct2();
         List<RecordType> opptyRecordTypes = [SELECT Id FROM RecordType WHERE sObjectType = 'Opportunity'];
         
         Id termLoanRecordTypeId = Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get('Term Loan').getRecordTypeId();
@@ -26,6 +27,32 @@ private class IcApprovalControllerTest {
         opp.RecordTypeId = opptyRecordTypes[0].Id;
         opp.Loan_Effective_Date__c = system.today();
         update opp;
+
+        Contentversion cv1 = new Contentversion();
+
+        cv1.Title = 'test.pdf';
+        cv1.PathOnClient = 'test.pdf';
+        cv1.VersionData = EncodingUtil.base64Decode(
+          EncodingUtil.urlEncode('Unit Test Attachment Body', 'UTF-8')
+        );
+        insert cv1;
+        Id docId = [
+          SELECT Id, ContentDocumentId
+          FROM ContentVersion
+          WHERE Id = :cv1.Id
+          LIMIT 1
+        ]
+        .ContentDocumentId;
+        Deal_Document__c doc = new Deal_Document__c(
+          Deal__c = opp.Id,
+          Document_Type__c = 'Draft IC Memo',
+          ContentVersion_Id__c =cv1.Id,
+          Attachment_Id__c = docId,
+          File_Name__c = 'test.pdf',
+          Document_Loaded__c = true
+        );
+        insert doc;
+    
 
         Attachment a = new Attachment(Name='Test',ParentId=opp.Id,Body=blob.valueOf('test'));
 
@@ -74,15 +101,23 @@ private class IcApprovalControllerTest {
         }
         List<EmailTemplate> e = IcApprovalController.queryEmailTemplate('Term_IC_Approval');
         IcApprovalController.queryContentVersions( new List<Id>{UserInfo.getUserId()});
-
+        
         ContentVersion cv = new ContentVersion();
         cv.PathOnClient='/';
         cv.VersionData=blob.valueOf('test');
         IcApprovalController.constructFileAttachment(cv);
+        List<ProcessInstanceWorkitem> piwi = [SELECT Id, ProcessInstanceId, ProcessInstance.TargetObjectId FROM ProcessInstanceWorkitem WHERE ProcessInstance.TargetObjectId =: opp.Id];
+        Approval.ProcessWorkitemRequest req = new Approval.ProcessWorkitemRequest();
+        req.setAction('Removed');       
+        req.setWorkitemId(piwi.get(0).Id);
+   
+        Approval.process(req,false);
 
         Map<String,String> m = new Map<String,String>();
         m.put('recipients', 'test@test.com');
         m.put('cc', 'test@test.com');
+        m.put('ApprovalType', 'Term IC');
+        m.put('recordId', opp.Id);
         List<Id> aIds = new List<Id>();
         List<Id> cIds = new List<Id>();
 

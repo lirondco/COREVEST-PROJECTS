@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>54.0</apiVersion>
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Pricing Review Request Custom</name>
+    <style>none</style>
+    <subject>Pricing Review - Opportunity Loan ID: {!Opportunity.Deal_Loan_Number__c} - Field from Account - {!Account.BillingStreet}</subject>
+    <type>visualforce</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

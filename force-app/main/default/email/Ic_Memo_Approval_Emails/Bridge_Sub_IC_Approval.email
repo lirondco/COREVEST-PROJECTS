@@ -1,33 +1,30 @@
-<messaging:emailTemplate subject="{!relatedTo.Name} - IC Memo Approval"
-    recipientType="User"
-    relatedToType="Opportunity">
-<messaging:htmlEmailBody >
-    <p style="margin-top:20px;">
-    Dear IC Committee Member,</p>
+<messaging:emailTemplate subject="{!relatedTo.Name} - IC Memo Approval" recipientType="User" relatedToType="Opportunity">
+    <messaging:htmlEmailBody >
 
-    <br />
-    <p>
-        Please review the deal below that has a loan amount that's less than $3,000,000.
-    </p>
-    <br />
+        <p>Dear IC Committee Member,</p>
+        <br />
 
-    <p>
-    Capital Market: {!relatedTo.Approved_by_Capital_Markets__r.Name}, &nbsp;<apex:outputText value="{0,date,MM/dd/yyyy}"> <apex:param value="{!relatedTo.Approved_by_Capital_Markets_Date__c}" /> </apex:outputText><br />
-    Underwriting: {!relatedTo.Approved_by_Underwriter__r.Name}, &nbsp;<apex:outputText value="{0,date,MM/dd/yyyy}"> <apex:param value="{!relatedTo.Approved_by_Underwriter_Date__c}" /> </apex:outputText><br />
-    </p>
-    <br />
+        <p>Please review the deal below that has a loan amount that is less than $3,000,000.</p>
+        <br />
 
-    <p>
-    Attached is a completed IC Memo.</p>
-    <br />
+        <p>
+            Pricing Request Approval Information:
+            <br /> Capital Market: {!relatedTo.Approved_by_Capital_Markets__r.Name}
+            <apex:outputText value=",{!relatedTo.Approved_by_Capital_Markets_Date__c}"
+                rendered="{!NOT( ISBLANK(relatedTo.Approved_by_Capital_Markets_Date__c) )}" /> Underwriting: {!relatedTo.Approved_by_Underwriter__r.Name},
+            <apex:outputText value=",{!relatedTo.Approved_by_Underwriter_Date__c}"
+                rendered="{!NOT( ISBLANK(relatedTo.Approved_by_Underwriter_Date__c) )}" />
+        </p>
+        <br />
 
-    <p>
-    Thanks,</p>
-    <p>
-    {!relatedTo.Owner.Name}</p>
-    <br />
+        <p>Attached is a completed IC Memo.</p>
+        <br />
 
-            <p>
+        <p>Thanks,</p>
+        <p>{!relatedTo.Owner.Name}</p>
+        <br />
+
+        <p>
             <table style="table-layout:fixed;border:1px solid black;border-collapse:collapse;width:350px;">
                 <colgroup>
                     <col class="one" style="width:50%;border:1px solid black;padding:6px;" />
@@ -74,20 +71,12 @@
                 </tr>
                 <tr>
                     <td style="border:1px solid black">
-                        Requested Loan Size:
+                        Loan Commitment:
                     </td>
                     <td style="border:1px solid black;text-align:right;">
                         <apex:outputText value="{0, number, currency}">
-                            <apex:param value="{!relatedTo.Loan_Size__c}" />
+                            <apex:param value="{!relatedTo.LOC_Commitment__c}" />
                         </apex:outputText>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="border:1px solid black">
-                        Property Location(s):
-                    </td>
-                    <td style="border:1px solid black;text-align:right;">
-                        <apex:outputText value="{!relatedTo.Active_States__c}" />
                     </td>
                 </tr>
                 <tr>
@@ -127,15 +116,6 @@
                 </colgroup>
 
                 <tr>
-                    <td style="border:1px solid black">
-                        Bridge Program Type
-                    </td>
-                    <td style="border:1px solid black;text-align:right;">
-                        <apex:outputText value="{!relatedTo.LOC_Program_Type__c}" />
-                    </td>
-                </tr>
-
-                <tr>
 
                     <tr>
                         <td style="border:1px solid black">
@@ -172,61 +152,43 @@
 
                 <tr>
                     <td style="border:1px solid black">
-                        Requested Revolving
+                        Term
                     </td>
                     <td style="border:1px solid black;text-align:right;">
-                        <apex:outputText value="{!relatedTo.Requested_Revolving__c}" />
+                        <apex:outputText value="{!relatedTo.LOC_Term__c}" />
                     </td>
                 </tr>
 
                 <tr>
                     <td style="border:1px solid black">
-                        Requested Advance Period
+                        Advance Period
                     </td>
                     <td style="border:1px solid black;text-align:right;">
-                        <apex:outputText value="{!relatedTo.Draw_Period__c}" />
+                        <apex:outputText value="{!relatedTo.Advance_Period__c}" />
                     </td>
                 </tr>
-
+                
                 <tr>
                     <td style="border:1px solid black">
-                        Requested Repayment Period
+                        Max LTC %
                     </td>
                     <td style="border:1px solid black;text-align:right;">
-                        <apex:outputText value="{!relatedTo.Repayment_Period__c}" />
-                    </td>
-                </tr>
-
-                <tr>
-                    <td style="border:1px solid black">
-                        Requested Line Term
-                    </td>
-                    <td style="border:1px solid black;text-align:right;">
-                        <apex:outputText value="{!relatedTo.Line_Expiration__c}" />
-                    </td>
-                </tr>
-
-                <tr>
-                    <td style="border:1px solid black">
-                        Requested LTC Max
-                    </td>
-                    <td style="border:1px solid black;text-align:right;">
-                        <apex:outputText value="{0, number, #.##}%" rendered="{!NOT( ISBLANK(relatedTo.Requested_LTC_Max__c) )}">
-                            <apex:param value="{!relatedTo.Requested_LTC_Max__c}" />
+                        <apex:outputText value="{0, number, #.##}%" rendered="{!NOT( ISBLANK(relatedTo.LTC__c) )}">
+                            <apex:param value="{!relatedTo.LTC__c}" />
                         </apex:outputText>
-                        <apex:outputText value="00.00%" rendered="{!ISBLANK(relatedTo.Requested_LTC_Max__c)}" />
+                        <apex:outputText value="00.00%" rendered="{!ISBLANK(relatedTo.LTC__c)}" />
                     </td>
                 </tr>
 
                 <tr>
                     <td style="border:1px solid black">
-                        Requested LTV Max
+                        Max LTV %
                     </td>
                     <td style="border:1px solid black;text-align:right;">
-                        <apex:outputText value="{0, number, #.##}%" rendered="{!NOT( ISBLANK(relatedTo.Requested_LTV_Max__c) )}">
-                            <apex:param value="{!relatedTo.Requested_LTV_Max__c}" />
+                        <apex:outputText value="{0, number, #.##}%" rendered="{!NOT( ISBLANK(relatedTo.LTV__c) )}">
+                            <apex:param value="{!relatedTo.LTV__c}" />
                         </apex:outputText>
-                        <apex:outputText value="00.00%" rendered="{!ISBLANK(relatedTo.Requested_LTV_Max__c)}" />
+                        <apex:outputText value="00.00%" rendered="{!ISBLANK(relatedTo.LTV__c)}" />
                     </td>
                 </tr>
                 <!--
@@ -244,149 +206,148 @@
 -->
                 <tr>
                     <td style="border:1px solid black">
-                        Requested Total Loan LTC
+                        Reno Total Loan LTC
                     </td>
                     <td style="border:1px solid black;text-align:right;">
-                        <apex:outputText value="{0, number, #.##}%" rendered="{!NOT( ISBLANK(relatedTo.Requested_Total_Loan_LTC__c) )}">
-                            <apex:param value="{!relatedTo.Requested_Total_Loan_LTC__c}" />
+                        <apex:outputText value="{0, number, #.##}%" rendered="{!NOT( ISBLANK(relatedTo.Total_Loan_LTC__c) )}">
+                            <apex:param value="{!relatedTo.Total_Loan_LTC__c}" />
                         </apex:outputText>
-                        <apex:outputText value="00.00%" rendered="{!ISBLANK(relatedTo.Requested_Total_Loan_LTC__c)}" />
+                        <apex:outputText value="00.00%" rendered="{!ISBLANK(relatedTo.Total_Loan_LTC__c)}" />
                     </td>
                 </tr>
 
                 <tr>
                     <td style="border:1px solid black">
-                        Requested Total ARV LTV
+                        Total ARV LTV
                     </td>
                     <td style="border:1px solid black;text-align:right;">
-                        <apex:outputText value="{0, number, #.##}%" rendered="{!NOT( ISBLANK(relatedTo.Requested_ARV_LTV__c) )}">
-                            <apex:param value="{!relatedTo.Requested_ARV_LTV__c}" />
+                        <apex:outputText value="{0, number, #.##}%" rendered="{!NOT( ISBLANK(relatedTo.Total_ARV_LTV__c) )}">
+                            <apex:param value="{!relatedTo.Total_ARV_LTV__c}" />
                         </apex:outputText>
-                        <apex:outputText value="00.00%" rendered="{!ISBLANK(relatedTo.Requested_ARV_LTV__c)}" />
+                        <apex:outputText value="00.00%" rendered="{!ISBLANK(relatedTo.Total_ARV_LTV__c)}" />
                     </td>
                 </tr>
 
                 <tr>
                     <td style="border:1px solid black">
-                        Requested Max Reno Cost Reimbursement
+                        Max Reno Cost Reimbursement
                     </td>
                     <td style="border:1px solid black;text-align:right;">
-                        <apex:outputText value="{0, number, #.##}%" rendered="{!NOT( ISBLANK(relatedTo.Requested_Max_Reno_Cost_Reimbursement__c) )}">
-                            <apex:param value="{!relatedTo.Requested_Max_Reno_Cost_Reimbursement__c}" />
+                        <apex:outputText value="{0, number, #.##}%" rendered="{!NOT( ISBLANK(relatedTo.Max_Reno_Cost_Reimbursement__c) )}">
+                            <apex:param value="{!relatedTo.Max_Reno_Cost_Reimbursement__c}" />
                         </apex:outputText>
-                        <apex:outputText value="00.00%" rendered="{!ISBLANK(relatedTo.Requested_Max_Reno_Cost_Reimbursement__c)}" />
+                        <apex:outputText value="00.00%" rendered="{!ISBLANK(relatedTo.Max_Reno_Cost_Reimbursement__c)}" />
                     </td>
                 </tr>
                 <tr>
                     <td style="border:1px solid black">
-                        Requested Renovation Limit
+                        Renovation Limit %Acq Cost
                     </td>
                     <td style="border:1px solid black;text-align:right;">
-                        <apex:outputText value="{0, number, #.##}%" rendered="{!NOT( ISBLANK(relatedTo.Requested_Reno_Limit__c) )}">
-                            <apex:param value="{!relatedTo.Requested_Reno_Limit__c}" />
+                        <apex:outputText value="{0, number, #.##}%" rendered="{!NOT( ISBLANK(relatedTo.Renovation_Limit__c) )}">
+                            <apex:param value="{!relatedTo.Renovation_Limit__c}" />
                         </apex:outputText>
-                        <apex:outputText value="00.00%" rendered="{!ISBLANK(relatedTo.Requested_Reno_Limit__c)}" />
+                        <apex:outputText value="00.00%" rendered="{!ISBLANK(relatedTo.Renovation_Limit__c)}" />
                     </td>
                 </tr>
 
                 <tr>
                     <td style="border:1px solid black">
-                        Requested Interest Type
+                        Interest Rate Type
                     </td>
                     <td style="border:1px solid black;text-align:right;">
-                        <apex:outputText value="{!relatedTo.Requested_Interest_Type__c}" />
+                        <apex:outputText value="{!relatedTo.Interest_Rate_Type__c}" />
                     </td>
                 </tr>
 
                 <tr>
                     <td style="border:1px solid black">
-                        Requested Rate
+                        Interest Rate
                     </td>
                     <td style="border:1px solid black;text-align:right;">
-                        <apex:outputText value="{0, number, #.##}%" rendered="{!NOT( ISBLANK(relatedTo.Requested_Rate_1_9_Months__c) )}">
-                            <apex:param value="{!relatedTo.Requested_Rate_1_9_Months__c}" />
+                        <apex:outputText value="{0, number, #.##}%" rendered="{!NOT( ISBLANK(relatedTo.Rate__c) )}">
+                            <apex:param value="{!relatedTo.Rate__c}" />
                         </apex:outputText>
-                        <apex:outputText value="00.00%" rendered="{!ISBLANK(relatedTo.Requested_Rate_1_9_Months__c)}" />
+                        <apex:outputText value="00.00%" rendered="{!ISBLANK(relatedTo.Rate__c)}" />
                     </td>
                 </tr>
 
                 <tr>
                     <td style="border:1px solid black">
-                        Requested Index
+                        Index
                     </td>
                     <td style="border:1px solid black;text-align:right;">
-                        <apex:outputText value="{!relatedTo.Requested_Index__c}" />
+                        <apex:outputText value="{!relatedTo.Index__c}" />
                     </td>
                 </tr>
 
                 <tr>
                     <td style="border:1px solid black">
-                        Requested Index Margin
+                        Index Margin
                     </td>
                     <td style="border:1px solid black;text-align:right;">
-                        <apex:outputText value="{0, number, #.##}%" rendered="{!NOT( ISBLANK(relatedTo.Requested_Index_Margin__c) )}">
-                            <apex:param value="{!relatedTo.Requested_Index_Margin__c}" />
+                        <apex:outputText value="{0, number, #.##}%" rendered="{!NOT( ISBLANK(relatedTo.Index_Margin__c) )}">
+                            <apex:param value="{!relatedTo.Index_Margin__c}" />
                         </apex:outputText>
-                        <apex:outputText value="00.00%" rendered="{!ISBLANK(relatedTo.Requested_Index_Margin__c)}" />
+                        <apex:outputText value="00.00%" rendered="{!ISBLANK(relatedTo.Index_Margin__c)}" />
                     </td>
                 </tr>
 
                 <tr>
                     <td style="border:1px solid black">
-                        Requested Index Floor
+                        Index Floor
                     </td>
                     <td style="border:1px solid black;text-align:right;">
-                        <apex:outputText value="{!relatedTo.Requested_Index_Floor__c}" />
+                        <apex:outputText value="{!relatedTo.Index_Floor__c}" />
                     </td>
                 </tr>
 
                 <tr>
                     <td style="border:1px solid black">
-                        Requested Origination Fee
+                        Origination Fee %
                     </td>
                     <td style="border:1px solid black;text-align:right;">
-                        <apex:outputText value="{0, number,#.##}%" rendered="{!NOT( ISBLANK(relatedTo.Requested_Origination_Fee__c) )}">
-                            <apex:param value="{!relatedTo.Requested_Origination_Fee__c}" />
+                        <apex:outputText value="{0, number,#.##}%" rendered="{!NOT( ISBLANK(relatedTo.CAF_Upfront_Fee__c) )}">
+                            <apex:param value="{!relatedTo.CAF_Upfront_Fee__c}" />
                         </apex:outputText>
                     </td>
                 </tr>
 
                 <tr>
                     <td style="border:1px solid black">
-                        Requested Exit Fee
+                        Exit Fee
                     </td>
                     <td style="border:1px solid black;text-align:right;">
-                        <apex:outputText value="{0, number, #.##}%" rendered="{!NOT( ISBLANK(relatedTo.Requested_Exit_Fee__c) )}">
-                            <apex:param value="{!relatedTo.Requested_Exit_Fee__c}" />
+                        <apex:outputText value="{0, number, #.##}%" rendered="{!NOT( ISBLANK(relatedTo.Exit_Fee__c) )}">
+                            <apex:param value="{!relatedTo.Exit_Fee__c}" />
                         </apex:outputText>
-                        <apex:outputText value="00.00%" rendered="{!ISBLANK(relatedTo.Requested_Exit_Fee__c)}" />
+                        <apex:outputText value="00.00%" rendered="{!ISBLANK(relatedTo.Exit_Fee__c)}" />
                     </td>
                 </tr>
 
                 <tr>
                     <td style="border:1px solid black">
-                        Requested Advance Fee
+                        Advance Fee %
                     </td>
                     <td style="border:1px solid black;text-align:right;">
-                        <apex:outputText value="{0, number, #.##}%" rendered="{!NOT( ISBLANK(relatedTo.Requested_Draw_Fee__c) )}">
-                            <apex:param value="{!relatedTo.Requested_Draw_Fee__c}" />
+                        <apex:outputText value="{0, number, #.##}%" rendered="{!NOT( ISBLANK(relatedTo.Fee__c) )}">
+                            <apex:param value="{!relatedTo.Fee__c}" />
                         </apex:outputText>
-                        <apex:outputText value="00.00%" rendered="{!ISBLANK(relatedTo.Requested_Draw_Fee__c)}" />
+                        <apex:outputText value="00.00%" rendered="{!ISBLANK(relatedTo.Fee__c)}" />
                     </td>
                 </tr>
 
                 <tr>
                     <td style="border:1px solid black">
-                        Requested Advance Fee Cap
+                        Recourse
                     </td>
                     <td style="border:1px solid black;text-align:right;">
-                        <apex:outputText value="{!relatedTo.Requested_Draw_Fee_Cap__c}" />
+                        <apex:outputText value="{!relatedTo.Recourse__c}" />
                     </td>
                 </tr>
-
                 <tr style="{!IF(ISBLANK(relatedTo.Broker_Fees__c), 'display:none;', '')}">
                     <td style="border:1px solid black">
-                        Broker Fee
+                        Broker Fee %
                     </td>
                     <td style="border:1px solid black;text-align:right;">
                         <apex:outputText value="{!relatedTo.Broker_Fees__c}" />
@@ -448,5 +409,5 @@
             </p>
             <!-- </div> -->
         </apex:repeat>
-</messaging:htmlEmailBody>
+    </messaging:htmlEmailBody>
 </messaging:emailTemplate>

@@ -62,7 +62,7 @@ export default class IcApprovalInterface extends LightningElement {
       toastEvent = {
         title: "Please select an attachment.",
         message:
-          "You cannot send an email without an attacment.",
+          "You cannot send an email without an attachment.",
         variant: "error"
       };
     } else if (!this.data.recipients) {

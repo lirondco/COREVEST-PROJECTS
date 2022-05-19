@@ -17,7 +17,9 @@
 
         // let approvalType = returnVal.ApprovalName.includes('Pricing') ? 'pricingReview' : 'submitUw';
         component.set("v.approvalName", returnVal.ApprovalName);
-
+        if(returnVal.ApprovalName.split("_").some(v => v=== "IC")) {
+          component.set("v.isIcApproval", true);
+        }
         if (returnVal.Verified === "true") {
           helper.toggleHide(component, "approval-buttons");
         }

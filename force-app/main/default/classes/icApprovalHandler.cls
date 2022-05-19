@@ -640,6 +640,7 @@ global class icApprovalHandler implements Messaging.InboundEmailHandler {
         new List<Messaging.SingleEmailMessage>{ sem }
       );
     } catch (Exception e) {
+      System.debug('error sending email' + e.getMessage() + ' ' + e.getLineNumber());
       String errorMessage = '';
       errorMessage += JSON.serialize(recipients);
       errorMessage += '<br/>' + ccUsers == null
@@ -969,7 +970,7 @@ global class icApprovalHandler implements Messaging.InboundEmailHandler {
     Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
 
     email.setToAddresses(
-      new List<String>{ 'mcastillo@mkpartners.com', 'bryon@cvest.com' }
+      new List<String>{ 'ldecastro@mkpartners.com', 'bryon@cvest.com' }
     );
 
     String body = '';

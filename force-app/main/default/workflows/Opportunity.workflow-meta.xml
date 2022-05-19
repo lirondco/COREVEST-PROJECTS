@@ -50,6 +50,10 @@
             <recipient>bryon.harland@cvest.com</recipient>
             <type>user</type>
         </recipients>
+        <recipients>
+            <recipient>dan.federico@cvest.com</recipient>
+            <type>user</type>
+        </recipients>
         <senderType>CurrentUser</senderType>
         <template>Submit_to_UW_Approval_Email_Templates/A_Deal_has_been_submitted_for_UW_Approval</template>
     </alerts>
@@ -122,10 +126,6 @@
             <recipient>bryon.harland@cvest.com</recipient>
             <type>user</type>
         </recipients>
-        <recipients>
-            <field>X2nd_Underwriter__c</field>
-            <type>userLookup</type>
-        </recipients>
         <senderType>CurrentUser</senderType>
         <template>Confirmation_of_Terms_Templates/CoT_Recalled_Email</template>
     </alerts>
@@ -140,17 +140,6 @@
         </recipients>
         <senderType>CurrentUser</senderType>
         <template>Process_Builder_Emails/Berkadia_Onboarding_Documents</template>
-    </alerts>
-    <alerts>
-        <fullName>Bridge_2nd_Underwriter_Assigned</fullName>
-        <description>Bridge 2nd Underwriter Assigned</description>
-        <protected>false</protected>
-        <recipients>
-            <field>X2nd_Underwriter__c</field>
-            <type>userLookup</type>
-        </recipients>
-        <senderType>CurrentUser</senderType>
-        <template>unfiled$public/Notification_to_2nd_UW_Assigned</template>
     </alerts>
     <alerts>
         <fullName>Bridge_Deal_has_been_rejected_by_UW</fullName>
@@ -169,6 +158,10 @@
         </recipients>
         <recipients>
             <recipient>bryon.harland@cvest.com</recipient>
+            <type>user</type>
+        </recipients>
+        <recipients>
+            <recipient>dan.federico@cvest.com</recipient>
             <type>user</type>
         </recipients>
         <senderType>CurrentUser</senderType>
@@ -298,10 +291,6 @@
             <recipient>bryon.harland@cvest.com</recipient>
             <type>user</type>
         </recipients>
-        <recipients>
-            <field>X2nd_Underwriter__c</field>
-            <type>userLookup</type>
-        </recipients>
         <senderType>CurrentUser</senderType>
         <template>Process_Builder_Emails/Deal_Anticipated_Closing_Date_Update</template>
     </alerts>
@@ -420,6 +409,10 @@
             <recipient>bryon.harland@cvest.com</recipient>
             <type>user</type>
         </recipients>
+        <recipients>
+            <recipient>dan.federico@cvest.com</recipient>
+            <type>user</type>
+        </recipients>
         <senderType>CurrentUser</senderType>
         <template>Submit_to_UW_Approval_Email_Templates/UW_Approval_Email</template>
     </alerts>
@@ -438,10 +431,6 @@
         <recipients>
             <recipient>bryon.harland@cvest.com</recipient>
             <type>user</type>
-        </recipients>
-        <recipients>
-            <field>X2nd_Underwriter__c</field>
-            <type>userLookup</type>
         </recipients>
         <senderType>CurrentUser</senderType>
         <template>Submit_to_UW_Approval_Email_Templates/A_Deal_has_been_submitted_for_UW_Approval</template>
@@ -579,10 +568,7 @@
             <recipient>Term_IC_Approval</recipient>
             <type>group</type>
         </recipients>
-        <recipients>
-            <recipient>2nd Underwriter</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
+
         <recipients>
             <recipient>Closer</recipient>
             <type>opportunityTeam</type>
@@ -643,10 +629,7 @@
             <recipient>Term_IC_Approval</recipient>
             <type>group</type>
         </recipients>
-        <recipients>
-            <recipient>2nd Underwriter</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
+
         <recipients>
             <recipient>Closer</recipient>
             <type>opportunityTeam</type>
@@ -706,6 +689,10 @@
         <protected>false</protected>
         <recipients>
             <recipient>brad.chmura@cvest.com</recipient>
+            <type>user</type>
+        </recipients>
+        <recipients>
+            <recipient>dan.federico@cvest.com</recipient>
             <type>user</type>
         </recipients>
         <senderType>CurrentUser</senderType>
@@ -842,10 +829,6 @@
             <type>group</type>
         </recipients>
         <recipients>
-            <recipient>2nd Underwriter</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
-        <recipients>
             <recipient>Closer</recipient>
             <type>opportunityTeam</type>
         </recipients>
@@ -940,10 +923,6 @@
             <field>Underwriter__c</field>
             <type>userLookup</type>
         </recipients>
-        <recipients>
-            <field>X2nd_Underwriter__c</field>
-            <type>userLookup</type>
-        </recipients>
         <senderType>CurrentUser</senderType>
         <template>Process_Builder_Emails/SAB_Deal_Enters_UW</template>
     </alerts>
@@ -976,10 +955,6 @@
             <field>Underwriter__c</field>
             <type>userLookup</type>
         </recipients>
-        <recipients>
-            <field>X2nd_Underwriter__c</field>
-            <type>userLookup</type>
-        </recipients>
         <senderType>CurrentUser</senderType>
         <template>Process_Builder_Emails/Stage_Loan_Processing_to_UW</template>
     </alerts>
@@ -992,10 +967,7 @@
             <recipient>Term_Sub_IC</recipient>
             <type>group</type>
         </recipients>
-        <recipients>
-            <recipient>2nd Underwriter</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
+
         <recipients>
             <recipient>Closer</recipient>
             <type>opportunityTeam</type>
@@ -1056,10 +1028,7 @@
             <recipient>Term_Sub_IC</recipient>
             <type>group</type>
         </recipients>
-        <recipients>
-            <recipient>2nd Underwriter</recipient>
-            <type>opportunityTeam</type>
-        </recipients>
+
         <recipients>
             <recipient>Closer</recipient>
             <type>opportunityTeam</type>
@@ -1134,10 +1103,6 @@
             <field>Underwriter__c</field>
             <type>userLookup</type>
         </recipients>
-        <recipients>
-            <field>X2nd_Underwriter__c</field>
-            <type>userLookup</type>
-        </recipients>
         <senderType>CurrentUser</senderType>
         <template>unfiled$public/Term_Confirmation_of_Terms_Request</template>
     </alerts>
@@ -1167,6 +1132,10 @@
         </recipients>
         <recipients>
             <recipient>bryon.harland@cvest.com</recipient>
+            <type>user</type>
+        </recipients>
+        <recipients>
+            <recipient>dan.federico@cvest.com</recipient>
             <type>user</type>
         </recipients>
         <recipients>
@@ -1231,6 +1200,10 @@
         </recipients>
         <recipients>
             <recipient>bryon.harland@cvest.com</recipient>
+            <type>user</type>
+        </recipients>
+        <recipients>
+            <recipient>dan.federico@cvest.com</recipient>
             <type>user</type>
         </recipients>
         <recipients>
@@ -1533,9 +1506,9 @@
     </fieldUpdates>
     <fieldUpdates>
         <fullName>Stage_to_Issue_Term_Sheet</fullName>
-        <description>Updates the Stage to Issue Term Sheet Issued</description>
+        <description>Updates the Stage to Issue Term Sheet/Order Appraisal</description>
         <field>StageName</field>
-        <literalValue>Term Sheet Issued</literalValue>
+        <literalValue>Issue Term Sheet/Order Appraisal</literalValue>
         <name>Stage to Issue Term Sheet</name>
         <notifyAssignee>false</notifyAssignee>
         <operation>Literal</operation>
@@ -2148,7 +2121,7 @@ Based on Total Property field on Deal.</description>
         <criteriaItems>
             <field>Opportunity.StageName</field>
             <operation>notEqual</operation>
-            <value>UW Hold</value>
+            <value>UW Hold,Processing Hold</value>
         </criteriaItems>
         <criteriaItems>
             <field>Opportunity.In_Process_of_Withdrawn_or_Rejected__c</field>
@@ -2229,7 +2202,7 @@ Based on Total Property field on Deal.</description>
             <name>Update_to_Stage_to_Closed_Won</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>false</active>
+        <active>true</active>
         <criteriaItems>
             <field>Opportunity.Type</field>
             <operation>equals</operation>
@@ -2254,7 +2227,7 @@ Based on Total Property field on Deal.</description>
             <name>Update_Deal_Stage_to_Withdrawn</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>false</active>
+        <active>true</active>
         <criteriaItems>
             <field>Opportunity.Type</field>
             <operation>equals</operation>

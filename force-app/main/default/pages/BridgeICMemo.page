@@ -150,8 +150,8 @@
                 <tr>
                     <td class="left-row-title">Foreign National/Nation of Citenzship</td>
                     <td class="row-data-two-column">
-                        <apex:outputText rendered="{! If(Opportunity.Foreign_National__c == true, true, false ) }" value="Yes" />
-                        <apex:outputText rendered="{! If(Opportunity.Foreign_National__c == false, true, false ) }" value="No" /> 
+                        <!-- <apex:outputText rendered="{! If(Opportunity.Foreign_National__c == true, true, false ) }" value="Yes" />
+                        <apex:outputText rendered="{! If(Opportunity.Foreign_National__c == false, true, false ) }" value="No" />  -->
                     </td>
                     <td class="row-data-two-column">
                         <apex:outputField value="{!Opportunity.Country__c}" />

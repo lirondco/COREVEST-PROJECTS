@@ -39,7 +39,7 @@
         <name>Underwriter_and_Capital_Markets_Review</name>
     </approvalStep>
     <description>Approval Process for the Bridge (LOC) Deal Pricing Review.</description>
-    <emailTemplate>Pricing_Approval_Email_Templates/Pricing_Review_Request</emailTemplate>
+    <emailTemplate>Pricing_Approval_Email_Templates/Pricing_Review_Request_Custom</emailTemplate>
     <enableMobileDeviceAccess>false</enableMobileDeviceAccess>
     <entryCriteria>
         <criteriaItems>

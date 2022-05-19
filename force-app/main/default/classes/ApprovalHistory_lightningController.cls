@@ -342,8 +342,9 @@ public without sharing class ApprovalHistory_lightningController {
       }
     }
 
-    Boolean b = submitterId == UserInfo.getUserId() || (String.isNotEmpty(ahList[0].ProcessName__c) && IC_APPROVAL_NAMES.contains(ahList[0].ProcessName__c) && roleName == 'Underwriter');
+    Boolean b = submitterId == UserInfo.getUserId() || (ahList.size() > 0 && String.isNotEmpty(ahList[0].ProcessName__c) && IC_APPROVAL_NAMES.contains(ahList[0].ProcessName__c) && roleName == 'Underwriter');
 
+    
     returnWrapper rw = new returnWrapper();
     rw.ahList = ahList;
     rw.isSubmitter = b;

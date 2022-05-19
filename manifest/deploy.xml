@@ -1,13 +1,115 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
+<!-- After deployment: Add an email address to the email handler. Add people to the groups and the permission set, set appropriate profile permissions, and then update the CC Email in each IC APproval
+to the current IC Approval Handler Email Address for the org. APEX Classes that reference the handler don't need updating, they're dynamic -->
+<!-- ADD PEOPLE TO GROUPS FIRST BEFORE DEPLOYING PART 2 -->
+	<!-- PART 1 - DEPLOY THESE FIRST - NO TEST RUN NEEDED -->
+	
+	<types>
+		<members>Approval_History__c.Approval_Type__c</members>
+		<members>Approval_History__c.Rejection_Link__c</members>
+		<members>Opportunity.Anticipated_IC_Approval__c</members>
+		<members>Opportunity.IC_Approval_Date__c</members>
+		<members>Opportunity.IC_Approval__c</members>
+		<name>CustomField</name>
+	</types>
+		<types>
+		<members>Opportunity.IC_Approval_Date_Required_Appr_by_C</members>
+		<name>ValidationRule</name>
+	</types>
+	<types>
+		<members>Opportunity</members>
+		<name>Workflow</name>
+	</types>
+	<types>
+		<members>Opportunity.IC_Approval_Date_Update</members>
+		<members>Opportunity.IC_Approval_Field_Rejected</members>
+		<members>Opportunity.IC_Approval_Field_Update</members>
+		<name>WorkflowFieldUpdate</name>
+	</types>
+  <types>
+		<members>Ic_Memo_Approval_Emails</members>
+		<members>Ic_Memo_Approval_Emails/Term_Sub_IC_Approval</members>
+		<members>Ic_Memo_Approval_Emails/Term_IC_Approval</members>
+		<members>Ic_Memo_Approval_Emails/IC_Reversed_Email</members>
+		<members>Ic_Memo_Approval_Emails/IC_Rejected_Email</members>
+		<members>Ic_Memo_Approval_Emails/IC_Metrics_For_Term</members>
+		<members>Ic_Memo_Approval_Emails/IC_Metrics_For_Bridge</members>
+		<members>Ic_Memo_Approval_Emails/Bridge_IC_Approval</members>
+		<members>Ic_Memo_Approval_Emails/IC_Approval_Email</members>
+		<members>Ic_Memo_Approval_Emails/Bridge_Sub_IC_Approval</members>
+		<name>EmailTemplate</name>
+    </types>
+		<types>
+		<members>Opportunity.IC_Approved_Alert</members>
+		<members>Opportunity.IC_Rejected_Alert</members>
+		<members>Opportunity.Sub_IC_Approved_Alert</members>
+		<members>Opportunity.Sub_IC_Rejected_Alert</members>
+		<name>WorkflowAlert</name>
+	</types>
     <types>
-        <members>OpportunityMethods</members>
-        <members>OpportunityMethodsTest</members>
-        <members>PaidOffSabPropertiesBatch</members>
-        <members>PaidOffSabPropertiesBatchTest</members>
+		<members>Opportunity.Bridge_IC_Approval</members>
+		<members>Opportunity.Term_IC_Approval</members>
+		<members>Opportunity.Term_Sub_IC</members>
+		<members>Opportunity.Bridge_Sub_IC</members>
+		<name>ApprovalProcess</name>
+	</types>
+    <types>
+		<members>Term_IC_Approval</members>
+		<members>Term_Sub_IC</members>
+		<name>Group</name>
+	</types>
+    	<types>
+		<members>IC_Approval_Submitters</members>
+		<name>PermissionSet</name>
+	</types>
+		<!-- PART 2 STARTS HERE -->
+		<types>
+		<members>icApprovalHandler</members>
+		<name>EmailServicesFunction</name>
+	</types>
+    <types>
+        <members>opportunity_Helper</members>
+        <members>icApprovalHandler</members>
+        <members>IcApprovalHandlerTest</members>
+        <members>IcApprovalController</members>
+        <members>IcApprovalControllerTest</members>
+        <members>ApprovalAttachments_lightningController</members>
+        <members>IcRejectionLinkController</members>
+        <members>IcRejectionLinkControllerTest</members>
+        <members>ExecSummaryController</members>
+        <members>ExecSummaryControllerTest</members>
+        <members>ApprovalHistory_lightningController</members>
+				<members>IcReviewsLwcController</members>
+				<members>IcReviewsControllerTest</members>
         <name>ApexClass</name>
     </types>
-    
+    <types>
+		<members>IcRejectionLinkVf</members>
+		<name>ApexPage</name>
+	</types>
+    <types>
+		<members>emailAttachmentsLwc</members>
+		<members>icApprovalInterface</members>
+		<members>icReviewsHomePageLwc</members>
+		<members>icReviewsInProgressLwc</members>
+    <members>renderPdf</members>
+		<name>LightningComponentBundle</name>
+	</types>
+  <types>
+		<members>IC_Reviews_in_Progress</members>
+		<name>CustomTab</name>
+	</types>
+	<types>
+		<members>Opportunity.Submit_to_IC_Approval</members>
+		<name>QuickAction</name>
+	</types>
+    <types>
+		<members>ApprovalScreen</members>
+		<members>ApprovalScreenHeader</members>
+		<members>ExecutiveSummary</members>
+		<name>AuraDefinitionBundle</name>
+	</types>
     <version>53.0</version>
 </Package>
-<!-- sfdx force:source:deploy -x manifest/deploy.xml -l RunSpecifiedTests -r OpportunityMethodsTest,PaidOffSabPropertiesBatchTest -->
+<!-- sfdx force:source:deploy -x manifest/deploy.xml -l RunSpecifiedTests -r IcReviewsControllerTest,ApprovalHistory_Tests,ExecSummaryControllerTest,IcRejectionLinkControllerTest,opportunity_Tests,Opportunity_Tests_Additional,IcApprovalHandlerTest,IcApprovalControllerTest,ApprovalAttachments_Tests -->

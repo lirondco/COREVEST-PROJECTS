@@ -102,6 +102,7 @@ private class ApprovalAttachments_Tests {
       piwId2,
       pisId
     );
+    Test.startTest();
     ApprovalHistory_lightningController.returnHistory(piwId);
     ApprovalHistory_lightningController.returnHistoryOpp(o.Id);
 
@@ -129,7 +130,6 @@ private class ApprovalAttachments_Tests {
       Map<String, String> m = new Map<String, String>{ 'Status' => 'Pending' };
       System.assertEquals(initMap.get('Status'), m.get('Status'));
     }
-
     ApprovalAttachments_lightningController.returnAttachments(piwId);
     ApprovalAttachments_lightningController.approveDeal(
       piwId,
@@ -146,6 +146,8 @@ private class ApprovalAttachments_Tests {
       acceptableRoleName
     );
 
+
+    ApprovalAttachments_lightningController.sendRejectionEmail(o, new List<String>{'test@test.com'});
     ApprovalAttachments_lightningController.returnParentAndChild(piwId);
     Attachment a = Approval_TestDataFactory.createAttachment(o.Id);
     ContentVersion cv = Approval_TestDataFactory.createCv();
@@ -158,10 +160,7 @@ private class ApprovalAttachments_Tests {
     ApprovalAttachments_lightningController.getParentAttachments(e.Id);
 
     ApprovalAttachments_lightningController.returnUserAndOppId(o.Id);
-
-    // Test.startTest();
-
-    // Test.stopTest();
+    Test.stopTest();
   }
 
   @isTest(SeeAllData=true)
@@ -233,6 +232,8 @@ private class ApprovalAttachments_Tests {
       FROM ProcessInstanceStep
       WHERE ProcessInstance.TargetObjectId = :o.Id
     ];
+
+    ApprovalAttachments_lightningController.returnParentAndChild(pisList[0].Id);
 
     List<ProcessInstanceWorkItem> piwList = [
       SELECT Id

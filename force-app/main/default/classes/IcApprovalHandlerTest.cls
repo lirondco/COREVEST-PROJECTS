@@ -1,16 +1,39 @@
 @isTest
 private class IcApprovalHandlerTest {
   static testMethod void IcApprovalHandlerTest_UnitTest() {
+    Test_helper.setupProduct2();
     Account acc = test_Helper.createAccount();
     Contact cont = test_Helper.createContact(acc);
     Opportunity deal = test_Helper.createOpportunity(acc, cont);
+    Contentversion cv = new Contentversion();
+    cv.Title = 'test.pdf';
+    cv.PathOnClient = 'test.pdf';
+    cv.VersionData = EncodingUtil.base64Decode(
+      EncodingUtil.urlEncode('Unit Test Attachment Body', 'UTF-8')
+    );
+    insert cv;
+    Id docId = [
+      SELECT Id, ContentDocumentId
+      FROM ContentVersion
+      WHERE Id = :cv.Id
+      LIMIT 1
+    ]
+    .ContentDocumentId;
+    Deal_Document__c doc = new Deal_Document__c(
+      Deal__c = deal.Id,
+      Document_Type__c = 'Draft IC Memo',
+      ContentVersion_Id__c =cv.Id,
+      Attachment_Id__c = docId,
+      File_Name__c = 'test.pdf'
+    );
 
+    insert doc;
     Messaging.InboundEmail.Header h = new Messaging.InboundEmail.Header();
     h.Name = 'Test';
     h.Value = '      1   1 2000';
     Messaging.InboundEmail email = new Messaging.InboundEmail();
     email.headers = new List<Messaging.InboundEmail.Header>();
-  email.headers.add(h);
+    email.headers.add(h);
     Messaging.InboundEnvelope env = new Messaging.InboundEnvelope();
 
     email.subject = 'Create Contact';
@@ -18,7 +41,7 @@ private class IcApprovalHandlerTest {
     email.plainTextBody = 'email body\n2225256325\nTitle';
     String body = '<wbr>';
     body += '--DEALIDSTART--' + deal.id + '--DEALIDEND--';
-    body += '--CONTENTIDSTART--' + '' + '--CONTENTIDEND--';
+    body += '--CONTENTIDSTART--' + cv.Id + '--CONTENTIDEND--';
     body += 'CoreVest American Finance Lender LLC. All Rights Reserved.';
     email.htmlBody = body;
 
@@ -69,6 +92,8 @@ private class IcApprovalHandlerTest {
       UserInfo.getUserId(),
       true
     );
+
+    icApprovalHandler.approveDeal(UserInfo.getUserId(), deal);
     Test.stopTest();
   }
 }
