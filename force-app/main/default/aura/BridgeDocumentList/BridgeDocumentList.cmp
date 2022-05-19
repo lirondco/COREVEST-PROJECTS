@@ -110,6 +110,7 @@
           sortable="true"
           isEditable="false"
           columnWidth="11"
+          isReadable="isReadable"
         />
 
         <c:DataTableColumn
@@ -175,6 +176,13 @@
         <c:DataTableColumn
           label="Document_Loaded__c"
           name="Document_Loaded__c"
+          hidden="true"
+          displayType="hidden"
+          sortable="false"
+        />
+          <c:DataTableColumn
+          label="isReadable"
+          name="isReadable"
           hidden="true"
           displayType="hidden"
           sortable="false"

@@ -3,6 +3,9 @@
     var fields = [];
     var columns = component.find("dataTable").get("v.columns");
     for (var i = 0; i < columns.length; i++) {
+      if(columns[i].get("v.name") == 'isReadable'){
+        continue;
+      }
       fields.push(columns[i].get("v.name"));
     }
 
