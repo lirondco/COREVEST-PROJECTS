@@ -454,7 +454,7 @@
       dealId="{!v.dealId}"
       prodSubtype="{!v.filterFields.ProductSubType}"
       propertyIds="{!v.propertyIds}"
-      oncancel="{!c.onCancel}"
+      oncancel="{!c.cancel}"
     />
     </div>
     </section>

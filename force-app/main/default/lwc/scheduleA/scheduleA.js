@@ -152,6 +152,7 @@ export default class ScheduleA extends LightningElement {
             message: "Error parsing file. " + err,
             variant: "error"
           });
+          this.handleCancel();
         });
     });
   }
@@ -202,36 +203,56 @@ export default class ScheduleA extends LightningElement {
             9: "Legal"
           };
 
-          for (let i = 0; i < loanFees.length; i++) {
-            let currXlsRow = 9 + i;
-            const loanFee = loanFees[i];
-            for (let j = 0; j < loanFeeRow.length; j++) {
-              let currCell = loanFeeRow[j];
-              let newCell = "";
-              if (currCell != undefined && currCell.includes("Loan_Fee__c.")) {
-                let loanFeeField = currCell.slice(
-                  currCell.indexOf(".") + 1,
-                  currCell.length
-                );
+          if (loanFees.length === 0) {
+            let rowNum = 9;
+            for (let i = 0; i < loanFeeRow.length; i++) {
+              workbook
+                .sheet("Schedule A")
+                .row(rowNum)
+                .cell(i + 1)
+                .value("");
+            }
+          } else {
+            for (let i = 0; i < loanFees.length; i++) {
+              let currXlsRow = 9 + i;
+              const loanFee = loanFees[i];
+              for (let j = 0; j < loanFeeRow.length; j++) {
+                let currCell = loanFeeRow[j];
+                let newCell = "";
                 if (
-                  loanFee.hasOwnProperty(loanFeeField) &&
-                  loanFee.hasOwnProperty("Fee_Type__c") &&
-                  loanTypeMap(j) === loanFee.Fee_Type__c
+                  currCell != undefined &&
+                  currCell.includes("Loan_Fee__c.")
                 ) {
-                  newCell = this.isNumeric(loanFee[loanFeeField])
-                    ? parseFloat(loanFee[loanFeeField])
-                    : loanFee[loanFeeField];
+                  let loanFeeField = currCell.slice(
+                    currCell.indexOf(".") + 1,
+                    currCell.length
+                  );
+                  if (
+                    loanFee.hasOwnProperty(loanFeeField) &&
+                    loanFee.hasOwnProperty("Fee_Type__c") &&
+                    loanTypeMap(j) === loanFee.Fee_Type__c
+                  ) {
+                    newCell = this.isNumeric(loanFee[loanFeeField])
+                      ? parseFloat(loanFee[loanFeeField])
+                      : loanFee[loanFeeField];
 
-                  if (
-                    loanFeeField.toLowerCase().includes("fee") ||
-                    loanFeeField.toLowerCase().includes("amount")
-                  ) {
-                    workbook
-                      .sheet("Schedule A")
-                      .row(currXlsRow)
-                      .cell(j + 1)
-                      .value(newCell)
-                      .style("numberFormat", "$0,000.00");
+                    if (
+                      loanFeeField.toLowerCase().includes("fee") ||
+                      loanFeeField.toLowerCase().includes("amount")
+                    ) {
+                      workbook
+                        .sheet("Schedule A")
+                        .row(currXlsRow)
+                        .cell(j + 1)
+                        .value(newCell)
+                        .style("numberFormat", "$0,000.00");
+                    } else {
+                      workbook
+                        .sheet("Schedule A")
+                        .row(currXlsRow)
+                        .cell(j + 1)
+                        .value(newCell);
+                    }
                   } else {
                     workbook
                       .sheet("Schedule A")
@@ -239,42 +260,42 @@ export default class ScheduleA extends LightningElement {
                       .cell(j + 1)
                       .value(newCell);
                   }
-                } else {
-                  workbook
-                    .sheet("Schedule A")
-                    .row(currXlsRow)
-                    .cell(j + 1)
-                    .value(newCell);
-                }
-              } else if (
-                currCell != undefined &&
-                !currCell.includes("Loan_Fee__c.") &&
-                !currCell.includes("FX")
-              ) {
-                let parent = currCell
-                  .replace("__c.", "__r.")
-                  .slice(0, currCell.indexOf("."));
-                let parentField = currCell.slice(
-                  currCell.indexOf(".") + 1,
-                  currCell.length
-                );
-                if (
-                  loanFee.hasOwnProperty(parent) &&
-                  loanFee[parent].hasOwnProperty(parentField)
+                } else if (
+                  currCell != undefined &&
+                  !currCell.includes("Loan_Fee__c.") &&
+                  !currCell.includes("FX")
                 ) {
-                  newCell = this.isNumeric(loanFee[parent][parentField])
-                    ? parseFloat(loanFee[parent][parentField])
-                    : loanFee[parent][parentField];
+                  let parent = currCell
+                    .replace("__c.", "__r.")
+                    .slice(0, currCell.indexOf("."));
+                  let parentField = currCell.slice(
+                    currCell.indexOf(".") + 1,
+                    currCell.length
+                  );
                   if (
-                    parentField.toLowerCase().includes("fee") ||
-                    parentField.toLowerCase().includes("amount")
+                    loanFee.hasOwnProperty(parent) &&
+                    loanFee[parent].hasOwnProperty(parentField)
                   ) {
-                    workbook
-                      .sheet("Schedule A")
-                      .row(currXlsRow)
-                      .cell(j + 1)
-                      .value(newCell)
-                      .style("numberFormat", "$0,000.00");
+                    newCell = this.isNumeric(loanFee[parent][parentField])
+                      ? parseFloat(loanFee[parent][parentField])
+                      : loanFee[parent][parentField];
+                    if (
+                      parentField.toLowerCase().includes("fee") ||
+                      parentField.toLowerCase().includes("amount")
+                    ) {
+                      workbook
+                        .sheet("Schedule A")
+                        .row(currXlsRow)
+                        .cell(j + 1)
+                        .value(newCell)
+                        .style("numberFormat", "$0,000.00");
+                    } else {
+                      workbook
+                        .sheet("Schedule A")
+                        .row(currXlsRow)
+                        .cell(j + 1)
+                        .value(newCell);
+                    }
                   } else {
                     workbook
                       .sheet("Schedule A")
@@ -282,6 +303,20 @@ export default class ScheduleA extends LightningElement {
                       .cell(j + 1)
                       .value(newCell);
                   }
+                } else if (currCell != undefined && currCell.includes("FX")) {
+                  let oper = currCell.slice(
+                    currCell.indexOf("-") + 1,
+                    currCell.lastIndexOf("-")
+                  );
+                  let cols = currCell
+                    .slice(currCell.lastIndexOf("-") + 1, currCell.indexOf("}"))
+                    .split(",");
+                  let formula = `=${cols[0]}${currXlsRow}-${cols[1]}${currXlsRow}`;
+                  workbook
+                    .sheet("Schedule A")
+                    .row(currXlsRow)
+                    .cell(j + 1)
+                    .formula(formula);
                 } else {
                   workbook
                     .sheet("Schedule A")
@@ -289,39 +324,18 @@ export default class ScheduleA extends LightningElement {
                     .cell(j + 1)
                     .value(newCell);
                 }
-              } else if (currCell != undefined && currCell.includes("FX")) {
-                let oper = currCell.slice(
-                  currCell.indexOf("-") + 1,
-                  currCell.lastIndexOf("-")
-                );
-                let cols = currCell
-                  .slice(currCell.lastIndexOf("-") + 1, currCell.indexOf("}"))
-                  .split(",");
-                let formula = `=${cols[0]}${currXlsRow}-${cols[1]}${currXlsRow}`;
-                workbook
-                  .sheet("Schedule A")
-                  .row(currXlsRow)
-                  .cell(j + 1)
-                  .formula(formula)
-              } else {
-                workbook
-                  .sheet("Schedule A")
-                  .row(currXlsRow)
-                  .cell(j + 1)
-                  .value(newCell);
-              }
-              if (i == loanFees.length - 1) {
-                for (let k = currXlsRow + 1; k < currXlsRow + 13; k++) {
-                  workbook
-                    .sheet("Schedule A")
-                    .row(k)
-                    .cell(j + 1)
-                    .value('');
+                if (i == loanFees.length - 1) {
+                  for (let k = currXlsRow + 1; k < currXlsRow + 13; k++) {
+                    workbook
+                      .sheet("Schedule A")
+                      .row(k)
+                      .cell(j + 1)
+                      .value("");
+                  }
                 }
               }
             }
           }
-
           for (let i = 9; i < values.length; i++) {
             const row = values[i];
             for (let j = 0; j < row.length; j++) {
@@ -408,16 +422,22 @@ export default class ScheduleA extends LightningElement {
               let link = document.createElement("a");
               link.href =
                 "data:" + XlsxPopulate.MIME_TYPE + ";base64," + downloadFile;
-              link.download = "Loan Request Approval Form.xlsx";
+              link.download = `Schedule A - ${this.prodSubtype}.xlsx`;
               document.body.appendChild(link);
               link.click();
               this.isPreparing = false;
-              this.handleCancel;
+              this.handleCancel();
             });
           });
         })
         .catch((err) => {
           console.error(err);
+          this.showToast({
+            title: "Error",
+            message: "Error generating file. Message: " + err,
+            variant: "error"
+          });
+          this.handleCancel();
         });
     });
   }

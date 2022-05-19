@@ -76,6 +76,9 @@
     component.set("v.showAssignmentSets", component.find("assignments").get("v.value") == "Assignment Sets");
   },
   cancel: function (component, event, helper) {
+    if(component.get("v.generateScheduleA") == true){
+      component.set("v.generateScheduleA", false);
+    }
     $A.get("e.force:closeQuickAction").fire();
   }
 });
