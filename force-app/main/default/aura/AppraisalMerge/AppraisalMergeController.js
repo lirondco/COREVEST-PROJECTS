@@ -69,13 +69,13 @@
           let property = { sobjectType: "Property__c", Id: merge.propertyId };
           merge.fields.forEach((field) => {
             if ($A.util.isUndefinedOrNull(field.appraisalValue)) {
-              if (
-                merge.productOrdered != "ClearVal Plus (Interior PCI)" &&
-                merge.productOrdered != "ClearVal Plus (Exterior PCI)" &&
-                merge.productOrdered != "Internal In-House Appraisal"
-              ) {
-                property[field.propertyAPIFieldName] = null;
-              }
+              // if (
+              //   merge.productOrdered != "ClearVal Plus (Interior PCI)" &&
+              //   merge.productOrdered != "ClearVal Plus (Exterior PCI)" &&
+              //   merge.productOrdered != "Internal In-House Appraisal"
+              // ) {
+              //   property[field.propertyAPIFieldName] = null;
+              // }
             } else if (field.propertyFieldType != field.appraisalFieldType) {
               if (field.appraisalFieldType == "BOOLEAN") {
                 property[field.propertyAPIFieldName] = field.appraisalValue
