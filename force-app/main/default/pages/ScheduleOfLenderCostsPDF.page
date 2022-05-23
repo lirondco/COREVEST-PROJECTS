@@ -274,6 +274,21 @@
                         </td>
                         
                     </tr>
+                    <tr style="{! If(record.Deal__r.Rate_Lock_Picklist__c != null && record.Deal__r.Rate_Lock_Picklist__c == 'Early Rate Locked', '', 'display:none;')}">
+                        <th style="text-align:left">
+                            Early Rate Lock<br/>Deposit
+                        </th>
+                        <td style="text-align:right">
+                            <apex:outputText rendered="{! If(record.Early_Lock_Deposit__c != null, true, false ) }" value="${0, number,###,###,###,##0.00}">
+                                <apex:param value="{!record.Early_Lock_Deposit__c}"/>
+                            </apex:outputText>
+                            <apex:outputText rendered="{! If(record.Early_Lock_Deposit__c == null, true, false ) }" value="$0.00" />
+                        </td>
+                        <td rowspan="2">
+                        </td>
+                        <td rowspan="2">
+                        </td>
+                    </tr>
                     
                     <tr>
                         <td colspan="2">
@@ -289,6 +304,21 @@
                             <apex:outputText rendered="{! If(record.Origination_Fee__c == null, true, false ) }" value="$0.00" /> 
                         </td>
                     </tr>
+
+                    <tr style="{! if(record.Discount_Fee_Number__c != null && record.Discount_Fee_Number__c != 0, '', 'display:none;')}">
+                        <td colspan="2">
+                        </td>
+                        <td>
+                            
+                            Rate Buydown
+                        </td>
+                        <td>
+                            <apex:outputText value="${0, number,###,###,###,##0.00}">
+                                <apex:param value="{!record.Discount_Fee_Number__c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+
                     <tr>
                         <td colspan="2">
                         </td>

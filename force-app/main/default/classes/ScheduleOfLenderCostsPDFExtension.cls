@@ -55,11 +55,15 @@ public without sharing class ScheduleOfLenderCostsPDFExtension {
           Indicative_Rate_Calc__c,
           Deal__r.Term_Loan_Type__c,
           Deal__r.Name,
-          Legal_Fee__c
+          Deal__r.Rate_Lock_Picklist__c,
+          Legal_Fee__c,
+          Discount_Fee_Number__c,
+          Early_Lock_Deposit__c
         FROM loan_version__c
         WHERE Id = :this.record.Id
         LIMIT 1
       ];
+
 
       if (String.isNotBlank(this.record.Loan_Fees_JSON__c)) {
         this.loanFees = (List<Loan_Fee__c>) JSON.deserializeStrict(

@@ -19,6 +19,7 @@ export default class ScheduleOfLenderCostsNew extends LightningElement {
   @api val1234 = 456;
   subscription = null;
   discountFeeValLocal;
+  earlyRateLockAmountLocal = 0;
 
   calculatedFields = {};
   loanFees = [];
@@ -389,6 +390,7 @@ export default class ScheduleOfLenderCostsNew extends LightningElement {
     var Lender_Diligence_Out_of_Pocket = 0;
     var cfcorevestpurchaser = 0;
     var legalFee = 0;
+    const discountFee = this.showDiscountFeeField ? this.discountFeeVal : 0;
     let CalculatedOriginationFee = this.finalorignalfeeCalc();
     if (CalculatedOriginationFee) {
       Origination_Fee = parseFloat(CalculatedOriginationFee).toFixed(2);
@@ -418,7 +420,7 @@ export default class ScheduleOfLenderCostsNew extends LightningElement {
           parseFloat(stubInterest) +
           parseFloat(Lender_Diligence_Out_of_Pocket) +
           parseFloat(cfcorevestpurchaser) +
-          parseFloat(legalFee)
+          parseFloat(legalFee) + discountFee
       )
     ).toFixed(2);
 
@@ -758,7 +760,16 @@ export default class ScheduleOfLenderCostsNew extends LightningElement {
     // console.log(event.target.value);
     // console.log(event.target.getAttribute("data-field"));
     const deal = JSON.parse(JSON.stringify(this.deal));
-    deal[event.target.getAttribute("data-field")] = event.target.value;
+    const fieldName = event.target.getAttribute("data-field");
+    const value = event.target.value;
+    if(fieldName == "Current_Loan_Amount__c" && this.showEarlyRateLockField) {
+      this.earlyRateLockAmount = value * 0.01;
+    }
+    if(fieldName == "Early_Lock_Deposit__c") {
+      this.earlyRateLockAmount = value;
+      return;
+    }
+    deal[fieldName] = value;
     this.deal = deal;
     this.updateCalculatedFields();
   }
@@ -785,6 +796,7 @@ export default class ScheduleOfLenderCostsNew extends LightningElement {
     }
 
     let loanVersion = {
+      Early_Lock_Deposit__c: this.earlyRateLockAmount,
       Final_Loan_Amount__c: deal.Current_Loan_Amount__c,
       Deposit_Amount__c: deal.Deposit_Amount__c,
       Deal_Loan_Number__c: deal.Deal_Loan_Number__c,
@@ -852,7 +864,23 @@ export default class ScheduleOfLenderCostsNew extends LightningElement {
     const discFee = this.deal.Discount_Fee__c.replace(/[^0-9.]/g,'|').split('|')[0];
     const discFeePct = parseFloat(discFee) / 100;
     return discFeePct * this.deal.Current_Loan_Amount__c;
-    
+  }
+
+  get showEarlyRateLockField() {
+    return this.deal.Rate_Lock_Picklist__c == "Early Rate Locked";
+  }
+  
+
+  get earlyRateLockAmount() {
+    if(!this.earlyRateLockAmountLocal && this.showEarlyRateLockField && this.deal.Current_Loan_Amount__c) {
+      return parseFloat(this.deal.Current_Loan_Amount__c) * 0.01;
+    } else {
+      return parseFloat(this.earlyRateLockAmountLocal);
+    }
+  }
+
+  set earlyRateLockAmount(value) {
+    this.earlyRateLockAmountLocal = isNaN(value) ? value : parseFloat(parseFloat(value).toFixed(2));
   }
 
   get discountFeeVal() {

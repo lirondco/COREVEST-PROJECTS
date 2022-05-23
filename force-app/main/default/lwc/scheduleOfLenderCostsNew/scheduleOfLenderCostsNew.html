@@ -80,7 +80,17 @@
         step="0.01"
       ></lightning-input>
     </lightning-layout-item>
-
+    <lightning-layout-item padding="around-medium" size="6" if:true={showEarlyRateLockField}
+      ><lightning-input
+        label="Early Rate Lock Deposit Amount"
+        value={earlyRateLockAmount}
+        onchange={updateValue}
+        type="number"
+        data-field="Early_Lock_Deposit__c"
+        formatter="currency"
+        step="0.01"
+      ></lightning-input>
+    </lightning-layout-item>
     <lightning-layout-item padding="around-medium" size="6"
       ><lightning-input
         label="Final Spread"
@@ -224,17 +234,6 @@
         step="0.01"
       ></lightning-input>
     </lightning-layout-item>
-
-    <lightning-layout-item padding="around-medium" size="6"
-      ><lightning-input
-        label="Total Lender"
-        value={calculatedFields.Total_Lender__c}
-        type="number"
-        formatter="currency"
-        step="0.01"
-        read-only
-      ></lightning-input>
-    </lightning-layout-item>
     <lightning-layout-item padding="around-medium" size="6">
       <template if:true={showDiscountFeeField}>
         <lightning-combobox
@@ -243,6 +242,7 @@
           options={discountFeeOptions}
           onchange={updateValue}
           data-field="Discount_Fee__c"
+          read-only
         ></lightning-combobox>
       </template>
     </lightning-layout-item>
@@ -258,7 +258,17 @@
         ></lightning-input>
       </template>
     </lightning-layout-item>
-    
+    <lightning-layout-item padding="around-medium" size="6"
+      ><lightning-input
+        label="Total Lender"
+        value={calculatedFields.Total_Lender__c}
+        type="number"
+        formatter="currency"
+        step="0.01"
+        read-only
+      ></lightning-input>
+    </lightning-layout-item>
+
     <lightning-layout-item size="12">
       <!-- <div class="slds-section slds-is-open"> -->
       <h3 class="slds-section-title--divider">
