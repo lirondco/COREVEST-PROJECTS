@@ -18,7 +18,7 @@ export default class ScheduleOfLenderCostsNew extends LightningElement {
   @api recordId;
   @api val1234 = 456;
   subscription = null;
-  discountFeeValLocal;
+  discountFeeValLocal = 0;
 
   calculatedFields = {};
   loanFees = [];
@@ -805,11 +805,11 @@ export default class ScheduleOfLenderCostsNew extends LightningElement {
       Origination_Fee_Percentage__c: deal.CAF_Upfront_Fee__c,
       Origination_Fee__c: calculatedFields.Calculated_Origination_Fee__c,
       Bridge_Payoff__c: deal.Bridge_Payoff__c,
-      Stub_Interest__c: calculatedFields.Stub_Interest__c,
+      Stub_Interest__c: isNaN(calculatedFields.Stub_Interest__c) ? 0 : parseFloat(calculatedFields.Stub_Interest__c),
       Deposit_Lender_Out_of_Pocket__c: deal.Deposit_Lender_Out_of_Pocket__c,
       Legal_Fee__c: deal.Legal_Fee__c,
-      Total_Lender__c: calculatedFields.Total_Lender__c,
-      Proceeds_Paid_To_Escrow__c: calculatedFields.Proceeds_Paid_To_Escrow__c,
+      Total_Lender__c: isNaN(calculatedFields.Total_Lender__c) ? 0 : parseFloat(calculatedFields.Total_Lender__c),
+      Proceeds_Paid_To_Escrow__c: isNaN(calculatedFields.Proceeds_Paid_To_Escrow__c) ? 0 : parseFloat(calculatedFields.Proceeds_Paid_To_Escrow__c),
       Total_Annual_Tax__c: deal.Total_Annual_Tax__c,
       Monthly_Tax__c: calculatedFields.Monthly_Tax__c,
       Reserve_Tax__c: deal.Reserve_Tax__c,
@@ -822,11 +822,11 @@ export default class ScheduleOfLenderCostsNew extends LightningElement {
       Monthly_Cap_Ex__c: calculatedFields.Monthly_Cap_Ex__c,
       Reserve_Cap_Ex__c: deal.Reserve_Cap_Ex__c,
       Total_Reserve_Cap_Ex__c: calculatedFields.Total_Reserve_Cap_Ex__c,
-      Monthly_Payment__c: calculatedFields.Monthly_Payment__c,
+      Monthly_Payment__c: isNaN(calculatedFields.Monthly_Payment__c) ?  0 : parseFloat(calculatedFields.Monthly_Payment__c),
       Total_Reserve_at_Closing__c: calculatedFields.Total_Reserve_at_Closing__c,
       Total_Third_Party__c: calculatedFields.Total_Third_Party__c,
-      Net_Proceeds_to_Borrower__c: calculatedFields.Net_Proceeds_to_Borrower__c,
-      Total_Uses__c: calculatedFields.Total_Uses__c,
+      Net_Proceeds_to_Borrower__c: isNaN(calculatedFields.Net_Proceeds_to_Borrower__c) ? 0 : calculatedFields.Net_Proceeds_to_Borrower__c,
+      Total_Uses__c: isNaN(calculatedFields.Total_Uses__c) ? 0 : calculatedFields.Total_Uses__c,
       Installment_Comment__c: deal.Installment_Comment__c,
       Loan_Fees_JSON__c: JSON.stringify(this.loanFees),
       Recourse__c: deal.Recourse__c,
@@ -837,7 +837,7 @@ export default class ScheduleOfLenderCostsNew extends LightningElement {
         deal.Holdback_Reserve_Month_Multiplier__c,
       Term__c: deal.Term_Loan_Type__c,
       Discount_Fee__c: discountFee,
-      Discount_Fee_Number__c: this.discountFeeVal,
+      Discount_Fee_Number__c: isNaN(this.discountFeeVal) ? 0 : this.discountFeeVal,
     };
 
     // console.log(loanVersion);

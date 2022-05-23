@@ -301,7 +301,7 @@ export default class ScheduleOfLenderCostsTab extends LightningElement {
       .querySelector("c-schedule-of-lender-costs-new")
       .returnLoanVersion();
 
-    console.log(loanVersion);
+    console.log({...loanVersion});
 
     loanVersion.Deal__c = this.recordId;
     loanVersion.RecordTypeId = this.recordTypeId;
