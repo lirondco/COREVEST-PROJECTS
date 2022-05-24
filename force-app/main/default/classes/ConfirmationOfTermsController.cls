@@ -226,6 +226,7 @@ public without sharing class ConfirmationOfTermsController {
     system.debug(approvalHistoryId);
     System.debug(recipientIds);
     // if (Test.isRunningTest()) {
+  try {
     List<Messaging.SendEmailResult> results = Messaging.sendEmail(
       messages,
       true
@@ -266,6 +267,9 @@ public without sharing class ConfirmationOfTermsController {
     } else {
       system.debug('Email failed to send');
     }
+  } catch (Exception err) {
+    system.debug(err.getMessage() + ' ' + err.getLineNumber() + ' ' + err.getStackTraceString());
+  }
     // }
   }
 
@@ -277,7 +281,7 @@ public without sharing class ConfirmationOfTermsController {
         Deposit_Amount__c,
         Final_Spread__c,
         Recourse__c,
-        Foreign_National__c,
+        Foreign_National_picklist__c,
         Broker_Fees__c,
         Term_Loan_Type__c,
         Amortization_Term__c,
@@ -297,7 +301,8 @@ public without sharing class ConfirmationOfTermsController {
         Contact__r.MailingState,
         Contact__r.MailingPostalCode,
         YM_Prepayment_Penalty__c,
-        Stepdown_Prepayment_Period__c
+        Stepdown_Prepayment_Period__c,
+        YM_Prepayment_Penalty_Description__c
       FROM Opportunity
       WHERE Id = :recordId
     ];
@@ -333,7 +338,7 @@ public without sharing class ConfirmationOfTermsController {
           Spread__c,
           Final_Spread__c,
           Recourse__c,
-          Foreign_National__c,
+          Foreign_National_picklist__c,
           Holdback_Multiplier__c,
           Broker_Fee__c,
           Term_Loan_Type__c,
@@ -351,6 +356,8 @@ public without sharing class ConfirmationOfTermsController {
           YM_Par_Prepayment_Comment__c,
           Stepdown_Prepayment_Period__c,
           Stepdown_Prepayment_Comment__c,
+          YM_Prepayment_Penalty_Comment__c,
+          YM_Prepayment_Penalty_Description__c,
           Yield_Maintenance__c,
           Yield_Maintenance_Comment__c,
           Contact_Name__c,
@@ -378,7 +385,7 @@ public without sharing class ConfirmationOfTermsController {
           Final_Spread_Comment__c,
           Recourse__c,
           Recourse_Comment__c,
-          Foreign_National__c,
+          Foreign_National_picklist__c,
           Foreign_National_Comment__c,
           Holdback_Multiplier__c,
           Holdback_Multiplier_Comment__c,
@@ -416,7 +423,9 @@ public without sharing class ConfirmationOfTermsController {
           Contact_Name_Comment__c,
           Contact_Email_Comment__c,
           Contact_Phone_Comment__c,
-          Contact_Address_Comment__c
+          Contact_Address_Comment__c,
+          YM_Prepayment_Penalty_Comment__c,
+          YM_Prepayment_Penalty_Description__c
         FROM Approval_History__c
         WHERE
           Tracking_Status__c = 'Originations'
@@ -447,7 +456,7 @@ public without sharing class ConfirmationOfTermsController {
           Final_Spread_Comment__c,
           Recourse__c,
           Recourse_Comment__c,
-          Foreign_National__c,
+          Foreign_National_picklist__c,
           Foreign_National_Comment__c,
           Holdback_Multiplier__c,
           Holdback_Multiplier_Comment__c,
@@ -600,6 +609,7 @@ public without sharing class ConfirmationOfTermsController {
       ahc.Yield_Maintenance__c = submission.yieldMaintenance;
       ahc.Stepdown_Prepayment_Period__c = submission.stepdownPrepayment;
       ahc.YM_Par_Prepayment_Period__c = submission.ymParPrepayment;
+      ahc.YM_Prepayment_Penalty_Description__c = submission.ymPrepaymentDescription;
 
       ahc.Deposit_Amount__c = submission.depositCollected;
       ahc.Final_Spread__c = submission.finalSpread;
@@ -607,7 +617,7 @@ public without sharing class ConfirmationOfTermsController {
         ahc.Final_Spread__c *= 100;
       }
       ahc.Recourse__c = submission.recourse; // (String) submission.get('recourse');
-      ahc.Foreign_National__c = submission.foreignNational; //(Boolean) submission.get('foreignNational');
+      ahc.Foreign_National_picklist__c = submission.foreignNational; //(Boolean) submission.get('foreignNational');
       ahc.Holdback_Multiplier__c = submission.holdback;
       ahc.Broker_Fee__c = submission.brokerFees;
       
@@ -693,7 +703,7 @@ public without sharing class ConfirmationOfTermsController {
           a.Final_Spread__c *= 100;
         }
         a.Recourse__c = submission.recourse; // (String) submission.get('recourse');
-        a.Foreign_National__c = submission.foreignNational; //(Boolean) submission.get('foreignNational');
+        a.Foreign_National_picklist__c = submission.foreignNational; //(Boolean) submission.get('foreignNational');
         a.Holdback_Multiplier__c = submission.holdback;
         a.Broker_Fee__c = submission.brokerFees;
 
@@ -1006,7 +1016,7 @@ public without sharing class ConfirmationOfTermsController {
     }
 
     originatorHistory.Recourse__c = details.recourse;
-    originatorHistory.Foreign_National__c = details.foreignNational;
+    originatorHistory.Foreign_National_picklist__c = details.foreignNational;
     originatorHistory.Holdback_Multiplier__c = details.holdback;
     originatorHistory.Broker_Fee__c = details.brokerFees;
     if (originatorHistory.Broker_Fee__c != null) {
@@ -1028,6 +1038,9 @@ public without sharing class ConfirmationOfTermsController {
     originatorHistory.Yield_Maintenance__c = details.yieldMaintenance;
     originatorHistory.Stepdown_Prepayment_Period__c = details.stepdownPrepayment;
     originatorHistory.YM_Par_Prepayment_Period__c = details.ymParPrepayment;
+
+    originatorHistory.YM_Prepayment_Penalty_Description__c = details.ymPrepaymentDescription;
+    originatorHistory.YM_Prepayment_Penalty_Comment__c = allComments.ymPrepaymentComments;
     
     originatorHistory.Yield_Maintenance_Comment__c = allComments.yieldMaintenance;
     originatorHistory.Stepdown_Prepayment_Comment__c = allComments.stepdownPrepayment;
@@ -1093,7 +1106,7 @@ public without sharing class ConfirmationOfTermsController {
     }
 
     sendEmailForConfirmation(originatorHistory.Id, recordId, 'Originator');
-
+    postToChatter(recordId, 'Originator');
     // if()
 
     //
@@ -1294,6 +1307,7 @@ public without sharing class ConfirmationOfTermsController {
     }
 
     sendEmailForConfirmation(underwriterHistory.Id, recordId, 'Underwriter');
+    postToChatter(recordId, 'Underwriter');
   }
 
   @AuraEnabled
@@ -1376,7 +1390,7 @@ public without sharing class ConfirmationOfTermsController {
     public Decimal depositCollected { get; set; }
     public Decimal finalSpread { get; set; }
     public String recourse { get; set; }
-    public Boolean foreignNational { get; set; }
+    public String foreignNational { get; set; }
     public Decimal holdback { get; set; }
     public Decimal brokerFees { get; set; }
     public String termLoanType { get; set; }
@@ -1395,6 +1409,7 @@ public without sharing class ConfirmationOfTermsController {
     public String yieldMaintenance { get; set; }
     public String stepdownPrepayment { get; set; }
     public String ymParPrepayment { get; set; }
+    public String ymPrepaymentDescription { get; set; }
 
     SubmissionPanel(Opportunity deal) {
       this.recourse = deal.Recourse__c;
@@ -1402,7 +1417,7 @@ public without sharing class ConfirmationOfTermsController {
       this.finalSpread = deal.Final_Spread__c != null
         ? deal.Final_Spread__c / 100
         : null;
-      this.foreignNational = deal.Foreign_National__c;
+      this.foreignNational = deal.Foreign_National_picklist__c;
       this.holdback = deal.Holdback_Multiplier__c;
       this.brokerFees = deal.Broker_Fees__c != null
         ? deal.Broker_Fees__c / 100
@@ -1429,6 +1444,7 @@ public without sharing class ConfirmationOfTermsController {
         ', ' + deal.Contact__r.MailingState + ' ' + deal.Contact__r.MailingPostalCode;
       this.contactEmail = deal.Contact__r.Email;
       this.contactPhone = deal.Contact__r.Phone;
+      this.ymPrepaymentDescription = deal.YM_Prepayment_Penalty_Description__c;
     }
 
     public void setHistory(Approval_History__c history) {
@@ -1439,7 +1455,7 @@ public without sharing class ConfirmationOfTermsController {
         : history.Spread__c != null
           ? history.Spread__c / 100
           : null;
-      this.foreignNational = history.Foreign_National__c;
+      this.foreignNational = history.Foreign_National_picklist__c;
       this.holdback = history.Holdback_Multiplier__c;
       this.brokerFees = history.Broker_Fee__c != null
         ? history.Broker_Fee__c / 100
@@ -1476,6 +1492,9 @@ public without sharing class ConfirmationOfTermsController {
       this.ymParPrepayment = String.isNotEmpty(history.YM_Par_Prepayment_Period__c)
         ? history.YM_Par_Prepayment_Period__c
         : null;  
+      this.ymPrepaymentDescription = String.isNotEmpty(history.YM_Prepayment_Penalty_Description__c)
+        ? history.YM_Prepayment_Penalty_Description__c
+        : null;
     }
   }
 
@@ -1483,7 +1502,7 @@ public without sharing class ConfirmationOfTermsController {
     public Decimal depositCollected { get; set; }
     public Decimal finalSpread { get; set; }
     public String recourse { get; set; }
-    public Boolean foreignNational { get; set; }
+    public String foreignNational { get; set; }
     public Decimal holdback { get; set; }
     public Decimal brokerFees { get; set; }
     public String termLoanType { get; set; }
@@ -1505,6 +1524,7 @@ public without sharing class ConfirmationOfTermsController {
     public String yieldMaintenance { get; set; }
     public String stepdownPrepayment { get; set; }
     public String ymParPrepayment { get; set; }
+    public String ymPrepaymentDescription { get; set; }
     public String servicerContactName { get; set; }
     public String servicerContactAddress { get; set; }
     public String servicerContactEmail { get; set; }
@@ -1515,7 +1535,7 @@ public without sharing class ConfirmationOfTermsController {
       this.finalSpread = deal.Final_Spread__c != null
         ? deal.Final_Spread__c / 100
         : null;
-      this.foreignNational = deal.Foreign_National__c;
+      this.foreignNational = deal.Foreign_National_picklist__c;
       this.holdback = deal.Holdback_Multiplier__c;
       this.brokerFees = deal.Broker_Fees__c != null
         ? deal.Broker_Fees__c / 100
@@ -1545,6 +1565,7 @@ public without sharing class ConfirmationOfTermsController {
       this.yieldMaintenance = '';
       this.stepdownPrepayment = '';
       this.ymParPrepayment = '';
+      this.ymPrepaymentDescription = '';
     }
 
     public void setOriginationsHistory(Approval_History__c history) {
@@ -1555,7 +1576,7 @@ public without sharing class ConfirmationOfTermsController {
         : history.Spread__c != null
           ? history.Spread__c / 100
           : null;
-      this.foreignNational = history.Foreign_National__c;
+      this.foreignNational = history.Foreign_National_picklist__c;
       this.holdback = history.Holdback_Multiplier__c;
       this.brokerFees = history.Broker_Fee__c != null
         ? history.Broker_Fee__c / 100
@@ -1577,6 +1598,7 @@ public without sharing class ConfirmationOfTermsController {
       this.yieldMaintenance = history.Yield_Maintenance__c;
       this.stepdownPrepayment = String.isNotEmpty(history.Yield_Maintenance__c) && history.Yield_Maintenance__c == 'Yes' ? history.Stepdown_Prepayment_Period__c : 'N/A';
       this.ymParPrepayment = String.isNotEmpty(history.Yield_Maintenance__c) && history.Yield_Maintenance__c == 'Yes' ? history.YM_Par_Prepayment_Period__c : 'N/A';
+      this.ymPrepaymentDescription = String.isNotEmpty(history.YM_Prepayment_Penalty_Description__c) ? history.YM_Prepayment_Penalty_Description__c : '';
       /*
                 YM_Par_Prepayment_Period__c,
           Stepdown_Prepayment_Period__c,
@@ -1634,7 +1656,7 @@ public without sharing class ConfirmationOfTermsController {
     public String yieldMaintenance { get; set; }
     public String stepdownPrepayment { get; set; }
     public String ymParPrepayment { get; set; }
-
+    public String ymPrepaymentComments { get; set; }
 
     public String submissionComments { get; set; }
     public String originationsComments { get; set; }
@@ -1644,7 +1666,7 @@ public without sharing class ConfirmationOfTermsController {
     public String contactAddressComments { get; set; }
     public String contactEmailComments { get; set; }
     public String contactPhoneComments { get; set; }
-
+    
 
     Comments() {
       depositCollected = '';
@@ -1672,6 +1694,7 @@ public without sharing class ConfirmationOfTermsController {
       yieldMaintenance = '';
       stepdownPrepayment = '';
       ymParPrepayment = '';
+      ymPrepaymentComments = '';
       contactNameComments = '';
       contactAddressComments = '';
       contactEmailComments = '';
@@ -1694,6 +1717,7 @@ public without sharing class ConfirmationOfTermsController {
       yieldMaintenance = history.Yield_Maintenance_Comment__c;
       stepdownPrepayment = history.Stepdown_Prepayment_Comment__c;
       ymParPrepayment = history.YM_Par_Prepayment_Comment__c;
+      ymPrepaymentComments = history.YM_Prepayment_Penalty_Comment__c;
       contactNameComments = history.Contact_Name_Comment__c;
       contactAddressComments = history.Contact_Address_Comment__c;
       contactEmailComments = history.Contact_Email_Comment__c;
@@ -1818,5 +1842,30 @@ public without sharing class ConfirmationOfTermsController {
     ];
 
     return tasks;
+  }
+
+  public static void postToChatter(Id oppId, String approver) {
+    Opportunity deal = [SELECT Id, Name, Closer__c FROM Opportunity WHERE Id= :oppId];
+    ConnectApi.MessageBodyInput messageInput = new ConnectApi.MessageBodyInput();
+    messageInput.messageSegments = new List<ConnectApi.MessageSegmentInput>();
+
+    ConnectApi.MentionSegmentInput mentionSegment = new ConnectApi.MentionSegmentInput();
+    mentionSegment.id = deal.Closer__c; // The ID of the user to mention.
+    messageInput.messageSegments.add(mentionSegment);
+
+    ConnectApi.TextSegmentInput textSegment = new ConnectApi.TextSegmentInput();
+    String segmentText = ' ' + deal.Name + ' has been approved by ' + approver + '.';
+    textSegment.text = segmentText;
+    messageInput.messageSegments.add(textSegment);
+
+    ConnectApi.FeedItemInput input = new ConnectApi.FeedItemInput();
+    input.body = messageInput;
+    input.subjectId = deal.Id;
+    if (!Test.isRunningTest()) {
+      ConnectApi.FeedElement fi = ConnectApi.ChatterFeeds.postFeedElement(
+        Network.getNetworkId(),
+        input
+      );
+    }
   }
 }

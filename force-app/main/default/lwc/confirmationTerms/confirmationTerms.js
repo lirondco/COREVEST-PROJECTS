@@ -64,6 +64,7 @@ export default class ConfirmationTerms extends LightningElement {
   loanTerm;
 
   ymSelectionLocal = "";
+  stepdownSelectionLocal = "";
 
   @wire(getRecord, {
     recordId: "$recordId",
@@ -135,6 +136,18 @@ export default class ConfirmationTerms extends LightningElement {
 
   set ymSelection(val) {
     this.ymSelectionLocal = val;
+  }
+
+  get stepdownSelection() {
+    return this.stepdownSelectionLocal;
+  }
+
+  set stepdownSelection(val) {
+    this.stepdownSelectionLocal = val;
+  }
+
+  get requireStepdownDescription() {
+    return this.stepdownSelection.toLowerCase() === "other";
   }
 
   get ymPicklistsDisabled() {
@@ -682,7 +695,9 @@ export default class ConfirmationTerms extends LightningElement {
     // console.log(fieldName);
 
     this.currentDetails[fieldName] = value;
-
+    if (fieldName == "stepdownPrepayment") {
+      this.stepdownSelection = value;
+    }
     if (fieldName == "yieldMaintenance") {
       this.ymSelection = value;
       if (value != "Yes") {
