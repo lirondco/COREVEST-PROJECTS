@@ -1,5 +1,5 @@
 <aura:component
-  controller="GinaPipelineHelper"
+  controller="BridgePipelineHelper"
   implements="flexipage:availableForAllPageTypes,force:LightningQuickAction"
 >
   <aura:handler name="init" value="{!this}" action="{!c.onCompLoad}"/>
