@@ -17,7 +17,9 @@ import getApprovalPicklists from "@salesforce/apex/ConfirmationOfTermsController
 import getPicklistValues from "@salesforce/apex/lightning_Util.getPicklistValues";
 
 import CONTACT_FIELD from "@salesforce/schema/Opportunity.Contact__c";
+import LOAN_TERM_FIELD from "@salesforce/schema/Opportunity.Term_Loan_Type__c";
 import { getFieldValue, getRecord } from "lightning/uiRecordApi";
+import getDependentPicklistValues from "@salesforce/apex/ConfirmationOfTermsController.getDependentPicklistValues";
 
 export default class ConfirmationTerms extends LightningElement {
   @api
@@ -49,6 +51,8 @@ export default class ConfirmationTerms extends LightningElement {
   closerReviewComment = "";
   origingatorReviewComment = "";
   underwriterReviewComment = "";
+  ymPrepayOptions = [{ label: "", value: "" }];
+  stepDownPrepayOptions = [{ label: "", value: "" }];
 
   isRejection = false;
 
@@ -56,11 +60,85 @@ export default class ConfirmationTerms extends LightningElement {
 
   formUpdated = false;
 
-  @wire(getRecord, { recordId: "$recordId", fields: [CONTACT_FIELD] })
-  deal;
+  contactId;
+  loanTerm;
 
-  get contactId() {
-    return getFieldValue(this.deal.data, CONTACT_FIELD);
+  ymSelectionLocal = "";
+
+  @wire(getRecord, {
+    recordId: "$recordId",
+    fields: [CONTACT_FIELD, LOAN_TERM_FIELD]
+  })
+  dealWired({ data, error }) {
+    if (data) {
+      this.contactId = data.fields.Contact__c.value;
+      const loanTerm = data.fields.Term_Loan_Type__c.value;
+      this.loanTerm = loanTerm;
+
+      getDependentPicklistValues({ loanTerm })
+        .then((res) => {
+          if (
+            res["YM_Prepayment_Penalty__c"] &&
+            res["YM_Prepayment_Penalty__c"].length > 0
+          ) {
+            const ymPrepayOptions = res["YM_Prepayment_Penalty__c"].map(
+              (option) => {
+                return { label: option, value: option };
+              }
+            );
+            this.ymPrepayOptions = ymPrepayOptions;
+          }
+          if (
+            res["Stepdown_Prepayment_Period__c"] &&
+            res["Stepdown_Prepayment_Period__c"].length > 0
+          ) {
+            const stepDownPrepayOptions = res[
+              "Stepdown_Prepayment_Period__c"
+            ].map((option) => {
+              return { label: option, value: option };
+            });
+            this.stepDownPrepayOptions = stepDownPrepayOptions;
+          }
+          console.log("ymPrepayOptions", this.ymPrepayOptions);
+          console.log("stepDownPrepayOptions", this.stepDownPrepayOptions);
+        })
+        .catch((error) => {
+          let message = "Unknown error";
+          if (Array.isArray(error.body)) {
+            message = error.body.map((e) => e.message).join(", ");
+          } else if (typeof error.body.message === "string") {
+            message = error.body.message;
+          }
+          this.showErrorToast(message);
+        });
+    } else if (error) {
+      let message = "Unknown error";
+      if (Array.isArray(error.body)) {
+        message = error.body.map((e) => e.message).join(", ");
+      } else if (typeof error.body.message === "string") {
+        message = error.body.message;
+      }
+      this.showErrorToast(message);
+    }
+  }
+
+  get ymYesNoOptions() {
+    return [
+      { label: "Yes", value: "Yes" },
+      { label: "No", value: "No" }
+    ];
+  }
+
+  get ymSelection() {
+    return this.ymSelectionLocal;
+  }
+
+  set ymSelection(val) {
+    this.ymSelectionLocal = val;
+  }
+
+  get ymPicklistsDisabled() {
+    return this.originationsFieldsDisabled || this.ymSelection != "Yes";
   }
 
   get showContactNameField() {
@@ -111,7 +189,6 @@ export default class ConfirmationTerms extends LightningElement {
     this.showErrorToast(evt.detail.detail);
     this.showButtonsOriginator = true;
     this.template.querySelector("c-modal").hideSpinner();
-
   }
 
   handleFormSubmit(evt) {
@@ -311,6 +388,11 @@ export default class ConfirmationTerms extends LightningElement {
     }
 
     if (this.isOriginatorPanel && this.isEnabledOriginatorPanel) {
+      const requiredFields = [...this.template.querySelectorAll('[data-required="true"]')];
+      validated = requiredFields.reduce(( val , inp) => {
+        inp.reportValidity();
+        return val && inp.checkValidity();
+      }, validated);
       if (!this.currentDetails.depositCollected) {
         const depositCollected = this.template.querySelector([
           '[data-field="depositCollected"]'
@@ -364,6 +446,8 @@ export default class ConfirmationTerms extends LightningElement {
       this.underwriterReviewComment = "";
 
       this.template.querySelector("c-modal").openModal();
+    } else {
+      this.showErrorToast('Please fill all the required fields');
     }
   }
 
@@ -598,6 +682,17 @@ export default class ConfirmationTerms extends LightningElement {
     // console.log(fieldName);
 
     this.currentDetails[fieldName] = value;
+
+    if (fieldName == "yieldMaintenance") {
+      this.ymSelection = value;
+      if (value != "Yes") {
+        this.currentDetails["stepdownPrepayment"] = "N/A";
+        this.currentDetails["ymParPrepayment"] = "N/A";
+      } else {
+        this.currentDetails["stepdownPrepayment"] = "";
+        this.currentDetails["ymParPrepayment"] = "";
+      }
+    }
     // console.log("handle current details update");
   }
 

@@ -319,13 +319,16 @@
                 border-collapse: collapse;
               "
             >
-              <lightning-input
+              <!-- <lightning-input
                 type="checkbox"
                 checked={submissionDetails.foreignNational}
                 label="foreignNational"
                 variant="label-hidden"
                 disabled
-              ></lightning-input>
+              ></lightning-input> -->
+              <lightning-formatted-text
+                value={submissionDetails.foreignNational}
+              ></lightning-formatted-text>
             </td>
             <td
               style="
@@ -336,13 +339,16 @@
                 border-collapse: collapse;
               "
             >
-              <lightning-input
+              <!-- <lightning-input
                 type="checkbox"
                 checked={currentDetails.foreignNational}
                 label="foreignNational"
                 variant="label-hidden"
                 disabled
-              ></lightning-input>
+              ></lightning-input> -->
+              <lightning-formatted-text
+                value={currentDetails.foreignNational}
+              ></lightning-formatted-text>
             </td>
             <td style="width: 35%; padding-left: 20px; padding-right: 20px">
               <lightning-textarea
@@ -722,6 +728,192 @@
               ></lightning-textarea>
             </td>
           </tr>
+
+          <tr>
+            <td
+              style="
+                width: 15%;
+                padding-left: 10px;
+                border-right: 1px solid rgb(90, 90, 90);
+                border-collapse: collapse;
+              "
+            >
+              Yield Maintenance
+            </td>
+            <td
+              style="
+                width: 25%;
+                padding-left: 20px;
+                padding-right: 20px;
+                border-right: 1px solid rgb(90, 90, 90);
+                border-collapse: collapse;
+              "
+            >
+              <lightning-formatted-text
+                value={submissionDetails.yieldMaintenance}
+              ></lightning-formatted-text>
+            </td>
+            <td
+              style="
+                width: 25%;
+                padding-left: 20px;
+                padding-right: 20px;
+                border-right: 1px solid rgb(90, 90, 90);
+                border-collapse: collapse;
+              "
+            >
+              <lightning-combobox
+                value={currentDetails.yieldMaintenance}
+                label="label"
+                variant="label-hidden"
+                options={ymYesNoOptions}
+                onchange={handleCurrentDetailsUpdate}
+                data-field="yieldMaintenance"
+                disabled={originationsFieldsDisabled}
+                data-required="true"
+                required
+              ></lightning-combobox>
+            </td>
+            <td style="width: 35%; padding-left: 20px; padding-right: 20px">
+              <lightning-textarea
+                label="comments"
+                variant="label-hidden"
+                value={comments.yieldMaintenance}
+                disabled={originationsFieldsDisabled}
+                onchange={handleCommentsUpdate}
+                data-field="yieldMaintenance"
+              ></lightning-textarea>
+            </td>
+          </tr>
+
+          <tr>
+            <td
+              style="
+                width: 15%;
+                padding-left: 10px;
+                border-right: 1px solid rgb(90, 90, 90);
+                border-collapse: collapse;
+              "
+            >
+              YM Par Prepayment Period
+            </td>
+            <td
+              style="
+                width: 25%;
+                padding-left: 20px;
+                padding-right: 20px;
+                border-right: 1px solid rgb(90, 90, 90);
+                border-collapse: collapse;
+              "
+            >
+              <lightning-formatted-text
+                value={submissionDetails.ymParPrepayment}
+              ></lightning-formatted-text>
+            </td>
+            <td
+              style="
+                width: 25%;
+                padding-left: 20px;
+                padding-right: 20px;
+                border-right: 1px solid rgb(90, 90, 90);
+                border-collapse: collapse;
+              "
+            >
+              <template if:true={ymPicklistsDisabled}>
+                <lightning-formatted-text
+                  value={currentDetails.ymParPrepayment}
+                ></lightning-formatted-text>
+              </template>
+              <template if:false={ymPicklistsDisabled}>
+                <lightning-combobox
+                  value={currentDetails.ymParPrepayment}
+                  label="label"
+                  variant="label-hidden"
+                  options={ymPrepayOptions}
+                  onchange={handleCurrentDetailsUpdate}
+                  data-field="ymParPrepayment"
+                  data-required="true"
+                  disabled={originationsFieldsDisabled}
+                  required
+                ></lightning-combobox>
+              </template>
+            </td>
+            <td style="width: 35%; padding-left: 20px; padding-right: 20px">
+              <lightning-textarea
+                label="comments"
+                variant="label-hidden"
+                value={comments.ymParPrepayment}
+                disabled={originationsFieldsDisabled}
+                onchange={handleCommentsUpdate}
+                data-field="ymParPrepayment"
+              ></lightning-textarea>
+            </td>
+          </tr>
+
+          <tr>
+            <td
+              style="
+                width: 15%;
+                padding-left: 10px;
+                border-right: 1px solid rgb(90, 90, 90);
+                border-collapse: collapse;
+              "
+            >
+              Stepdown Prepayment<br />Period
+            </td>
+            <td
+              style="
+                width: 25%;
+                padding-left: 20px;
+                padding-right: 20px;
+                border-right: 1px solid rgb(90, 90, 90);
+                border-collapse: collapse;
+              "
+            >
+              <lightning-formatted-text
+                value={submissionDetails.stepdownPrepayment}
+              ></lightning-formatted-text>
+            </td>
+            <td
+              style="
+                width: 25%;
+                padding-left: 20px;
+                padding-right: 20px;
+                border-right: 1px solid rgb(90, 90, 90);
+                border-collapse: collapse;
+              "
+            >
+              <template if:true={ymPicklistsDisabled}>
+                <lightning-formatted-text
+                  value={currentDetails.stepdownPrepayment}
+                ></lightning-formatted-text>
+              </template>
+              <template if:false={ymPicklistsDisabled}>
+                <lightning-combobox
+                  value={currentDetails.stepdownPrepayment}
+                  label="label"
+                  variant="label-hidden"
+                  options={stepDownPrepayOptions}
+                  data-required="true"
+                  onchange={handleCurrentDetailsUpdate}
+                  data-field="stepdownPrepayment"
+                  disabled={originationsFieldsDisabled}
+                  required
+                ></lightning-combobox>
+              </template>
+            </td>
+            <td style="width: 35%; padding-left: 20px; padding-right: 20px">
+              <lightning-textarea
+                label="comments"
+                variant="label-hidden"
+                value={comments.stepdownPrepayment}
+                disabled={originationsFieldsDisabled}
+                onchange={handleCommentsUpdate}
+                data-field="stepdownPrepayment"
+              ></lightning-textarea>
+            </td>
+          </tr>
+
         </tbody>
       </table>
       <br />
@@ -1641,37 +1833,61 @@
           onchange={handleModalComments}
           required
         ></lightning-textarea>
-          <template if:true={showServicerContactForm}>
-            <br />
-            <h1><strong>Updated Servicer Contact Details</strong></h1>
-            <lightning-record-edit-form
-              record-id={contactId}
-              object-api-name="Contact"
-              onsubmit={handleFormSubmit}
-              onerror={handleFormError}
-              onsuccess={handleFormSuccess}
-              class="slds-p-around_medium"
-            >
-              <lightning-messages></lightning-messages>
-              <template if:true={showContactNameField}>
-                <lightning-input-field variant="label-stacked" onchange={handleFormChange} field-name="FirstName"></lightning-input-field>
-                <lightning-input-field variant="label-stacked" onchange={handleFormChange} field-name="LastName"></lightning-input-field>
-              </template>
-              <template if:true={showContactPhoneField}>
-                <lightning-input-field variant="label-stacked" onchange={handleFormChange} field-name="Phone"></lightning-input-field>
-              </template>
-              <template if:true={showContactAddressFields}>
-                <lightning-input-field variant="label-stacked" onchange={handleFormChange} field-name="MailingAddress"></lightning-input-field>
-                <!-- <lightning-input-field onchange={handleFormChange} field-name="MailingCity"></lightning-input-field>
+        <template if:true={showServicerContactForm}>
+          <br />
+          <h1><strong>Updated Servicer Contact Details</strong></h1>
+          <lightning-record-edit-form
+            record-id={contactId}
+            object-api-name="Contact"
+            onsubmit={handleFormSubmit}
+            onerror={handleFormError}
+            onsuccess={handleFormSuccess}
+            class="slds-p-around_medium"
+          >
+            <lightning-messages></lightning-messages>
+            <template if:true={showContactNameField}>
+              <lightning-input-field
+                variant="label-stacked"
+                onchange={handleFormChange}
+                field-name="FirstName"
+              ></lightning-input-field>
+              <lightning-input-field
+                variant="label-stacked"
+                onchange={handleFormChange}
+                field-name="LastName"
+              ></lightning-input-field>
+            </template>
+            <template if:true={showContactPhoneField}>
+              <lightning-input-field
+                variant="label-stacked"
+                onchange={handleFormChange}
+                field-name="Phone"
+              ></lightning-input-field>
+            </template>
+            <template if:true={showContactAddressFields}>
+              <lightning-input-field
+                variant="label-stacked"
+                onchange={handleFormChange}
+                field-name="MailingAddress"
+              ></lightning-input-field>
+              <!-- <lightning-input-field onchange={handleFormChange} field-name="MailingCity"></lightning-input-field>
                 <lightning-input-field onchange={handleFormChange} field-name="MailingState"></lightning-input-field>
                 <lightning-input-field onchange={handleFormChange} field-name="MailingPostalCode"></lightning-input-field> -->
-              </template>
-              <template if:true={showContactEmailField}>
-                <lightning-input-field variant="label-stacked" onchange={handleFormChange} field-name="Email"></lightning-input-field>
-              </template>
-              <input data-name="hidden-submit" type="submit" style="display: none;" />
-            </lightning-record-edit-form>
-          </template>
+            </template>
+            <template if:true={showContactEmailField}>
+              <lightning-input-field
+                variant="label-stacked"
+                onchange={handleFormChange}
+                field-name="Email"
+              ></lightning-input-field>
+            </template>
+            <input
+              data-name="hidden-submit"
+              type="submit"
+              style="display: none"
+            />
+          </lightning-record-edit-form>
+        </template>
       </template>
 
       <template if:true={showButtonsUnderwriter}>
