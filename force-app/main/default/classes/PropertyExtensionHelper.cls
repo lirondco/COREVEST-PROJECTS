@@ -4,10 +4,14 @@ public without sharing class PropertyExtensionHelper {
   public static void afterInsert(Map<Id, Property_Extension__c> newMap) {
     Set<Id> propertyIds = new Set<Id>();
     Map<String, Map<Id, Property_Extension__c>> forSnapshotMap = new Map<String, Map<Id, Property_Extension__c>> ();
+    List<Property__c> propsToUpdate = new List<Property__c>();
 
     for (Property_Extension__c pE : newMap.values()) {
       propertyIds.add(pE.Property__c);
-
+      propsToUpdate.add(new Property__c(
+        Id = pE.Property__c,
+        Newest_Property_Extension__c = pE.Id
+      ));
       if(pE.Extension_Date__c != null) {
         if(forSnapshotMap.containsKey(SNAPSHOT_ENTITY)) {
           Map<Id, Property_Extension__c> propExMap = forSnapshotMap.get(SNAPSHOT_ENTITY);
@@ -17,6 +21,10 @@ public without sharing class PropertyExtensionHelper {
           forSnapshotMap.put(SNAPSHOT_ENTITY, new Map<Id, Property_Extension__c>{pE.Id => pE});
         }
       }
+    }
+
+    if(propsToUpdate.size() > 0) {
+      update propsToUpdate;
     }
 
     if(forSnapshotMap.size() > 0) {
