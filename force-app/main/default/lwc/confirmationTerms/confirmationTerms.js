@@ -389,6 +389,13 @@ export default class ConfirmationTerms extends LightningElement {
     let validated = true;
     console.log("contact id", this.contactId);
     if (this.isUnderWriterPanel && this.isEnabledUnderwriterPanel) {
+      const requiredFields = [
+        ...this.template.querySelectorAll('[data-required="true"]')
+      ];
+      validated = requiredFields.reduce((val, inp) => {
+        inp.reportValidity();
+        return val && inp.checkValidity();
+      }, validated);
       //do validation for the values to be populated;
       if (!this.currentDetails.amortizationStatus) {
         const amortizationStatus = this.template.querySelector(
@@ -401,8 +408,10 @@ export default class ConfirmationTerms extends LightningElement {
     }
 
     if (this.isOriginatorPanel && this.isEnabledOriginatorPanel) {
-      const requiredFields = [...this.template.querySelectorAll('[data-required="true"]')];
-      validated = requiredFields.reduce(( val , inp) => {
+      const requiredFields = [
+        ...this.template.querySelectorAll('[data-required="true"]')
+      ];
+      validated = requiredFields.reduce((val, inp) => {
         inp.reportValidity();
         return val && inp.checkValidity();
       }, validated);
@@ -460,7 +469,7 @@ export default class ConfirmationTerms extends LightningElement {
 
       this.template.querySelector("c-modal").openModal();
     } else {
-      this.showErrorToast('Please fill all the required fields');
+      this.showErrorToast("Please fill all the required fields");
     }
   }
 
