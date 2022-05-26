@@ -70,6 +70,11 @@ public without sharing class ScheduleOfLenderCostsPDFExtension {
           this.record.Loan_Fees_JSON__c,
           List<Loan_Fee__c>.class
         );
+        for(Loan_Fee__c lf : this.loanFees) {
+          if(lf.Vendor_Type__c == 'PCA & ESA') {
+            lf.Vendor_Type__c = 'Environmental & Engineering';
+          }
+        }
       }
     }
   }

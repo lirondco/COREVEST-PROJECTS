@@ -257,6 +257,7 @@ public class deal_Contact_Helper {
         dc.Vendor_Type__c == 'Title and Escrow' ||
         //    || dc.Vendor_Type__c=='Title and Escrow 2'
         dc.Vendor_Type__c == 'Title Company' ||
+        dc.Vendor_Type__c == 'PCA & ESA' ||
         dc.Vendor_Type__c == 'Reserves')
       ) {
         loanFees.add(
@@ -695,6 +696,7 @@ public class deal_Contact_Helper {
         dc.Vendor_Type__c == 'Servicer' ||
         dc.Vendor_Type__c == 'Tax Verification' ||
         dc.Vendor_Type__c == 'Title and Escrow' ||
+        dc.Vendor_Type__c == 'PCA & ESA' ||
         // || dc.Vendor_Type__c=='Title and Escrow 2'
         // || dc.Vendor_Type__c=='Title Company'
         dc.Vendor_Type__c == 'Reserves')
