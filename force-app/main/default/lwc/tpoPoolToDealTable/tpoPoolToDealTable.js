@@ -170,6 +170,28 @@ export default class TpoPoolToDealTable extends LightningElement {
         editable: false
       },
       {
+        label: "Current UPB",
+        fieldName: "_currentUPB",
+
+        type: "currency",
+        typeAttributes: { currencyCode: "USD", step: "0.01" },
+        sortable: true,
+        editable: false
+      },
+      {
+        label: "Interest Rate",
+        fieldName: "_coupon",
+
+        type: "percent",
+        sortable: true,
+        editable: false,
+        typeAttributes: {
+          step: "0.001",
+          minimumFractionDigits: "2",
+          maximumFractionDigits: "3"
+        }
+      },
+      {
         label: "Bid Amount",
         fieldName: "Bid_Amount__c",
         type: "currency",
@@ -237,7 +259,9 @@ export default class TpoPoolToDealTable extends LightningElement {
       Deal__r.Name, 
       Status__c, 
       Rejection_Reason__c, 
-      Deal__r.Final_Loan_Amount__c, 
+      Deal__r.Final_Loan_Amount__c,
+      Deal__r.Current_UPB__c,
+      Deal__r.Rate__c,
       Bid_Amount__c, 
       Bid_Percent__c, 
       Deal__r.Account.Name, 
@@ -252,6 +276,8 @@ export default class TpoPoolToDealTable extends LightningElement {
       _accountNameUrl: `/lightning/r/Account/${d.Deal__r.AccountId}/view`,
       _numPriorLoans: d.Deal__r.Account.Deals_Won__c,
       _loanAmount: d.Deal__r.Final_Loan_Amount__c,
+      _currentUPB: d.Deal__r.Current_UPB__c,
+      _coupon: d.Deal__r.Rate__c / 100,
       _showError: false,
       _errorMessage: "",
       _disabled: d.Status__c != "No Bid",
