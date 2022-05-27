@@ -19,6 +19,7 @@ export default class TpoPoolToDealTable extends LightningElement {
   isEditModeLocal = false;
   draftValues = [];
   hasError = false;
+  recTypeName;
 
   @wire(getObjectInfo, { objectApiName: TPO_X_DEAL_OBJECT })
   wiredObjectinfo({ error, data }) {
@@ -161,8 +162,8 @@ export default class TpoPoolToDealTable extends LightningElement {
             : {}
       },
       {
-        label: "Loan Amount",
-        fieldName: "_loanAmount",
+        label: this.recTypeName === "Bridge Loans" ? "Loan Commitment" : "Loan Amount",
+        fieldName: this.recTypeName === "Bridge Loans" ? "_locCommitment" : "_loanAmount",
 
         type: "currency",
         typeAttributes: { currencyCode: "USD", step: "0.01" },
@@ -204,7 +205,7 @@ export default class TpoPoolToDealTable extends LightningElement {
       {
         label: "Bid % of Loan Amount",
         fieldName: "Bid_Percent__c",
-        type: "number",
+        type: this.isEditMode ? "number" : "percent",
         sortable: true,
 
         editable:
@@ -224,6 +225,13 @@ export default class TpoPoolToDealTable extends LightningElement {
           label: { fieldName: "_accountName" },
           target: "_blank"
         },
+        sortable: true,
+        editable: false
+      },
+      {
+        label: "Middle Credit Score",
+        fieldName: "_midCredScore",
+        type: "number",
         sortable: true,
         editable: false
       },
@@ -262,20 +270,52 @@ export default class TpoPoolToDealTable extends LightningElement {
       Deal__r.Final_Loan_Amount__c,
       Deal__r.Current_UPB__c,
       Deal__r.Rate__c,
+      Deal__r.LOC_Commitment__c,
       Bid_Amount__c, 
       Bid_Percent__c, 
       Deal__r.Account.Name, 
-      Deal__r.Account.Deals_Won__c 
+      Deal__r.Account.Deals_Won__c,
+      TPO_Pool__r.RecordType.Name
       FROM TPO_Pool_x_Deal__c WHERE TPO_Pool__c = '${this.recordId}'`;
 
     const res = await query({ queryString });
+
+    this.recTypeName = res[0].TPO_Pool__r.RecordType.Name;
+
+    const dealContactQueryString = `SELECT 
+      Id,
+      Middle_Credit_Score__c,
+      Deal__c
+      FROM Deal_Contact__c
+      WHERE Deal__c IN (
+        SELECT Deal__c FROM TPO_Pool_x_Deal__c WHERE TPO_Pool__c = '${this.recordId}'
+      ) 
+      AND Deal_Contact_Type__c = 'Individual'
+      AND Entity_Type__c = 'Guarantor'
+      ORDER BY Middle_Credit_Score__c DESC
+      `;
+       
+    const dealCtc = await query({ queryString: dealContactQueryString });
+    let midCredScoreMap = {}
+    if (dealCtc.length > 0) {
+      dealCtc.forEach(ctc => {
+        if(midCredScoreMap.hasOwnProperty(ctc.Deal__c) && midCredScoreMap[ctc.Deal__c] < ctc.Middle_Credit_Score__c) {
+          midCredScoreMap[ctc.Deal__c] = ctc.Middle_Credit_Score__c;
+        } else if (!midCredScoreMap.hasOwnProperty(ctc.Deal__c)) {
+          midCredScoreMap[ctc.Deal__c] = ctc.Middle_Credit_Score__c;
+        }
+      })
+    }
+
     this.tableData = res.map((d) => ({
       _dealName: d.Deal__r.Name,
       _dealUrl: `/lightning/r/Opportunity/${d.Deal__c}/view`,
       _accountName: d.Deal__r.Account.Name,
+      _midCredScore: midCredScoreMap[d.Deal__c] || 0,
       _accountNameUrl: `/lightning/r/Account/${d.Deal__r.AccountId}/view`,
       _numPriorLoans: d.Deal__r.Account.Deals_Won__c,
       _loanAmount: d.Deal__r.Final_Loan_Amount__c,
+      _locCommitment: d.Deal__r.LOC_Commitment__c,
       _currentUPB: d.Deal__r.Current_UPB__c,
       _coupon: d.Deal__r.Rate__c / 100,
       _showError: false,
@@ -285,7 +325,7 @@ export default class TpoPoolToDealTable extends LightningElement {
       Status__c: d.Status__c,
       Rejection_Reason__c: d.Rejection_Reason__c,
       Bid_Amount__c: d.Bid_Amount__c,
-      Bid_Percent__c: d.Bid_Percent__c
+      Bid_Percent__c: d.Bid_Percent__c / 100
     }));
   }
 
@@ -388,6 +428,12 @@ export default class TpoPoolToDealTable extends LightningElement {
 
   toggleEdit() {
     this.isEditMode = !this.isEditMode;
+    if(this.isEditMode) {
+      this.tableData = this.tableData.map(v => ({
+        ...v,
+        Bid_Percent__c: v.Bid_Percent__c * 100
+      }))
+    }
   }
 
   sortBy(field, reverse, primer) {
@@ -461,10 +507,28 @@ export default class TpoPoolToDealTable extends LightningElement {
     const row = evt.detail.draftValues[0];
     console.log(row);
     const draftVals = this.draftValues;
+    const currRow = this.tableData.find( v => v.Id === row.Id);
+    const loanAmount = this.recTypeName === "Bridge Loans" ? currRow._locCommitment : currRow._loanAmount;
+    const bidPercent = currRow.Bid_Percent__c;
+    const bidAmt = currRow.Bid_Amount__c;
+    let updateTable = false;
+    if(row.hasOwnProperty("Bid_Percent__c") && row.Bid_Percent__c != bidPercent) {
+      row["Bid_Amount__c"] = loanAmount * (row.Bid_Percent__c / 100);
+      updateTable = true;
+     } else if(row.hasOwnProperty("Bid_Amount__c") && row.Bid_Amount__c != bidAmt) {
+      row["Bid_Percent__c"] =( row.Bid_Amount__c/ loanAmount ) * 100;
+      updateTable = true;
+    }
+    if(updateTable) {
+      const updRow = {...currRow, ...row};
+      console.log(updRow);
+      this.tableData = this.tableData.map(v => (v.Id === updRow.Id ? updRow : v));
+    }
     if (draftVals.length > 0 && draftVals.some((d) => d.Id === row.Id)) {
       draftVals.forEach((d) => {
         if (d.Id === row.Id) {
           Object.entries(row).forEach(([k, v]) => {
+            console.log("k", k );
             d[k] = v;
           });
         }
@@ -472,6 +536,7 @@ export default class TpoPoolToDealTable extends LightningElement {
     } else {
       draftVals.push(row);
     }
+    console.log(draftVals);
     this.draftValues = draftVals;
   }
 
