@@ -466,6 +466,7 @@ export default class ScheduleA extends LightningElement {
         Attachment_Id__c: fileId,
         Section__c: "Property Level Documents",
         Document_Loaded__c: true,
+        Document_Type__c: 'Schedule A',
         Added_By__c: this.user.Id,
         Deal__c: dealId
       });
