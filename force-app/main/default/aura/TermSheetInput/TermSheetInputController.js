@@ -15,19 +15,28 @@
       if ("SUCCESS" === state) {
         let returnVal = response.getReturnValue();
         console.log("this is the returnVal");
-        console.log(returnVal);
 
         component.set("v.deal", JSON.parse(returnVal["record"][0]));
 
         console.log(component.get("v.deal"));
-
+        let missingFields = returnVal.MissingFields;
         if (
           returnVal.Checkboxes &&
           returnVal.Checkboxes.length > 0 &&
           returnVal.Checkboxes[0] == "false"
         ) {
+          const exemptFields = [
+            "Requested Revolving",
+            "Active States",
+            "Requested Advance Period",
+            "Requested Advance Fee",
+            "Broker Fee Paid By Whom",
+            "Broker Fee Paid When"
+          ];
+          missingFields = missingFields.filter(f => !exemptFields.includes(f));
           helper.toggleHide(component, "checkboxes");
           component.set("v.showCheckboxes", false);
+          console.log(missingFields);
         }
 
         if (
@@ -37,7 +46,7 @@
           helper.toggleHide(component, "incorrectLoanType");
           component.set("v.initiated", false);
         } else if (
-          (returnVal.MissingFields && returnVal.MissingFields.length > 0) ||
+          (missingFields && missingFields.length > 0) ||
           returnVal.Approved[0] == "false"
         ) {
           console.log("inside wrong condition");
@@ -46,9 +55,9 @@
             // document.querySelector('#approved-status').classList.remove('slds-hide');
             helper.toggleHide(component, "approvedStatus");
           }
-          if (returnVal.MissingFields && returnVal.MissingFields.length > 0) {
+          if (missingFields && missingFields.length > 0) {
             helper.toggleHide(component, "missingFields");
-            component.set("v.missingFields", returnVal.MissingFields);
+            component.set("v.missingFields", missingFields);
             // document.querySelector('#missing-fields').classList.remove('slds-hide');
           }
         } else if (returnVal.RecordType) {
