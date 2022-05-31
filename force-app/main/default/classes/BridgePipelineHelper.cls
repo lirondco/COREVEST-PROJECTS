@@ -45,7 +45,13 @@ public without sharing class BridgePipelineHelper {
     'acqPrice' => 'currency',
     'initAdv' => 'currency',
     // 'closeDate' => 'date',
-    'fundingProb' => 'string'
+    'fundingProb' => 'string',
+    'null' => 'string',
+    'originator' => 'string',
+    'dealUw' => 'string',
+    'dealCloser' => 'string',
+    'propertyUw' => 'string',
+    'propertyCloser' => 'string'
     // 'projectedInitialDisbursement' => 'currency'
   };
 
@@ -125,6 +131,16 @@ public without sharing class BridgePipelineHelper {
         Deal__r.Project_Strategy__c,
         Deal__r.Warehouse_Line__c,
         Deal__r.Loan_Size__c,
+        Deal__r.Owner.Full_Name__c,
+        Deal__r.LOC_Commitment__c,
+        Deal__r.Underwriter__c,
+        Deal__r.Underwriter__r.Name,
+        Deal__r.Closer__c,
+        Deal__r.Closer__r.Name,
+        Underwriter__c,
+        Underwriter__r.Name,
+        Closer__c,
+        Closer__r.Name,
         Initial_Advance__c,
         Initial_Advance__r.Name,
         Initial_Advance__r.Target_Advance_Date__c,
@@ -217,10 +233,13 @@ public without sharing class BridgePipelineHelper {
       rowData.put('prodType', p.Deal__r.LOC_Loan_Type__c);
       rowData.put('projStrat', p.Deal__r.Project_Strategy__c);
       rowData.put('warehouseLine', p.Deal__r.Warehouse_Line__c);
-      rowData.put('loanSize', p.Deal__r.Loan_Size__c != null ? String.valueOf(p.Deal__r.Loan_Size__c) : '0');
+      rowData.put('loanSize', p.Deal__r.LOC_Commitment__c != null ? String.valueOf(p.Deal__r.LOC_Commitment__c) : p.Deal__r.Loan_Size__c != null ? String.valueOf(p.Deal__r.Loan_Size__c) : '');
       rowData.put('index', p.Deal__r.Index__c);
       rowData.put('indexMargin', p.Deal__r.Index_Margin__c != null ? String.valueOf(p.Deal__r.Index_Margin__c) : '0');
-
+      rowData.put('dealUw', p.Deal__r.Underwriter__c != null ? p.Deal__r.Underwriter__r.Name : '');
+      rowData.put('dealCloser', p.Deal__r.Closer__c != null ? p.Deal__r.Closer__r.Name : '');
+      rowData.put('propertyUw', p.Underwriter__c != null ? p.Underwriter__r.Name : '');
+      rowData.put('propertyCloser', p.Closer__c != null ? p.Closer__r.Name : '');
       propTypes.add(p.Property_Type__c);
       rowData.put('propType', String.join(new List<String>(propTypes), ','));
       advPropTypes.put(key, propTypes);
@@ -296,6 +315,8 @@ public without sharing class BridgePipelineHelper {
       // );
 
       rowData.put('fundingProb', p.Funding_Probability__c);
+      rowData.put('null', null);
+      rowData.put('originator', p.Deal__r.Owner.Full_Name__c);
       
       // rowData.put(
       //   'projectedInitialDisbursement',

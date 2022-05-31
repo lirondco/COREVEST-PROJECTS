@@ -38,6 +38,9 @@
         const afterFinalRow = rows.length + 3;
         let colBeforeFirstNum = 0;
         let numColumns = [];
+
+        let propStatusColumn;
+
         for (let i = 0; i <= rows.length; i++) {
           for (let j = 0; j < columns.length; j++) {
             if (i === rows.length) {
@@ -52,6 +55,12 @@
               continue;
             }
             let r = columns[j].data;
+            if (
+              columns[j].data == "propStatus" &&
+              propStatusColumn == undefined
+            ) {
+              propStatusColumn = String.fromCharCode(96 + j + 2);
+            }
 
             if (columns[j].type == "date" && !$A.util.isEmpty(rows[i][r])) {
               rows[i][r] = $A.localizationService.formatDate(
@@ -70,6 +79,17 @@
 
             if (!$A.util.isEmpty(r)) {
               if (
+                columns[j].data == "fundingProb" &&
+                propStatusColumn != undefined
+              ) {
+                let proStatusRowCol = propStatusColumn + (i + 3);
+                let formula = `IF(${proStatusRowCol}="Pending", "Probable", IF(${proStatusRowCol}="Due Diligence", "Possible", IF(${proStatusRowCol}="Closing", "High Certainty", "")))`;
+                workbook
+                  .sheet("Pipeline")
+                  .row(3 + i)
+                  .cell(j + 2)
+                  .formula(formula)
+              } else if (
                 columns[j].type == "currency" &&
                 !$A.util.isEmpty(rows[i][r])
               ) {
