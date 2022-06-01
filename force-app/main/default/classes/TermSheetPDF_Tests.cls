@@ -9,6 +9,7 @@ private class TermSheetPDF_Tests {
         opp.Include_Prop_Sub_Text__c = true;
         opp.Term_Sheet_Expiration_Date__c = system.today()+10;
         update opp;
+        List<Property__c> props = test_Helper.createProperties( opp );
 
         Test.startTest();
             PageReference testpage = Page.TermSheetPDF;

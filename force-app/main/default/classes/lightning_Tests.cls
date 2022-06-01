@@ -205,6 +205,7 @@ private class lightning_Tests {
       ''
     );
     lightning_Controller.getRecordTypeName(opp.Id);
+    lightning_Controller.fetchLookUpValues('test', 'opportunity');
     lightning_Controller.getRecordList(
       opp.Id,
       'Deal__c',
@@ -215,6 +216,28 @@ private class lightning_Tests {
       '',
       ''
     );
+    lightning_Controller.getRecordListPropAdva(
+      opp.Id,
+      'Deal__c',
+      'Property__c',
+      new List<String>{ 'Name' },
+      'Id',
+      'Desc',
+      '',
+      '',
+      True
+    );    
+    lightning_Controller.getRecordListPropAdva(
+      opp.Id,
+      'Deal__c',
+      'Property__c',
+      new List<String>{ 'Name' },
+      'Id',
+      'Desc',
+      '',
+      '',
+      False
+    );       
     lightning_Controller.getRecords(
       opp.Id,
       'Deal__c',
@@ -292,7 +315,7 @@ private class lightning_Tests {
       Body = Blob.valueOf('saadsf'),
       Name = 'Test'
     );
-
+    Test.startTest();
     List<documentUploader_Controller.AttachmentWrapper> wrapper = (List<documentUploader_Controller.AttachmentWrapper>) JSON.deserialize(
       documentUploader_Controller.getAttachments(opp.Id),
       List<documentUploader_Controller.AttachmentWrapper>.class
@@ -360,12 +383,16 @@ private class lightning_Tests {
       String.valueOf(acc.Id),
       'Title and Escrow'
     );
+
+
     lightning_Controller.getDocuments(
       String.valueOf(opp.Id),
       'borrower',
       String.valueOf(acc.Id),
       'Title and Escrow'
     );
+    Test.stopTest();
+
     //lightning_Controller.getDocuments(String.valueOf(opp.Id), 'internal', String.valueOf(acc.Id), 'Title and Escrow');
     //contentVersion cv = [SELECT Id FROM ContentVersion LIMIT 1];
     //lightning_Controller.getDOcumentData(cv.Id);
@@ -589,6 +616,13 @@ private class lightning_Tests {
 
     insert dealDocList;
 
+    List<Id> dealDocId = new List<Id>();
+    for(Deal_Document__c ddoc : dealDocList) {
+      dealDocId.add(ddoc.Id);
+    }
+
+    lightning_Controller.generateReadAccessMap(dealDocId);
+
     documentUploader_Controller.getPicklists(
       'Opportunity',
       '',
@@ -704,11 +738,13 @@ private class lightning_Tests {
       null,
       null
     );
-    insert new Attachment(
+    Attachment attc = new Attachment(
       ParentId = opp.Id,
       Body = Blob.valueOf('saadsf'),
       Name = 'Test'
     );
+    insert attc;
+    
     insert new Attachment(
       ParentId = opp.Id,
       Body = Blob.valueOf('saadsf'),
@@ -744,6 +780,7 @@ private class lightning_Tests {
     );
 
     Test.stopTest();
+    lightning_Controller.reparentAttachment(attc.Id, adv.Id);
   }
 
   static testMethod void lightning_Tests7() {
@@ -877,5 +914,25 @@ private class lightning_Tests {
     //dupeJob.Status__c = ''
 
     Test.stopTest();
+  }
+
+  static testMethod void appraisal_Ltg_test() {
+    StaticResource xml = [SELECT Id, Body FROM StaticResource WHERE Name = 'AppraisalXMLTest' LIMIT 1];
+        ContentVersion cv = new ContentVersion(
+            Title = 'Test',
+            PathOnClient = 'Test.xml',
+            VersionData = xml.Body,
+            IsMajorVersion = true
+        );
+
+        insert cv;
+        Account acc = Test_Helper.createAccount();
+        Contact cont = Test_Helper.createContact( acc );
+        Opportunity opp = Test_Helper.createOpportunity( acc, cont );
+        opp.RecordTypeId = [SELECT Id FROM RecordType WHERE DeveloperName = 'Term_Loan' and sobjecttype = 'Opportunity'].Id;
+        List<Property__c> properties = Test_Helper.createProperties(opp);
+        Appraisal__c appraisal = Test_Helper.createAppraisal(opp, properties[0]);
+
+        lightning_Controller.attachFileToParent(cv.Id, appraisal.Id);
   }
 }

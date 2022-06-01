@@ -132,7 +132,8 @@ public with sharing class TermSheetPDF_Controller {
           Property_Type__c,
           County__c,
           Number_of_Units__c,
-          Is_Parent__c
+          Is_Parent__c,
+          Is_Sub_Unit__c
         FROM Property__c
         WHERE
           Deal__c = :record.Id
@@ -140,9 +141,10 @@ public with sharing class TermSheetPDF_Controller {
       ]) {
         if (
           property.Property_Type__c == '2-4 Unit' ||
-          property.Property_Type__c == 'Multifamily'
+          property.Property_Type__c == 'Multifamily' ||
+          property.Property_Type__c == 'Mixed Use'
         ) {
-          if (property.Is_Parent__c == true) {
+          if (property.Is_Sub_Unit__c == false) {
             properties.add(property);
           }
         } else {

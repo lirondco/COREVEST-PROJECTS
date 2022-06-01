@@ -31,7 +31,8 @@
   <aura:attribute name="pageSize" type="Integer" default="25" />
   <aura:attribute name="currentPage" type="Integer" default="1" />
   <aura:attribute name="maxPage" type="Integer" default="1" />
-
+  <aura:attribute name="recordIds" type="String[]" />
+  <aura:attribute name="recordSharingMap" type="Map" />
   <aura:handler name="init" value="{!this}" action="{!c.init}" />
 
   <aura:attribute name="permissionsMap" type="Map" />
@@ -109,6 +110,7 @@
           sortable="true"
           isEditable="false"
           columnWidth="11"
+          isReadable="isReadable"
         />
 
         <c:DataTableColumn
@@ -117,6 +119,7 @@
           sortable="true"
           linkToRecord="ContentVersion_Id__c"
           linkToURL="/sfc/servlet.shepherd/version/download/"
+          isReadable="isReadable"
         />
 
         <c:DataTableColumn
@@ -140,6 +143,7 @@
           sortable="false"
           displayType="file"
           columnWidth="5"
+          isReadable="isReadable"
         />
 
         <c:DataTableColumn
@@ -172,6 +176,13 @@
         <c:DataTableColumn
           label="Document_Loaded__c"
           name="Document_Loaded__c"
+          hidden="true"
+          displayType="hidden"
+          sortable="false"
+        />
+          <c:DataTableColumn
+          label="isReadable"
+          name="isReadable"
           hidden="true"
           displayType="hidden"
           sortable="false"

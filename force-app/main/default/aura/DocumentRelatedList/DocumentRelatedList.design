@@ -5,4 +5,5 @@
     <design:attribute name="whereClause" label="Where Clause" default ='Is_Deleted__c = false' />
     <design:attribute name="typeName" label="List Type" datasource="Standard,Property" />
     <design:attribute name="showActions" label="Show Actions" default="true" />
+    <design:attribute name="showAdvancesDocs" label="Show Advances Documents" default="false" />
 </design:component>

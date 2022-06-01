@@ -3,6 +3,9 @@
       var fields = [];
       var columns = component.find("dataTable").get("v.columns");
       for (var i = 0; i < columns.length; i++) {
+        if(columns[i].get("v.name") == 'isReadable'){
+          continue;
+        }
         fields.push(columns[i].get("v.name"));
       }
   
@@ -125,11 +128,11 @@
     //         }
     //     )
     // },
-    queryRecords: function (component) {
+    queryRecords: function (component, helper) {
       var tableCmp = component.find("dataTable");
   
       //tableCmp.toggleSpinner();
-  
+	  var showAdvancesDocs = component.get("v.showAdvancesDocs");
       var whereClause = component.get("v.whereClause");
       if ($A.util.isEmpty(whereClause)) {
         whereClause = "Is_Deleted__c = false";
@@ -140,7 +143,7 @@
       $A.util.removeClass(component.find("spinner"), "slds-hide");
       this.callAction(
         component,
-        "c.getRecordList",
+        "c.getRecordListPropAdva",
         {
           parentId: component.get("v.recordId"),
           parentFieldName: component.get("v.parentFieldName"),
@@ -149,17 +152,45 @@
           sortCol: tableCmp.get("v.sortColumnName"),
           sortDir: tableCmp.get("v.sortDirection"),
           whereClause: whereClause,
-          orderBy: component.get("v.orderBy")
+          orderBy: component.get("v.orderBy"),
+          showAdvancesDocs:showAdvancesDocs
         },
         function (data) {
           //var records = JSON.parse(data);
           var records = data;
           component.set("v.records", data);
           //console.log(records);
+          const recordIds = [];
+          for (var i = 0; i < records.length; i++) {
+            recordIds.push(records[i].Id);
+          }
+          component.set("v.recordIds", recordIds);
+          helper.compileRecordReadAccess(component, helper);       //tableCmp.toggleSpinner();
+        }
+      );
+    },
+
+    compileRecordReadAccess: function (component, helper) {
+      this.callAction(
+        component,
+        "c.generateReadAccessMap",
+        {
+          recordIds: component.get("v.recordIds"),
+        },
+        function(data) {
+          component.set("v.recordSharingMap", data);
+          const raMap = component.get("v.recordSharingMap");
           var tableCmp = component.find("dataTable");
-  
+          console.log('sharing map', raMap);
           var pageSize = component.get("v.pageSize");
           var currentPage = component.get("v.currentPage");
+          const records = component.get("v.records");
+          
+          for(var i = 0; i < records.length; i++){
+            records[i].isReadable = raMap[records[i].Id];
+          }
+          console.log("records updated", records);
+          component.set("v.records", records);
   
           component.set("v.maxPage", Math.ceil(records.length / pageSize));
   
@@ -167,13 +198,12 @@
             (currentPage - 1) * pageSize,
             currentPage * pageSize
           );
+          console.log("RECORDS TO DISPLAY", recordsToDisplay);
   
           tableCmp.set("v.rows", recordsToDisplay);
-  
           $A.util.addClass(component.find("spinner"), "slds-hide");
-          //tableCmp.toggleSpinner();
         }
-      );
+      )
     },
   
     saveRecords: function (component, helper) {
@@ -191,7 +221,7 @@
         function (data) {
           table.toggleSpinner();
           component.set("v.editMode", !component.get("v.editMode"));
-          helper.queryRecords(component);
+          helper.queryRecords(component, helper);
         }
       );
     },
@@ -208,7 +238,7 @@
         },
         function (data) {
           tableCmp.toggleSpinner();
-          helper.queryRecords(component);
+          helper.userType(component);
         }
       );
     },
