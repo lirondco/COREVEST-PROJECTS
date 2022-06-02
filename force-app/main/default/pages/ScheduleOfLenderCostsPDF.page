@@ -276,17 +276,18 @@
                     </tr>
                     <tr style="{! If(record.Deal__r.Rate_Lock_Picklist__c != null && record.Deal__r.Rate_Lock_Picklist__c == 'Early Rate Locked', '', 'display:none;')}">
                         <th style="text-align:left">
-                            Early Rate Lock<br/>Deposit
+                            Early Rate Lock Deposit
                         </th>
                         <td style="text-align:right">
                             <apex:outputText rendered="{! If(record.Early_Lock_Deposit__c != null, true, false ) }" value="${0, number,###,###,###,##0.00}">
                                 <apex:param value="{!record.Early_Lock_Deposit__c}"/>
                             </apex:outputText>
                             <apex:outputText rendered="{! If(record.Early_Lock_Deposit__c == null, true, false ) }" value="$0.00" />
+                            
                         </td>
-                        <td rowspan="2">
+                        <td rowspan="1">
                         </td>
-                        <td rowspan="2">
+                        <td rowspan="1">
                         </td>
                     </tr>
                     
@@ -294,7 +295,7 @@
                         <td colspan="2">
                         </td>
                         <td>
-                            
+
                             Origination Fee
                         </td>
                         <td>
