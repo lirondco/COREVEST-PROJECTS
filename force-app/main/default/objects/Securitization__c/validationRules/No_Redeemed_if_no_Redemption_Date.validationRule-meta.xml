@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>No_Redeemed_if_no_Redemption_Date</fullName>
+    <active>true</active>
+    <errorConditionFormula>ISNULL(Redemption_Date__c) &amp;&amp; ISPICKVAL(Status__c, &apos;Redeemed&apos;)</errorConditionFormula>
+    <errorDisplayField>Redemption_Date__c</errorDisplayField>
+    <errorMessage>Please enter a redemption date before changing the status to redeemed.</errorMessage>
+</ValidationRule>

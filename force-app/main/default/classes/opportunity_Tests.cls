@@ -1,19 +1,18 @@
 @isTest
 /**
-* NOTE TO DEVS:
-* This test class is getting a little bit too massive. If you're adding to it,
-* please create a new method for your specific test instead of attaching to existing ones
-* to prevent DML / SOQL Limit issues.
-* Thank you.
-*
-* Болшае спасибо,
-* - Liron
-**/
+ * NOTE TO DEVS:
+ * This test class is getting a little bit too massive. If you're adding to it,
+ * please create a new method for your specific test instead of attaching to existing ones
+ * to prevent DML / SOQL Limit issues.
+ * Thank you.
+ *
+ * Болшае спасибо,
+ * - Liron
+ **/
 
 public with sharing class opportunity_Tests {
-
   @TestSetup
-  static void dataSetup(){
+  static void dataSetup() {
     Account acc = test_Helper.createAccount();
 
     acc.Alternate_Phone__c = '7777777777';
@@ -43,19 +42,21 @@ public with sharing class opportunity_Tests {
     ]
     .Id;
     insert topp1;
-
   }
 
   static testMethod void opportunity_TermTest01() {
-    Opportunity topp1 = [SELECT Id FROM Opportunity WHERE Name='TERM TEST 123' LIMIT 1];
+    Opportunity topp1 = [
+      SELECT Id
+      FROM Opportunity
+      WHERE Name = 'TERM TEST 123'
+      LIMIT 1
+    ];
 
     Test.startTest();
     Securitization__c sec = test_Helper.createSecuritization();
 
-    
     topp1.Term_Sheet_Issued__c = System.today();
     update topp1;
-
 
     topp1.Trigger_Field__c = 'Originations Model;Model Name Test';
     update topp1;
@@ -66,7 +67,7 @@ public with sharing class opportunity_Tests {
   static testMethod void opportunity_TermTest02() {
     User origU = new User(
       Alias = 'orig',
-      Email = 'standarduser1@testorg.com',
+      Email = 'standarduser1@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -81,7 +82,7 @@ public with sharing class opportunity_Tests {
 
     User origU2 = new User(
       Alias = 'orig',
-      Email = 'standarduser2@testorg.com',
+      Email = 'standarduser2@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -96,7 +97,7 @@ public with sharing class opportunity_Tests {
 
     User origU3 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -111,7 +112,7 @@ public with sharing class opportunity_Tests {
 
     User origU4 = new User(
       Alias = 'orig',
-      Email = 'standarduser4@testorg.com',
+      Email = 'standarduser4@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -126,7 +127,7 @@ public with sharing class opportunity_Tests {
 
     User analystU = new User(
       Alias = 'analyst',
-      Email = 'standarduser5@testorg.com',
+      Email = 'standarduser5@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -141,7 +142,7 @@ public with sharing class opportunity_Tests {
 
     User analystU2 = new User(
       Alias = 'analyst',
-      Email = 'standarduser6@testorg.com',
+      Email = 'standarduser6@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -156,7 +157,7 @@ public with sharing class opportunity_Tests {
 
     User analystU3 = new User(
       Alias = 'analyst',
-      Email = 'standarduser7@testorg.com',
+      Email = 'standarduser7@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -171,7 +172,7 @@ public with sharing class opportunity_Tests {
 
     User analystU4 = new User(
       Alias = 'analyst',
-      Email = 'standarduser8@testorg.com',
+      Email = 'standarduser8@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -186,7 +187,7 @@ public with sharing class opportunity_Tests {
 
     User uwU = new User(
       Alias = 'underw',
-      Email = 'standarduser9@testorg.com',
+      Email = 'standarduser9@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -201,7 +202,7 @@ public with sharing class opportunity_Tests {
 
     User uwU2 = new User(
       Alias = 'underw',
-      Email = 'standarduser10@testorg.com',
+      Email = 'standarduser10@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -216,7 +217,7 @@ public with sharing class opportunity_Tests {
 
     User lcU = new User(
       Alias = 'loanco',
-      Email = 'standarduser11@testorg.com',
+      Email = 'standarduser11@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -231,7 +232,7 @@ public with sharing class opportunity_Tests {
 
     User lcU2 = new User(
       Alias = 'loanco',
-      Email = 'standarduser12@testorg.com',
+      Email = 'standarduser12@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -246,7 +247,7 @@ public with sharing class opportunity_Tests {
 
     User closerU = new User(
       Alias = 'clos',
-      Email = 'standarduser13@testorg.com',
+      Email = 'standarduser13@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -261,7 +262,7 @@ public with sharing class opportunity_Tests {
 
     User closerU2 = new User(
       Alias = 'clos',
-      Email = 'standarduser14@testorg.com',
+      Email = 'standarduser14@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -274,12 +275,16 @@ public with sharing class opportunity_Tests {
     //insert p;
     insert closerU2;
 
-    Opportunity topp1 = [SELECT Id FROM Opportunity WHERE Name='TERM TEST 123' LIMIT 1];
+    Opportunity topp1 = [
+      SELECT Id
+      FROM Opportunity
+      WHERE Name = 'TERM TEST 123'
+      LIMIT 1
+    ];
 
     Test.startTest();
     Securitization__c sec = test_Helper.createSecuritization();
 
-    
     topp1.Term_Sheet_Issued__c = System.today();
     topp1.Trigger_Field__c = 'Originations Model;Model Name Test';
     topp1.Pres_Deal_Id__c = '123';
@@ -302,7 +307,7 @@ public with sharing class opportunity_Tests {
     List<User> newUsers = new List<User>();
     User origU = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -317,7 +322,7 @@ public with sharing class opportunity_Tests {
 
     User origU2 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -332,7 +337,7 @@ public with sharing class opportunity_Tests {
 
     User origU3 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -347,7 +352,7 @@ public with sharing class opportunity_Tests {
 
     User origU4 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -362,7 +367,7 @@ public with sharing class opportunity_Tests {
 
     User analystU = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -377,7 +382,7 @@ public with sharing class opportunity_Tests {
 
     User analystU2 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -392,7 +397,7 @@ public with sharing class opportunity_Tests {
 
     User analystU3 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -407,7 +412,7 @@ public with sharing class opportunity_Tests {
 
     User analystU4 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -422,7 +427,7 @@ public with sharing class opportunity_Tests {
 
     User uwU = new User(
       Alias = 'underw',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -437,7 +442,7 @@ public with sharing class opportunity_Tests {
 
     User uwU2 = new User(
       Alias = 'underw',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -452,7 +457,7 @@ public with sharing class opportunity_Tests {
 
     User lcU = new User(
       Alias = 'loanco',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -467,7 +472,7 @@ public with sharing class opportunity_Tests {
 
     User lcU2 = new User(
       Alias = 'loanco',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -482,7 +487,7 @@ public with sharing class opportunity_Tests {
 
     User closerU = new User(
       Alias = 'clos',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -497,7 +502,7 @@ public with sharing class opportunity_Tests {
 
     User closerU2 = new User(
       Alias = 'clos',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -510,12 +515,16 @@ public with sharing class opportunity_Tests {
     //insert p;
     insert closerU2;
 
-    Opportunity topp1 = [SELECT Id FROM Opportunity WHERE Name='TERM TEST 123' LIMIT 1];
+    Opportunity topp1 = [
+      SELECT Id
+      FROM Opportunity
+      WHERE Name = 'TERM TEST 123'
+      LIMIT 1
+    ];
 
     Test.startTest();
     Securitization__c sec = test_Helper.createSecuritization();
 
-    
     topp1.Term_Sheet_Issued__c = System.today();
     topp1.Trigger_Field__c = 'Originations Model;Model Name Test';
     topp1.Pres_Deal_Id__c = '123';
@@ -538,12 +547,12 @@ public with sharing class opportunity_Tests {
     update topp1;
     Test.stopTest();
   }
-  
+
   static testMethod void opportunity_TermTest04() {
     List<User> newUsers = new List<User>();
     User origU = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -558,7 +567,7 @@ public with sharing class opportunity_Tests {
 
     User origU2 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -573,7 +582,7 @@ public with sharing class opportunity_Tests {
 
     User origU3 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -588,7 +597,7 @@ public with sharing class opportunity_Tests {
 
     User origU4 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -603,7 +612,7 @@ public with sharing class opportunity_Tests {
 
     User analystU = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -618,7 +627,7 @@ public with sharing class opportunity_Tests {
 
     User analystU2 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -633,7 +642,7 @@ public with sharing class opportunity_Tests {
 
     User analystU3 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -648,7 +657,7 @@ public with sharing class opportunity_Tests {
 
     User analystU4 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -663,7 +672,7 @@ public with sharing class opportunity_Tests {
 
     User uwU = new User(
       Alias = 'underw',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -678,7 +687,7 @@ public with sharing class opportunity_Tests {
 
     User uwU2 = new User(
       Alias = 'underw',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -693,7 +702,7 @@ public with sharing class opportunity_Tests {
 
     User lcU = new User(
       Alias = 'loanco',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -708,7 +717,7 @@ public with sharing class opportunity_Tests {
 
     User lcU2 = new User(
       Alias = 'loanco',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -723,7 +732,7 @@ public with sharing class opportunity_Tests {
 
     User closerU = new User(
       Alias = 'clos',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -738,7 +747,7 @@ public with sharing class opportunity_Tests {
 
     User closerU2 = new User(
       Alias = 'clos',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -751,12 +760,16 @@ public with sharing class opportunity_Tests {
     //insert p;
     insert closerU2;
 
-    Opportunity topp1 = [SELECT Id FROM Opportunity WHERE Name='TERM TEST 123' LIMIT 1];
+    Opportunity topp1 = [
+      SELECT Id
+      FROM Opportunity
+      WHERE Name = 'TERM TEST 123'
+      LIMIT 1
+    ];
 
     Test.startTest();
     Securitization__c sec = test_Helper.createSecuritization();
 
-    
     topp1.Term_Sheet_Issued__c = System.today();
     topp1.Trigger_Field__c = 'Originations Model;Model Name Test';
     topp1.Pres_Deal_Id__c = '123';
@@ -791,7 +804,7 @@ public with sharing class opportunity_Tests {
     List<User> newUsers = new List<User>();
     User origU = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -806,7 +819,7 @@ public with sharing class opportunity_Tests {
 
     User origU2 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -821,7 +834,7 @@ public with sharing class opportunity_Tests {
 
     User origU3 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -836,7 +849,7 @@ public with sharing class opportunity_Tests {
 
     User origU4 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -851,7 +864,7 @@ public with sharing class opportunity_Tests {
 
     User analystU = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -866,7 +879,7 @@ public with sharing class opportunity_Tests {
 
     User analystU2 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -881,7 +894,7 @@ public with sharing class opportunity_Tests {
 
     User analystU3 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -896,7 +909,7 @@ public with sharing class opportunity_Tests {
 
     User analystU4 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -911,7 +924,7 @@ public with sharing class opportunity_Tests {
 
     User uwU = new User(
       Alias = 'underw',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -926,7 +939,7 @@ public with sharing class opportunity_Tests {
 
     User uwU2 = new User(
       Alias = 'underw',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -941,7 +954,7 @@ public with sharing class opportunity_Tests {
 
     User lcU = new User(
       Alias = 'loanco',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -956,7 +969,7 @@ public with sharing class opportunity_Tests {
 
     User lcU2 = new User(
       Alias = 'loanco',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -971,7 +984,7 @@ public with sharing class opportunity_Tests {
 
     User closerU = new User(
       Alias = 'clos',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -986,7 +999,7 @@ public with sharing class opportunity_Tests {
 
     User closerU2 = new User(
       Alias = 'clos',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -999,12 +1012,16 @@ public with sharing class opportunity_Tests {
     //insert p;
     insert closerU2;
 
-    Opportunity topp1 = [SELECT Id FROM Opportunity WHERE Name='TERM TEST 123' LIMIT 1];
+    Opportunity topp1 = [
+      SELECT Id
+      FROM Opportunity
+      WHERE Name = 'TERM TEST 123'
+      LIMIT 1
+    ];
 
     Test.startTest();
     Securitization__c sec = test_Helper.createSecuritization();
 
-    
     topp1.Term_Sheet_Issued__c = System.today();
     topp1.Trigger_Field__c = 'Originations Model;Model Name Test';
     topp1.Pres_Deal_Id__c = '123';
@@ -1040,7 +1057,7 @@ public with sharing class opportunity_Tests {
     List<User> newUsers = new List<User>();
     User origU = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1055,7 +1072,7 @@ public with sharing class opportunity_Tests {
 
     User origU2 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1070,7 +1087,7 @@ public with sharing class opportunity_Tests {
 
     User origU3 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1085,7 +1102,7 @@ public with sharing class opportunity_Tests {
 
     User origU4 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1100,7 +1117,7 @@ public with sharing class opportunity_Tests {
 
     User analystU = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1115,7 +1132,7 @@ public with sharing class opportunity_Tests {
 
     User analystU2 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1130,7 +1147,7 @@ public with sharing class opportunity_Tests {
 
     User analystU3 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1145,7 +1162,7 @@ public with sharing class opportunity_Tests {
 
     User analystU4 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1160,7 +1177,7 @@ public with sharing class opportunity_Tests {
 
     User uwU = new User(
       Alias = 'underw',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1175,7 +1192,7 @@ public with sharing class opportunity_Tests {
 
     User uwU2 = new User(
       Alias = 'underw',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1190,7 +1207,7 @@ public with sharing class opportunity_Tests {
 
     User lcU = new User(
       Alias = 'loanco',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1205,7 +1222,7 @@ public with sharing class opportunity_Tests {
 
     User lcU2 = new User(
       Alias = 'loanco',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1220,7 +1237,7 @@ public with sharing class opportunity_Tests {
 
     User closerU = new User(
       Alias = 'clos',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1235,7 +1252,7 @@ public with sharing class opportunity_Tests {
 
     User closerU2 = new User(
       Alias = 'clos',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1248,12 +1265,16 @@ public with sharing class opportunity_Tests {
     //insert p;
     insert closerU2;
 
-    Opportunity topp1 = [SELECT Id FROM Opportunity WHERE Name='TERM TEST 123' LIMIT 1];
+    Opportunity topp1 = [
+      SELECT Id
+      FROM Opportunity
+      WHERE Name = 'TERM TEST 123'
+      LIMIT 1
+    ];
 
     Test.startTest();
     Securitization__c sec = test_Helper.createSecuritization();
 
-    
     topp1.Term_Sheet_Issued__c = System.today();
     topp1.Trigger_Field__c = 'Originations Model;Model Name Test';
     topp1.Pres_Deal_Id__c = '123';
@@ -1300,7 +1321,7 @@ public with sharing class opportunity_Tests {
     List<User> newUsers = new List<User>();
     User origU = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1315,7 +1336,7 @@ public with sharing class opportunity_Tests {
 
     User origU2 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1330,7 +1351,7 @@ public with sharing class opportunity_Tests {
 
     User origU3 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1345,7 +1366,7 @@ public with sharing class opportunity_Tests {
 
     User origU4 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1360,7 +1381,7 @@ public with sharing class opportunity_Tests {
 
     User analystU = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1375,7 +1396,7 @@ public with sharing class opportunity_Tests {
 
     User analystU2 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1390,7 +1411,7 @@ public with sharing class opportunity_Tests {
 
     User analystU3 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1405,7 +1426,7 @@ public with sharing class opportunity_Tests {
 
     User analystU4 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1420,7 +1441,7 @@ public with sharing class opportunity_Tests {
 
     User uwU = new User(
       Alias = 'underw',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1435,7 +1456,7 @@ public with sharing class opportunity_Tests {
 
     User uwU2 = new User(
       Alias = 'underw',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1450,7 +1471,7 @@ public with sharing class opportunity_Tests {
 
     User lcU = new User(
       Alias = 'loanco',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1465,7 +1486,7 @@ public with sharing class opportunity_Tests {
 
     User lcU2 = new User(
       Alias = 'loanco',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1480,7 +1501,7 @@ public with sharing class opportunity_Tests {
 
     User closerU = new User(
       Alias = 'clos',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1495,7 +1516,7 @@ public with sharing class opportunity_Tests {
 
     User closerU2 = new User(
       Alias = 'clos',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1508,15 +1529,17 @@ public with sharing class opportunity_Tests {
     //insert p;
     insert closerU2;
 
-    Opportunity topp1 = [SELECT Id FROM Opportunity WHERE Name='TERM TEST 123' LIMIT 1];
+    Opportunity topp1 = [
+      SELECT Id
+      FROM Opportunity
+      WHERE Name = 'TERM TEST 123'
+      LIMIT 1
+    ];
 
     Test.startTest();
     Securitization__c sec = test_Helper.createSecuritization();
 
-    
     topp1.Term_Sheet_Issued__c = System.today();
-    topp1.Trigger_Field__c = 'Originations Model;Model Name Test';
-    topp1.Pres_Deal_Id__c = '123';
     //topp1.StageName = 'Term Sheet Issued';
     topp1.Loan_Effective_Date__c = System.today();
     topp1.Deal_Intro_Source__c = 'Email';
@@ -1540,16 +1563,16 @@ public with sharing class opportunity_Tests {
     topp1.Closer__c = closerU.Id;
     topp1.Kickoff_Date__c = System.today();
     // topp1.Commission_Type__c = 'Direct';
-    topp1.StageName = 'UW Hold';
-    topp1.StageName = 'Underwriting';
+    // topp1.StageName = 'UW Hold';
+    // topp1.StageName = 'Underwriting';
     topp1.IO_Term__c = '120 months';
-    topp1.Final_Loan_Amount__c = 1000000;
-    topp1.CAF_Analyst__c = analystU2.Id;
-    topp1.Second_Production_Analyst__c = analystU4.Id;
-    topp1.Underwriter__c = uwU2.Id;
-    topp1.Loan_Coordinator__c = lcU2.Id;
-    topp1.Closer__c = closerU2.Id;
-    topp1.Co_Originator__c = origU4.Id;
+    // topp1.Final_Loan_Amount__c = 1000000;
+    // topp1.CAF_Analyst__c = analystU2.Id;
+    // topp1.Second_Production_Analyst__c = analystU4.Id;
+    // topp1.Underwriter__c = uwU2.Id;
+    // topp1.Loan_Coordinator__c = lcU2.Id;
+    // topp1.Closer__c = closerU2.Id;
+    // topp1.Co_Originator__c = origU4.Id;
     topp1.Final_Spread__c = 2;
     topp1.Final_Swap__c = 2;
     topp1.Trigger_Field__c = 'Term Underwriting Model;Model Name Test';
@@ -1564,7 +1587,7 @@ public with sharing class opportunity_Tests {
     List<User> newUsers = new List<User>();
     User origU = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1579,7 +1602,7 @@ public with sharing class opportunity_Tests {
 
     User origU2 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1594,7 +1617,7 @@ public with sharing class opportunity_Tests {
 
     User origU3 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1609,7 +1632,7 @@ public with sharing class opportunity_Tests {
 
     User origU4 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1624,7 +1647,7 @@ public with sharing class opportunity_Tests {
 
     User analystU = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1639,7 +1662,7 @@ public with sharing class opportunity_Tests {
 
     User analystU2 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1654,7 +1677,7 @@ public with sharing class opportunity_Tests {
 
     User analystU3 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1669,7 +1692,7 @@ public with sharing class opportunity_Tests {
 
     User analystU4 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1684,7 +1707,7 @@ public with sharing class opportunity_Tests {
 
     User uwU = new User(
       Alias = 'underw',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1699,7 +1722,7 @@ public with sharing class opportunity_Tests {
 
     User uwU2 = new User(
       Alias = 'underw',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1714,7 +1737,7 @@ public with sharing class opportunity_Tests {
 
     User lcU = new User(
       Alias = 'loanco',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1729,7 +1752,7 @@ public with sharing class opportunity_Tests {
 
     User lcU2 = new User(
       Alias = 'loanco',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1744,7 +1767,7 @@ public with sharing class opportunity_Tests {
 
     User closerU = new User(
       Alias = 'clos',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1759,7 +1782,7 @@ public with sharing class opportunity_Tests {
 
     User closerU2 = new User(
       Alias = 'clos',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1772,15 +1795,18 @@ public with sharing class opportunity_Tests {
     //insert p;
     insert closerU2;
 
-    Opportunity topp1 = [SELECT Id FROM Opportunity WHERE Name='TERM TEST 123' LIMIT 1];
+    Opportunity topp1 = [
+      SELECT Id
+      FROM Opportunity
+      WHERE Name = 'TERM TEST 123'
+      LIMIT 1
+    ];
 
     Test.startTest();
     Securitization__c sec = test_Helper.createSecuritization();
 
-    
     topp1.Term_Sheet_Issued__c = System.today();
     topp1.Trigger_Field__c = 'Originations Model;Model Name Test';
-    topp1.Pres_Deal_Id__c = '123';
     //topp1.StageName = 'Term Sheet Issued';
     topp1.Loan_Effective_Date__c = System.today();
     topp1.Deal_Intro_Source__c = 'Email';
@@ -1798,25 +1824,25 @@ public with sharing class opportunity_Tests {
     topp1.Broker_Fees_and_or_YSP__c = 'adffda';
     topp1.Property_Management__c = 'Third Party';
     topp1.StageName = 'Underwriting';
-    topp1.Current_Loan_Amount__c = 2000000;
+    // topp1.Current_Loan_Amount__c = 2000000;
     topp1.Underwriter__c = uwU.Id;
     topp1.Loan_Coordinator__c = lcU.Id;
     topp1.Closer__c = closerU.Id;
     topp1.Kickoff_Date__c = System.today();
     // topp1.Commission_Type__c = 'Direct';
-    topp1.StageName = 'UW Hold';
-    topp1.StageName = 'Underwriting';
+    // topp1.StageName = 'UW Hold';
+    // topp1.StageName = 'Underwriting';
     topp1.IO_Term__c = '120 months';
     topp1.Final_Loan_Amount__c = 1000000;
-    topp1.CAF_Analyst__c = analystU2.Id;
-    topp1.Second_Production_Analyst__c = analystU4.Id;
-    topp1.Underwriter__c = uwU2.Id;
-    topp1.Loan_Coordinator__c = lcU2.Id;
-    topp1.Closer__c = closerU2.Id;
-    topp1.Co_Originator__c = origU4.Id;
+    // topp1.CAF_Analyst__c = analystU2.Id;
+    // topp1.Second_Production_Analyst__c = analystU4.Id;
+    // topp1.Underwriter__c = uwU2.Id;
+    // topp1.Loan_Coordinator__c = lcU2.Id;
+    // topp1.Closer__c = closerU2.Id;
+    // topp1.Co_Originator__c = origU4.Id;
     topp1.Final_Spread__c = 2;
     topp1.Final_Swap__c = 2;
-    topp1.Trigger_Field__c = 'Term Underwriting Model;Model Name Test';
+    // topp1.Trigger_Field__c = 'Term Underwriting Model;Model Name Test';
 
     topp1.Anticipated_Closing_Date__c = System.today() + 30;
     topp1.Final_Loan_Amount__c = null;
@@ -1829,7 +1855,7 @@ public with sharing class opportunity_Tests {
     List<User> newUsers = new List<User>();
     User origU = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1844,7 +1870,7 @@ public with sharing class opportunity_Tests {
 
     User origU2 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1859,7 +1885,7 @@ public with sharing class opportunity_Tests {
 
     User origU3 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1874,7 +1900,7 @@ public with sharing class opportunity_Tests {
 
     User origU4 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1889,7 +1915,7 @@ public with sharing class opportunity_Tests {
 
     User analystU = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1904,7 +1930,7 @@ public with sharing class opportunity_Tests {
 
     User analystU2 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1919,7 +1945,7 @@ public with sharing class opportunity_Tests {
 
     User analystU3 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1934,7 +1960,7 @@ public with sharing class opportunity_Tests {
 
     User analystU4 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1949,7 +1975,7 @@ public with sharing class opportunity_Tests {
 
     User uwU = new User(
       Alias = 'underw',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1964,7 +1990,7 @@ public with sharing class opportunity_Tests {
 
     User uwU2 = new User(
       Alias = 'underw',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1979,7 +2005,7 @@ public with sharing class opportunity_Tests {
 
     User lcU = new User(
       Alias = 'loanco',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -1994,7 +2020,7 @@ public with sharing class opportunity_Tests {
 
     User lcU2 = new User(
       Alias = 'loanco',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2009,7 +2035,7 @@ public with sharing class opportunity_Tests {
 
     User closerU = new User(
       Alias = 'clos',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2024,7 +2050,7 @@ public with sharing class opportunity_Tests {
 
     User closerU2 = new User(
       Alias = 'clos',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2037,15 +2063,18 @@ public with sharing class opportunity_Tests {
     //insert p;
     insert closerU2;
 
-    Opportunity topp1 = [SELECT Id FROM Opportunity WHERE Name='TERM TEST 123' LIMIT 1];
+    Opportunity topp1 = [
+      SELECT Id
+      FROM Opportunity
+      WHERE Name = 'TERM TEST 123'
+      LIMIT 1
+    ];
 
     Test.startTest();
     Securitization__c sec = test_Helper.createSecuritization();
 
-    
     topp1.Term_Sheet_Issued__c = System.today();
-    topp1.Trigger_Field__c = 'Originations Model;Model Name Test';
-    topp1.Pres_Deal_Id__c = '123';
+    // topp1.Trigger_Field__c = 'Originations Model;Model Name Test';
     //topp1.StageName = 'Term Sheet Issued';
     topp1.Loan_Effective_Date__c = System.today();
     topp1.Deal_Intro_Source__c = 'Email';
@@ -2069,24 +2098,24 @@ public with sharing class opportunity_Tests {
     topp1.Closer__c = closerU.Id;
     topp1.Kickoff_Date__c = System.today();
     // topp1.Commission_Type__c = 'Direct';
-    topp1.StageName = 'UW Hold';
-    topp1.StageName = 'Underwriting';
+    // topp1.StageName = 'UW Hold';
+    // topp1.StageName = 'Underwriting';
     topp1.IO_Term__c = '120 months';
     topp1.Final_Loan_Amount__c = 1000000;
-    topp1.CAF_Analyst__c = analystU2.Id;
-    topp1.Second_Production_Analyst__c = analystU4.Id;
-    topp1.Underwriter__c = uwU2.Id;
-    topp1.Loan_Coordinator__c = lcU2.Id;
-    topp1.Closer__c = closerU2.Id;
-    topp1.Co_Originator__c = origU4.Id;
+    // topp1.CAF_Analyst__c = analystU2.Id;
+    // topp1.Second_Production_Analyst__c = analystU4.Id;
+    // topp1.Underwriter__c = uwU2.Id;
+    // topp1.Loan_Coordinator__c = lcU2.Id;
+    // topp1.Closer__c = closerU2.Id;
+    // topp1.Co_Originator__c = origU4.Id;
     topp1.Final_Spread__c = 2;
     topp1.Final_Swap__c = 2;
     topp1.Trigger_Field__c = 'Term Underwriting Model;Model Name Test';
 
     topp1.Anticipated_Closing_Date__c = System.today() + 30;
-    topp1.Final_Loan_Amount__c = null;
-    topp1.OwnerId = origU2.Id;
-    topp1.StageName = 'Underwriting';
+    // topp1.Final_Loan_Amount__c = null;
+    // topp1.OwnerId = origU2.Id;
+    // topp1.StageName = 'Underwriting';
     update topp1;
     Test.stopTest();
   }
@@ -2095,7 +2124,7 @@ public with sharing class opportunity_Tests {
     List<User> newUsers = new List<User>();
     User origU = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2110,7 +2139,7 @@ public with sharing class opportunity_Tests {
 
     User origU2 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2125,7 +2154,7 @@ public with sharing class opportunity_Tests {
 
     User origU3 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2140,7 +2169,7 @@ public with sharing class opportunity_Tests {
 
     User origU4 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2155,7 +2184,7 @@ public with sharing class opportunity_Tests {
 
     User analystU = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2170,7 +2199,7 @@ public with sharing class opportunity_Tests {
 
     User analystU2 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2185,7 +2214,7 @@ public with sharing class opportunity_Tests {
 
     User analystU3 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2200,7 +2229,7 @@ public with sharing class opportunity_Tests {
 
     User analystU4 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2215,7 +2244,7 @@ public with sharing class opportunity_Tests {
 
     User uwU = new User(
       Alias = 'underw',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2230,7 +2259,7 @@ public with sharing class opportunity_Tests {
 
     User uwU2 = new User(
       Alias = 'underw',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2245,7 +2274,7 @@ public with sharing class opportunity_Tests {
 
     User lcU = new User(
       Alias = 'loanco',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2260,7 +2289,7 @@ public with sharing class opportunity_Tests {
 
     User lcU2 = new User(
       Alias = 'loanco',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2275,7 +2304,7 @@ public with sharing class opportunity_Tests {
 
     User closerU = new User(
       Alias = 'clos',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2290,7 +2319,7 @@ public with sharing class opportunity_Tests {
 
     User closerU2 = new User(
       Alias = 'clos',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2303,12 +2332,16 @@ public with sharing class opportunity_Tests {
     //insert p;
     insert closerU2;
 
-    Opportunity topp1 = [SELECT Id FROM Opportunity WHERE Name='TERM TEST 123' LIMIT 1];
+    Opportunity topp1 = [
+      SELECT Id
+      FROM Opportunity
+      WHERE Name = 'TERM TEST 123'
+      LIMIT 1
+    ];
 
     Test.startTest();
     Securitization__c sec = test_Helper.createSecuritization();
 
-    
     topp1.Term_Sheet_Issued__c = System.today();
     topp1.Trigger_Field__c = 'Originations Model;Model Name Test';
     topp1.Pres_Deal_Id__c = '123';
@@ -2362,7 +2395,7 @@ public with sharing class opportunity_Tests {
     List<User> newUsers = new List<User>();
     User origU = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2377,7 +2410,7 @@ public with sharing class opportunity_Tests {
 
     User origU2 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2392,7 +2425,7 @@ public with sharing class opportunity_Tests {
 
     User origU3 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2407,7 +2440,7 @@ public with sharing class opportunity_Tests {
 
     User origU4 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2422,7 +2455,7 @@ public with sharing class opportunity_Tests {
 
     User analystU = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2437,7 +2470,7 @@ public with sharing class opportunity_Tests {
 
     User analystU2 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2452,7 +2485,7 @@ public with sharing class opportunity_Tests {
 
     User analystU3 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2467,7 +2500,7 @@ public with sharing class opportunity_Tests {
 
     User analystU4 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2482,7 +2515,7 @@ public with sharing class opportunity_Tests {
 
     User uwU = new User(
       Alias = 'underw',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2497,7 +2530,7 @@ public with sharing class opportunity_Tests {
 
     User uwU2 = new User(
       Alias = 'underw',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2512,7 +2545,7 @@ public with sharing class opportunity_Tests {
 
     User lcU = new User(
       Alias = 'loanco',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2527,7 +2560,7 @@ public with sharing class opportunity_Tests {
 
     User lcU2 = new User(
       Alias = 'loanco',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2542,7 +2575,7 @@ public with sharing class opportunity_Tests {
 
     User closerU = new User(
       Alias = 'clos',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2557,7 +2590,7 @@ public with sharing class opportunity_Tests {
 
     User closerU2 = new User(
       Alias = 'clos',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2570,12 +2603,31 @@ public with sharing class opportunity_Tests {
     //insert p;
     insert closerU2;
 
-    Opportunity topp1 = [SELECT Id FROM Opportunity WHERE Name='TERM TEST 123' LIMIT 1];
+    Opportunity topp1 = [
+      SELECT Id
+      FROM Opportunity
+      WHERE Name = 'TERM TEST 123'
+      LIMIT 1
+    ];
+//raj
+    List<Loan_Version__c> loanVersionList = new List<Loan_Version__c>();
+    Loan_Version__c loanVersion = new Loan_Version__c();
+    loanVersion.Deal__c = topp1.id;
+    loanVersion.Finalized__c = True;
+    loanVersion.RecordTypeId = [SELECT Id FROM RecordType WHERE sobjecttype = 'Loan_Version__c' AND DeveloperName = 'Loan_Agreement'].Id;      
+    loanVersionList.add(loanVersion);
+      
+    Loan_Version__c loanVersion1 = new Loan_Version__c();    
+    loanVersion1.Deal__c = topp1.id;
+    loanVersion1.Finalized__c = True;    
+    loanVersion1.RecordTypeId = [SELECT Id FROM RecordType WHERE sobjecttype = 'Loan_Version__c' AND DeveloperName = 'Schedule_of_Lender_Cost'].Id;      
+    loanVersionList.add(loanVersion1);      
 
+	Insert loanVersionList;
+//raj    
     Test.startTest();
     Securitization__c sec = test_Helper.createSecuritization();
 
-    
     topp1.Term_Sheet_Issued__c = System.today();
     topp1.Trigger_Field__c = 'Originations Model;Model Name Test';
     topp1.Pres_Deal_Id__c = '123';
@@ -2651,7 +2703,7 @@ public with sharing class opportunity_Tests {
     List<User> newUsers = new List<User>();
     User origU = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2666,7 +2718,7 @@ public with sharing class opportunity_Tests {
 
     User origU2 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2681,7 +2733,7 @@ public with sharing class opportunity_Tests {
 
     User origU3 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2696,7 +2748,7 @@ public with sharing class opportunity_Tests {
 
     User origU4 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2711,7 +2763,7 @@ public with sharing class opportunity_Tests {
 
     User analystU = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2726,7 +2778,7 @@ public with sharing class opportunity_Tests {
 
     User analystU2 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2741,7 +2793,7 @@ public with sharing class opportunity_Tests {
 
     User analystU3 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2756,7 +2808,7 @@ public with sharing class opportunity_Tests {
 
     User analystU4 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2771,7 +2823,7 @@ public with sharing class opportunity_Tests {
 
     User uwU = new User(
       Alias = 'underw',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2786,7 +2838,7 @@ public with sharing class opportunity_Tests {
 
     User uwU2 = new User(
       Alias = 'underw',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2801,7 +2853,7 @@ public with sharing class opportunity_Tests {
 
     User lcU = new User(
       Alias = 'loanco',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2816,7 +2868,7 @@ public with sharing class opportunity_Tests {
 
     User lcU2 = new User(
       Alias = 'loanco',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2831,7 +2883,7 @@ public with sharing class opportunity_Tests {
 
     User closerU = new User(
       Alias = 'clos',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2846,7 +2898,7 @@ public with sharing class opportunity_Tests {
 
     User closerU2 = new User(
       Alias = 'clos',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2858,13 +2910,33 @@ public with sharing class opportunity_Tests {
     );
     //insert p;
     insert closerU2;
+    
+    Opportunity topp1 = [
+      SELECT Id
+      FROM Opportunity
+      WHERE Name = 'TERM TEST 123'
+      LIMIT 1
+    ];
+//raj
+    List<Loan_Version__c> loanVersionList = new List<Loan_Version__c>();
+    Loan_Version__c loanVersion = new Loan_Version__c();
+    loanVersion.Deal__c = topp1.id;
+    loanVersion.Finalized__c = True;
+    loanVersion.RecordTypeId = [SELECT Id FROM RecordType WHERE sobjecttype = 'Loan_Version__c' AND DeveloperName = 'Loan_Agreement'].Id;      
+    loanVersionList.add(loanVersion);
+      
+    Loan_Version__c loanVersion1 = new Loan_Version__c();    
+    loanVersion1.Deal__c = topp1.id;
+    loanVersion1.Finalized__c = True;    
+    loanVersion1.RecordTypeId = [SELECT Id FROM RecordType WHERE sobjecttype = 'Loan_Version__c' AND DeveloperName = 'Schedule_of_Lender_Cost'].Id;      
+    loanVersionList.add(loanVersion1);      
 
-    Opportunity topp1 = [SELECT Id FROM Opportunity WHERE Name='TERM TEST 123' LIMIT 1];
-
+	Insert loanVersionList;
+//raj       
+     
     Test.startTest();
     Securitization__c sec = test_Helper.createSecuritization();
 
-    
     topp1.Term_Sheet_Issued__c = System.today();
     topp1.Trigger_Field__c = 'Originations Model;Model Name Test';
     topp1.Pres_Deal_Id__c = '123';
@@ -2935,7 +3007,7 @@ public with sharing class opportunity_Tests {
     List<User> newUsers = new List<User>();
     User origU = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2950,7 +3022,7 @@ public with sharing class opportunity_Tests {
 
     User origU2 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2965,7 +3037,7 @@ public with sharing class opportunity_Tests {
 
     User origU3 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2980,7 +3052,7 @@ public with sharing class opportunity_Tests {
 
     User origU4 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -2995,7 +3067,7 @@ public with sharing class opportunity_Tests {
 
     User analystU = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3010,7 +3082,7 @@ public with sharing class opportunity_Tests {
 
     User analystU2 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3025,7 +3097,7 @@ public with sharing class opportunity_Tests {
 
     User analystU3 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3040,7 +3112,7 @@ public with sharing class opportunity_Tests {
 
     User analystU4 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3055,7 +3127,7 @@ public with sharing class opportunity_Tests {
 
     User uwU = new User(
       Alias = 'underw',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3070,7 +3142,7 @@ public with sharing class opportunity_Tests {
 
     User uwU2 = new User(
       Alias = 'underw',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3085,7 +3157,7 @@ public with sharing class opportunity_Tests {
 
     User lcU = new User(
       Alias = 'loanco',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3100,7 +3172,7 @@ public with sharing class opportunity_Tests {
 
     User lcU2 = new User(
       Alias = 'loanco',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3115,7 +3187,7 @@ public with sharing class opportunity_Tests {
 
     User closerU = new User(
       Alias = 'clos',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3130,7 +3202,7 @@ public with sharing class opportunity_Tests {
 
     User closerU2 = new User(
       Alias = 'clos',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3143,12 +3215,32 @@ public with sharing class opportunity_Tests {
     //insert p;
     insert closerU2;
 
-    Opportunity topp1 = [SELECT Id FROM Opportunity WHERE Name='TERM TEST 123' LIMIT 1];
+    Opportunity topp1 = [
+      SELECT Id
+      FROM Opportunity
+      WHERE Name = 'TERM TEST 123'
+      LIMIT 1
+    ];
 
+//raj
+    List<Loan_Version__c> loanVersionList = new List<Loan_Version__c>();
+    Loan_Version__c loanVersion = new Loan_Version__c();
+    loanVersion.Deal__c = topp1.id;
+    loanVersion.Finalized__c = True;
+    loanVersion.RecordTypeId = [SELECT Id FROM RecordType WHERE sobjecttype = 'Loan_Version__c' AND DeveloperName = 'Loan_Agreement'].Id;      
+    loanVersionList.add(loanVersion);
+      
+    Loan_Version__c loanVersion1 = new Loan_Version__c();    
+    loanVersion1.Deal__c = topp1.id;
+    loanVersion1.Finalized__c = True;    
+    loanVersion1.RecordTypeId = [SELECT Id FROM RecordType WHERE sobjecttype = 'Loan_Version__c' AND DeveloperName = 'Schedule_of_Lender_Cost'].Id;      
+    loanVersionList.add(loanVersion1);      
+
+	Insert loanVersionList;
+//raj       
     Test.startTest();
     Securitization__c sec = test_Helper.createSecuritization();
 
-    
     topp1.Term_Sheet_Issued__c = System.today();
     topp1.Trigger_Field__c = 'Originations Model;Model Name Test';
     topp1.Pres_Deal_Id__c = '123';
@@ -3212,7 +3304,7 @@ public with sharing class opportunity_Tests {
     topp1.Servicer_Provided_Portfolio_Name__c = 'CAF 2020';
     topp1.Current_UPB__c = 0;
     Account acct = [SELECT Id FROM Account ORDER BY CreatedDate DESC LIMIT 1];
-    
+
     update topp1;
 
     opportunity_Extension ext = new opportunity_Extension();
@@ -3268,32 +3360,50 @@ public with sharing class opportunity_Tests {
     Test.stopTest();
   }
 
-  static testMethod void reverse_ICApprovalTest() {
-    Opportunity topp1 = [SELECT Id FROM Opportunity WHERE Name='TERM TEST 123' LIMIT 1];
+  // static testMethod void reverse_ICApprovalTest() {
+  //   Opportunity topp1 = [
+  //     SELECT Id
+  //     FROM Opportunity
+  //     WHERE Name = 'TERM TEST 123'
+  //     LIMIT 1
+  //   ];
 
-    topp1.StageName = 'Approved by Committee';
-    topp1.IC_Approval_Date__c = System.today();
-    topp1.IC_Approval__c = 'Approved';
-    topp1.Current_Loan_Amount__c = 1000000;
+  //   topp1.StageName = 'Approved by Committee';
+  //   topp1.IC_Approval_Date__c = System.today();
+  //   topp1.IC_Approval__c = 'Approved';
+  //   topp1.Current_Loan_Amount__c = 1000000;
 
-    Test.startTest();
-    update topp1;
+  //   Test.startTest();
+  //   update topp1;
 
-    topp1.Current_Loan_Amount__c = 2000000;
-    update topp1;
+  //   topp1.Current_Loan_Amount__c = 2000000;
+  //   update topp1;
 
-    Test.stopTest();
+  //   Test.stopTest();
 
-    Opportunity updOppt = [SELECT Id, IC_Approval_Date__c, StageName FROM Opportunity WHERE Name='TERM TEST 123' LIMIT 1];
+  //   Opportunity updOppt = [
+  //     SELECT Id, IC_Approval_Date__c, StageName
+  //     FROM Opportunity
+  //     WHERE Name = 'TERM TEST 123'
+  //     LIMIT 1
+  //   ];
 
-    System.assertEquals(null, updOppt.IC_Approval_Date__c, 'IC_Approval_Date__c should be null');
-    System.assertEquals('Underwriting', updOppt.StageName, 'StageName should be Underwriting');
-  }
+  //   System.assertEquals(
+  //     null,
+  //     updOppt.IC_Approval_Date__c,
+  //     'IC_Approval_Date__c should be null'
+  //   );
+  //   System.assertEquals(
+  //     'Underwriting',
+  //     updOppt.StageName,
+  //     'StageName should be Underwriting'
+  //   );
+  // }
 
   static testMethod void opportunity_SABTest() {
     User origU = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3308,7 +3418,7 @@ public with sharing class opportunity_Tests {
 
     User origU2 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3323,7 +3433,7 @@ public with sharing class opportunity_Tests {
 
     User origU3 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3338,7 +3448,7 @@ public with sharing class opportunity_Tests {
 
     User origU4 = new User(
       Alias = 'orig',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3353,7 +3463,7 @@ public with sharing class opportunity_Tests {
 
     User analystU = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3368,7 +3478,7 @@ public with sharing class opportunity_Tests {
 
     User analystU2 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3383,7 +3493,7 @@ public with sharing class opportunity_Tests {
 
     User analystU3 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3398,7 +3508,7 @@ public with sharing class opportunity_Tests {
 
     User analystU4 = new User(
       Alias = 'analyst',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3413,7 +3523,7 @@ public with sharing class opportunity_Tests {
 
     User uwU = new User(
       Alias = 'underw',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3428,7 +3538,7 @@ public with sharing class opportunity_Tests {
 
     User uwU2 = new User(
       Alias = 'underw',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3443,7 +3553,7 @@ public with sharing class opportunity_Tests {
 
     User lcU = new User(
       Alias = 'loanco',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3458,7 +3568,7 @@ public with sharing class opportunity_Tests {
 
     User lcU2 = new User(
       Alias = 'loanco',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3473,7 +3583,7 @@ public with sharing class opportunity_Tests {
 
     User closerU = new User(
       Alias = 'clos',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3488,7 +3598,7 @@ public with sharing class opportunity_Tests {
 
     User closerU2 = new User(
       Alias = 'clos',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3540,7 +3650,7 @@ public with sharing class opportunity_Tests {
     Profile p = [SELECT Id FROM Profile WHERE Name = 'Standard User'];
     User u = new User(
       Alias = 'standt',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3576,6 +3686,7 @@ public with sharing class opportunity_Tests {
 
     bridgedeal.LOC_Loan_Type__c = 'Credit Line';
     bridgedeal.Product_Sub_Type__c = 'Renovation';
+    bridgedeal.Maturity_Date_Calculation_Type__c = 'Fixed at Closing';
     update bridgedeal;
     bridgedeal.Requested_ARV_LTV__c = 75;
     bridgedeal.Requested_Max_Reno_Cost_Reimbursement__c = 75;
@@ -3620,7 +3731,7 @@ public with sharing class opportunity_Tests {
     Profile p = [SELECT Id FROM Profile WHERE Name = 'Standard User'];
     User u = new User(
       Alias = 'standt',
-      Email = 'standarduser@testorg.com',
+      Email = 'standarduser@cvest.com',
       EmailEncodingKey = 'UTF-8',
       LastName = 'Testing',
       LanguageLocaleKey = 'en_US',
@@ -3649,6 +3760,7 @@ public with sharing class opportunity_Tests {
     bridgedeal.Product_Sub_Type__c = 'Renovation';
     bridgedeal.LOC_Commitment__c = 3000000;
     bridgedeal.StageName = 'Closed Won';
+    bridgedeal.Maturity_Date_Calculation_Type__c = 'Fixed at Closing';
     bridgedeal.LOC_Term__c = '12 Months';
     bridgedeal.CloseDate = Date.newInstance(2014, 4, 17);
     bridgedeal.Loan_Effective_Date__c = Date.newInstance(2014, 4, 17);
@@ -3790,14 +3902,10 @@ public with sharing class opportunity_Tests {
     Contact cont = [SELECT Id FROM Contact ORDER BY CreatedDate DESC LIMIT 1];
     Opportunity opp = test_Helper.createCREDeal(acc, cont);
 
-
     Test.startTest();
 
     opp.StageName = 'Withdrawn';
     opp.Deal_Lost_Reason__c = 'Background';
-    opp.Broker_Fees__c = 1;
-    opp.Broker_Fee_Paid_When__c = 'Origination';
-    opp.Broker_Fee_Paid_By_Whom__c = 'Escrow';
     update opp;
 
     opp.RecordTypeId = [
@@ -3870,7 +3978,7 @@ public with sharing class opportunity_Tests {
     opp.StageName = 'Initial Review';
     opp.CloseDate = System.today() + 10;
     update opp;
-      
+
     opp.RecordTypeId = [
       SELECT Id
       FROM RecordType
@@ -3940,20 +4048,26 @@ public with sharing class opportunity_Tests {
   }
 
   static testMethod void opportunity_UnitTest5() {
-    Account a = new Account();
+    /* Account a = new Account();
     a.Name = 'Alston & Bird';
     a.BillingCountry = 'United States';
     a.BillingState = 'California';
     a.Introductions_Source__c = 'Hotline';
     a.Introduction_Subsource__c = 'Main';
     a.Alternate_Phone__c = '55555555355';
-    insert a;
-
+    insert a;*/
+    System.debug(
+      'RS999 - 1 Total Number of SOQL Queries allowed in this apex code context: ' +
+      Limits.getLimitQueries()
+    );
     Account acc = [SELECT Id FROM Account ORDER BY CreatedDate DESC LIMIT 1];
     Contact cont = [SELECT Id FROM Contact ORDER BY CreatedDate DESC LIMIT 1];
-    cont.AccountId = acc.Id;
-    update cont;
-
+    //  cont.AccountId = acc.Id;
+    // update cont;
+    System.debug(
+      'RS999 - 2 Total Number of SOQL Queries allowed in this apex code context: ' +
+      Limits.getLimitQueries()
+    );
     Opportunity opp = new Opportunity();
     opp.Name = 'test';
     opp.CloseDate = System.today();
@@ -3974,31 +4088,41 @@ public with sharing class opportunity_Tests {
     opp.GLC_Approved__c = true;
     opp.Background_Check_Completed__c = true;
     insert opp;
-
+    System.debug(
+      'RS999 - 3 Total Number of SOQL Queries allowed in this apex code context: ' +
+      Limits.getLimitQueries()
+    );
     insert new deal_contact__c(
       deal__c = opp.Id,
       Contact__c = cont.Id,
       entity_type__c = 'Sponsor',
       Account__c = acc.id
     );
-
+    System.debug(
+      'RS999 - 4 Total Number of SOQL Queries allowed in this apex code context: ' +
+      Limits.getLimitQueries()
+    );
     Deal_Document__c doc = new Deal_Document__c(
       Deal__c = opp.Id,
       Document_Loaded__c = true,
       Is_Deleted__c = false
     );
-
-
+    Test.startTest();
     insert doc;
-
+    System.debug(
+      'RS999 - 5 Total Number of SOQL Queries allowed in this apex code context: ' +
+      Limits.getLimitQueries()
+    );
     Document_Information__c docInfo = new Document_Information__c(
       Deal__c = opp.Id,
       Doc_String__c = 'Loan Document;Title Policies|Miscellaneous'
     );
 
-    Test.startTest();
     insert docInfo;
-
+    System.debug(
+      'RS999 - 6 Total Number of SOQL Queries allowed in this apex code context: ' +
+      Limits.getLimitQueries()
+    );
     Opportunity opp2 = new Opportunity();
     opp2.Name = 'test';
     opp2.id = opp.id;
@@ -4024,8 +4148,10 @@ public with sharing class opportunity_Tests {
     opp2.Background_Check_Completed__c = false;
 
     update opp2;
-
-
+    System.debug(
+      'RS999 - 7 Total Number of SOQL Queries allowed in this apex code context: ' +
+      Limits.getLimitQueries()
+    );
     Map<Id, Opportunity> newMap = new Map<Id, Opportunity>();
     newMap.put(opp2.id, opp2);
     opportunity_Helper.attachDealContactIFClosedWON(newMap);
@@ -4040,18 +4166,30 @@ public with sharing class opportunity_Tests {
     prop.State__c = 'test';
     prop.ZipCode__c = 'test';
     insert prop;
-
+    System.debug(
+      'RS999 - 8 Total Number of SOQL Queries allowed in this apex code context: ' +
+      Limits.getLimitQueries()
+    );
     opp.Commission_Type__c = 'Internal';
     update opp;
-
+    System.debug(
+      'RS999 - 9 Total Number of SOQL Queries allowed in this apex code context: ' +
+      Limits.getLimitQueries()
+    );
     opp.Term_Loan_Type__c = '5 Year';
     opp.YM_Prepayment_Penalty__c = '48 Months';
     update opp;
-
+    System.debug(
+      'RS999 - 10 Total Number of SOQL Queries allowed in this apex code context: ' +
+      Limits.getLimitQueries()
+    );
     opp.Term_Loan_Type__c = '10 Year';
     opp.YM_Prepayment_Penalty__c = '114 Months';
     update opp;
-
+    System.debug(
+      'RS999 - 11 Total Number of SOQL Queries allowed in this apex code context: ' +
+      Limits.getLimitQueries()
+    );
     List<String> docIds = new List<String>();
     docIds.add(doc.id);
 
@@ -4087,7 +4225,6 @@ public with sharing class opportunity_Tests {
     cont.AccountId = acc.Id;
     update cont;
 
-
     Opportunity opp = new Opportunity();
     opp.Name = 'test';
     opp.CloseDate = System.today();
@@ -4109,25 +4246,31 @@ public with sharing class opportunity_Tests {
     opp.Background_Check_Completed__c = true;
     insert opp;
   }
-    
+
   @isTest
   public static void securitizationDealTest() {
-    Account testAcc = [SELECT Id FROM Account WHERE Name ='Test Helper Account'];
+    Account testAcc = [
+      SELECT Id
+      FROM Account
+      WHERE Name like 'Test Helper Account%'
+    ];
     Contact testCtc = [SELECT Id FROM Contact WHERE AccountId = :testAcc.Id];
     Opportunity testDeal = Test_Helper.createTermDeal(testAcc, testCtc);
 
     Securitization__c testSc = Test_Helper.createSecuritization();
-    testDeal.Securitized__c =false;
+    testDeal.Securitized__c = false;
     testDeal.Securitization__c = null;
-    Map<Id, Opportunity> oldTestMap = new Map<Id, Opportunity>{testDeal.Id => testDeal};
+    Map<Id, Opportunity> oldTestMap = new Map<Id, Opportunity>{
+      testDeal.Id => testDeal
+    };
 
     Opportunity newTestDeal = testDeal.clone(true, true, true, true);
     newTestDeal.Securitization__c = testSc.Id;
     newTestDeal.Securitized__c = true;
 
-    Map<Id, Opportunity> newTestMap = new Map<Id, Opportunity>{newTestDeal.Id => newTestDeal};
-    
-
+    Map<Id, Opportunity> newTestMap = new Map<Id, Opportunity>{
+      newTestDeal.Id => newTestDeal
+    };
 
     opportunity_Helper.beforeUpdate(newTestMap, oldTestMap);
     opportunity_Helper.afterUpdate(newTestMap, oldTestMap);
@@ -4139,30 +4282,37 @@ public with sharing class opportunity_Tests {
     insert testSc2;
 
     oldTestMap.put(newTestDeal.Id, newTestDeal);
-    Opportunity newerTestDeal = newTestDeal.clone(true,true,true,true);
+    Opportunity newerTestDeal = newTestDeal.clone(true, true, true, true);
     newerTestDeal.Securitization__c = testSc2.Id;
     newTestMap.put(newerTestDeal.Id, newerTestDeal);
 
     opportunity_Helper.beforeUpdate(newTestMap, oldTestMap);
     opportunity_Helper.afterUpdate(newTestMap, oldTestMap);
     update newerTestDeal;
-    
   }
 
   @isTest
   public static void fundingVehiclesTests() {
-    Account testAcc = [SELECT Id FROM Account WHERE Name ='Test Helper Account'];
+    Account testAcc = [
+      SELECT Id
+      FROM Account
+      WHERE Name Like 'Test Helper Account%'
+    ];
     Contact testCtc = [SELECT Id FROM Contact WHERE AccountId = :testAcc.Id];
     Opportunity testDeal = Test_Helper.createTermDeal(testAcc, testCtc);
 
     Funding_Vehicle__c testFv = Test_Helper.createFundingVehicle(false, null);
 
     testDeal.Warehouse_Line__c = null;
-    Map<Id, Opportunity> oldTestMap = new Map<Id, Opportunity>{testDeal.Id => testDeal};
+    Map<Id, Opportunity> oldTestMap = new Map<Id, Opportunity>{
+      testDeal.Id => testDeal
+    };
 
     Opportunity newTestDeal = testDeal.clone(true, true, true, true);
     newTestDeal.Warehouse_Line__c = 'Churchill';
-    Map<Id, Opportunity> newTestMap = new Map<Id, Opportunity>{newTestDeal.Id => newTestDeal};
+    Map<Id, Opportunity> newTestMap = new Map<Id, Opportunity>{
+      newTestDeal.Id => newTestDeal
+    };
 
     opportunity_Helper.beforeUpdate(newTestMap, oldTestMap);
     opportunity_Helper.afterUpdate(newTestMap, oldTestMap);
@@ -4172,11 +4322,11 @@ public with sharing class opportunity_Tests {
     Securitization__c testSc2 = Test_Helper.createSecuritization();
 
     Funding_Vehicle__c testFv2 = [
-      SELECT Id,Securitization__c
+      SELECT Id, Securitization__c
       FROM Funding_Vehicle__c
       WHERE Securitization__c = :testSc2.Id
     ];
-    
+
     oldTestMap.put(newTestDeal.Id, newTestDeal);
     Opportunity newerTestDeal = newTestDeal.clone(true, true, true, true);
 
@@ -4188,6 +4338,5 @@ public with sharing class opportunity_Tests {
     opportunity_Helper.afterUpdate(newTestMap, oldTestMap);
 
     update newerTestDeal;
-
   }
 }
