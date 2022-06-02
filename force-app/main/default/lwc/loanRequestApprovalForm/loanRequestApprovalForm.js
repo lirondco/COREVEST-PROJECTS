@@ -63,7 +63,12 @@ export default class LoanRequestApprovalForm extends LightningElement {
         const manualEntry = {};
         inputs.forEach((i) => {
           if (i.value) {
-            manualEntry[i.name] = i.value;
+            let meValue = i.value;
+            let meName = i.name;
+            if(meName == "completionPct") {
+              meValue = parseFloat(meValue) / 100;
+            }
+            manualEntry[meName] = meValue;
           }
         });
         
@@ -136,14 +141,40 @@ export default class LoanRequestApprovalForm extends LightningElement {
                     v.lastIndexOf("{") + 1,
                     v.indexOf(".")
                   );
-                  const fieldKey = v.slice(v.indexOf(".") + 1, v.indexOf("}"));
+                  let fieldKey = v.slice(v.indexOf(".") + 1, v.indexOf("}"));
+                  console.log("fieldKey", fieldKey);
+                  console.log("sobjectkey", sobjectKey);
                   if (data.hasOwnProperty(sobjectKey)) {
+                    let parentField;
+                    let parentKey;
+                    let grandParentKey;
+                    let grandParentField;
+                    if(fieldKey.includes(".")) {
+                      const splitFieldKey = fieldKey.split(".");
+                      parentKey = splitFieldKey[0];
+                      parentField = splitFieldKey[1];
+                      if(splitFieldKey.length > 2) {
+                        grandParentKey = splitFieldKey[2];
+                        grandParentField = splitFieldKey[3];
+                      }
+                    }
                     if (data[sobjectKey].hasOwnProperty(fieldKey) && data[sobjectKey][fieldKey]) {
                       newVal = v.replace(
                         `{{${sobjectKey}.${fieldKey}}}`,
                         data[sobjectKey][fieldKey]
                       );
-                    } else {
+                    } else if (data[sobjectKey].hasOwnProperty(parentKey) && data[sobjectKey][parentKey].hasOwnProperty(parentField) && data[sobjectKey][parentKey][parentField]) {
+                      newVal = v.replace(
+                        `{{${sobjectKey}.${fieldKey}}}`,
+                        data[sobjectKey][parentKey][parentField]
+                      );
+                    } else if (data[sobjectKey].hasOwnProperty(parentKey) && data[sobjectKey][parentKey].hasOwnProperty(grandParentKey) && data[sobjectKey][parentKey][grandParentKey].hasOwnProperty(grandParentField) && data[sobjectKey][parentKey][grandParentKey][grandParentField]) {
+                      newVal = v.replace(
+                        `{{${sobjectKey}.${fieldKey}}}`,
+                        data[sobjectKey][parentKey][grandParentKey][grandParentField]
+                      );
+                    } 
+                    else {
                       newVal = v.replace(`{{${sobjectKey}.${fieldKey}}}`, "");
                     }
                   }

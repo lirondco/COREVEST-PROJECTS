@@ -20,7 +20,7 @@ export default class ScheduleA extends LightningElement {
   @api dealId;
   @api propertyIds;
   dealRecord;
-  loanFeeRecords;
+  formRecords;
   user;
   templateFile;
   isPreparing = true;
@@ -72,7 +72,9 @@ export default class ScheduleA extends LightningElement {
         .then((workbook) => {
           const values = workbook.sheet("Schedule A").usedRange().value();
           const dealFields = ["Id"];
-          const loanFeeFields = ["Id", "Fee_Type__c"];
+          const loanFeeFields = [];
+          const propFields = [];
+          const propExFields = [];
           const sobjectApiNames = [
             "Opportunity",
             "Property__c",
@@ -97,8 +99,8 @@ export default class ScheduleA extends LightningElement {
                 );
                 switch (sobjectName) {
                   case "Property__c":
-                    if (!loanFeeFields.includes("Property__r." + fieldName)) {
-                      loanFeeFields.push("Property__r." + fieldName);
+                    if (!propFields.includes(fieldName)) {
+                      propFields.push(fieldName);
                     }
                     break;
                   case "Opportunity":
@@ -107,12 +109,8 @@ export default class ScheduleA extends LightningElement {
                     }
                     break;
                   case "Property_Extension__c":
-                    if (
-                      !loanFeeFields.includes(
-                        "Property_Extension__r." + fieldName
-                      )
-                    ) {
-                      loanFeeFields.push("Property_Extension__r." + fieldName);
+                    if (!propExFields.includes(fieldName)) {
+                      propExFields.push(fieldName);
                     }
                     break;
                   case "Loan_Fee__c":
@@ -132,13 +130,8 @@ export default class ScheduleA extends LightningElement {
             ","
           )} FROM Opportunity WHERE Id = '${this.dealId}'`;
 
-          const loanFeeQuery = `SELECT ${loanFeeFields.join(
-            ","
-          )} FROM Loan_Fee__c WHERE Property__c IN ${this.propertyIds}`;
-          console.log("STARTING LOAN FEE QUERY", loanFeeQuery);
-          queryRecord({ queryString: loanFeeQuery }).then((res) => {
-            this.loanFeeRecords = res;
-            console.log("STARTING DEAL QUERY", dealQuery);
+          
+          this.retrieveFormRecords(propFields, propExFields, loanFeeFields).then(() => {
             queryRecord({ queryString: dealQuery }).then((res2) => {
               this.dealRecord = res2[0];
               this.saveFile();
@@ -166,7 +159,7 @@ export default class ScheduleA extends LightningElement {
       )
         .then((workbook) => {
           const deal = this.dealRecord;
-          const loanFees = this.loanFeeRecords;
+          const formRecords = this.formRecords;
           const values = [...workbook.sheet("Schedule A").usedRange().value()];
           for (let i = 0; i < 8; i++) {
             const row = values[i];
@@ -195,7 +188,7 @@ export default class ScheduleA extends LightningElement {
             }
           }
 
-          const loanFeeRow = values[8];
+          const propRow = values[8];
 
           const loanTypeMap = {
             7: "Extension",
@@ -203,9 +196,9 @@ export default class ScheduleA extends LightningElement {
             9: "Legal"
           };
 
-          if (loanFees.length === 0) {
+          if (formRecords.length === 0) {
             let rowNum = 9;
-            for (let i = 0; i < loanFeeRow.length; i++) {
+            for (let i = 0; i < propRow.length; i++) {
               workbook
                 .sheet("Schedule A")
                 .row(rowNum)
@@ -213,16 +206,17 @@ export default class ScheduleA extends LightningElement {
                 .value("");
             }
           } else {
-            for (let i = 0; i < loanFees.length; i++) {
+            for (let i = 0; i < formRecords.length; i++) {
               let currXlsRow = 9 + i;
-              const loanFee = loanFees[i];
-              for (let j = 0; j < loanFeeRow.length; j++) {
-                let currCell = loanFeeRow[j];
+              const record = formRecords[i];
+              for (let j = 0; j < propRow.length; j++) {
+                let currCell = propRow[j];
                 let newCell = "";
                 if (
                   currCell != undefined &&
                   currCell.includes("Loan_Fee__c.")
                 ) {
+                  let loanFee = record["Loan_Fee__c"];
                   let loanFeeField = currCell.slice(
                     currCell.indexOf(".") + 1,
                     currCell.length
@@ -266,19 +260,21 @@ export default class ScheduleA extends LightningElement {
                   !currCell.includes("FX")
                 ) {
                   let parent = currCell
-                    .replace("__c.", "__r.")
                     .slice(0, currCell.indexOf("."));
                   let parentField = currCell.slice(
                     currCell.indexOf(".") + 1,
                     currCell.length
                   );
                   if (
-                    loanFee.hasOwnProperty(parent) &&
-                    loanFee[parent].hasOwnProperty(parentField)
+                    record.hasOwnProperty(parent) &&
+                    record[parent].hasOwnProperty(parentField)
                   ) {
-                    newCell = this.isNumeric(loanFee[parent][parentField])
-                      ? parseFloat(loanFee[parent][parentField])
-                      : loanFee[parent][parentField];
+                    newCell = this.isNumeric(record[parent][parentField])
+                      ? parseFloat(record[parent][parentField])
+                      : record[parent][parentField];
+                    if(parentField.toLowerCase().includes('interest_rate')) {
+                      newCell = newCell / 100;
+                    }
                     if (
                       parentField.toLowerCase().includes("fee") ||
                       parentField.toLowerCase().includes("amount")
@@ -324,7 +320,7 @@ export default class ScheduleA extends LightningElement {
                     .cell(j + 1)
                     .value(newCell);
                 }
-                if (i == loanFees.length - 1) {
+                if (i == formRecords.length - 1) {
                   for (let k = currXlsRow + 1; k < currXlsRow + 13; k++) {
                     workbook
                       .sheet("Schedule A")
@@ -356,7 +352,7 @@ export default class ScheduleA extends LightningElement {
                 }
                 workbook
                   .sheet("Schedule A")
-                  .row(i + 1 + loanFees.length)
+                  .row(i + 1 + formRecords.length)
                   .cell(j + 1)
                   .value(newValue);
               } else if (
@@ -371,10 +367,10 @@ export default class ScheduleA extends LightningElement {
                   cellValue.lastIndexOf("-") + 1,
                   cellValue.indexOf("}")
                 );
-                let formula = `=${oper}(${col}9:${col}${9 + loanFees.length})`;
+                let formula = `=${oper}(${col}9:${col}${9 + formRecords.length})`;
                 workbook
                   .sheet("Schedule A")
-                  .row(i + 1 + loanFees.length)
+                  .row(i + 1 + formRecords.length)
                   .cell(j + 1)
                   .formula(formula)
                   .style("numberFormat", "$0,000.00");
@@ -382,19 +378,19 @@ export default class ScheduleA extends LightningElement {
                 typeof cellValue == "string" &&
                 cellValue.includes("TOTAL")
               ) {
-                let formula = `=SUM(G${14 + loanFees.length}:G${
-                  17 + loanFees.length
+                let formula = `=SUM(G${14 + formRecords.length}:G${
+                  17 + formRecords.length
                 })`;
                 workbook
                   .sheet("Schedule A")
-                  .row(i + 1 + loanFees.length)
+                  .row(i + 1 + formRecords.length)
                   .cell(j + 1)
                   .formula(formula)
                   .style("numberFormat", "$0,000.00");
               } else {
                 workbook
                   .sheet("Schedule A")
-                  .row(i + 1 + loanFees.length)
+                  .row(i + 1 + formRecords.length)
                   .cell(j + 1)
                   .value(newValue);
               }
@@ -501,5 +497,41 @@ export default class ScheduleA extends LightningElement {
       !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
       !isNaN(parseFloat(str))
     ); // ...and ensure strings of whitespace fail
+  }
+
+  async retrieveFormRecords(propFields, propExFields, loanFeeFields) {
+    const propFieldString = 'Id, ' + propFields.join(", ");
+    const propExFieldString = 'Id, Property__c, ' + propExFields.join(", ");
+    const loanFeeFieldString = 'Id, Property__c, Property_Extension__c, ' + loanFeeFields.join(", ");
+
+    const propQS = `SELECT ${propFieldString}, (SELECT ${propExFieldString} FROM Property_Extensions__r ORDER BY CreatedDate DESC LIMIT 1) FROM Property__c WHERE Id IN ${this.propertyIds}`;
+    const props = await queryRecord({ queryString: propQS });
+    const records = {};
+    const propExIds = [];
+    for (const p of props) {
+      let recLocal = {};
+      if(!p.hasOwnProperty("Property_Extensions__r") || (p.hasOwnProperty("Property_Extensions__r") && p.Property_Extensions__r.length == 0)) {
+        this.showToast({
+          title: "Error",
+          message: "No property extension found for property " + p.Name + ". Please create a property extension first.",
+          variant: "error"
+        });
+        this.handleCancel();
+        return;
+      }
+      const propEx = p.Property_Extensions__r[0];
+      recLocal = {
+        Property__c: {...p},
+        Property_Extension__c: {...propEx}
+      };
+      records[p.Id] = recLocal;
+      propExIds.push(propEx.Id);
+    }
+    const loanFeeQS = `SELECT ${loanFeeFieldString} FROM Loan_Fee__c WHERE Property_Extension__c IN ('${propExIds.join("','")}')`;
+    const loanFees = await queryRecord({ queryString: loanFeeQS });
+    for (const lf of loanFees) {
+      records[lf.Property__c].Loan_Fee__c = lf;
+    }
+    this.formRecords = Object.values(records);
   }
 }
