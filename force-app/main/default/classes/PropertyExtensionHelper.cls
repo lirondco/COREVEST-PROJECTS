@@ -144,10 +144,9 @@ public without sharing class PropertyExtensionHelper {
         Date origMatureDate = pE.Original_Asset_Maturity_Date_Formula__c;
         Date sixtyDaysPrior = origMatureDate.addDays(-60);
         return sixtyDaysPrior.daysBetween(compDate);
-      } else if (!isFirst && pE.New_Asset_Maturity_Date__c != null) {
-        Date newAssetDate = pE.New_Asset_Maturity_Date__c;
-        Date sixtyDaysPrior = newAssetDate.addDays(-60);
-        return sixtyDaysPrior.daysBetween(compDate);
+      } else if (!isFirst) {
+        Date substractBy = pE.Previous_Asset_Maturity_Date__c != null && pE.Previous_Asset_Maturity_Date__c > Date.valueOf(pE.CreatedDate) ? pE.Previous_Asset_Maturity_Date__c : Date.valueOf(pE.CreatedDate);
+        return substractBy.daysBetween(compDate);
       } else {
         return null;
       }
