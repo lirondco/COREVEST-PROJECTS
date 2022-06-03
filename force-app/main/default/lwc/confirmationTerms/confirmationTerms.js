@@ -151,7 +151,7 @@ export default class ConfirmationTerms extends LightningElement {
   }
 
   get ymPicklistsDisabled() {
-    return this.originationsFieldsDisabled || this.ymSelection != "Yes";
+    return this.originationsFieldsDisabled;
   }
 
   get showContactNameField() {
@@ -712,9 +712,19 @@ export default class ConfirmationTerms extends LightningElement {
       if (value != "Yes") {
         this.currentDetails["stepdownPrepayment"] = "N/A";
         this.currentDetails["ymParPrepayment"] = "N/A";
+        this.stepDownPrepayOptions = [...this.stepDownPrepayOptions, {label: "N/A", value: "N/A"}];
+        this.ymPrepayOptions = [...this.ymPrepayOptions, {label: "N/A", value: "N/A"}];
       } else {
         this.currentDetails["stepdownPrepayment"] = "";
         this.currentDetails["ymParPrepayment"] = "";
+        const stepdownPrepayOptions = this.stepDownPrepayOptions.filter(
+          (option) => option.value != "N/A"
+        );
+        const ymParPrepayOptions = this.ymPrepayOptions.filter(
+          (option) => option.value != "N/A"
+        );
+        this.stepDownPrepayOptions = [...stepdownPrepayOptions];
+        this.ymPrepayOptions = [...ymParPrepayOptions];
       }
     }
     // console.log("handle current details update");

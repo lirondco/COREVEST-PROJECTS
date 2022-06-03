@@ -281,7 +281,7 @@ public without sharing class ConfirmationOfTermsController {
         Deposit_Amount__c,
         Final_Spread__c,
         Recourse__c,
-        Foreign_National_picklist__c,
+        Foreign_National__c,
         Broker_Fees__c,
         Term_Loan_Type__c,
         Amortization_Term__c,
@@ -338,7 +338,7 @@ public without sharing class ConfirmationOfTermsController {
           Spread__c,
           Final_Spread__c,
           Recourse__c,
-          Foreign_National_picklist__c,
+          Foreign_National__c,
           Holdback_Multiplier__c,
           Broker_Fee__c,
           Term_Loan_Type__c,
@@ -385,7 +385,7 @@ public without sharing class ConfirmationOfTermsController {
           Final_Spread_Comment__c,
           Recourse__c,
           Recourse_Comment__c,
-          Foreign_National_picklist__c,
+          Foreign_National__c,
           Foreign_National_Comment__c,
           Holdback_Multiplier__c,
           Holdback_Multiplier_Comment__c,
@@ -456,7 +456,7 @@ public without sharing class ConfirmationOfTermsController {
           Final_Spread_Comment__c,
           Recourse__c,
           Recourse_Comment__c,
-          Foreign_National_picklist__c,
+          Foreign_National__c,
           Foreign_National_Comment__c,
           Holdback_Multiplier__c,
           Holdback_Multiplier_Comment__c,
@@ -617,7 +617,7 @@ public without sharing class ConfirmationOfTermsController {
         ahc.Final_Spread__c *= 100;
       }
       ahc.Recourse__c = submission.recourse; // (String) submission.get('recourse');
-      ahc.Foreign_National_picklist__c = submission.foreignNational; //(Boolean) submission.get('foreignNational');
+      ahc.Foreign_National__c = submission.foreignNational; //(Boolean) submission.get('foreignNational');
       ahc.Holdback_Multiplier__c = submission.holdback;
       ahc.Broker_Fee__c = submission.brokerFees;
       
@@ -703,7 +703,7 @@ public without sharing class ConfirmationOfTermsController {
           a.Final_Spread__c *= 100;
         }
         a.Recourse__c = submission.recourse; // (String) submission.get('recourse');
-        a.Foreign_National_picklist__c = submission.foreignNational; //(Boolean) submission.get('foreignNational');
+        a.Foreign_National__c = submission.foreignNational; //(Boolean) submission.get('foreignNational');
         a.Holdback_Multiplier__c = submission.holdback;
         a.Broker_Fee__c = submission.brokerFees;
 
@@ -1016,7 +1016,7 @@ public without sharing class ConfirmationOfTermsController {
     }
 
     originatorHistory.Recourse__c = details.recourse;
-    originatorHistory.Foreign_National_picklist__c = details.foreignNational;
+    originatorHistory.Foreign_National__c = details.foreignNational;
     originatorHistory.Holdback_Multiplier__c = details.holdback;
     originatorHistory.Broker_Fee__c = details.brokerFees;
     if (originatorHistory.Broker_Fee__c != null) {
@@ -1390,7 +1390,7 @@ public without sharing class ConfirmationOfTermsController {
     public Decimal depositCollected { get; set; }
     public Decimal finalSpread { get; set; }
     public String recourse { get; set; }
-    public String foreignNational { get; set; }
+    public Boolean foreignNational { get; set; }
     public Decimal holdback { get; set; }
     public Decimal brokerFees { get; set; }
     public String termLoanType { get; set; }
@@ -1417,7 +1417,7 @@ public without sharing class ConfirmationOfTermsController {
       this.finalSpread = deal.Final_Spread__c != null
         ? deal.Final_Spread__c / 100
         : null;
-      this.foreignNational = deal.Foreign_National_picklist__c;
+      this.foreignNational = deal.Foreign_National__c;
       this.holdback = deal.Holdback_Multiplier__c;
       this.brokerFees = deal.Broker_Fees__c != null
         ? deal.Broker_Fees__c / 100
@@ -1455,7 +1455,7 @@ public without sharing class ConfirmationOfTermsController {
         : history.Spread__c != null
           ? history.Spread__c / 100
           : null;
-      this.foreignNational = history.Foreign_National_picklist__c;
+      this.foreignNational = history.Foreign_National__c;
       this.holdback = history.Holdback_Multiplier__c;
       this.brokerFees = history.Broker_Fee__c != null
         ? history.Broker_Fee__c / 100
@@ -1502,7 +1502,7 @@ public without sharing class ConfirmationOfTermsController {
     public Decimal depositCollected { get; set; }
     public Decimal finalSpread { get; set; }
     public String recourse { get; set; }
-    public String foreignNational { get; set; }
+    public Boolean foreignNational { get; set; }
     public Decimal holdback { get; set; }
     public Decimal brokerFees { get; set; }
     public String termLoanType { get; set; }
@@ -1535,7 +1535,7 @@ public without sharing class ConfirmationOfTermsController {
       this.finalSpread = deal.Final_Spread__c != null
         ? deal.Final_Spread__c / 100
         : null;
-      this.foreignNational = deal.Foreign_National_picklist__c;
+      this.foreignNational = deal.Foreign_National__c;
       this.holdback = deal.Holdback_Multiplier__c;
       this.brokerFees = deal.Broker_Fees__c != null
         ? deal.Broker_Fees__c / 100
@@ -1576,7 +1576,7 @@ public without sharing class ConfirmationOfTermsController {
         : history.Spread__c != null
           ? history.Spread__c / 100
           : null;
-      this.foreignNational = history.Foreign_National_picklist__c;
+      this.foreignNational = history.Foreign_National__c;
       this.holdback = history.Holdback_Multiplier__c;
       this.brokerFees = history.Broker_Fee__c != null
         ? history.Broker_Fee__c / 100

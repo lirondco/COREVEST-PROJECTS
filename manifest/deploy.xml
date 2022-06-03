@@ -13,12 +13,8 @@
         <name>ApexComponent</name>
     </types>
     <types>
-        <members>Approval_History__c.YM_Par_Prepayment_Period__c</members>
-        <members>Approval_History__c.YM_Par_Prepayment_Comment__c</members>
-        <members>Approval_History__c.Stepdown_Prepayment_Period__c</members>
-        <members>Approval_History__c.Stepdown_Prepayment_Comment__c</members>
-        <members>Approval_History__c.Yield_Maintenance__c</members>
-        <members>Approval_History__c.Yield_Maintenance_Comment__c</members>
+        <members>Approval_History__c.YM_Prepayment_Penalty_Description__c</members>
+        <members>Approval_History__c.YM_Prepayment_Penalty_Comment__c</members>
         <name>CustomField</name>
     </types>
     <version>53.0</version>
