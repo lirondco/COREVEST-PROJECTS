@@ -287,10 +287,15 @@ public without sharing class DuplicateCheckJobHelper {
       newList.put(property.Id, dealId);
     }
 
+    system.debug(newList);
+    system.debug(newList.size());
+
     Map<String, List<dupcheck__dc3Duplicate__c>> dupeListMap = checkDuplicateListFoundByRecordType(
       newList,
-      recTypeDevName.containsIgnoreCase('term') ? 'Term_Loan' : 'LOC_Loan'
+      recTypeDevName.containsIgnoreCase('term') ? 'Term_Loan' : (recTypeDevName.containsIgnoreCase('loc') || recTypeDevName.containsIgnoreCase('bridge') ? 'LOC_Loan' : recTypeDevName)
     );
+
+    system.debug(dupeListMap);
 
     List<Map<String, String>> dupeList = new List<Map<String, String>>();
     for (String sourceId : dupeListMap.keySet()) {
