@@ -279,7 +279,9 @@ export default class TpoPoolToDealTable extends LightningElement {
       FROM TPO_Pool_x_Deal__c WHERE TPO_Pool__c = '${this.recordId}'`;
 
     const res = await query({ queryString });
-
+    if(!res || res.length == 0 ) {
+      return;
+    }
     this.recTypeName = res[0].TPO_Pool__r.RecordType.Name;
 
     const dealContactQueryString = `SELECT 
@@ -433,6 +435,8 @@ export default class TpoPoolToDealTable extends LightningElement {
         ...v,
         Bid_Percent__c: v.Bid_Percent__c * 100
       }))
+    } else {
+      this.loadData();
     }
   }
 
