@@ -132,25 +132,25 @@ public without sharing class PropertyExtensionHelper {
       : new Map<Id, Property__c>();
   }
 
-  public static Integer calculateDaysToResolve(
-    Property_Extension__c pE,
-    Boolean isFirst
-  ) {
-      //Original_Asset_Maturity_Date_Formula__c
-      //Extension_Date__c
-      //New_Asset_Maturity_Date__c
-      Date compDate = pE.Extension_Date__c;
-      if(isFirst && pE.Original_Asset_Maturity_Date_Formula__c != null) {
-        Date origMatureDate = pE.Original_Asset_Maturity_Date_Formula__c;
-        Date sixtyDaysPrior = origMatureDate.addDays(-60);
-        return sixtyDaysPrior.daysBetween(compDate);
-      } else if (!isFirst) {
-        Date substractBy = pE.Previous_Asset_Maturity_Date__c != null && pE.Previous_Asset_Maturity_Date__c > Date.valueOf(pE.CreatedDate) ? pE.Previous_Asset_Maturity_Date__c : Date.valueOf(pE.CreatedDate);
-        return substractBy.daysBetween(compDate);
-      } else {
-        return null;
-      }
-  }
+  // public static Integer calculateDaysToResolve(
+  //   Property_Extension__c pE,
+  //   Boolean isFirst
+  // ) {
+  //     //Original_Asset_Maturity_Date_Formula__c
+  //     //Extension_Date__c
+  //     //New_Asset_Maturity_Date__c
+  //     Date compDate = pE.Extension_Date__c;
+  //     if(isFirst && pE.Original_Asset_Maturity_Date_Formula__c != null) {
+  //       Date origMatureDate = pE.Original_Asset_Maturity_Date_Formula__c;
+  //       Date sixtyDaysPrior = origMatureDate.addDays(-60);
+  //       return sixtyDaysPrior.daysBetween(compDate);
+  //     } else if (!isFirst) {
+  //       Date substractBy = pE.Previous_Asset_Maturity_Date__c != null && pE.Previous_Asset_Maturity_Date__c > Date.valueOf(pE.CreatedDate) ? pE.Previous_Asset_Maturity_Date__c : Date.valueOf(pE.CreatedDate);
+  //       return substractBy.daysBetween(compDate);
+  //     } else {
+  //       return null;
+  //     }
+  // }
 
   public static void forceTrigger(List<Id> dealIds, List<Id> propIds) {
     // List<Property_Extension__c> propExts = [
