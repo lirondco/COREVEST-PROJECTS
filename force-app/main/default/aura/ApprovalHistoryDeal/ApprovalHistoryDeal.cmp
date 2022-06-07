@@ -21,6 +21,7 @@
   <aura:attribute name="selectedProcessId" type="String" />
   <aura:attribute name="chatterComments" type="Object[]" />
 
+
   <aura:handler name="init" value="{!this}" action="{!c.init}" />
   <aura:handler event="force:refreshView" action="{!c.init}" />
 
@@ -80,12 +81,14 @@
             </td>
             <td colspan="3">
               <aura:if isTrue="{!step.Verified__c}">
+                <aura:if isTrue="{!step.Approval_Type__c != 'IC Memo'}">
                 <lightning:button
                   name="{!step.Process_Id__c}"
                   title="{!index}"
                   label="Require GLC Approval"
                   onclick="{!c.toggleGLC}"
                 />
+                </aura:if>
                 <lightning:button
                   variant="brand"
                   title="{!index}"

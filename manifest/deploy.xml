@@ -108,6 +108,7 @@ to the current IC Approval Handler Email Address for the org. APEX Classes that 
 		<members>ApprovalScreen</members>
 		<members>ApprovalScreenHeader</members>
 		<members>ExecutiveSummary</members>
+		<members>ApprovalHistoryDeal</members>
 		<name>AuraDefinitionBundle</name>
 	</types>
     <version>53.0</version>
