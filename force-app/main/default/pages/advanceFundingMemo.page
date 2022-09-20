@@ -1,0 +1,206 @@
+<apex:page standardController="Advance__c" applyBodyTag="false" renderAs="pdf">
+
+  <head>
+    <style type="text/css">
+      @page {
+        margin: 0.9in;
+      }
+
+      html {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      th {
+        background-color: #003366;
+        color: #fff;
+        font-weight: bold;
+      }
+
+      td,
+      th {
+        padding: 3px;
+      }
+
+      table {
+        border: 1px solid #003366;
+        border-spacing: 0;
+        table-layout: fixed;
+      }
+
+      .bgCol {
+        background-color: #DDEBF7;
+      }
+
+
+      .rightAlign {
+        text-align: right;
+      }
+
+      .valueColumn {
+        text-align: right;
+        overflow-wrap: normal;
+      }
+    </style>
+  </head>
+  <div>
+    <table>
+      <colgroup>
+        <col style="width:40%" />
+        <col style="width:10%" />
+        <col style="width:40%" />
+      </colgroup>      
+      <thead>
+        <tr>
+          <th colspan="3">Deal Information</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="bgCol">Loan #</td>
+          <td class="bgCol"></td>
+          <td class="valueColumn">{!Advance__c.Loan_Number__c}</td>
+        </tr>
+        <tr>
+          <td class="bgCol">Borrower</td>
+          <td class="bgCol"></td>
+          <td class="valueColumn">{!Advance__c.Borrower_Name_Text__c}</td>
+        </tr>
+        <tr>
+          <td class="bgCol">LOC Size</td>
+          <td class="bgCol"></td>
+          <td class="valueColumn">
+            <apex:outputText value="{0, Number, Currency}">
+              <apex:param value="{!Advance__c.LOC_Commitment__c}" />
+            </apex:outputText>
+          </td>
+        </tr>
+        <tr>
+          <td class="bgCol">Close Date</td>
+          <td class="bgCol"></td>
+          <td class="valueColumn">
+            <apex:outputText value="{0, date, MM/dd/yyyy}">
+              <apex:param value="{!Advance__c.Close_Date__c}" />
+            </apex:outputText>
+          </td>
+        </tr>
+        <tr>
+          <td class="bgCol">Approved States</td>
+          <td class="bgCol"></td>
+          <td class="valueColumn">
+            {!Advance__c.Deal__r.Active_States__c}
+          </td>
+        </tr>
+        <tr>
+          <td class="bgCol">Advance #</td>
+          <td class="bgCol"></td>
+          <td class="valueColumn">
+            {!Advance__c.Name}
+          </td>
+        </tr>
+        <tr>
+          <td class="bgCol">Bridge Exposure</td>
+          <td class="bgCol"></td>
+          <td class="valueColumn">
+            <apex:outputText value="{0, Number, Currency}">
+              <apex:param value="{!Advance__c.Deal__r.Account.Borrowed_on_Bridge_Loans__c}" />
+            </apex:outputText>
+          </td>
+        </tr>
+        <tr>
+          <td class="bgCol">Term Exposure</td>
+          <td class="bgCol"></td>
+          <td class="valueColumn">
+            <apex:outputText value="{0, Number, Currency}">
+              <apex:param value="{!Advance__c.Deal__r.Account.Borrowed_on_Term_Loans__c}" />
+            </apex:outputText>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br />
+    <table>
+      <colgroup>
+        <col style="width:40%" />
+        <col style="width:10%" />
+        <col style="width:40%" />
+      </colgroup>   
+      <thead>
+        <tr>
+          <th>Deal Metrics</th>
+          <th>Actual</th>
+          <th class="rightAlign">Subject Draw</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="bgCol">Total Loan LTC</td>
+          <td class="bgCol">
+            <apex:outputText value="{0, Number, 0.00}%">
+              <apex:param value="{!Advance__c.Deal__r.LTC__c}" />
+            </apex:outputText>
+          </td>
+          <td class="valueColumn">
+            <apex:outputText value="{0, Number, 0.00}%">
+              <apex:param value="{!(Advance__c.Approved_Advance_Amount_Total__c / Advance__c.Purchase_Price_Total__c) * 100}" />
+            </apex:outputText>
+          </td>
+        </tr>
+        <tr>
+          <td class="bgCol">Total Loan LTV</td>
+          <td class="bgCol">
+            <apex:outputText value="{0, Number, 0.00}%">
+              <apex:param value="{!Advance__c.Deal__r.LTV__c}" />
+            </apex:outputText>
+          </td>
+          <td class="valueColumn">
+            <apex:outputText value="{0, Number, 0.00}%">
+              <apex:param value="{!(Advance__c.BPO_Appraisal_Value_Total__c / Advance__c.Purchase_Price_Total__c) * 100}" />
+            </apex:outputText>
+          </td>
+        </tr>
+        <tr>
+          <td class="bgCol">Renovation Advances</td>
+          <td class="bgCol">
+            {!Advance__c.Deal__r.Renovation_Funding__c}
+          </td>
+          <td class="valueColumn">
+              N/A
+          </td>
+        </tr>
+        <tr>
+          <td class="bgCol">Max Total LTC</td>
+          <td class="bgCol">
+            <apex:outputText value="{0, Number, 0.00}%">
+              <apex:param value="{!Advance__c.Deal__r.Total_Loan_LTC__c}" />
+            </apex:outputText>
+          </td>
+          <td class="valueColumn">
+            -
+          </td>
+        </tr>
+        <tr>
+          <td class="bgCol">ARV LTV</td>
+          <td class="bgCol">
+            <apex:outputText value="{0, Number, 0.00}%">
+              <apex:param value="{!Advance__c.Deal__r.Total_ARV_LTV__c}" />
+            </apex:outputText>
+          </td>
+          <td class="valueColumn">
+            -
+          </td>
+        </tr>
+        <tr>
+          <td class="bgCol">% of Renovation Budget</td>
+          <td class="bgCol">
+            <apex:outputText value="{0, Number, 0.00}%">
+              <apex:param value="{!Advance__c.Deal__r.Max_Reno_Cost_Reimbursement__c}" />
+            </apex:outputText>
+          </td>
+          <td class="valueColumn">
+            -
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</apex:page>
