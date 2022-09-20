@@ -1,0 +1,4 @@
+<aura:component implements="force:hasRecordId,flexipage:availableForAllPageTypes,force:LightningQuickAction" >
+	<aura:attribute name="recordId" type="String" />
+	<aura:handler name="init" value="{!this}" action="{!c.redirect}" />
+</aura:component>
